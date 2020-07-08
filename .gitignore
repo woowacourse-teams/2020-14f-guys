@@ -30,3 +30,6 @@ out/
 
 ### VS Code ###
 .vscode/
+
+### Front NODE_MODULES ###
+/peloton-frontend/node_modules/
