@@ -1,8 +1,12 @@
 package com.woowacourse.pelotonbackend.domain;
 
+import java.time.LocalDateTime;
+
 import javax.validation.constraints.NotNull;
 
+import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jdbc.core.mapping.AggregateReference;
 
 import lombok.AccessLevel;
@@ -25,4 +29,10 @@ public class Rider {
 
     @NotNull
     private final AggregateReference<Race, @NotNull Long> raceId;
+
+    @CreatedDate
+    private LocalDateTime createdAt;
+
+    @LastModifiedDate
+    private LocalDateTime updatedAt;
 }
