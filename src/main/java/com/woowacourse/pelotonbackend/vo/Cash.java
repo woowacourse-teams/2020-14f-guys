@@ -1,4 +1,4 @@
-package com.woowacourse.pelotonbackend.domain;
+package com.woowacourse.pelotonbackend.vo;
 
 import java.math.BigDecimal;
 

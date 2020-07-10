@@ -1,15 +1,17 @@
-package com.woowacourse.pelotonbackend.domain;
+package com.woowacourse.pelotonbackend.member;
 
 import java.time.LocalDateTime;
 
+import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.LastModifiedDate;
-import org.springframework.data.jdbc.core.mapping.AggregateReference;
+import org.springframework.data.relational.core.mapping.Embedded;
 
+import com.woowacourse.pelotonbackend.vo.Cash;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -21,21 +23,22 @@ import lombok.With;
 @Builder
 @EqualsAndHashCode(of = "id")
 @Getter
-public class MissionCertificationReport {
+public class Member {
     @Id @With(value = AccessLevel.PACKAGE)
     private final Long id;
 
-    @NotNull
-    private final ReportType reportType;
+    @NotBlank
+    private final String name;
 
     @NotBlank
-    private final String description;
+    @Email
+    private final String email;
+
+    @Embedded.Empty
+    private final Cash cash;
 
     @NotNull
-    private final AggregateReference<MissionCertification, @NotNull Long> missionCertificationId;
-
-    @NotNull
-    private final AggregateReference<Member, @NotNull Long> memberId;
+    private final Role role;
 
     @CreatedDate
     private LocalDateTime createdAt;
