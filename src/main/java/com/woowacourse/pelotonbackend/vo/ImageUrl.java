@@ -9,11 +9,5 @@ import lombok.Getter;
 @Getter
 public class ImageUrl {
     @NotBlank
-    private final String photoUrl1x;
-
-    @NotBlank
-    private final String photoUrl2x;
-
-    @NotBlank
-    private final String photoUrl3x;
+    private final String baseImageUrl;
 }

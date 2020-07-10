@@ -33,10 +33,10 @@ public class Race {
     @NotBlank
     private final String description;
 
-    @Embedded.Empty
+    @Embedded(prefix = "THUMBNAIL_", onEmpty = Embedded.OnEmpty.USE_EMPTY)
     private final ImageUrl thumbnail;
 
-    @Embedded.Empty
+    @Embedded(prefix = "CERTIFICATION_EXAMPLE_", onEmpty = Embedded.OnEmpty.USE_EMPTY)
     private final ImageUrl certificationExample;
 
     @Embedded.Empty

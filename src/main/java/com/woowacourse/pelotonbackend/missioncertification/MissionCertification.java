@@ -2,7 +2,6 @@ package com.woowacourse.pelotonbackend.missioncertification;
 
 import java.time.LocalDateTime;
 
-import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
 import org.springframework.data.annotation.CreatedDate;
@@ -11,9 +10,9 @@ import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jdbc.core.mapping.AggregateReference;
 import org.springframework.data.relational.core.mapping.Embedded;
 
-import com.woowacourse.pelotonbackend.vo.ImageUrl;
-import com.woowacourse.pelotonbackend.rider.Rider;
 import com.woowacourse.pelotonbackend.mission.Mission;
+import com.woowacourse.pelotonbackend.rider.Rider;
+import com.woowacourse.pelotonbackend.vo.ImageUrl;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -32,7 +31,6 @@ public class MissionCertification {
     @NotNull
     private final MissionCertificationStatus status;
 
-    @NotBlank
     private final String description;
 
     @Embedded.Empty
