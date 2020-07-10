@@ -3,6 +3,7 @@ package com.woowacourse.pelotonbackend.missioncertification.domain;
 import java.time.LocalDateTime;
 
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.PastOrPresent;
 
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.Id;
@@ -36,15 +37,15 @@ public class MissionCertification {
     @Embedded.Empty
     private final ImageUrl image;
 
-    @NotNull
     private final AggregateReference<Rider, @NotNull Long> riderId;
 
-    @NotNull
     private final AggregateReference<Mission, @NotNull Long> missionId;
 
     @CreatedDate
+    @PastOrPresent
     private LocalDateTime createdAt;
 
     @LastModifiedDate
+    @PastOrPresent
     private LocalDateTime updatedAt;
 }
