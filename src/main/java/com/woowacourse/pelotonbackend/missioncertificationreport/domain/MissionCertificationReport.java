@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.PastOrPresent;
 
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.Id;
@@ -33,15 +34,15 @@ public class MissionCertificationReport {
     @NotBlank
     private final String description;
 
-    @NotNull
     private final AggregateReference<MissionCertification, @NotNull Long> missionCertificationId;
 
-    @NotNull
     private final AggregateReference<Member, @NotNull Long> memberId;
 
     @CreatedDate
+    @PastOrPresent
     private LocalDateTime createdAt;
 
     @LastModifiedDate
+    @PastOrPresent
     private LocalDateTime updatedAt;
 }

@@ -3,6 +3,7 @@ package com.woowacourse.pelotonbackend.mission.domain;
 import java.time.LocalDateTime;
 
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.PastOrPresent;
 
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.Id;
@@ -32,12 +33,13 @@ public class Mission {
     @Embedded.Empty
     private final MissionInstruction missionInstruction;
 
-    @NotNull
-    private final AggregateReference<Race, Long> raceId;
+    private final AggregateReference<Race, @NotNull Long> raceId;
 
     @CreatedDate
+    @PastOrPresent
     private LocalDateTime createdAt;
 
     @LastModifiedDate
+    @PastOrPresent
     private LocalDateTime updatedAt;
 }
