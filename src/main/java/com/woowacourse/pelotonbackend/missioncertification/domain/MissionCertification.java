@@ -2,6 +2,7 @@ package com.woowacourse.pelotonbackend.missioncertification.domain;
 
 import java.time.LocalDateTime;
 
+import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.PastOrPresent;
 
@@ -35,6 +36,7 @@ public class MissionCertification {
     private final String description;
 
     @Embedded.Empty
+    @Valid
     private final ImageUrl image;
 
     private final AggregateReference<Rider, @NotNull Long> riderId;

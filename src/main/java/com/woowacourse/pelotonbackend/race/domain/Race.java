@@ -2,6 +2,7 @@ package com.woowacourse.pelotonbackend.race.domain;
 
 import java.time.LocalDateTime;
 
+import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.PastOrPresent;
@@ -35,18 +36,22 @@ public class Race {
     private final String description;
 
     @Embedded(prefix = "THUMBNAIL_", onEmpty = Embedded.OnEmpty.USE_EMPTY)
+    @Valid
     private final ImageUrl thumbnail;
 
     @Embedded(prefix = "CERTIFICATION_EXAMPLE_", onEmpty = Embedded.OnEmpty.USE_EMPTY)
+    @Valid
     private final ImageUrl certificationExample;
 
     @Embedded.Empty
+    @Valid
     private final DateDuration raceDuration;
 
     @NotNull
     private final RaceCategory category;
 
     @Embedded.Empty
+    @Valid
     private final Cash entranceFee;
 
     @CreatedDate
