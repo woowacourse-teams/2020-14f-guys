@@ -2,6 +2,7 @@ package com.woowacourse.pelotonbackend.mission.domain;
 
 import java.time.LocalDateTime;
 
+import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.PastOrPresent;
 
@@ -28,9 +29,11 @@ public class Mission {
     private final Long id;
 
     @Embedded.Empty
+    @Valid
     private final TimeDuration missionDuration;
 
     @Embedded.Empty
+    @Valid
     private final MissionInstruction missionInstruction;
 
     private final AggregateReference<Race, @NotNull Long> raceId;

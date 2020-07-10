@@ -2,6 +2,7 @@ package com.woowacourse.pelotonbackend.member.domain;
 
 import java.time.LocalDateTime;
 
+import javax.validation.Valid;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -36,6 +37,7 @@ public class Member {
     private final String email;
 
     @Embedded.Empty
+    @Valid
     private final Cash cash;
 
     @NotNull
