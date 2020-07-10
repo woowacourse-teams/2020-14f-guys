@@ -1,4 +1,4 @@
-package com.woowacourse.pelotonbackend.race;
+package com.woowacourse.pelotonbackend.race.domain;
 
 import java.time.LocalDate;
 

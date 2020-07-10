@@ -1,4 +1,4 @@
-package com.woowacourse.pelotonbackend.mission;
+package com.woowacourse.pelotonbackend.mission.domain;
 
 import javax.validation.constraints.NotBlank;
 

@@ -1,4 +1,4 @@
-package com.woowacourse.pelotonbackend.mission;
+package com.woowacourse.pelotonbackend.mission.domain;
 
 import java.time.LocalDateTime;
 
@@ -10,7 +10,7 @@ import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jdbc.core.mapping.AggregateReference;
 import org.springframework.data.relational.core.mapping.Embedded;
 
-import com.woowacourse.pelotonbackend.race.Race;
+import com.woowacourse.pelotonbackend.race.domain.Race;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;

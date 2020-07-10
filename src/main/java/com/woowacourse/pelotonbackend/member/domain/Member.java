@@ -1,7 +1,8 @@
-package com.woowacourse.pelotonbackend.race;
+package com.woowacourse.pelotonbackend.member.domain;
 
 import java.time.LocalDateTime;
 
+import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
@@ -11,7 +12,6 @@ import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.relational.core.mapping.Embedded;
 
 import com.woowacourse.pelotonbackend.vo.Cash;
-import com.woowacourse.pelotonbackend.vo.ImageUrl;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -23,30 +23,22 @@ import lombok.With;
 @Builder
 @EqualsAndHashCode(of = "id")
 @Getter
-public class Race {
+public class Member {
     @Id @With(value = AccessLevel.PACKAGE)
     private final Long id;
 
     @NotBlank
-    private final String title;
+    private final String name;
 
     @NotBlank
-    private final String description;
-
-    @Embedded(prefix = "THUMBNAIL_", onEmpty = Embedded.OnEmpty.USE_EMPTY)
-    private final ImageUrl thumbnail;
-
-    @Embedded(prefix = "CERTIFICATION_EXAMPLE_", onEmpty = Embedded.OnEmpty.USE_EMPTY)
-    private final ImageUrl certificationExample;
+    @Email
+    private final String email;
 
     @Embedded.Empty
-    private final DateDuration raceDuration;
+    private final Cash cash;
 
     @NotNull
-    private final RaceCategory category;
-
-    @Embedded.Empty
-    private final Cash entranceFee;
+    private final Role role;
 
     @CreatedDate
     private LocalDateTime createdAt;

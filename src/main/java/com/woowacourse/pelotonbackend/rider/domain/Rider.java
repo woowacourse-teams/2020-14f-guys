@@ -1,4 +1,4 @@
-package com.woowacourse.pelotonbackend.missioncertification;
+package com.woowacourse.pelotonbackend.rider.domain;
 
 import java.time.LocalDateTime;
 
@@ -8,11 +8,9 @@ import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jdbc.core.mapping.AggregateReference;
-import org.springframework.data.relational.core.mapping.Embedded;
 
-import com.woowacourse.pelotonbackend.mission.Mission;
-import com.woowacourse.pelotonbackend.rider.Rider;
-import com.woowacourse.pelotonbackend.vo.ImageUrl;
+import com.woowacourse.pelotonbackend.member.domain.Member;
+import com.woowacourse.pelotonbackend.race.domain.Race;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -24,23 +22,15 @@ import lombok.With;
 @Builder
 @EqualsAndHashCode(of = "id")
 @Getter
-public class MissionCertification {
+public class Rider {
     @Id @With(value = AccessLevel.PACKAGE)
     private final Long id;
 
     @NotNull
-    private final MissionCertificationStatus status;
-
-    private final String description;
-
-    @Embedded.Empty
-    private final ImageUrl image;
+    private final AggregateReference<Member, @NotNull Long> memberId;
 
     @NotNull
-    private final AggregateReference<Rider, @NotNull Long> riderId;
-
-    @NotNull
-    private final AggregateReference<Mission, @NotNull Long> missionId;
+    private final AggregateReference<Race, @NotNull Long> raceId;
 
     @CreatedDate
     private LocalDateTime createdAt;

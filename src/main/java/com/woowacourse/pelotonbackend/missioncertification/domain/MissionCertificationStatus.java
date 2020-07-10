@@ -1,4 +1,4 @@
-package com.woowacourse.pelotonbackend.missioncertification;
+package com.woowacourse.pelotonbackend.missioncertification.domain;
 
 public enum MissionCertificationStatus {
     SUCCESS,

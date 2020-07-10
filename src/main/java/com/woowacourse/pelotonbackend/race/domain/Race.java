@@ -1,4 +1,4 @@
-package com.woowacourse.pelotonbackend.missioncertificationreport;
+package com.woowacourse.pelotonbackend.race.domain;
 
 import java.time.LocalDateTime;
 
@@ -8,10 +8,10 @@ import javax.validation.constraints.NotNull;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.LastModifiedDate;
-import org.springframework.data.jdbc.core.mapping.AggregateReference;
+import org.springframework.data.relational.core.mapping.Embedded;
 
-import com.woowacourse.pelotonbackend.member.Member;
-import com.woowacourse.pelotonbackend.missioncertification.MissionCertification;
+import com.woowacourse.pelotonbackend.vo.Cash;
+import com.woowacourse.pelotonbackend.vo.ImageUrl;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -23,21 +23,30 @@ import lombok.With;
 @Builder
 @EqualsAndHashCode(of = "id")
 @Getter
-public class MissionCertificationReport {
+public class Race {
     @Id @With(value = AccessLevel.PACKAGE)
     private final Long id;
 
-    @NotNull
-    private final ReportType reportType;
+    @NotBlank
+    private final String title;
 
     @NotBlank
     private final String description;
 
-    @NotNull
-    private final AggregateReference<MissionCertification, @NotNull Long> missionCertificationId;
+    @Embedded(prefix = "THUMBNAIL_", onEmpty = Embedded.OnEmpty.USE_EMPTY)
+    private final ImageUrl thumbnail;
+
+    @Embedded(prefix = "CERTIFICATION_EXAMPLE_", onEmpty = Embedded.OnEmpty.USE_EMPTY)
+    private final ImageUrl certificationExample;
+
+    @Embedded.Empty
+    private final DateDuration raceDuration;
 
     @NotNull
-    private final AggregateReference<Member, @NotNull Long> memberId;
+    private final RaceCategory category;
+
+    @Embedded.Empty
+    private final Cash entranceFee;
 
     @CreatedDate
     private LocalDateTime createdAt;
