@@ -30,9 +30,7 @@ create table if not exists RIDER
     MEMBER_ID  bigint   not null,
     RACE_ID    bigint   not null,
     CREATED_AT datetime not null,
-    UPDATED_AT datetime not null,
-    foreign key (MEMBER_ID) references MEMBER (ID),
-    foreign key (RACE_ID) references RACE (ID)
+    UPDATED_AT datetime not null
 );
 
 create table if not exists MISSION
@@ -43,8 +41,7 @@ create table if not exists MISSION
     MISSION_INSTRUCTION varchar(255) not null,
     RACE_ID             bigint       not null,
     CREATED_AT          datetime     not null,
-    UPDATED_AT          datetime     not null,
-    foreign key (RACE_ID) references RACE (ID)
+    UPDATED_AT          datetime     not null
 );
 
 create table if not exists MISSION_CERTIFICATION
@@ -56,9 +53,7 @@ create table if not exists MISSION_CERTIFICATION
     RIDER_ID       bigint       not null,
     MISSION_ID     bigint       not null,
     CREATED_AT     datetime     not null,
-    UPDATED_AT     datetime     not null,
-    foreign key (RIDER_ID) references RIDER (ID),
-    foreign key (MISSION_ID) references MISSION (ID)
+    UPDATED_AT     datetime     not null
 );
 
 create table if not exists MISSION_CERTIFICATION_REPORT
@@ -69,7 +64,5 @@ create table if not exists MISSION_CERTIFICATION_REPORT
     MISSION_CERTIFICATION_ID bigint       not null,
     MEMBER_ID                bigint       not null,
     CREATED_AT               datetime     not null,
-    UPDATED_AT               datetime     not null,
-    foreign key (MISSION_CERTIFICATION_ID) references MISSION_CERTIFICATION (ID),
-    foreign key (MEMBER_ID) references MEMBER (ID)
+    UPDATED_AT               datetime     not null
 );
