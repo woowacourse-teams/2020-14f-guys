@@ -5192,6 +5192,14 @@ range-parser@~1.2.1:
   resolved "https://registry.yarnpkg.com/range-parser/-/range-parser-1.2.1.tgz#3cf37023d199e1c24d1a55b84800c2f3e6468031"
   integrity sha512-Hrgsx+orqoygnmhFbKaHE6c296J+HTAQXoxEF6gNupROmmGJRoyzfG3ccAveqCBrwr/2yxQ5BVd/GTl5agOwSg==
 
+react-addons-shallow-compare@15.6.2:
+  version "15.6.2"
+  resolved "https://registry.yarnpkg.com/react-addons-shallow-compare/-/react-addons-shallow-compare-15.6.2.tgz#198a00b91fc37623db64a28fd17b596ba362702f"
+  integrity sha1-GYoAuR/DdiPbZKKP0XtZa6NicC8=
+  dependencies:
+    fbjs "^0.8.4"
+    object-assign "^4.1.0"
+
 react-devtools-core@^4.0.6:
   version "4.8.0"
   resolved "https://registry.yarnpkg.com/react-devtools-core/-/react-devtools-core-4.8.0.tgz#38bb7e48f9477125ee50fe1dbc9d904c19006b92"
@@ -5255,6 +5263,14 @@ react-native-screens@~2.9.0:
   version "2.9.0"
   resolved "https://registry.yarnpkg.com/react-native-screens/-/react-native-screens-2.9.0.tgz#ead2843107ba00fee259aa377582e457c74f1f3b"
   integrity sha512-5MaiUD6HA3nzY3JbVI8l3V7pKedtxQF3d8qktTVI0WmWXTI4QzqOU8r8fPVvfKo3MhOXwhWBjr+kQ7DZaIQQeg==
+
+react-native-snap-carousel@^3.9.1:
+  version "3.9.1"
+  resolved "https://registry.yarnpkg.com/react-native-snap-carousel/-/react-native-snap-carousel-3.9.1.tgz#6fd9bd8839546c2c6043a41d2035afbc6fe0443e"
+  integrity sha512-xWEGusacIgK1YaDXLi7Gao2+ISLoGPVEBR8fcMf4tOOJQufutlNwkoLu0l6B8Qgsrre0nTxoVZikRgGRDWlLaQ==
+  dependencies:
+    prop-types "^15.6.1"
+    react-addons-shallow-compare "15.6.2"
 
 react-native-web@~0.11.7:
   version "0.11.7"
