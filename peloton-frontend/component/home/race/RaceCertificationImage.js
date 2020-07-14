@@ -49,6 +49,7 @@ const styles = StyleSheet.create({
     resizeMode: "cover",
   },
   certificationContainer: {
+    marginTop: 20,
     height: 300,
     paddingHorizontal: 30,
     alignItems: "center",

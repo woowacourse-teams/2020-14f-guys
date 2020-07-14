@@ -1,13 +1,13 @@
 import React from "react";
 import { ScrollView, StyleSheet } from "react-native";
-import RaceInfo from "./RaceInfo";
+import RaceDetailInfo from "./RaceDetailInfo";
 import RaceCertificationImage from "./RaceCertificationImage";
 import RaceSpec from "./RaceSpec";
 
 const RaceDetail = () => {
   return (
     <ScrollView style={styles.container}>
-      <RaceInfo />
+      <RaceDetailInfo />
       <RaceCertificationImage />
       <RaceSpec />
     </ScrollView>
