@@ -47,6 +47,7 @@ const styles = StyleSheet.create({
   raceInfoText: {
     paddingHorizontal: 20,
     paddingVertical: 20,
+    backgroundColor: "#F2F2F2",
   },
   title: {
     color: "black",

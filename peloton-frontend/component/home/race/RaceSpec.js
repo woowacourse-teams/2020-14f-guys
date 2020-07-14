@@ -18,13 +18,15 @@ const RaceSpec = () => {
 
 const styles = StyleSheet.create({
   detailContainer: {
-    minHeight: 250,
-    paddingHorizontal: 30,
+    backgroundColor: "#F2F2F2",
+    paddingBottom: 10,
+    paddingHorizontal: 20,
   },
   detail: {
     fontSize: 15,
-    color: "black",
-    lineHeight: 26,
+    color: "gray",
+    fontWeight: "300",
+    lineHeight: 23,
   },
 });
 
