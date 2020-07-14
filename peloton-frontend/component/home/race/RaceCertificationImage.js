@@ -1,13 +1,18 @@
 import React from "react";
-import { Image, StyleSheet, View } from "react-native";
-import Carousel from "react-native-snap-carousel";
+import { StyleSheet, View } from "react-native";
+import Carousel, { ParallaxImage } from "react-native-snap-carousel";
 import { MOCK_DATA } from "../../Const";
 import RaceSubTitle from "./RaceSubTitle";
 
-const render = ({ item }) => {
+const _renderEachImage = ({ item, index }, parallaxProps) => {
   return (
-    <View style={styles.certificationImageContainer}>
-      <Image style={styles.certificationImage} source={{ uri: item.url }} />
+    <View style={styles.item}>
+      <ParallaxImage
+        containerStyle={styles.imageContainer}
+        style={styles.image}
+        source={{ uri: item.url }}
+        {...parallaxProps}
+      />
     </View>
   );
 };
@@ -18,25 +23,30 @@ const RaceCertificationImage = () => {
       <RaceSubTitle>인증 사진들</RaceSubTitle>
       <Carousel
         data={MOCK_DATA}
-        renderItem={render}
+        renderItem={_renderEachImage}
         sliderWidth={600}
         itemWidth={200}
         loop={true}
-        layoutCardOffset={20}
+        hasParallaxImages={true}
       />
     </View>
   );
 };
 
 const styles = StyleSheet.create({
-  certificationImageContainer: {
+  item: {
     width: 200,
     height: 200,
     borderRadius: 10,
     overflow: "hidden",
   },
-  certificationImage: {
-    flex: 1,
+  imageContainer: {
+    width: "100%",
+    height: "100%",
+  },
+  image: {
+    ...StyleSheet.absoluteFillObject,
+    resizeMode: "cover",
   },
   certificationContainer: {
     height: 300,
