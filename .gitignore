@@ -31,5 +31,6 @@ out/
 ### VS Code ###
 .vscode/
 
-### Front NODE_MODULES ###
+### Front ###
 /peloton-frontend/node_modules/
+/peloton-frontend/.expo/packager-info.json
