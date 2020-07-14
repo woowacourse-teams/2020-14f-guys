@@ -16,8 +16,6 @@ const RaceItemImage = ({ item, parallaxProps }) => {
   );
 };
 
-export default RaceItemImage;
-
 const styles = StyleSheet.create({
   container: {
     flex: 7,
@@ -31,3 +29,5 @@ const styles = StyleSheet.create({
     resizeMode: "cover",
   },
 });
+
+export default RaceItemImage;

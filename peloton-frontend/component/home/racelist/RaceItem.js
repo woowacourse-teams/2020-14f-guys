@@ -12,8 +12,6 @@ const RaceItem = ({ item, parallaxProps }) => {
   );
 };
 
-export default RaceItem;
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -30,3 +28,5 @@ const styles = StyleSheet.create({
     elevation: 5,
   },
 });
+
+export default RaceItem;

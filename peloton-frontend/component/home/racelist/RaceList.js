@@ -3,19 +3,29 @@ import { StyleSheet, View } from "react-native";
 import RaceListTitle from "./RaceListTitle";
 import RaceItems from "./RaceItems";
 
-const RaceList = (props) => {
+const RaceList = () => {
   return (
     <View style={styles.container}>
-      <RaceListTitle />
-      <RaceItems />
+      <View style={styles.raceListTitle}>
+        <RaceListTitle />
+      </View>
+      <View style={styles.raceItems}>
+        <RaceItems />
+      </View>
     </View>
   );
 };
 
-export default RaceList;
-
 const styles = StyleSheet.create({
   container: {
-    flex: 6,
+    flex: 1,
+  },
+  raceListTitle: {
+    flex: 1,
+  },
+  raceItems: {
+    flex: 5,
   },
 });
+
+export default RaceList;

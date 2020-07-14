@@ -13,8 +13,6 @@ const RaceListTitle = (props) => {
   );
 };
 
-export default RaceListTitle;
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -36,3 +34,5 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
 });
+
+export default RaceListTitle;

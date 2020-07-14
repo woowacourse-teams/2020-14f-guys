@@ -4,8 +4,8 @@ import Carousel from "react-native-snap-carousel";
 import RaceItem from "./RaceItem";
 import { SAMPLE_IMAGES } from "../../../utils/constants";
 
-const RaceItems = (props) => {
-  const renderItems = ({ item }, parallaxProps) => {
+const RaceItems = () => {
+  const _renderItems = ({ item }, parallaxProps) => {
     return <RaceItem item={item} parallaxProps={parallaxProps} />;
   };
 
@@ -18,7 +18,7 @@ const RaceItems = (props) => {
         sliderWidth={width}
         sliderHeight={180}
         itemWidth={250}
-        renderItem={renderItems}
+        renderItem={_renderItems}
         hasParallaxImages={true}
         loop={true}
       />
@@ -26,13 +26,13 @@ const RaceItems = (props) => {
   );
 };
 
-export default RaceItems;
-
 const styles = StyleSheet.create({
   container: {
-    flex: 5,
+    flex: 1,
     alignItems: "center",
     justifyContent: "center",
     height: 300,
   },
 });
+
+export default RaceItems;

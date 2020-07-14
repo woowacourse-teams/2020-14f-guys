@@ -12,8 +12,6 @@ const RaceItemText = ({ item }) => {
   );
 };
 
-export default RaceItemText;
-
 const styles = StyleSheet.create({
   container: {
     flex: 2,
@@ -32,3 +30,5 @@ const styles = StyleSheet.create({
     fontSize: 12,
   },
 });
+
+export default RaceItemText;
