@@ -20,7 +20,6 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.With;
 
-@AllArgsConstructor(access = AccessLevel.PACKAGE)
 @Builder
 @EqualsAndHashCode(of = "id")
 @Getter
