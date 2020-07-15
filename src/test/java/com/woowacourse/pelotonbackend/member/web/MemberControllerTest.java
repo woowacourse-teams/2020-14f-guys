@@ -1,4 +1,4 @@
-package com.woowacourse.pelotonbackend.member.controller;
+package com.woowacourse.pelotonbackend.member.web;
 
 import static org.assertj.core.api.Assertions.*;
 import static org.mockito.Mockito.*;
@@ -21,7 +21,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.woowacourse.pelotonbackend.member.domain.Member;
 import com.woowacourse.pelotonbackend.member.domain.Role;
 import com.woowacourse.pelotonbackend.member.service.MemberService;
-import com.woowacourse.pelotonbackend.member.web.MemberController;
 import com.woowacourse.pelotonbackend.member.web.dto.MemberRequest;
 import com.woowacourse.pelotonbackend.member.web.dto.MemberResponse;
 import com.woowacourse.pelotonbackend.vo.Cash;
