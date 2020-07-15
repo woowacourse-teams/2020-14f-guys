@@ -44,7 +44,7 @@ create table if not exists MISSION
     UPDATED_AT          datetime     not null
 );
 
-create table if not exists MISSION_CERTIFICATION
+create table if not exists CERTIFICATION
 (
     ID             bigint       not null primary key auto_increment,
     STATUS         varchar(16)  not null,
@@ -56,12 +56,12 @@ create table if not exists MISSION_CERTIFICATION
     UPDATED_AT     datetime     not null
 );
 
-create table if not exists MISSION_CERTIFICATION_REPORT
+create table if not exists REPORT
 (
     ID                       bigint       not null primary key auto_increment,
     REPORT_TYPE              varchar(32)  not null,
     DESCRIPTION              varchar(255) not null,
-    MISSION_CERTIFICATION_ID bigint       not null,
+    CERTIFICATION_ID bigint       not null,
     MEMBER_ID                bigint       not null,
     CREATED_AT               datetime     not null,
     UPDATED_AT               datetime     not null

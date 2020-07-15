@@ -2,11 +2,9 @@ package com.woowacourse.pelotonbackend.vo;
 
 import javax.validation.constraints.NotBlank;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
+import lombok.Value;
 
-@AllArgsConstructor
-@Getter
+@Value
 public class ImageUrl {
     @NotBlank
     private final String baseImageUrl;
