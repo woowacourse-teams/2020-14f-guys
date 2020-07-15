@@ -1,4 +1,4 @@
-package com.woowacourse.pelotonbackend.missioncertification.domain;
+package com.woowacourse.pelotonbackend.certification.domain;
 
 import java.time.LocalDateTime;
 
@@ -26,12 +26,12 @@ import lombok.With;
 @Builder
 @EqualsAndHashCode(of = "id")
 @Getter
-public class MissionCertification {
+public class Certification {
     @Id @With(value = AccessLevel.PACKAGE)
     private final Long id;
 
     @NotNull
-    private final MissionCertificationStatus status;
+    private final CertificationStatus status;
 
     private final String description;
 

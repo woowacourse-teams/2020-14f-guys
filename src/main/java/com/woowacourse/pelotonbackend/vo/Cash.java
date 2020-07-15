@@ -4,11 +4,9 @@ import java.math.BigDecimal;
 
 import javax.validation.constraints.PositiveOrZero;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
+import lombok.Value;
 
-@AllArgsConstructor
-@Getter
+@Value
 public class Cash {
     @PositiveOrZero
     private final BigDecimal cash;

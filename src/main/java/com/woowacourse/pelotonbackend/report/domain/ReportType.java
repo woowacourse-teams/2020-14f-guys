@@ -1,4 +1,4 @@
-package com.woowacourse.pelotonbackend.missioncertificationreport.domain;
+package com.woowacourse.pelotonbackend.report.domain;
 
 public enum ReportType {
     IMMORALITY,

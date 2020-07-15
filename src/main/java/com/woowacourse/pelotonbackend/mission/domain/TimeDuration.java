@@ -4,11 +4,9 @@ import java.time.LocalDateTime;
 
 import javax.validation.constraints.FutureOrPresent;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
+import lombok.Value;
 
-@AllArgsConstructor
-@Getter
+@Value
 public class TimeDuration {
     @FutureOrPresent
     private final LocalDateTime startTime;

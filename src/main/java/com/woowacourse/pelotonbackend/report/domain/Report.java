@@ -1,4 +1,4 @@
-package com.woowacourse.pelotonbackend.missioncertificationreport.domain;
+package com.woowacourse.pelotonbackend.report.domain;
 
 import java.time.LocalDateTime;
 
@@ -11,8 +11,8 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jdbc.core.mapping.AggregateReference;
 
+import com.woowacourse.pelotonbackend.certification.domain.Certification;
 import com.woowacourse.pelotonbackend.member.domain.Member;
-import com.woowacourse.pelotonbackend.missioncertification.domain.MissionCertification;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -24,7 +24,7 @@ import lombok.With;
 @Builder
 @EqualsAndHashCode(of = "id")
 @Getter
-public class MissionCertificationReport {
+public class Report {
     @Id @With(value = AccessLevel.PACKAGE)
     private final Long id;
 
@@ -34,7 +34,7 @@ public class MissionCertificationReport {
     @NotBlank
     private final String description;
 
-    private final AggregateReference<MissionCertification, @NotNull Long> missionCertificationId;
+    private final AggregateReference<Certification, @NotNull Long> certificationId;
 
     private final AggregateReference<Member, @NotNull Long> memberId;
 
