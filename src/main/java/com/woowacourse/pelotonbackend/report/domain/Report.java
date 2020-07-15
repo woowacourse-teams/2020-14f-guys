@@ -14,13 +14,11 @@ import org.springframework.data.jdbc.core.mapping.AggregateReference;
 import com.woowacourse.pelotonbackend.certification.domain.Certification;
 import com.woowacourse.pelotonbackend.member.domain.Member;
 import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.With;
 
-@AllArgsConstructor(access = AccessLevel.PACKAGE)
 @Builder
 @EqualsAndHashCode(of = "id")
 @Getter
@@ -38,11 +36,11 @@ public class Report {
 
     private final AggregateReference<Member, @NotNull Long> memberId;
 
-    @CreatedDate
-    @PastOrPresent
-    private LocalDateTime createdAt;
+    @CreatedDate @PastOrPresent
+    @With(AccessLevel.PACKAGE)
+    private final LocalDateTime createdAt;
 
-    @LastModifiedDate
-    @PastOrPresent
-    private LocalDateTime updatedAt;
+    @LastModifiedDate @PastOrPresent
+    @With(AccessLevel.PACKAGE)
+    private final LocalDateTime updatedAt;
 }
