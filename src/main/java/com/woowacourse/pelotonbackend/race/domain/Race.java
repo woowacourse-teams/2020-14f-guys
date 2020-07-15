@@ -26,7 +26,8 @@ import lombok.With;
 @EqualsAndHashCode(of = "id")
 @Getter
 public class Race {
-    @Id @With(value = AccessLevel.PACKAGE)
+    @Id
+    @With(value = AccessLevel.PACKAGE)
     private final Long id;
 
     @NotBlank
@@ -61,4 +62,18 @@ public class Race {
     @LastModifiedDate
     @PastOrPresent
     private LocalDateTime updatedAt;
+
+    public static Race of(final String title, final String description, final DateDuration raceDuration,
+        final RaceCategory category, final Cash entranceFee) {
+
+        return Race.builder()
+            .title(title)
+            .description(description)
+            .thumbnail(ImageUrl.getRandomThumbnail(category))
+            .certificationExample(ImageUrl.getRandomCertificationImage(category))
+            .raceDuration(raceDuration)
+            .category(category)
+            .entranceFee(entranceFee)
+            .build();
+    }
 }
