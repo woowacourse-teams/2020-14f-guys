@@ -6,10 +6,9 @@ import java.math.BigDecimal;
 import javax.validation.constraints.PositiveOrZero;
 
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Value;
 
-@AllArgsConstructor(onConstructor_ = {@ConstructorProperties("cash")})
+@AllArgsConstructor(onConstructor_ = {@ConstructorProperties({"cash"})})
 @Value
 public class Cash {
     @PositiveOrZero
