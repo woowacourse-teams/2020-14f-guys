@@ -48,7 +48,7 @@ public class MemberControllerTest {
             .role(ROLE)
             .build();
 
-        String request = objectMapper.writeValueAsString(memberRequest);
+        final String request = objectMapper.writeValueAsString(memberRequest);
         when(memberService.createMember(any(Member.class))).thenReturn(persistMember);
 
         mockMvc.perform(
