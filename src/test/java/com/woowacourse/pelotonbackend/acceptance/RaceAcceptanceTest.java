@@ -1,11 +1,8 @@
 package com.woowacourse.pelotonbackend.acceptance;
 
-import static com.woowacourse.pelotonbackend.race.domain.RaceRepositoryTest.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
-
-import java.math.BigDecimal;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -16,9 +13,8 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.woowacourse.pelotonbackend.race.domain.DateDuration;
+import com.woowacourse.pelotonbackend.race.domain.RaceFixture;
 import com.woowacourse.pelotonbackend.race.web.RaceCreateReq;
-import com.woowacourse.pelotonbackend.vo.Cash;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @AutoConfigureMockMvc
@@ -37,13 +33,7 @@ public class RaceAcceptanceTest {
     }
 
     void createRace() throws Exception {
-        final RaceCreateReq request = RaceCreateReq.builder()
-            .title(TEST_TITLE)
-            .description(TEST_DESCRIPTION)
-            .category(TEST_CATEGORY)
-            .cash(new Cash(BigDecimal.ONE))
-            .raceDuration(new DateDuration(TEST_START_TIME, TEST_END_TIME))
-            .build();
+        final RaceCreateReq request = RaceFixture.createMockRequest();
 
         mockMvc.perform(post("/race")
             .contentType(MediaType.APPLICATION_JSON_VALUE)
