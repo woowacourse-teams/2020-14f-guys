@@ -1,22 +1,31 @@
 package com.woowacourse.pelotonbackend.acceptance;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.reactive.AutoConfigureWebTestClient;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.web.server.LocalServerPort;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.test.web.reactive.server.WebTestClient;
 
 import com.woowacourse.pelotonbackend.race.domain.RaceFixture;
-import com.woowacourse.pelotonbackend.race.web.RaceCreateReq;
+import com.woowacourse.pelotonbackend.race.presentation.RaceCreateRequest;
+import io.restassured.RestAssured;
+import io.restassured.specification.RequestSpecification;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-@AutoConfigureWebTestClient
 public class RaceAcceptanceTest {
+    @LocalServerPort
+    public int port;
 
-    @Autowired
-    WebTestClient webTestClient;
+    @BeforeEach
+    public void setUp() {
+        RestAssured.port = port;
+    }
+
+    public static RequestSpecification given() {
+        return RestAssured.given().log().all();
+    }
 
     @DisplayName("레이스를 관리한다.(생성, 조회, 수정, 삭제)")
     @Test
@@ -25,14 +34,16 @@ public class RaceAcceptanceTest {
     }
 
     void createRace() {
-        final RaceCreateReq request = RaceFixture.createMockRequest();
+        final RaceCreateRequest request = RaceFixture.createMockRequest();
 
-        webTestClient.post().uri("/race")
-            .contentType(MediaType.APPLICATION_JSON)
-            .accept(MediaType.APPLICATION_JSON)
-            .bodyValue(request)
-            .exchange()
-            .expectStatus().isCreated()
-            .expectHeader().exists("Location");
+        given()
+            .contentType(MediaType.APPLICATION_JSON_VALUE)
+            .body(request)
+            .when()
+            .post("/api/races")
+            .then()
+            .log().all()
+            .statusCode(HttpStatus.CREATED.value())
+            .header("Location", "/races/1");
     }
 }

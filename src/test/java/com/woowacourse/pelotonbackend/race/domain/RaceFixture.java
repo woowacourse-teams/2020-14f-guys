@@ -3,7 +3,7 @@ package com.woowacourse.pelotonbackend.race.domain;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
-import com.woowacourse.pelotonbackend.race.web.RaceCreateReq;
+import com.woowacourse.pelotonbackend.race.presentation.RaceCreateRequest;
 import com.woowacourse.pelotonbackend.vo.Cash;
 import com.woowacourse.pelotonbackend.vo.ImageUrl;
 
@@ -39,8 +39,8 @@ public class RaceFixture {
             .build();
     }
 
-    public static RaceCreateReq createMockRequest() {
-        return RaceCreateReq.builder()
+    public static RaceCreateRequest createMockRequest() {
+        return RaceCreateRequest.builder()
             .title(TEST_TITLE)
             .description(TEST_DESCRIPTION)
             .category(TEST_CATEGORY)
@@ -49,8 +49,8 @@ public class RaceFixture {
             .build();
     }
 
-    public static RaceCreateReq createBadMockRequest() {
-        return RaceCreateReq.builder()
+    public static RaceCreateRequest createBadMockRequest() {
+        return RaceCreateRequest.builder()
             .raceDuration(new DateDuration(TEST_START_TIME, TEST_END_TIME))
             .build();
     }

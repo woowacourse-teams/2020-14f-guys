@@ -10,7 +10,6 @@ import org.junit.jupiter.api.Test;
 import com.woowacourse.pelotonbackend.vo.Cash;
 
 class RaceTest {
-
     @DisplayName("Race가 생성될 때, 이미지에 대한 정보를 인자로 제공하지 않아도 랜덤으로 자동 생성됩니다.")
     @Test
     void staticFactoryMethodTest() {
