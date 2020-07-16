@@ -43,9 +43,11 @@ public class Member {
 
     @CreatedDate
     @PastOrPresent
-    private LocalDateTime createdAt;
+    @With(AccessLevel.PACKAGE)
+    private final LocalDateTime createdAt;
 
     @LastModifiedDate
     @PastOrPresent
-    private LocalDateTime updatedAt;
+    @With(AccessLevel.PACKAGE)
+    private final LocalDateTime updatedAt;
 }
