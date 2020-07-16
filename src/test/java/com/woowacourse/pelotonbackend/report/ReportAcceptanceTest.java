@@ -1,28 +1,22 @@
 package com.woowacourse.pelotonbackend.report;
 
-import static org.assertj.core.api.Assertions.*;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static io.restassured.RestAssured.*;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.web.server.LocalServerPort;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.MvcResult;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-import org.springframework.web.context.WebApplicationContext;
-import org.springframework.web.filter.CharacterEncodingFilter;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.woowacourse.pelotonbackend.report.domain.ReportType;
 import com.woowacourse.pelotonbackend.report.infra.ReportCreateBody;
+import io.restassured.RestAssured;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-@AutoConfigureMockMvc
 public class ReportAcceptanceTest {
     public static final Long MEMBER_ID = 1L;
 
@@ -32,19 +26,16 @@ public class ReportAcceptanceTest {
 
     public static final String DESCRIPTION = "설명";
 
-    @Autowired
-    private ObjectMapper objectMapper;
-
-    @Autowired
-    private MockMvc mockMvc;
+    @LocalServerPort
+    public int port;
 
     @BeforeEach
-    public void setup(WebApplicationContext webApplicationContext) {
-        mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext)
-            .addFilters(new CharacterEncodingFilter("UTF-8", true))
-            .alwaysDo(print())
-            .build();
+    public void setUp() {
+        RestAssured.port = port;
     }
+
+    @Autowired
+    private ObjectMapper objectMapper;
 
     /**
      * Given 신고하는 유저의 ID, 신고할 인증의 ID가 주어진다.
@@ -52,14 +43,16 @@ public class ReportAcceptanceTest {
      * Then 신고가 완료된다.
      */
     @Test
-    void createReport() throws Exception {
-        MvcResult mvcResult = mockMvc.perform(
-            post("/api/reports/certification/{certificationId}/member/{reportMemberId}", CERTIFICATION_ID, MEMBER_ID)
-                .content(objectMapper.writeValueAsBytes(new ReportCreateBody(REPORT_TYPE, DESCRIPTION)))
-                .contentType(MediaType.APPLICATION_JSON))
-            .andExpect(status().isCreated())
-            .andReturn();
-
-        assertThat(mvcResult.getResponse().getHeader("Location")).isNotNull();
+    void createReport() throws JsonProcessingException {
+        given()
+            .log().all()
+            .body(objectMapper.writeValueAsBytes(new ReportCreateBody(REPORT_TYPE, DESCRIPTION))).
+            contentType(MediaType.APPLICATION_JSON_VALUE).
+            when().
+            post("/api/reports/certification/{certificationId}/member/{reportMemberId}", CERTIFICATION_ID, MEMBER_ID).
+            then().
+            log().all().
+            statusCode(HttpStatus.CREATED.value()).
+            header("Location", "/api/reports/1");
     }
 }
