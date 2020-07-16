@@ -1,8 +1,9 @@
 package com.woowacourse.pelotonbackend.vo;
 
-import static com.woowacourse.pelotonbackend.vo.ImageUrl.ImageUrls.*;
+import static com.woowacourse.pelotonbackend.vo.ImageUrl.SampleUrlCash.*;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -26,7 +27,7 @@ public class ImageUrl {
         return getRandomImage(category, ImageType.CERTIFICATION);
     }
 
-    static class ImageUrls {
+    static class SampleUrlCash {
         private static final Map<RaceCategory, List<ImageUrl>> thumbnails = new HashMap<>();
         private static final Map<RaceCategory, List<ImageUrl>> certifications = new HashMap<>();
 
@@ -46,10 +47,10 @@ public class ImageUrl {
         }
 
         static {
-            thumbnails.put(RaceCategory.TIME, Arrays.asList(
+            thumbnails.put(RaceCategory.TIME, Collections.singletonList(
                 new ImageUrl("TEST_URL")
             ));
-            certifications.put(RaceCategory.TIME, Arrays.asList(
+            certifications.put(RaceCategory.TIME, Collections.singletonList(
                 new ImageUrl("TEST_CERTIFICATION_IMAGE")
             ));
         }

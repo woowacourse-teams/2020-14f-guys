@@ -22,7 +22,7 @@ import lombok.Getter;
 import lombok.With;
 
 @AllArgsConstructor(access = AccessLevel.PACKAGE)
-@Builder
+@Builder(access = AccessLevel.PACKAGE)
 @EqualsAndHashCode(of = "id")
 @Getter
 public class Race {
