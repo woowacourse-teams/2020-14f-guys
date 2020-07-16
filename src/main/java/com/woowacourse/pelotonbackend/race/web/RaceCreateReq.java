@@ -1,5 +1,7 @@
 package com.woowacourse.pelotonbackend.race.web;
 
+import java.beans.ConstructorProperties;
+
 import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -11,12 +13,11 @@ import com.woowacourse.pelotonbackend.vo.Cash;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 
-@Getter
-@AllArgsConstructor
-@NoArgsConstructor
+@AllArgsConstructor(onConstructor_ = {
+    @ConstructorProperties({"title", "description", "raceDuration", "category", "cash"})})
 @Builder
+@Getter
 public class RaceCreateReq {
     @NotBlank
     private String title;

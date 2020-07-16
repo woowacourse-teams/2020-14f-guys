@@ -26,8 +26,7 @@ import lombok.With;
 @EqualsAndHashCode(of = "id")
 @Getter
 public class Race {
-    @Id
-    @With(value = AccessLevel.PACKAGE)
+    @Id @With(value = AccessLevel.PACKAGE)
     private final Long id;
 
     @NotBlank

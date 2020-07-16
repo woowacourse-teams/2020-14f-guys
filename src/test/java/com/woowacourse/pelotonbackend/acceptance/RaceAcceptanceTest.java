@@ -11,10 +11,9 @@ import org.springframework.test.web.reactive.server.WebTestClient;
 import com.woowacourse.pelotonbackend.race.domain.RaceFixture;
 import com.woowacourse.pelotonbackend.race.web.RaceCreateReq;
 
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @AutoConfigureWebTestClient
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class RaceAcceptanceTest {
-
     @Autowired
     WebTestClient webTestClient;
 
@@ -27,7 +26,7 @@ public class RaceAcceptanceTest {
     void createRace() {
         final RaceCreateReq request = RaceFixture.createMockRequest();
 
-        webTestClient.post().uri("/race")
+        webTestClient.post().uri("/api/races")
             .contentType(MediaType.APPLICATION_JSON)
             .accept(MediaType.APPLICATION_JSON)
             .bodyValue(request)

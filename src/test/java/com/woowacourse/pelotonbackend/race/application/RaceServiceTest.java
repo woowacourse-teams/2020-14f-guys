@@ -1,4 +1,4 @@
-package com.woowacourse.pelotonbackend.race.service;
+package com.woowacourse.pelotonbackend.race.application;
 
 import static org.mockito.BDDMockito.*;
 
@@ -27,7 +27,8 @@ class RaceServiceTest {
     @DisplayName("정상적으로 save 메서드가 호출되는지 테스트합니다.")
     @Test
     void save() {
-        raceService.save(RaceFixture.createWithoutId());
+        given(raceRepository.save(any())).willReturn(RaceFixture.createWithId());
+        raceService.create(RaceFixture.createWithoutId());
         verify(raceRepository).save(any());
     }
 }

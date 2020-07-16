@@ -1,4 +1,4 @@
-package com.woowacourse.pelotonbackend.race.service;
+package com.woowacourse.pelotonbackend.race.application;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -8,12 +8,14 @@ import com.woowacourse.pelotonbackend.race.domain.RaceRepository;
 import lombok.AllArgsConstructor;
 
 @AllArgsConstructor
-@Transactional
 @Service
+@Transactional
 public class RaceService {
     private final RaceRepository raceRepository;
 
-    public Race save(final Race race) {
-        return raceRepository.save(race);
+    public Long create(final Race race) {
+        final Race savedRace = raceRepository.save(race);
+
+        return savedRace.getId();
     }
 }
