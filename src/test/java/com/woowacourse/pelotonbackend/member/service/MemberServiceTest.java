@@ -1,9 +1,9 @@
 package com.woowacourse.pelotonbackend.member.service;
 
+import static com.woowacourse.pelotonbackend.member.MemberFixture.*;
 import static org.assertj.core.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
-
-import java.math.BigDecimal;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -14,17 +14,9 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import com.woowacourse.pelotonbackend.member.domain.Member;
 import com.woowacourse.pelotonbackend.member.domain.MemberRepository;
-import com.woowacourse.pelotonbackend.member.domain.Role;
-import com.woowacourse.pelotonbackend.vo.Cash;
 
 @ExtendWith(MockitoExtension.class)
 class MemberServiceTest {
-    private static final String EMAIL = "jj@woowa.com";
-    private static final String NAME = "jinju";
-    private static final Cash CASH = new Cash(BigDecimal.ONE);
-    private static final Role ROLE = Role.MEMBER;
-    private static final long ID = 1L;
-
     private MemberService memberService;
 
     @Mock
@@ -57,10 +49,12 @@ class MemberServiceTest {
 
         final Member createdMember = memberService.createMember(member);
 
-        assertThat(createdMember.getId()).isEqualTo(ID);
-        assertThat(createdMember.getEmail()).isEqualTo(EMAIL);
-        assertThat(createdMember.getName()).isEqualTo(NAME);
-        assertThat(createdMember.getCash()).isEqualTo(CASH);
-        assertThat(createdMember.getRole()).isEqualTo(ROLE);
+        assertAll(
+            () -> assertThat(createdMember.getId()).isEqualTo(ID),
+            () -> assertThat(createdMember.getEmail()).isEqualTo(EMAIL),
+            () -> assertThat(createdMember.getName()).isEqualTo(NAME),
+            () -> assertThat(createdMember.getCash()).isEqualTo(CASH),
+            () -> assertThat(createdMember.getRole()).isEqualTo(ROLE)
+        );
     }
 }

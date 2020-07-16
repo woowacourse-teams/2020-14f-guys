@@ -1,12 +1,12 @@
 package com.woowacourse.pelotonbackend.member.web;
 
+import static com.woowacourse.pelotonbackend.member.MemberFixture.*;
 import static org.assertj.core.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
-
-import java.math.BigDecimal;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -19,21 +19,12 @@ import org.springframework.test.web.servlet.MvcResult;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.woowacourse.pelotonbackend.member.domain.Member;
-import com.woowacourse.pelotonbackend.member.domain.Role;
 import com.woowacourse.pelotonbackend.member.service.MemberService;
 import com.woowacourse.pelotonbackend.member.web.dto.MemberRequest;
 import com.woowacourse.pelotonbackend.member.web.dto.MemberResponse;
-import com.woowacourse.pelotonbackend.vo.Cash;
 
 @WebMvcTest(value = {MemberController.class})
 public class MemberControllerTest {
-
-    private static final String EMAIL = "jj@woowa.com";
-    private static final String NAME = "jinju";
-    private static final Cash CASH = new Cash(BigDecimal.ONE);
-    private static final Role ROLE = Role.MEMBER;
-    private static final long ID = 1L;
-
     @Autowired
     private ObjectMapper objectMapper;
 
@@ -75,10 +66,12 @@ public class MemberControllerTest {
         String response = mvcResult.getResponse().getContentAsString();
         MemberResponse memberResponse = objectMapper.readValue(response, MemberResponse.class);
 
-        assertThat(memberResponse.getId()).isEqualTo(ID);
-        assertThat(memberResponse.getEmail()).isEqualTo(EMAIL);
-        assertThat(memberResponse.getName()).isEqualTo(NAME);
-        assertThat(memberResponse.getCash()).isEqualTo(CASH);
-        assertThat(memberResponse.getRole()).isEqualTo(ROLE);
+        assertAll(
+            () -> assertThat(memberResponse.getId()).isEqualTo(ID),
+            () -> assertThat(memberResponse.getEmail()).isEqualTo(EMAIL),
+            () -> assertThat(memberResponse.getName()).isEqualTo(NAME),
+            () -> assertThat(memberResponse.getCash()).isEqualTo(CASH),
+            () -> assertThat(memberResponse.getRole()).isEqualTo(ROLE)
+        );
     }
 }

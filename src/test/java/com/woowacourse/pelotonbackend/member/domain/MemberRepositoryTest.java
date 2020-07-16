@@ -1,16 +1,13 @@
 package com.woowacourse.pelotonbackend.member.domain;
 
+import static com.woowacourse.pelotonbackend.member.MemberFixture.*;
 import static org.assertj.core.api.AssertionsForClassTypes.*;
 import static org.junit.jupiter.api.Assertions.*;
-
-import java.math.BigDecimal;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-
-import com.woowacourse.pelotonbackend.vo.Cash;
 
 @SpringBootTest
 class MemberRepositoryTest {
@@ -21,20 +18,20 @@ class MemberRepositoryTest {
     @Test
     void saveMember() {
         final Member member = Member.builder()
-            .name("시카")
-            .email("dks301@email.com")
-            .cash(new Cash(new BigDecimal(20000)))
-            .role(Role.ADMIN)
+            .email(EMAIL)
+            .name(NAME)
+            .cash(CASH)
+            .role(ROLE)
             .build();
 
         final Member persist = memberRepository.save(member);
 
         assertAll(
             () -> assertThat(persist.getId()).isNotNull(),
-            () -> assertThat(persist.getName()).isEqualTo("시카"),
-            () -> assertThat(persist.getEmail()).isEqualTo("dks301@email.com"),
-            () -> assertThat(persist.getCash()).isEqualTo(new Cash(new BigDecimal(20000))),
-            () -> assertThat(persist.getRole()).isEqualTo(Role.ADMIN),
+            () -> assertThat(persist.getEmail()).isEqualTo(EMAIL),
+            () -> assertThat(persist.getName()).isEqualTo(NAME),
+            () -> assertThat(persist.getCash()).isEqualTo(CASH),
+            () -> assertThat(persist.getRole()).isEqualTo(ROLE),
             () -> assertThat(persist.getCreatedAt()).isNotNull(),
             () -> assertThat(persist.getUpdatedAt()).isNotNull()
         );
