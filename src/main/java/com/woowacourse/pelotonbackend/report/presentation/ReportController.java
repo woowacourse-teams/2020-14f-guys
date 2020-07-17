@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.woowacourse.pelotonbackend.report.application.ReportService;
-import com.woowacourse.pelotonbackend.report.infra.ReportCreateBody;
 import lombok.AllArgsConstructor;
 
 @AllArgsConstructor
@@ -23,10 +22,9 @@ public class ReportController {
     public ResponseEntity<Void> createReport(
         @PathVariable final Long certificationId,
         @PathVariable final Long reportMemberId,
-        @RequestBody final ReportCreateBody body) {
+        @RequestBody final ReportCreateContent requestContent) {
 
-        final Long reportId = reportService.createReport(certificationId, reportMemberId,
-            body.getDescription(), body.getReportType());
+        final Long reportId = reportService.createReport(certificationId, reportMemberId, requestContent);
 
         return ResponseEntity.created(URI.create(String.format("/api/reports/%d", reportId))).build();
     }
