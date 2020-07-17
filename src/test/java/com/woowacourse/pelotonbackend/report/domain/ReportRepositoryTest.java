@@ -4,13 +4,10 @@ import static com.woowacourse.pelotonbackend.report.domain.ReportFixture.*;
 import static org.assertj.core.api.AssertionsForClassTypes.*;
 import static org.junit.jupiter.api.Assertions.*;
 
-import java.util.Optional;
-
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.data.jdbc.core.mapping.AggregateReference;
 
 @SpringBootTest
 class ReportRepositoryTest {
@@ -26,12 +23,9 @@ class ReportRepositoryTest {
 
         assertAll(
             () -> assertThat(persist.getId()).isNotNull(),
-            () -> assertThat(persist.getReportType()).isEqualTo(REPORT_TYPE),
-            () -> assertThat(persist.getDescription()).isEqualTo(DESCRIPTION),
-            () -> assertThat(persist.getMemberId()).isEqualTo(AggregateReference.to(MEMBER_ID)),
-            () -> assertThat(persist.getCertificationId()).isEqualTo(AggregateReference.to(CERTIFICATION_ID)),
             () -> assertThat(persist.getCreatedAt()).isNotNull(),
-            () -> assertThat(persist.getUpdatedAt()).isNotNull()
+            () -> assertThat(persist.getUpdatedAt()).isNotNull(),
+            () -> assertThat(persist).isEqualToIgnoringNullFields(report)
         );
     }
 
@@ -41,17 +35,16 @@ class ReportRepositoryTest {
         final Report report = ReportFixture.create();
 
         reportRepository.save(report);
-        final Optional<Report> byMemberIdAndCertificationId = reportRepository.findByMemberIdAndCertificationId(
-            MEMBER_ID, CERTIFICATION_ID);
+        final boolean isReportExist = reportRepository.existsByMemberIdAndCertificationId(MEMBER_ID, CERTIFICATION_ID);
 
-        assertThat(byMemberIdAndCertificationId.isPresent()).isTrue();
+        assertThat(isReportExist).isTrue();
     }
 
     @DisplayName("MemberId와 CertificationId로 Report가 찾아지지 않는지 확인")
     @Test
     void cantFindReportByMemberIdAndCertificationId() {
-        final Optional<Report> notExistReport = reportRepository.findByMemberIdAndCertificationId(10L, 10L);
+        final boolean notExistReport = reportRepository.existsByMemberIdAndCertificationId(10L, 10L);
 
-        assertThat(notExistReport.isPresent()).isFalse();
+        assertThat(notExistReport).isFalse();
     }
 }

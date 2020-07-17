@@ -1,7 +1,5 @@
 package com.woowacourse.pelotonbackend.report.application;
 
-import java.util.Optional;
-
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -17,10 +15,12 @@ public class ReportService {
     private final ReportRepository reportRepository;
 
     @Transactional
-    public Long createReport(final Long certificationId, final Long memberId, final ReportCreateContent requestContent) {
-        Optional<Report> reportFounded = reportRepository.findByMemberIdAndCertificationId(memberId, certificationId);
-        if (reportFounded.isPresent()) {
-            throw new DuplicateReportFoundException(reportFounded.get().getId());
+    public Long createReport(final Long certificationId, final Long memberId,
+        final ReportCreateContent requestContent) {
+
+        final boolean isReportExists = reportRepository.existsByMemberIdAndCertificationId(memberId, certificationId);
+        if (isReportExists) {
+            throw new DuplicateReportFoundException(memberId, certificationId);
         }
 
         final Report report = requestContent.toEntity(memberId, certificationId);
