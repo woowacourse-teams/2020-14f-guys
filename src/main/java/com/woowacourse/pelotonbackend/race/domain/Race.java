@@ -22,7 +22,7 @@ import lombok.Getter;
 import lombok.With;
 
 @AllArgsConstructor(access = AccessLevel.PACKAGE)
-@Builder
+@Builder(access = AccessLevel.PACKAGE)
 @EqualsAndHashCode(of = "id")
 @Getter
 public class Race {
@@ -61,4 +61,18 @@ public class Race {
     @LastModifiedDate
     @PastOrPresent
     private LocalDateTime updatedAt;
+
+    public static Race of(final String title, final String description, final DateDuration raceDuration,
+        final RaceCategory category, final Cash entranceFee) {
+
+        return Race.builder()
+            .title(title)
+            .description(description)
+            .thumbnail(category.getRandomThumbnail())
+            .certificationExample(category.getRandomCertification())
+            .raceDuration(raceDuration)
+            .category(category)
+            .entranceFee(entranceFee)
+            .build();
+    }
 }
