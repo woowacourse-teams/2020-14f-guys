@@ -17,6 +17,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.woowacourse.pelotonbackend.member.application.MemberService;
 import com.woowacourse.pelotonbackend.member.domain.Member;
+import com.woowacourse.pelotonbackend.member.domain.MemberFixture;
 import com.woowacourse.pelotonbackend.member.web.dto.MemberRequest;
 
 @WebMvcTest(value = {MemberController.class})
@@ -33,20 +34,8 @@ public class MemberControllerTest {
     @DisplayName("회원을 생성한다")
     @Test
     void createMember() throws Exception {
-        final MemberRequest memberRequest = MemberRequest.builder()
-            .email(EMAIL)
-            .name(NAME)
-            .cash(CASH)
-            .role(ROLE)
-            .build();
-
-        final Member persistMember = Member.builder()
-            .id(ID)
-            .email(EMAIL)
-            .name(NAME)
-            .cash(CASH)
-            .role(ROLE)
-            .build();
+        final MemberRequest memberRequest = MemberFixture.memberRequest();
+        final Member persistMember = MemberFixture.member();
 
         final String request = objectMapper.writeValueAsString(memberRequest);
         when(memberService.createMember(any(MemberRequest.class))).thenReturn(persistMember);

@@ -17,23 +17,18 @@ class MemberRepositoryTest {
     @DisplayName("Member 객체가 DB에 잘 저장되는지 확인")
     @Test
     void saveMember() {
-        final Member member = Member.builder()
-            .email(EMAIL)
-            .name(NAME)
-            .cash(CASH)
-            .role(ROLE)
-            .build();
+        final Member member = MemberFixture.memberWithoutId();
 
-        final Member persist = memberRepository.save(member);
+        final Member persistMember = memberRepository.save(member);
 
         assertAll(
-            () -> assertThat(persist.getId()).isNotNull(),
-            () -> assertThat(persist.getEmail()).isEqualTo(EMAIL),
-            () -> assertThat(persist.getName()).isEqualTo(NAME),
-            () -> assertThat(persist.getCash()).isEqualTo(CASH),
-            () -> assertThat(persist.getRole()).isEqualTo(ROLE),
-            () -> assertThat(persist.getCreatedAt()).isNotNull(),
-            () -> assertThat(persist.getUpdatedAt()).isNotNull()
+            () -> assertThat(persistMember.getId()).isNotNull(),
+            () -> assertThat(persistMember.getEmail()).isEqualTo(EMAIL),
+            () -> assertThat(persistMember.getName()).isEqualTo(NAME),
+            () -> assertThat(persistMember.getCash()).isEqualTo(CASH),
+            () -> assertThat(persistMember.getRole()).isEqualTo(ROLE),
+            () -> assertThat(persistMember.getCreatedAt()).isNotNull(),
+            () -> assertThat(persistMember.getUpdatedAt()).isNotNull()
         );
     }
 }

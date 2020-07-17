@@ -13,6 +13,7 @@ import org.springframework.http.MediaType;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.woowacourse.pelotonbackend.member.domain.MemberFixture;
 import com.woowacourse.pelotonbackend.member.domain.Role;
 import com.woowacourse.pelotonbackend.member.web.dto.MemberRequest;
 import com.woowacourse.pelotonbackend.vo.Cash;
@@ -61,13 +62,7 @@ public class MemberAcceptanceTest {
     }
 
     private void createMember(String email, String name, Cash cash, Role role) throws JsonProcessingException{
-        final MemberRequest memberRequest = MemberRequest.builder()
-            .email(email)
-            .name(name)
-            .cash(cash)
-            .role(role)
-            .build();
-
+        final MemberRequest memberRequest = MemberFixture.memberRequest();
         final String request = objectMapper.writeValueAsString(memberRequest);
 
         given()

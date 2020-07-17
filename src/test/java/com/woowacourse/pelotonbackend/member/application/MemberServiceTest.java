@@ -13,6 +13,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import com.woowacourse.pelotonbackend.member.domain.Member;
+import com.woowacourse.pelotonbackend.member.domain.MemberFixture;
 import com.woowacourse.pelotonbackend.member.domain.MemberRepository;
 import com.woowacourse.pelotonbackend.member.web.dto.MemberRequest;
 
@@ -31,20 +32,8 @@ class MemberServiceTest {
     @DisplayName("회원을 생성한다")
     @Test
     void createMember() {
-        final MemberRequest memberRequest = MemberRequest.builder()
-            .email(EMAIL)
-            .name(NAME)
-            .cash(CASH)
-            .role(ROLE)
-            .build();
-
-        final Member persistMember = Member.builder()
-            .id(ID)
-            .email(EMAIL)
-            .name(NAME)
-            .cash(CASH)
-            .role(ROLE)
-            .build();
+        final MemberRequest memberRequest = MemberFixture.memberRequest();
+        final Member persistMember = MemberFixture.member();
 
         when(memberRepository.save(any(Member.class))).thenReturn(persistMember);
 
@@ -58,4 +47,5 @@ class MemberServiceTest {
             () -> assertThat(createdMember.getRole()).isEqualTo(ROLE)
         );
     }
+
 }
