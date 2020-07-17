@@ -22,7 +22,6 @@ import org.springframework.web.filter.CharacterEncodingFilter;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.woowacourse.pelotonbackend.report.application.ReportService;
-import com.woowacourse.pelotonbackend.report.infra.ReportCreateBody;
 
 @WebMvcTest(controllers = ReportController.class)
 @AutoConfigureMockMvc
@@ -47,12 +46,12 @@ class ReportControllerTest {
     @Test
     void createReport() throws Exception {
         final Long createdReportId = 10L;
-        when(reportService.createReport(CERTIFICATION_ID, MEMBER_ID, DESCRIPTION, REPORT_TYPE)).thenReturn(
-            createdReportId);
+        when(reportService.createReport(eq(CERTIFICATION_ID), eq(MEMBER_ID), any(ReportCreateContent.class)))
+            .thenReturn(createdReportId);
 
         MvcResult mvcResult = mockMvc.perform(
             post("/api/reports/certification/{certificationId}/member/{reportMemberId}", CERTIFICATION_ID, MEMBER_ID)
-                .content(objectMapper.writeValueAsBytes(new ReportCreateBody(REPORT_TYPE, DESCRIPTION)))
+                .content(objectMapper.writeValueAsBytes(new ReportCreateContent(REPORT_TYPE, DESCRIPTION)))
                 .contentType(MediaType.APPLICATION_JSON))
             .andExpect(status().isCreated())
             .andReturn();

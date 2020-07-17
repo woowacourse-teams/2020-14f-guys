@@ -3,6 +3,8 @@ package com.woowacourse.pelotonbackend.report.domain;
 import static org.assertj.core.api.AssertionsForClassTypes.*;
 import static org.junit.jupiter.api.Assertions.*;
 
+import java.util.Optional;
+
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,5 +37,29 @@ class ReportRepositoryTest {
             () -> assertThat(persist.getCreatedAt()).isNotNull(),
             () -> assertThat(persist.getUpdatedAt()).isNotNull()
         );
+    }
+
+    @DisplayName("MemberId와 CertificationId로 Report가 찾아지는지 확인")
+    @Test
+    void findReportByMemberIdAndCertificationId() {
+        final Report report = Report.builder()
+            .reportType(ReportType.FAKE)
+            .description("하는척을 했습니다.")
+            .memberId(AggregateReference.to(1L))
+            .certificationId(AggregateReference.to(1L))
+            .build();
+
+        reportRepository.save(report);
+        final Optional<Report> byMemberIdAndCertificationId = reportRepository.findByMemberIdAndCertificationId(1L, 1L);
+
+        assertThat(byMemberIdAndCertificationId.isPresent()).isTrue();
+    }
+
+    @DisplayName("MemberId와 CertificationId로 Report가 찾아지지 않는지 확인")
+    @Test
+    void cantFindReportByMemberIdAndCertificationId() {
+        final Optional<Report> byMemberIdAndCertificationId = reportRepository.findByMemberIdAndCertificationId(10L, 10L);
+
+        assertThat(byMemberIdAndCertificationId.isPresent()).isFalse();
     }
 }

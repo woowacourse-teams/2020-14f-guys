@@ -13,7 +13,7 @@ import org.springframework.http.MediaType;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.woowacourse.pelotonbackend.report.domain.ReportType;
-import com.woowacourse.pelotonbackend.report.infra.ReportCreateBody;
+import com.woowacourse.pelotonbackend.report.presentation.ReportCreateContent;
 import io.restassured.RestAssured;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -46,13 +46,13 @@ public class ReportAcceptanceTest {
     void createReport() throws JsonProcessingException {
         given()
             .log().all()
-            .body(objectMapper.writeValueAsBytes(new ReportCreateBody(REPORT_TYPE, DESCRIPTION))).
-            contentType(MediaType.APPLICATION_JSON_VALUE).
-            when().
-            post("/api/reports/certification/{certificationId}/member/{reportMemberId}", CERTIFICATION_ID, MEMBER_ID).
-            then().
-            log().all().
-            statusCode(HttpStatus.CREATED.value()).
-            header("Location", "/api/reports/1");
+            .body(objectMapper.writeValueAsBytes(new ReportCreateContent(REPORT_TYPE, DESCRIPTION)))
+            .contentType(MediaType.APPLICATION_JSON_VALUE)
+            .when()
+            .post("/api/reports/certification/{certificationId}/member/{reportMemberId}", CERTIFICATION_ID, MEMBER_ID)
+            .then()
+            .log().all()
+            .statusCode(HttpStatus.CREATED.value())
+            .header("Location", "/api/reports/1");
     }
 }
