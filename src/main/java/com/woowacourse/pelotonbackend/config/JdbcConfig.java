@@ -12,6 +12,9 @@ import org.springframework.core.annotation.Order;
 import org.springframework.data.jdbc.repository.config.EnableJdbcAuditing;
 import org.springframework.data.relational.core.mapping.event.BeforeSaveCallback;
 
+import com.woowacourse.pelotonbackend.certification.application.UploadService;
+import com.woowacourse.pelotonbackend.certification.infra.S3UploadService;
+
 @Configuration
 @EnableJdbcAuditing
 public class JdbcConfig {
@@ -25,5 +28,10 @@ public class JdbcConfig {
             }
             return aggregate;
         });
+    }
+
+    @Bean
+    public UploadService uploadService() {
+        return new S3UploadService();
     }
 }

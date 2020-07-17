@@ -9,8 +9,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.web.multipart.MultipartFile;
 
 class S3UploadServiceTest {
-
-    private static final MultipartFile mockMultipartFile = createMockMultipartFile();
+    private static final MultipartFile MOCK_MULTIPART_FILE = createMockMultipartFile();
 
     private S3UploadService s3UploadService;
 
@@ -22,7 +21,7 @@ class S3UploadServiceTest {
     @Test
     void uploadTest() {
         assertAll(
-            () -> assertThat(s3UploadService.upload(mockMultipartFile)).isEqualTo(EXPECTED_URL)
+            () -> assertThat(s3UploadService.upload(MOCK_MULTIPART_FILE)).isEqualTo(EXPECTED_URL)
         );
     }
 }

@@ -1,4 +1,4 @@
-package com.woowacourse.pelotonbackend.certification.representation;
+package com.woowacourse.pelotonbackend.certification.presentation;
 
 import java.net.URI;
 
@@ -18,15 +18,15 @@ import com.woowacourse.pelotonbackend.certification.domain.dto.CertificationCrea
 import lombok.RequiredArgsConstructor;
 
 @RestController
-@RequiredArgsConstructor
 @RequestMapping("/api/certifications")
+@RequiredArgsConstructor
 public class CertificationController {
     private final CertificationService certificationService;
 
     @PostMapping(value = "/riders/{riderId}/missions/{missionId}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<Void> create(@RequestPart(value = "certification_image") MultipartFile file,
-        @Valid CertificationCreateRequest certificationCreateRequest, @PathVariable Long riderId,
-        @PathVariable Long missionId) {
+    public ResponseEntity<Void> create(@RequestPart(value = "certification_image") final MultipartFile file,
+        @Valid final CertificationCreateRequest certificationCreateRequest, @PathVariable final Long riderId,
+        @PathVariable final Long missionId) {
 
         final Long certificationId = certificationService.create(file, certificationCreateRequest, riderId, missionId);
 

@@ -8,35 +8,42 @@ import static org.mockito.BDDMockito.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.springframework.boot.test.mock.mockito.MockBean;
+import org.mockito.Mock;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.woowacourse.pelotonbackend.certification.domain.CertificationRepository;
-import com.woowacourse.pelotonbackend.certification.infra.S3UploadService;
+import com.woowacourse.pelotonbackend.certification.domain.dto.CertificationCreateRequest;
 
 @ExtendWith(SpringExtension.class)
 class CertificationServiceTest {
     private CertificationService certificationService;
 
-    @MockBean
+    @Mock
     private CertificationRepository certificationRepository;
 
-    @MockBean
-    private S3UploadService s3UploadService;
+    @Mock
+    private UploadService uploadService;
+
+    private MultipartFile multipartFile;
+    private CertificationCreateRequest certificationCreateRequest;
 
     @BeforeEach
     void setUp() {
-        certificationService = new CertificationService(certificationRepository, s3UploadService);
+        certificationService = new CertificationService(certificationRepository, uploadService);
+        multipartFile = createMockMultipartFile();
+        certificationCreateRequest = createMockRequest();
     }
 
     @Test
     void create() {
-        given(certificationRepository.save(any())).willReturn(createWithId());
-        given(s3UploadService.upload(any())).willReturn(TEST_FILE_URL.getBaseImageUrl());
+        given(certificationRepository.save(createWithoutId())).willReturn(createWithId());
+        given(uploadService.upload(multipartFile)).willReturn(TEST_FILE_URL.getBaseImageUrl());
 
         assertAll(
-            () -> assertThat(certificationRepository.save(createWithoutId()))
-                .isEqualToComparingFieldByField(createWithId())
+            () -> assertThat(
+                certificationService.create(multipartFile, certificationCreateRequest, TEST_RIDER_ID, TEST_MISSION_ID))
+                .isEqualTo(TEST_CERTIFICATION_ID)
         );
     }
 }
