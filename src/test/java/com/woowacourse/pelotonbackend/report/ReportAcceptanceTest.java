@@ -1,17 +1,22 @@
 package com.woowacourse.pelotonbackend.report;
 
+import static io.restassured.RestAssured.*;
+
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.reactive.AutoConfigureWebTestClient;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.web.server.LocalServerPort;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.test.web.reactive.server.WebTestClient;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.woowacourse.pelotonbackend.report.domain.ReportType;
 import com.woowacourse.pelotonbackend.report.infra.ReportCreateBody;
+import io.restassured.RestAssured;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-@AutoConfigureWebTestClient
 public class ReportAcceptanceTest {
     public static final Long MEMBER_ID = 1L;
 
@@ -21,8 +26,16 @@ public class ReportAcceptanceTest {
 
     public static final String DESCRIPTION = "설명";
 
+    @LocalServerPort
+    public int port;
+
+    @BeforeEach
+    public void setUp() {
+        RestAssured.port = port;
+    }
+
     @Autowired
-    private WebTestClient webTestClient;
+    private ObjectMapper objectMapper;
 
     /**
      * Given 신고하는 유저의 ID, 신고할 인증의 ID가 주어진다.
@@ -30,15 +43,16 @@ public class ReportAcceptanceTest {
      * Then 신고가 완료된다.
      */
     @Test
-    void createReport() {
-        webTestClient.post()
-            .uri("/api/reports/certification/{certificationId}/member/{reportMemberId}", CERTIFICATION_ID, MEMBER_ID)
-            .contentType(MediaType.APPLICATION_JSON)
-            .bodyValue(new ReportCreateBody(REPORT_TYPE, DESCRIPTION))
-            .exchange()
-            .expectStatus()
-            .isCreated()
-            .expectHeader()
-            .valueMatches("Location", "/api/reports/[0-9]+");
+    void createReport() throws JsonProcessingException {
+        given()
+            .log().all()
+            .body(objectMapper.writeValueAsBytes(new ReportCreateBody(REPORT_TYPE, DESCRIPTION))).
+            contentType(MediaType.APPLICATION_JSON_VALUE).
+            when().
+            post("/api/reports/certification/{certificationId}/member/{reportMemberId}", CERTIFICATION_ID, MEMBER_ID).
+            then().
+            log().all().
+            statusCode(HttpStatus.CREATED.value()).
+            header("Location", "/api/reports/1");
     }
 }
