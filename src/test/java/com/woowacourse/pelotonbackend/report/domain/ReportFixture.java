@@ -2,7 +2,10 @@ package com.woowacourse.pelotonbackend.report.domain;
 
 import org.springframework.data.jdbc.core.mapping.AggregateReference;
 
+import com.woowacourse.pelotonbackend.report.presentation.ReportCreateContent;
+
 public class ReportFixture {
+    public static final Long REPORT_ID = 10L;
     public static final Long MEMBER_ID = 1L;
     public static final Long CERTIFICATION_ID = 5L;
     public static final ReportType REPORT_TYPE = ReportType.FAKE;
@@ -20,5 +23,9 @@ public class ReportFixture {
 
     public static Report create() {
         return create(null);
+    }
+
+    public static ReportCreateContent createRequestContent() {
+        return new ReportCreateContent(REPORT_TYPE, DESCRIPTION);
     }
 }

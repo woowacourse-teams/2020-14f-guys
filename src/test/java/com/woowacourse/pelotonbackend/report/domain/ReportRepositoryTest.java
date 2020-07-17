@@ -26,12 +26,9 @@ class ReportRepositoryTest {
 
         assertAll(
             () -> assertThat(persist.getId()).isNotNull(),
-            () -> assertThat(persist.getReportType()).isEqualTo(REPORT_TYPE),
-            () -> assertThat(persist.getDescription()).isEqualTo(DESCRIPTION),
-            () -> assertThat(persist.getMemberId()).isEqualTo(AggregateReference.to(MEMBER_ID)),
-            () -> assertThat(persist.getCertificationId()).isEqualTo(AggregateReference.to(CERTIFICATION_ID)),
             () -> assertThat(persist.getCreatedAt()).isNotNull(),
-            () -> assertThat(persist.getUpdatedAt()).isNotNull()
+            () -> assertThat(persist.getUpdatedAt()).isNotNull(),
+            () -> assertThat(persist).isEqualToIgnoringNullFields(report)
         );
     }
 
