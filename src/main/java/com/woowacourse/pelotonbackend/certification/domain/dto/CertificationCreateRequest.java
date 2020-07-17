@@ -1,16 +1,16 @@
 package com.woowacourse.pelotonbackend.certification.domain.dto;
 
-import java.beans.ConstructorProperties;
-
 import javax.validation.constraints.NotNull;
 
 import com.woowacourse.pelotonbackend.certification.domain.CertificationStatus;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 
-@AllArgsConstructor(onConstructor_ = {@ConstructorProperties({"status, encodedImage, description"})})
+@AllArgsConstructor
+@Builder
 @Getter
-public class CertificationRequest {
+public class CertificationCreateRequest {
     @NotNull
     private final CertificationStatus status;
 

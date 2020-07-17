@@ -1,57 +1,49 @@
 package com.woowacourse.pelotonbackend.certification;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static com.woowacourse.pelotonbackend.certification.domain.CertificationFixture.*;
 
-import java.util.Base64;
-import java.util.HashMap;
 import java.util.stream.Stream;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DynamicTest;
 import org.junit.jupiter.api.TestFactory;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.web.server.LocalServerPort;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.mock.web.MockMultipartFile;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
-import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
+import io.restassured.RestAssured;
+import io.restassured.specification.RequestSpecification;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-@AutoConfigureMockMvc
 public class CertificationAcceptanceTest {
-    private static final String status = "SUCCESS";
-    private static final String description = "좋은 인증이다..";
-    private static final MockMultipartFile encodedImage = new MockMultipartFile("file", "dd.png", "text/plain", "안녕하세요".getBytes());
+    @LocalServerPort
+    public int port;
 
-    @Autowired
-    private MockMvc mockMvc;
+    @BeforeEach
+    public void setUp() {
+        RestAssured.port = port;
+    }
 
-    @Autowired
-    private ObjectMapper objectMapper;
+    public static RequestSpecification given() {
+        return RestAssured.given().log().all();
+    }
 
     @TestFactory
     public Stream<DynamicTest> certificationTest() {
         return Stream.of(
-            DynamicTest.dynamicTest("Test certification create", () -> {
-                final HashMap<String, Object> body = new HashMap<>();
-                body.put("status", status);
-                body.put("description", description);
-
-                mockMvc.perform(multipart("/api/certification/rider/{riderId}/mission/{missionId}",1L, 1L)
-                    .file(encodedImage)
-                    .contentType(MediaType.APPLICATION_JSON_VALUE)
-                    .content(objectMapper.writeValueAsString(body)))
-                    .andDo(print())
-                    .andExpect(status().isCreated())
-                    .andExpect(header().stringValues("location", "/certification/1"));
-            })
+            DynamicTest.dynamicTest("Test certification create", () ->
+                given()
+                    .contentType(MediaType.MULTIPART_FORM_DATA_VALUE)
+                    .multiPart("certification_image", TEST_FILE_NAME, TEST_FILE, MediaType.IMAGE_JPEG_VALUE)
+                    .param("status", TEST_STATUS)
+                    .param("description", TEST_DESCRIPTION)
+                    .when()
+                    .post("/api/certifications/riders/{riderId}/missions/{missionId}", TEST_RIDER_ID, TEST_MISSION_ID)
+                    .then()
+                    .log().all()
+                    .statusCode(HttpStatus.CREATED.value())
+                    .header("location", String.format("/api/certifications/%d", TEST_CERTIFICATION_ID)))
         );
     }
 }
