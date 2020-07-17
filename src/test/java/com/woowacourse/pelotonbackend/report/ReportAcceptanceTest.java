@@ -1,5 +1,6 @@
 package com.woowacourse.pelotonbackend.report;
 
+import static com.woowacourse.pelotonbackend.report.domain.ReportFixture.*;
 import static io.restassured.RestAssured.*;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -12,20 +13,11 @@ import org.springframework.http.MediaType;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.woowacourse.pelotonbackend.report.domain.ReportType;
 import com.woowacourse.pelotonbackend.report.presentation.ReportCreateContent;
 import io.restassured.RestAssured;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class ReportAcceptanceTest {
-    public static final Long MEMBER_ID = 1L;
-
-    public static final Long CERTIFICATION_ID = 5L;
-
-    public static final ReportType REPORT_TYPE = ReportType.FAKE;
-
-    public static final String DESCRIPTION = "설명";
-
     @LocalServerPort
     public int port;
 
