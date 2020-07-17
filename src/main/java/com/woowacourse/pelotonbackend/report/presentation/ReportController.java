@@ -18,7 +18,7 @@ import lombok.AllArgsConstructor;
 public class ReportController {
     private final ReportService reportService;
 
-    @PostMapping("/certification/{certificationId}/member/{reportMemberId}")
+    @PostMapping("/certifications/{certificationId}/members/{reportMemberId}")
     public ResponseEntity<Void> createReport(
         @PathVariable final Long certificationId,
         @PathVariable final Long reportMemberId,

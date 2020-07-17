@@ -41,7 +41,7 @@ public class ReportAcceptanceTest {
             .body(objectMapper.writeValueAsBytes(new ReportCreateContent(REPORT_TYPE, DESCRIPTION)))
             .contentType(MediaType.APPLICATION_JSON_VALUE)
             .when()
-            .post("/api/reports/certification/{certificationId}/member/{reportMemberId}", CERTIFICATION_ID, MEMBER_ID)
+            .post("/api/reports/certifications/{certificationId}/members/{reportMemberId}", CERTIFICATION_ID, MEMBER_ID)
             .then()
             .log().all()
             .statusCode(HttpStatus.CREATED.value())

@@ -32,13 +32,13 @@ class ReportServiceTest {
     @DisplayName("Report 생성 테스트")
     @Test
     void createReport() {
-        final Report savedReport = ReportFixture.create(1L);
+        final Report savedReport = ReportFixture.create(REPORT_ID);
         when(reportRepository.findByMemberIdAndCertificationId(MEMBER_ID, CERTIFICATION_ID))
             .thenReturn(Optional.empty());
         when(reportRepository.save(any())).thenReturn(savedReport);
 
         final Long reportId = reportService.createReport(CERTIFICATION_ID, MEMBER_ID,
-            new ReportCreateContent(REPORT_TYPE, DESCRIPTION));
+            createRequestContent());
 
         assertThat(reportId).isEqualTo(savedReport.getId());
     }
@@ -46,12 +46,12 @@ class ReportServiceTest {
     @DisplayName("동일한 유저가 동일한 리포트를 생성할 시 예외")
     @Test
     void createDuplicateReportThrowException() {
-        final Report savedReport = ReportFixture.create(1L);
+        final Report savedReport = ReportFixture.create(REPORT_ID);
         when(reportRepository.findByMemberIdAndCertificationId(MEMBER_ID, CERTIFICATION_ID))
             .thenReturn(Optional.of(savedReport));
 
         assertThatThrownBy(() ->
-            reportService.createReport(CERTIFICATION_ID, MEMBER_ID, new ReportCreateContent(REPORT_TYPE, DESCRIPTION)))
+            reportService.createReport(CERTIFICATION_ID, MEMBER_ID, ReportFixture.createRequestContent()))
             .isInstanceOf(DuplicateReportFoundException.class)
             .hasMessageMatching("Report\\(id: [0-9]+\\) already exists!");
     }
