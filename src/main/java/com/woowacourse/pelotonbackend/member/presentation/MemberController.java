@@ -1,4 +1,4 @@
-package com.woowacourse.pelotonbackend.member.web;
+package com.woowacourse.pelotonbackend.member.presentation;
 
 import java.net.URI;
 
@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.woowacourse.pelotonbackend.member.application.MemberService;
 import com.woowacourse.pelotonbackend.member.domain.Member;
-import com.woowacourse.pelotonbackend.member.web.dto.MemberRequest;
+import com.woowacourse.pelotonbackend.member.presentation.dto.MemberRequest;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 

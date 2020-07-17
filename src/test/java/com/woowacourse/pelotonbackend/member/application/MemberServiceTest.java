@@ -15,7 +15,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import com.woowacourse.pelotonbackend.member.domain.Member;
 import com.woowacourse.pelotonbackend.member.domain.MemberFixture;
 import com.woowacourse.pelotonbackend.member.domain.MemberRepository;
-import com.woowacourse.pelotonbackend.member.web.dto.MemberRequest;
+import com.woowacourse.pelotonbackend.member.presentation.dto.MemberRequest;
 
 @ExtendWith(MockitoExtension.class)
 class MemberServiceTest {

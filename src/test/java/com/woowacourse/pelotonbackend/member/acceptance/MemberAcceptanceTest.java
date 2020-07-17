@@ -15,7 +15,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.woowacourse.pelotonbackend.member.domain.MemberFixture;
 import com.woowacourse.pelotonbackend.member.domain.Role;
-import com.woowacourse.pelotonbackend.member.web.dto.MemberRequest;
+import com.woowacourse.pelotonbackend.member.presentation.dto.MemberRequest;
 import com.woowacourse.pelotonbackend.vo.Cash;
 import io.restassured.RestAssured;
 import io.restassured.specification.RequestSpecification;

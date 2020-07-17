@@ -6,7 +6,7 @@ import org.springframework.stereotype.Service;
 
 import com.woowacourse.pelotonbackend.member.domain.Member;
 import com.woowacourse.pelotonbackend.member.domain.MemberRepository;
-import com.woowacourse.pelotonbackend.member.web.dto.MemberRequest;
+import com.woowacourse.pelotonbackend.member.presentation.dto.MemberRequest;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 

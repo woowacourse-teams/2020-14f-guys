@@ -1,4 +1,4 @@
-package com.woowacourse.pelotonbackend.member.web;
+package com.woowacourse.pelotonbackend.member.presentation;
 
 import static com.woowacourse.pelotonbackend.member.domain.MemberFixture.*;
 import static org.mockito.Mockito.*;
@@ -18,7 +18,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.woowacourse.pelotonbackend.member.application.MemberService;
 import com.woowacourse.pelotonbackend.member.domain.Member;
 import com.woowacourse.pelotonbackend.member.domain.MemberFixture;
-import com.woowacourse.pelotonbackend.member.web.dto.MemberRequest;
+import com.woowacourse.pelotonbackend.member.presentation.dto.MemberRequest;
 
 @WebMvcTest(value = {MemberController.class})
 public class MemberControllerTest {

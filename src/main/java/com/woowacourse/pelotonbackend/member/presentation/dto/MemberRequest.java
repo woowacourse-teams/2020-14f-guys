@@ -1,4 +1,4 @@
-package com.woowacourse.pelotonbackend.member.web.dto;
+package com.woowacourse.pelotonbackend.member.presentation.dto;
 
 import java.beans.ConstructorProperties;
 

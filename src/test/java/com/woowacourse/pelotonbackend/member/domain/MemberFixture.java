@@ -2,7 +2,7 @@ package com.woowacourse.pelotonbackend.member.domain;
 
 import java.math.BigDecimal;
 
-import com.woowacourse.pelotonbackend.member.web.dto.MemberRequest;
+import com.woowacourse.pelotonbackend.member.presentation.dto.MemberRequest;
 import com.woowacourse.pelotonbackend.vo.Cash;
 
 public class MemberFixture {
