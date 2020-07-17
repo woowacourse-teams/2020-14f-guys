@@ -29,7 +29,7 @@ class ReportServiceTest {
     @DisplayName("Report 생성 테스트")
     @Test
     void createReport() {
-        final Report savedReport = ReportFixture.create(REPORT_ID);
+        final Report savedReport = ReportFixture.createWithId(REPORT_ID);
         when(reportRepository.existsByMemberIdAndCertificationId(MEMBER_ID, CERTIFICATION_ID)).thenReturn(false);
         when(reportRepository.save(any())).thenReturn(savedReport);
 

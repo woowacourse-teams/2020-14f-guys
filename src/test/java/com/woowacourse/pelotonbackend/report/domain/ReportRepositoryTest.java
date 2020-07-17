@@ -17,7 +17,7 @@ class ReportRepositoryTest {
     @DisplayName("Report 객체가 DB에 잘 저장되는지 확인")
     @Test
     void saveReport() {
-        final Report report = ReportFixture.create();
+        final Report report = ReportFixture.createWithoutId();
 
         final Report persist = reportRepository.save(report);
 
@@ -32,7 +32,7 @@ class ReportRepositoryTest {
     @DisplayName("MemberId와 CertificationId로 Report가 찾아지는지 확인")
     @Test
     void findReportByMemberIdAndCertificationId() {
-        final Report report = ReportFixture.create();
+        final Report report = ReportFixture.createWithoutId();
 
         reportRepository.save(report);
         final boolean isReportExist = reportRepository.existsByMemberIdAndCertificationId(MEMBER_ID, CERTIFICATION_ID);
