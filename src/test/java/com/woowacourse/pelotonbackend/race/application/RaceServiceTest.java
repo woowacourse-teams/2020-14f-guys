@@ -15,9 +15,9 @@ import com.woowacourse.pelotonbackend.race.domain.RaceRepository;
 @ExtendWith(MockitoExtension.class)
 class RaceServiceTest {
     @Mock
-    RaceRepository raceRepository;
+    private RaceRepository raceRepository;
 
-    RaceService raceService;
+    private RaceService raceService;
 
     @BeforeEach
     void setUp() {

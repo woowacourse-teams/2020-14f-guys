@@ -23,13 +23,13 @@ import com.woowacourse.pelotonbackend.race.domain.RaceFixture;
 
 @WebMvcTest(controllers = RaceController.class)
 class RaceControllerTest {
-    MockMvc mockMvc;
+    private MockMvc mockMvc;
 
     @Autowired
-    ObjectMapper objectMapper;
+    private ObjectMapper objectMapper;
 
     @MockBean
-    RaceService raceService;
+    private RaceService raceService;
 
     @BeforeEach
     void setUp(WebApplicationContext webApplicationContext) {

@@ -44,6 +44,6 @@ public class RaceAcceptanceTest {
             .then()
             .log().all()
             .statusCode(HttpStatus.CREATED.value())
-            .header("Location", "/races/1");
+            .header("Location", "/api/races/1");
     }
 }
