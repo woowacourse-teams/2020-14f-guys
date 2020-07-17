@@ -1,6 +1,6 @@
 package com.woowacourse.pelotonbackend.report.domain;
 
-import static com.woowacourse.pelotonbackend.report.ReportAcceptanceTest.*;
+import static com.woowacourse.pelotonbackend.report.domain.ReportFixture.*;
 import static org.assertj.core.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
@@ -12,7 +12,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.data.jdbc.core.mapping.AggregateReference;
 
 import com.woowacourse.pelotonbackend.report.application.ReportService;
 import com.woowacourse.pelotonbackend.report.exception.DuplicateReportFoundException;
@@ -33,13 +32,7 @@ class ReportServiceTest {
     @DisplayName("Report 생성 테스트")
     @Test
     void createReport() {
-        final Report savedReport = Report.builder()
-            .id(1L)
-            .reportType(ReportType.FAKE)
-            .description("하는척을 했습니다.")
-            .memberId(AggregateReference.to(1L))
-            .certificationId(AggregateReference.to(1L))
-            .build();
+        final Report savedReport = ReportFixture.create(1L);
         when(reportRepository.findByMemberIdAndCertificationId(MEMBER_ID, CERTIFICATION_ID))
             .thenReturn(Optional.empty());
         when(reportRepository.save(any())).thenReturn(savedReport);
@@ -53,13 +46,7 @@ class ReportServiceTest {
     @DisplayName("동일한 유저가 동일한 리포트를 생성할 시 예외")
     @Test
     void createDuplicateReportThrowException() {
-        final Report savedReport = Report.builder()
-            .id(1L)
-            .reportType(ReportType.FAKE)
-            .description("하는척을 했습니다.")
-            .memberId(AggregateReference.to(1L))
-            .certificationId(AggregateReference.to(1L))
-            .build();
+        final Report savedReport = ReportFixture.create(1L);
         when(reportRepository.findByMemberIdAndCertificationId(MEMBER_ID, CERTIFICATION_ID))
             .thenReturn(Optional.of(savedReport));
 

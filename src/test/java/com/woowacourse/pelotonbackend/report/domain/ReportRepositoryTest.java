@@ -1,5 +1,6 @@
 package com.woowacourse.pelotonbackend.report.domain;
 
+import static com.woowacourse.pelotonbackend.report.domain.ReportFixture.*;
 import static org.assertj.core.api.AssertionsForClassTypes.*;
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -19,21 +20,16 @@ class ReportRepositoryTest {
     @DisplayName("Report 객체가 DB에 잘 저장되는지 확인")
     @Test
     void saveReport() {
-        final Report report = Report.builder()
-            .reportType(ReportType.FAKE)
-            .description("하는척을 했습니다.")
-            .memberId(AggregateReference.to(1L))
-            .certificationId(AggregateReference.to(1L))
-            .build();
+        final Report report = ReportFixture.create();
 
         final Report persist = reportRepository.save(report);
 
         assertAll(
             () -> assertThat(persist.getId()).isNotNull(),
-            () -> assertThat(persist.getReportType()).isEqualTo(ReportType.FAKE),
-            () -> assertThat(persist.getDescription()).isEqualTo("하는척을 했습니다."),
-            () -> assertThat(persist.getMemberId()).isEqualTo(AggregateReference.to(1L)),
-            () -> assertThat(persist.getCertificationId()).isEqualTo(AggregateReference.to(1L)),
+            () -> assertThat(persist.getReportType()).isEqualTo(REPORT_TYPE),
+            () -> assertThat(persist.getDescription()).isEqualTo(DESCRIPTION),
+            () -> assertThat(persist.getMemberId()).isEqualTo(AggregateReference.to(MEMBER_ID)),
+            () -> assertThat(persist.getCertificationId()).isEqualTo(AggregateReference.to(CERTIFICATION_ID)),
             () -> assertThat(persist.getCreatedAt()).isNotNull(),
             () -> assertThat(persist.getUpdatedAt()).isNotNull()
         );
@@ -42,15 +38,11 @@ class ReportRepositoryTest {
     @DisplayName("MemberId와 CertificationId로 Report가 찾아지는지 확인")
     @Test
     void findReportByMemberIdAndCertificationId() {
-        final Report report = Report.builder()
-            .reportType(ReportType.FAKE)
-            .description("하는척을 했습니다.")
-            .memberId(AggregateReference.to(1L))
-            .certificationId(AggregateReference.to(1L))
-            .build();
+        final Report report = ReportFixture.create();
 
         reportRepository.save(report);
-        final Optional<Report> byMemberIdAndCertificationId = reportRepository.findByMemberIdAndCertificationId(1L, 1L);
+        final Optional<Report> byMemberIdAndCertificationId = reportRepository.findByMemberIdAndCertificationId(
+            MEMBER_ID, CERTIFICATION_ID);
 
         assertThat(byMemberIdAndCertificationId.isPresent()).isTrue();
     }
@@ -58,8 +50,8 @@ class ReportRepositoryTest {
     @DisplayName("MemberId와 CertificationId로 Report가 찾아지지 않는지 확인")
     @Test
     void cantFindReportByMemberIdAndCertificationId() {
-        final Optional<Report> byMemberIdAndCertificationId = reportRepository.findByMemberIdAndCertificationId(10L, 10L);
+        final Optional<Report> notExistReport = reportRepository.findByMemberIdAndCertificationId(10L, 10L);
 
-        assertThat(byMemberIdAndCertificationId.isPresent()).isFalse();
+        assertThat(notExistReport.isPresent()).isFalse();
     }
 }
