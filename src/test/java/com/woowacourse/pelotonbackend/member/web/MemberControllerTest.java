@@ -49,7 +49,7 @@ public class MemberControllerTest {
             .build();
 
         final String request = objectMapper.writeValueAsString(memberRequest);
-        when(memberService.createMember(any(Member.class))).thenReturn(persistMember);
+        when(memberService.createMember(any(MemberRequest.class))).thenReturn(persistMember);
 
         mockMvc.perform(
             post("/api/members")
