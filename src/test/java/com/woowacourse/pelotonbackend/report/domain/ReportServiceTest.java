@@ -4,8 +4,6 @@ import static com.woowacourse.pelotonbackend.report.domain.ReportFixture.*;
 import static org.assertj.core.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
-import java.util.Optional;
-
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -15,7 +13,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import com.woowacourse.pelotonbackend.report.application.ReportService;
 import com.woowacourse.pelotonbackend.report.exception.DuplicateReportFoundException;
-import com.woowacourse.pelotonbackend.report.presentation.ReportCreateContent;
 
 @ExtendWith(MockitoExtension.class)
 class ReportServiceTest {
@@ -33,8 +30,7 @@ class ReportServiceTest {
     @Test
     void createReport() {
         final Report savedReport = ReportFixture.create(REPORT_ID);
-        when(reportRepository.findByMemberIdAndCertificationId(MEMBER_ID, CERTIFICATION_ID))
-            .thenReturn(Optional.empty());
+        when(reportRepository.existsByMemberIdAndCertificationId(MEMBER_ID, CERTIFICATION_ID)).thenReturn(false);
         when(reportRepository.save(any())).thenReturn(savedReport);
 
         final Long reportId = reportService.createReport(CERTIFICATION_ID, MEMBER_ID,
@@ -46,13 +42,11 @@ class ReportServiceTest {
     @DisplayName("동일한 유저가 동일한 리포트를 생성할 시 예외")
     @Test
     void createDuplicateReportThrowException() {
-        final Report savedReport = ReportFixture.create(REPORT_ID);
-        when(reportRepository.findByMemberIdAndCertificationId(MEMBER_ID, CERTIFICATION_ID))
-            .thenReturn(Optional.of(savedReport));
+        when(reportRepository.existsByMemberIdAndCertificationId(MEMBER_ID, CERTIFICATION_ID)).thenReturn(true);
 
         assertThatThrownBy(() ->
             reportService.createReport(CERTIFICATION_ID, MEMBER_ID, ReportFixture.createRequestContent()))
             .isInstanceOf(DuplicateReportFoundException.class)
-            .hasMessageMatching("Report\\(id: [0-9]+\\) already exists!");
+            .hasMessageMatching("Report\\(member id: [0-9]+, certification id: [0-9]+\\) already exists!");
     }
 }

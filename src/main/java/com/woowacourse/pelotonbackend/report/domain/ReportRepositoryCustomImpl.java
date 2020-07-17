@@ -1,7 +1,5 @@
 package com.woowacourse.pelotonbackend.report.domain;
 
-import java.util.Optional;
-
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.jdbc.core.convert.EntityRowMapper;
 import org.springframework.data.jdbc.core.convert.JdbcConverter;
@@ -27,30 +25,24 @@ public class ReportRepositoryCustomImpl implements ReportRepositoryCustom {
     }
 
     @Override
-    public Optional<Report> findByMemberIdAndCertificationId(final Long memberId, final Long certificationId) {
+    public boolean existsByMemberIdAndCertificationId(final Long memberId, final Long certificationId) {
         SqlParameterSource parameterSource = new MapSqlParameterSource()
             .addValue("memberId", memberId)
             .addValue("certificationId", certificationId);
-        return Optional.ofNullable(getReport(parameterSource));
-    }
 
-    private Report getReport(SqlParameterSource parameterSource) {
         try {
-            return jdbcOperations.queryForObject(selectReportByMemberIdAndCertificationId(), parameterSource,
-                rowMapper);
+            return jdbcOperations.queryForObject(existsReportByMemberIdAndCertificationId(), parameterSource,
+                Boolean.class);
         } catch (EmptyResultDataAccessException e) {
-            return null;
+            return false;
         }
     }
 
-    private static String selectReportByMemberIdAndCertificationId() {
+    private static String existsReportByMemberIdAndCertificationId() {
         return new StringBuilder()
-            .append("SELECT REPORT.ID AS ID, REPORT.REPORT_TYPE AS REPORT_TYPE")
-            .append(", REPORT.DESCRIPTION AS DESCRIPTION, REPORT.CERTIFICATION_ID AS CERTIFICATION_ID")
-            .append(", REPORT.MEMBER_ID AS MEMBER_ID, REPORT.CREATED_AT AS CREATED_AT")
-            .append(", REPORT.UPDATED_AT AS UPDATED_AT")
+            .append("SELECT REPORT.ID AS ID")
             .append(" FROM REPORT")
-            .append(" WHERE MEMBER_ID = :memberId AND CERTIFICATION_ID = :certificationId")
+            .append(" WHERE REPORT.MEMBER_ID = :memberId AND REPORT.CERTIFICATION_ID = :certificationId")
             .toString();
     }
 }

@@ -13,8 +13,8 @@ import com.woowacourse.pelotonbackend.report.application.ReportService;
 import lombok.AllArgsConstructor;
 
 @AllArgsConstructor
-@RestController
 @RequestMapping("/api/reports")
+@RestController
 public class ReportController {
     private final ReportService reportService;
 
