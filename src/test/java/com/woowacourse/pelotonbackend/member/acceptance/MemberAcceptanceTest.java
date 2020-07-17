@@ -1,6 +1,6 @@
 package com.woowacourse.pelotonbackend.member.acceptance;
 
-import static com.woowacourse.pelotonbackend.member.MemberFixture.*;
+import static com.woowacourse.pelotonbackend.member.domain.MemberFixture.*;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -51,7 +51,7 @@ public class MemberAcceptanceTest {
         // 기존 회원이 삭제되었다.
     }
 
-    private void createMember(String email, String name, Cash cash, Role role) {
+    private void createMember(final String email, final String name, final Cash cash, final Role role) {
         final MemberRequest memberRequest = MemberRequest.builder()
             .email(email)
             .name(name)

@@ -1,4 +1,4 @@
-package com.woowacourse.pelotonbackend.member.service;
+package com.woowacourse.pelotonbackend.member.application;
 
 import org.springframework.stereotype.Service;
 
@@ -12,7 +12,7 @@ import lombok.AllArgsConstructor;
 public class MemberService {
     private final MemberRepository memberRepository;
 
-    public Member createMember(Member member) {
+    public Member createMember(final Member member) {
         return memberRepository.save(member);
     }
 }

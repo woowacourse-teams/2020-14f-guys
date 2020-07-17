@@ -1,6 +1,6 @@
 package com.woowacourse.pelotonbackend.member.web;
 
-import static com.woowacourse.pelotonbackend.member.MemberFixture.*;
+import static com.woowacourse.pelotonbackend.member.domain.MemberFixture.*;
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.*;
@@ -15,8 +15,8 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.woowacourse.pelotonbackend.member.application.MemberService;
 import com.woowacourse.pelotonbackend.member.domain.Member;
-import com.woowacourse.pelotonbackend.member.service.MemberService;
 import com.woowacourse.pelotonbackend.member.web.dto.MemberRequest;
 
 @WebMvcTest(value = {MemberController.class})

@@ -1,6 +1,6 @@
-package com.woowacourse.pelotonbackend.member.service;
+package com.woowacourse.pelotonbackend.member.application;
 
-import static com.woowacourse.pelotonbackend.member.MemberFixture.*;
+import static com.woowacourse.pelotonbackend.member.domain.MemberFixture.*;
 import static org.assertj.core.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;

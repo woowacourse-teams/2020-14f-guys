@@ -1,8 +1,7 @@
-package com.woowacourse.pelotonbackend.member;
+package com.woowacourse.pelotonbackend.member.domain;
 
 import java.math.BigDecimal;
 
-import com.woowacourse.pelotonbackend.member.domain.Role;
 import com.woowacourse.pelotonbackend.vo.Cash;
 
 public class MemberFixture {

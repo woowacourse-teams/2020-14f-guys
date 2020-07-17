@@ -1,6 +1,6 @@
 package com.woowacourse.pelotonbackend.member.domain;
 
-import static com.woowacourse.pelotonbackend.member.MemberFixture.*;
+import static com.woowacourse.pelotonbackend.member.domain.MemberFixture.*;
 import static org.assertj.core.api.AssertionsForClassTypes.*;
 import static org.junit.jupiter.api.Assertions.*;
 
