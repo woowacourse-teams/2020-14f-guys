@@ -11,7 +11,7 @@ public class ReportFixture {
     public static final ReportType REPORT_TYPE = ReportType.FAKE;
     public static final String DESCRIPTION = "설명";
 
-    public static Report create(Long id) {
+    public static Report createWithId(Long id) {
         return Report.builder()
             .id(id)
             .reportType(ReportType.FAKE)
@@ -21,8 +21,8 @@ public class ReportFixture {
             .build();
     }
 
-    public static Report create() {
-        return create(null);
+    public static Report createWithoutId() {
+        return createWithId(null);
     }
 
     public static ReportCreateContent createRequestContent() {
