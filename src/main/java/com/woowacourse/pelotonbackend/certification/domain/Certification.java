@@ -16,13 +16,11 @@ import com.woowacourse.pelotonbackend.mission.domain.Mission;
 import com.woowacourse.pelotonbackend.rider.domain.Rider;
 import com.woowacourse.pelotonbackend.vo.ImageUrl;
 import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.With;
 
-@AllArgsConstructor(access = AccessLevel.PACKAGE)
 @Builder
 @EqualsAndHashCode(of = "id")
 @Getter
@@ -35,19 +33,18 @@ public class Certification {
 
     private final String description;
 
-    @Embedded.Empty
-    @Valid
+    @Embedded.Empty @Valid
     private final ImageUrl image;
 
     private final AggregateReference<Rider, @NotNull Long> riderId;
 
     private final AggregateReference<Mission, @NotNull Long> missionId;
 
-    @CreatedDate
-    @PastOrPresent
-    private LocalDateTime createdAt;
+    @CreatedDate @PastOrPresent
+    @With
+    private final LocalDateTime createdAt;
 
-    @LastModifiedDate
-    @PastOrPresent
-    private LocalDateTime updatedAt;
+    @LastModifiedDate @PastOrPresent
+    @With
+    private final LocalDateTime updatedAt;
 }
