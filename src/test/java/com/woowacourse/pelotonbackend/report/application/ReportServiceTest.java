@@ -1,9 +1,12 @@
-package com.woowacourse.pelotonbackend.report.domain;
+package com.woowacourse.pelotonbackend.report.application;
 
 import static com.woowacourse.pelotonbackend.report.domain.ReportFixture.*;
 import static org.assertj.core.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
+import com.woowacourse.pelotonbackend.report.domain.Report;
+import com.woowacourse.pelotonbackend.report.domain.ReportFixture;
+import com.woowacourse.pelotonbackend.report.domain.ReportRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
