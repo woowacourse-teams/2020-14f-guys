@@ -16,4 +16,10 @@ public class CertificationCreateRequest {
 
     @NotNull
     private final String description;
+
+    @NotNull
+    private final Long riderId;
+
+    @NotNull
+    private final Long missionId;
 }

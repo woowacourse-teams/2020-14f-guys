@@ -52,14 +52,13 @@ public class Certification {
     @With
     private final LocalDateTime updatedAt;
 
-    public static Certification of(final CertificationCreateRequest certificationCreateRequest, final String imageUrl,
-        final Long riderId, final Long missionId) {
+    public static Certification of(final CertificationCreateRequest certificationCreateRequest, final String imageUrl) {
         return Certification.builder()
             .status(certificationCreateRequest.getStatus())
             .description(certificationCreateRequest.getDescription())
             .image(new ImageUrl(imageUrl))
-            .riderId(AggregateReference.to(riderId))
-            .missionId(AggregateReference.to(missionId))
+            .riderId(AggregateReference.to(certificationCreateRequest.getRiderId()))
+            .missionId(AggregateReference.to(certificationCreateRequest.getMissionId()))
             .build();
     }
 

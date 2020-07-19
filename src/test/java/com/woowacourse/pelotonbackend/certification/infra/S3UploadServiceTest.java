@@ -5,23 +5,28 @@ import static org.assertj.core.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.web.multipart.MultipartFile;
 
-class S3UploadServiceTest {
-    private static final MultipartFile MOCK_MULTIPART_FILE = createMockMultipartFile();
+import com.woowacourse.pelotonbackend.certification.application.UploadService;
 
-    private S3UploadService s3UploadService;
+class S3UploadServiceTest {
+    private static final MultipartFile MOCK_MULTIPART_FILE = createMockCertificationMultipartFile();
+
+    private UploadService uploadService;
 
     @BeforeEach
     void setUp() {
-        s3UploadService = new S3UploadService();
+        uploadService = new S3UploadService();
     }
 
+    @DisplayName("이미지 업로드 시 URL을 반환")
     @Test
     void uploadTest() {
         assertAll(
-            () -> assertThat(s3UploadService.upload(MOCK_MULTIPART_FILE)).isEqualTo(EXPECTED_URL)
+            () -> assertThat(uploadService.upload(MOCK_MULTIPART_FILE)).isEqualTo(
+                TEST_CERTIFICATION_FILE_URL.getBaseImageUrl())
         );
     }
 }

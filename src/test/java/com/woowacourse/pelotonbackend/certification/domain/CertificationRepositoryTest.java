@@ -18,7 +18,7 @@ class CertificationRepositoryTest {
 
     @BeforeEach
     void setUp() {
-        certification = createWithoutId();
+        certification = createCertificationWithoutId();
     }
 
     @DisplayName("Certification 객체가 DB에 잘 저장되는지 확인")
@@ -26,7 +26,7 @@ class CertificationRepositoryTest {
     void saveCertification() {
         final Certification persist = certificationRepository.save(certification);
 
-        assertThat(persist).isEqualToComparingOnlyGivenFields(createWithoutId(), "status",
+        assertThat(persist).isEqualToComparingOnlyGivenFields(createCertificationWithoutId(), "status",
             "description", "image", "riderId", "missionId");
     }
 }

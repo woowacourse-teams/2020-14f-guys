@@ -6,6 +6,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.BDDMockito.*;
 
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
@@ -31,18 +32,19 @@ class CertificationServiceTest {
     @BeforeEach
     void setUp() {
         certificationService = new CertificationService(certificationRepository, uploadService);
-        multipartFile = createMockMultipartFile();
-        certificationCreateRequest = createMockRequest();
+        multipartFile = createMockCertificationMultipartFile();
+        certificationCreateRequest = createMockCertificationRequest();
     }
 
+    @DisplayName("Certification 생성 시 아이디를 반환하는지 확인")
     @Test
     void create() {
-        given(certificationRepository.save(createWithoutId())).willReturn(createWithId());
-        given(uploadService.upload(multipartFile)).willReturn(TEST_FILE_URL.getBaseImageUrl());
+        given(certificationRepository.save(createCertificationWithoutId())).willReturn(createCertificationWithId());
+        given(uploadService.upload(multipartFile)).willReturn(TEST_CERTIFICATION_FILE_URL.getBaseImageUrl());
 
         assertAll(
             () -> assertThat(
-                certificationService.create(multipartFile, certificationCreateRequest, TEST_RIDER_ID, TEST_MISSION_ID))
+                certificationService.create(multipartFile, certificationCreateRequest))
                 .isEqualTo(TEST_CERTIFICATION_ID)
         );
     }
