@@ -4,6 +4,7 @@ import static com.woowacourse.pelotonbackend.report.domain.ReportFixture.*;
 import static io.restassured.RestAssured.*;
 
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -34,8 +35,9 @@ public class ReportAcceptanceTest {
      * When 신고하는 유저가 인증에 포함되는 유저를 신고한다.
      * Then 신고가 완료된다.
      */
+    @DisplayName("Report CRUD 인수 테스트")
     @Test
-    void createReport() throws JsonProcessingException {
+    void reportCrud() throws JsonProcessingException {
         given()
             .log().all()
             .body(objectMapper.writeValueAsBytes(new ReportCreateContent(REPORT_TYPE, DESCRIPTION)))

@@ -28,5 +28,4 @@ public class ReportController {
 
         return ResponseEntity.created(URI.create(String.format("/api/reports/%d", reportId))).build();
     }
-
 }
