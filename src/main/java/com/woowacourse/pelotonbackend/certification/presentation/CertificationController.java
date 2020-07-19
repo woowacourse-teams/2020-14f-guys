@@ -44,7 +44,6 @@ public class CertificationController {
 
         final ErrorResponse response = ErrorResponse.of(ErrorCode.INVALID_INPUT_VALUE, exception);
         return new ResponseEntity<>(response, HttpStatus.valueOf(response.getStatus()));
-
     }
 }
 

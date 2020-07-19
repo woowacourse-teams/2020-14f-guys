@@ -57,7 +57,6 @@ public class CertificationFixture {
             .status(TEST_CERTIFICATION_STATUS)
             .description(TEST_CERTIFICATION_DESCRIPTION)
             .riderId(TEST_RIDER_ID)
-            .missionId(TEST_MISSION_ID)
             .build();
     }
 

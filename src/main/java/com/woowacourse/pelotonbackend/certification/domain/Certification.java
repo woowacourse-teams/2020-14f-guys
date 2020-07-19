@@ -12,7 +12,6 @@ import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jdbc.core.mapping.AggregateReference;
 import org.springframework.data.relational.core.mapping.Embedded;
 
-import com.woowacourse.pelotonbackend.certification.domain.dto.CertificationCreateRequest;
 import com.woowacourse.pelotonbackend.mission.domain.Mission;
 import com.woowacourse.pelotonbackend.rider.domain.Rider;
 import com.woowacourse.pelotonbackend.vo.ImageUrl;
@@ -34,32 +33,18 @@ public class Certification {
 
     private final String description;
 
-    @Embedded.Empty
-    @Valid
+    @Embedded.Empty @Valid
     private final ImageUrl image;
 
     private final AggregateReference<Rider, @NotNull Long> riderId;
 
     private final AggregateReference<Mission, @NotNull Long> missionId;
 
-    @CreatedDate
-    @PastOrPresent
+    @CreatedDate @PastOrPresent
     @With
     private final LocalDateTime createdAt;
 
-    @LastModifiedDate
-    @PastOrPresent
+    @LastModifiedDate @PastOrPresent
     @With
     private final LocalDateTime updatedAt;
-
-    public static Certification of(final CertificationCreateRequest certificationCreateRequest, final String imageUrl) {
-        return Certification.builder()
-            .status(certificationCreateRequest.getStatus())
-            .description(certificationCreateRequest.getDescription())
-            .image(new ImageUrl(imageUrl))
-            .riderId(AggregateReference.to(certificationCreateRequest.getRiderId()))
-            .missionId(AggregateReference.to(certificationCreateRequest.getMissionId()))
-            .build();
-    }
-
 }
