@@ -63,7 +63,7 @@ public class MemberAcceptanceTest {
 
     private void createMember(String email, String name, Cash cash, Role role) throws JsonProcessingException{
         final MemberRequest memberRequest = MemberFixture.memberRequest();
-        final String request = objectMapper.writeValueAsString(memberRequest);
+        final byte[] request = objectMapper.writeValueAsBytes(memberRequest);
 
         given()
             .body(request)
