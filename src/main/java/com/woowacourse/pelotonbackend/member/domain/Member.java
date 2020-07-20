@@ -15,11 +15,13 @@ import org.springframework.data.relational.core.mapping.Embedded;
 
 import com.woowacourse.pelotonbackend.vo.Cash;
 import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.With;
 
+@AllArgsConstructor(access = AccessLevel.PACKAGE)
 @Builder
 @EqualsAndHashCode(of = "id")
 @Getter
@@ -43,11 +45,9 @@ public class Member {
 
     @CreatedDate
     @PastOrPresent
-    @With(AccessLevel.PACKAGE)
-    private final LocalDateTime createdAt;
+    private LocalDateTime createdAt;
 
     @LastModifiedDate
     @PastOrPresent
-    @With(AccessLevel.PACKAGE)
-    private final LocalDateTime updatedAt;
+    private LocalDateTime updatedAt;
 }
