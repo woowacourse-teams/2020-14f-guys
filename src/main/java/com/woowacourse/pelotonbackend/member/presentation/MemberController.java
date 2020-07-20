@@ -10,8 +10,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.woowacourse.pelotonbackend.member.application.MemberService;
-import com.woowacourse.pelotonbackend.member.domain.Member;
 import com.woowacourse.pelotonbackend.member.presentation.dto.MemberRequest;
+import com.woowacourse.pelotonbackend.member.presentation.dto.MemberResponse;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 
@@ -22,9 +22,9 @@ public class MemberController {
 
     @PostMapping("/api/members")
     public ResponseEntity<Void> createMember(@RequestBody @Valid final MemberRequest memberRequest) {
-        final Member member = memberService.createMember(memberRequest);
+        final MemberResponse memberResponse = memberService.createMember(memberRequest);
         return ResponseEntity
-            .created(URI.create("/api/members/" + member.getId()))
+            .created(URI.create("/api/members/" + memberResponse.getId()))
             .build();
     }
 }

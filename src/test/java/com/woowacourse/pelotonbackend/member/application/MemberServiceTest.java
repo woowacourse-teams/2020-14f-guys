@@ -16,6 +16,7 @@ import com.woowacourse.pelotonbackend.member.domain.Member;
 import com.woowacourse.pelotonbackend.member.domain.MemberFixture;
 import com.woowacourse.pelotonbackend.member.domain.MemberRepository;
 import com.woowacourse.pelotonbackend.member.presentation.dto.MemberRequest;
+import com.woowacourse.pelotonbackend.member.presentation.dto.MemberResponse;
 
 @ExtendWith(MockitoExtension.class)
 class MemberServiceTest {
@@ -37,14 +38,14 @@ class MemberServiceTest {
 
         when(memberRepository.save(any(Member.class))).thenReturn(persistMember);
 
-        final Member createdMember = memberService.createMember(memberRequest);
+        final MemberResponse memberResponse = memberService.createMember(memberRequest);
 
         assertAll(
-            () -> assertThat(createdMember.getId()).isEqualTo(ID),
-            () -> assertThat(createdMember.getEmail()).isEqualTo(EMAIL),
-            () -> assertThat(createdMember.getName()).isEqualTo(NAME),
-            () -> assertThat(createdMember.getCash()).isEqualTo(CASH),
-            () -> assertThat(createdMember.getRole()).isEqualTo(ROLE)
+            () -> assertThat(memberResponse.getId()).isEqualTo(ID),
+            () -> assertThat(memberResponse.getEmail()).isEqualTo(EMAIL),
+            () -> assertThat(memberResponse.getName()).isEqualTo(NAME),
+            () -> assertThat(memberResponse.getCash()).isEqualTo(CASH),
+            () -> assertThat(memberResponse.getRole()).isEqualTo(ROLE)
         );
     }
 

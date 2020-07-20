@@ -3,6 +3,7 @@ package com.woowacourse.pelotonbackend.member.domain;
 import java.math.BigDecimal;
 
 import com.woowacourse.pelotonbackend.member.presentation.dto.MemberRequest;
+import com.woowacourse.pelotonbackend.member.presentation.dto.MemberResponse;
 import com.woowacourse.pelotonbackend.vo.Cash;
 
 public class MemberFixture {
@@ -32,6 +33,16 @@ public class MemberFixture {
 
     public static Member member() {
         return Member.builder()
+            .id(ID)
+            .email(EMAIL)
+            .name(NAME)
+            .cash(CASH)
+            .role(ROLE)
+            .build();
+    }
+
+    public static MemberResponse memberResponse() {
+        return MemberResponse.builder()
             .id(ID)
             .email(EMAIL)
             .name(NAME)

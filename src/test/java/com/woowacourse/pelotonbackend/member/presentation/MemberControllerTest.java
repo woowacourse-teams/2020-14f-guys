@@ -20,9 +20,9 @@ import org.springframework.web.filter.CharacterEncodingFilter;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.woowacourse.pelotonbackend.member.application.MemberService;
-import com.woowacourse.pelotonbackend.member.domain.Member;
 import com.woowacourse.pelotonbackend.member.domain.MemberFixture;
 import com.woowacourse.pelotonbackend.member.presentation.dto.MemberRequest;
+import com.woowacourse.pelotonbackend.member.presentation.dto.MemberResponse;
 
 @WebMvcTest(value = {MemberController.class})
 public class MemberControllerTest {
@@ -47,10 +47,10 @@ public class MemberControllerTest {
     @Test
     void createMember() throws Exception {
         final MemberRequest memberRequest = MemberFixture.memberRequest();
-        final Member persistMember = MemberFixture.member();
+        final MemberResponse memberResponse = MemberFixture.memberResponse();
 
         final String request = objectMapper.writeValueAsString(memberRequest);
-        when(memberService.createMember(any(MemberRequest.class))).thenReturn(persistMember);
+        when(memberService.createMember(any(MemberRequest.class))).thenReturn(memberResponse);
 
         mockMvc.perform(
             post("/api/members")
