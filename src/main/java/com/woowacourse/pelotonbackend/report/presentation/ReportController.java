@@ -2,8 +2,10 @@ package com.woowacourse.pelotonbackend.report.presentation;
 
 import java.net.URI;
 
+import javax.validation.Valid;
+
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,13 +20,10 @@ import lombok.AllArgsConstructor;
 public class ReportController {
     private final ReportService reportService;
 
-    @PostMapping("/certifications/{certificationId}/members/{reportMemberId}")
-    public ResponseEntity<Void> createReport(
-        @PathVariable final Long certificationId,
-        @PathVariable final Long reportMemberId,
-        @RequestBody final ReportCreateContent requestContent) {
+    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Void> createReport(@RequestBody @Valid final ReportCreateContent requestContent) {
 
-        final Long reportId = reportService.createReport(certificationId, reportMemberId, requestContent);
+        final Long reportId = reportService.createReport(requestContent);
 
         return ResponseEntity.created(URI.create(String.format("/api/reports/%d", reportId))).build();
     }

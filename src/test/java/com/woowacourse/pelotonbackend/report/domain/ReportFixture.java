@@ -26,6 +26,6 @@ public class ReportFixture {
     }
 
     public static ReportCreateContent createRequestContent() {
-        return new ReportCreateContent(REPORT_TYPE, DESCRIPTION);
+        return new ReportCreateContent(REPORT_TYPE, DESCRIPTION, MEMBER_ID, CERTIFICATION_ID);
     }
 }

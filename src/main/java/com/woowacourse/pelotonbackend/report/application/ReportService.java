@@ -15,15 +15,16 @@ public class ReportService {
     private final ReportRepository reportRepository;
 
     @Transactional
-    public Long createReport(final Long certificationId, final Long memberId,
-        final ReportCreateContent requestContent) {
+    public Long createReport(final ReportCreateContent requestContent) {
+        final Long memberId = requestContent.getReportMemberId();
+        final Long certificationId = requestContent.getCertificationId();
 
         final boolean isReportExists = reportRepository.existsByMemberIdAndCertificationId(memberId, certificationId);
         if (isReportExists) {
             throw new DuplicateReportFoundException(memberId, certificationId);
         }
 
-        final Report report = requestContent.toEntity(memberId, certificationId);
+        final Report report = requestContent.toEntity();
 
         final Report persisted = reportRepository.save(report);
         return persisted.getId();
