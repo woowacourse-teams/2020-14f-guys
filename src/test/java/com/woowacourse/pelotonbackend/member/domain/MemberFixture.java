@@ -2,7 +2,7 @@ package com.woowacourse.pelotonbackend.member.domain;
 
 import java.math.BigDecimal;
 
-import com.woowacourse.pelotonbackend.member.presentation.dto.MemberRequest;
+import com.woowacourse.pelotonbackend.member.presentation.dto.MemberCreateRequest;
 import com.woowacourse.pelotonbackend.member.presentation.dto.MemberResponse;
 import com.woowacourse.pelotonbackend.vo.Cash;
 
@@ -13,8 +13,8 @@ public class MemberFixture {
     public static final Role ROLE = Role.MEMBER;
     public static final long ID = 1L;
 
-    public static MemberRequest memberRequest() {
-        return MemberRequest.builder()
+    public static MemberCreateRequest memberCreateRequest() {
+        return MemberCreateRequest.builder()
             .email(EMAIL)
             .name(NAME)
             .cash(CASH)

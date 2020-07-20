@@ -15,7 +15,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.woowacourse.pelotonbackend.member.domain.MemberFixture;
 import com.woowacourse.pelotonbackend.member.domain.Role;
-import com.woowacourse.pelotonbackend.member.presentation.dto.MemberRequest;
+import com.woowacourse.pelotonbackend.member.presentation.dto.MemberCreateRequest;
 import com.woowacourse.pelotonbackend.vo.Cash;
 import io.restassured.RestAssured;
 import io.restassured.specification.RequestSpecification;
@@ -62,8 +62,8 @@ public class MemberAcceptanceTest {
     }
 
     private void createMember(String email, String name, Cash cash, Role role) throws JsonProcessingException{
-        final MemberRequest memberRequest = MemberFixture.memberRequest();
-        final byte[] request = objectMapper.writeValueAsBytes(memberRequest);
+        final MemberCreateRequest memberCreateRequest = MemberFixture.memberCreateRequest();
+        final byte[] request = objectMapper.writeValueAsBytes(memberCreateRequest);
 
         given()
             .body(request)

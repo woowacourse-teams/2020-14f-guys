@@ -21,7 +21,7 @@ import org.springframework.web.filter.CharacterEncodingFilter;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.woowacourse.pelotonbackend.member.application.MemberService;
 import com.woowacourse.pelotonbackend.member.domain.MemberFixture;
-import com.woowacourse.pelotonbackend.member.presentation.dto.MemberRequest;
+import com.woowacourse.pelotonbackend.member.presentation.dto.MemberCreateRequest;
 import com.woowacourse.pelotonbackend.member.presentation.dto.MemberResponse;
 
 @WebMvcTest(value = {MemberController.class})
@@ -46,11 +46,11 @@ public class MemberControllerTest {
     @DisplayName("회원을 생성한다")
     @Test
     void createMember() throws Exception {
-        final MemberRequest memberRequest = MemberFixture.memberRequest();
+        final MemberCreateRequest memberCreateRequest = MemberFixture.memberCreateRequest();
         final MemberResponse memberResponse = MemberFixture.memberResponse();
 
-        final String request = objectMapper.writeValueAsString(memberRequest);
-        when(memberService.createMember(any(MemberRequest.class))).thenReturn(memberResponse);
+        final String request = objectMapper.writeValueAsString(memberCreateRequest);
+        when(memberService.createMember(any(MemberCreateRequest.class))).thenReturn(memberResponse);
 
         mockMvc.perform(
             post("/api/members")

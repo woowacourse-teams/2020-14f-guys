@@ -16,7 +16,7 @@ import lombok.Getter;
 @AllArgsConstructor(onConstructor_ = {@ConstructorProperties({"id", "name", "email", "cash", "role"})})
 @Builder
 @Getter
-public class MemberRequest {
+public class MemberCreateRequest {
     private final Long id;
 
     @NotBlank

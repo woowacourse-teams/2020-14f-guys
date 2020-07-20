@@ -15,7 +15,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import com.woowacourse.pelotonbackend.member.domain.Member;
 import com.woowacourse.pelotonbackend.member.domain.MemberFixture;
 import com.woowacourse.pelotonbackend.member.domain.MemberRepository;
-import com.woowacourse.pelotonbackend.member.presentation.dto.MemberRequest;
+import com.woowacourse.pelotonbackend.member.presentation.dto.MemberCreateRequest;
 import com.woowacourse.pelotonbackend.member.presentation.dto.MemberResponse;
 
 @ExtendWith(MockitoExtension.class)
@@ -33,12 +33,12 @@ class MemberServiceTest {
     @DisplayName("회원을 생성한다")
     @Test
     void createMember() {
-        final MemberRequest memberRequest = MemberFixture.memberRequest();
+        final MemberCreateRequest memberCreateRequest = MemberFixture.memberCreateRequest();
         final Member persistMember = MemberFixture.member();
 
         when(memberRepository.save(any(Member.class))).thenReturn(persistMember);
 
-        final MemberResponse memberResponse = memberService.createMember(memberRequest);
+        final MemberResponse memberResponse = memberService.createMember(memberCreateRequest);
 
         assertAll(
             () -> assertThat(memberResponse.getId()).isEqualTo(ID),
