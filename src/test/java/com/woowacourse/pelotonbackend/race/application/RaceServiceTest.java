@@ -13,7 +13,7 @@ import com.woowacourse.pelotonbackend.race.domain.RaceFixture;
 import com.woowacourse.pelotonbackend.race.domain.RaceRepository;
 
 @ExtendWith(MockitoExtension.class)
-class RaceServiceTest {
+public class RaceServiceTest {
     @Mock
     private RaceRepository raceRepository;
 
