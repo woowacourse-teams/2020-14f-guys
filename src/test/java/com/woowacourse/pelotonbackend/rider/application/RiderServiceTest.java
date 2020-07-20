@@ -9,7 +9,6 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import com.woowacourse.pelotonbackend.rider.domain.Rider;
 import com.woowacourse.pelotonbackend.rider.domain.RiderFixture;
 import com.woowacourse.pelotonbackend.rider.domain.RiderRepository;
 
@@ -28,11 +27,8 @@ public class RiderServiceTest {
     @DisplayName("create시 save가 정상적으로 완료되는지 확인")
     @Test
     void createTest() {
-        given(riderRepository.save(RiderFixture.createMockRiderWithoutId())).willReturn(
-            RiderFixture.createMockRiderWithId());
-
+        given(riderRepository.save(any())).willReturn(RiderFixture.createMockRider());
         riderService.create(RiderFixture.createMockRequest());
-
-        verify(riderRepository).save(any(Rider.class));
+        verify(riderRepository).save(any());
     }
 }
