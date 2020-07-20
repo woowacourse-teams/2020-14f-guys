@@ -1,6 +1,5 @@
 package com.woowacourse.pelotonbackend.rider.presentation;
 
-import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.BDDMockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.*;
@@ -21,6 +20,7 @@ import org.springframework.web.filter.CharacterEncodingFilter;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.woowacourse.pelotonbackend.rider.application.RiderService;
 import com.woowacourse.pelotonbackend.rider.domain.RiderFixture;
+import com.woowacourse.pelotonbackend.rider.presentation.dto.RiderCreateRequest;
 
 @WebMvcTest(controllers = RiderController.class)
 public class RiderControllerTest {
@@ -42,14 +42,25 @@ public class RiderControllerTest {
     @DisplayName("Rider 생성 요청에 대해서 rider id를 반환한다.")
     @Test
     void createRiderTest() throws Exception {
-        given(riderService.create(any())).willReturn(1L);
+        given(riderService.create(any(RiderCreateRequest.class)))
+            .willReturn(RiderFixture.TEST_RIDER_ID);
 
-        this.mockMvc.perform(post("/api/riders")
+        this.mockMvc.perform(post(RiderFixture.TEST_RIDER_URI)
             .content(objectMapper.writeValueAsBytes(RiderFixture.createMockRequest()))
             .contentType(MediaType.APPLICATION_JSON)
         )
             .andExpect(status().isCreated())
-            .andExpect(header().exists("Location"));
+            .andExpect(header().stringValues("Location", RiderFixture.TEST_RIDER_URI + RiderFixture.TEST_RIDER_ID));
+    }
+
+    @DisplayName("잘못된 Rider 생성 요청에 대해서 Exception을 반환한다.")
+    @Test
+    void createRiderTest2() throws Exception {
+        this.mockMvc.perform(post(RiderFixture.TEST_RIDER_URI)
+            .content(objectMapper.writeValueAsBytes(RiderFixture.createBadMockRequest()))
+            .contentType(MediaType.APPLICATION_JSON)
+        )
+            .andExpect(status().isBadRequest());
     }
 }
 

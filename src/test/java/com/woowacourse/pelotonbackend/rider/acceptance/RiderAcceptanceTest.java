@@ -8,6 +8,7 @@ import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 
+import com.woowacourse.pelotonbackend.rider.domain.RiderFixture;
 import com.woowacourse.pelotonbackend.rider.presentation.dto.RiderCreateRequest;
 import io.restassured.RestAssured;
 import io.restassured.specification.RequestSpecification;
@@ -38,19 +39,15 @@ public class RiderAcceptanceTest {
     @DisplayName("Rider 관리 기능")
     @Test
     void manageRider() {
-        final Long memberId = 1L;
-        final Long raceId = 1L;
-
-        final RiderCreateRequest riderCreateRequest = new RiderCreateRequest(memberId, raceId);
+        final RiderCreateRequest mockRequest = RiderFixture.createMockRequest();
 
         given()
-            .body(riderCreateRequest)
+            .body(mockRequest)
             .contentType(MediaType.APPLICATION_JSON_VALUE)
-            .accept(MediaType.APPLICATION_JSON_VALUE)
-            .when().post("/api/riders")
+            .when().post(RiderFixture.TEST_RIDER_URI)
             .then()
             .log().all()
             .statusCode(HttpStatus.CREATED.value())
-            .header("Location", "/api/riders/1");
+            .header("Location", RiderFixture.TEST_RIDER_URI + RiderFixture.TEST_RIDER_ID);
     }
 }
