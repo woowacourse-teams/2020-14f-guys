@@ -1,4 +1,6 @@
-package com.woowacourse.pelotonbackend.race.acceptance;
+package com.woowacourse.pelotonbackend.race;
+
+import static org.assertj.core.api.Assertions.*;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -10,6 +12,7 @@ import org.springframework.http.MediaType;
 
 import com.woowacourse.pelotonbackend.race.domain.RaceFixture;
 import com.woowacourse.pelotonbackend.race.presentation.RaceCreateRequest;
+import com.woowacourse.pelotonbackend.race.presentation.RaceRetrieveResponse;
 import io.restassured.RestAssured;
 import io.restassured.specification.RequestSpecification;
 
@@ -31,6 +34,7 @@ public class RaceAcceptanceTest {
     @Test
     void manageRace() {
         createRace();
+        retrieveRace();
     }
 
     void createRace() {
@@ -45,5 +49,20 @@ public class RaceAcceptanceTest {
             .log().all()
             .statusCode(HttpStatus.CREATED.value())
             .header("Location", "/api/races/1");
+    }
+
+    void retrieveRace() {
+        final RaceRetrieveResponse responseBody = given()
+            .when()
+            .get("/api/races/1")
+            .then()
+            .log().all()
+            .statusCode(HttpStatus.OK.value())
+            .extract()
+            .body()
+            .as(RaceRetrieveResponse.class);
+
+        assertThat(responseBody).isEqualToIgnoringGivenFields(RaceFixture.retrieveResponse(), "thumbnail",
+            "certificationExample");
     }
 }

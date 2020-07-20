@@ -1,11 +1,18 @@
 package com.woowacourse.pelotonbackend.race.application;
 
+import java.util.Optional;
+
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.woowacourse.pelotonbackend.race.domain.Race;
+import com.woowacourse.pelotonbackend.race.domain.RaceCategory;
 import com.woowacourse.pelotonbackend.race.domain.RaceRepository;
+import com.woowacourse.pelotonbackend.race.exception.NotExistRaceException;
 import com.woowacourse.pelotonbackend.race.presentation.RaceCreateRequest;
+import com.woowacourse.pelotonbackend.race.presentation.RaceRetrieveResponse;
+import com.woowacourse.pelotonbackend.support.RandomGenerator;
+import com.woowacourse.pelotonbackend.vo.ImageUrl;
 import lombok.AllArgsConstructor;
 
 @AllArgsConstructor
@@ -13,10 +20,22 @@ import lombok.AllArgsConstructor;
 @Transactional
 public class RaceService {
     private final RaceRepository raceRepository;
+    private final RandomGenerator randomGenerator;
 
     public Long create(final RaceCreateRequest request) {
-        final Race savedRace = raceRepository.save(request.toEntity());
+        final RaceCategory category = request.getCategory();
+        final ImageUrl randomCertification = category.getRandomCertification(randomGenerator);
+        final ImageUrl randomThumbnail = category.getRandomThumbnail(randomGenerator);
+        final Race savedRace = raceRepository.save(request.toEntity(randomCertification, randomThumbnail));
 
         return savedRace.getId();
+    }
+
+    public RaceRetrieveResponse retrieve(final Long raceId) {
+        final Optional<Race> raceOptional = raceRepository.findById(raceId);
+        if (!raceOptional.isPresent()) {
+            throw new NotExistRaceException(raceId);
+        }
+        return RaceRetrieveResponse.of(raceOptional.get());
     }
 }

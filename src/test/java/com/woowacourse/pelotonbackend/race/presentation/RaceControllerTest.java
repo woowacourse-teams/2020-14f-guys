@@ -1,5 +1,6 @@
 package com.woowacourse.pelotonbackend.race.presentation;
 
+import static org.assertj.core.api.Assertions.*;
 import static org.mockito.BDDMockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.*;
@@ -13,6 +14,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.filter.CharacterEncodingFilter;
@@ -42,7 +44,7 @@ class RaceControllerTest {
     @DisplayName("레이스 생성 요청에 정상적으로 응답한다.")
     @Test
     void createRace() throws Exception {
-        given(raceService.create(any())).willReturn(RaceFixture.createWithId().getId());
+        given(raceService.create(any())).willReturn(RaceFixture.createWithId(1L).getId());
 
         mockMvc.perform(post("/api/races")
             .contentType(MediaType.APPLICATION_JSON)
@@ -56,13 +58,34 @@ class RaceControllerTest {
     @DisplayName("잘못된 body 객체를 전달하는 경우, 예외를 발생시킨다.")
     @Test
     void createBadRequest() throws Exception {
-        given(raceService.create(any())).willReturn(RaceFixture.createWithId().getId());
-
         mockMvc.perform(post("/api/races")
             .contentType(MediaType.APPLICATION_JSON)
             .content(objectMapper.writeValueAsString(RaceFixture.createBadMockRequest()))
         )
-            .andExpect(status().isBadRequest())
-            .andDo(print());
+            .andExpect(status().isBadRequest());
+    }
+
+    @DisplayName("레이스 조회 요청에 정상적으로 응답한다.")
+    @Test
+    void retrieveRace() throws Exception {
+        final Long raceId = 1L;
+        given(raceService.retrieve(raceId)).willReturn(RaceFixture.retrieveResponse());
+
+        final MvcResult result = mockMvc.perform(get(String.format("/api/races/%d", raceId)))
+            .andExpect(status().isOk())
+            .andReturn();
+
+        final byte[] contentBytes = result.getResponse().getContentAsByteArray();
+        final RaceRetrieveResponse responseBody = objectMapper.readValue(contentBytes,
+            RaceRetrieveResponse.class);
+
+        assertThat(responseBody).isEqualToComparingFieldByField(RaceFixture.retrieveResponse());
+    }
+
+    @DisplayName("잘못된 레이스 조회 요청에 Bad Request로 응답한다.")
+    @Test
+    void retrieveBadRequest() throws Exception {
+        final String badRequestId = "bad";
+        mockMvc.perform(get(String.format("/api/races/%s", badRequestId))).andExpect(status().isBadRequest());
     }
 }

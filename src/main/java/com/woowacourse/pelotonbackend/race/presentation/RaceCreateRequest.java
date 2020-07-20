@@ -10,37 +10,42 @@ import com.woowacourse.pelotonbackend.race.domain.DateDuration;
 import com.woowacourse.pelotonbackend.race.domain.Race;
 import com.woowacourse.pelotonbackend.race.domain.RaceCategory;
 import com.woowacourse.pelotonbackend.vo.Cash;
+import com.woowacourse.pelotonbackend.vo.ImageUrl;
+import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 
-@AllArgsConstructor(onConstructor_ = {
+@AllArgsConstructor(access = AccessLevel.PRIVATE,
+    onConstructor_ = {
     @ConstructorProperties({"title", "description", "raceDuration", "category", "cash"})})
 @Builder
 @Getter
 public class RaceCreateRequest {
     @NotBlank
-    private String title;
+    private final String title;
 
     @NotBlank
-    private String description;
+    private final String description;
 
     @Valid
-    private DateDuration raceDuration;
+    private final DateDuration raceDuration;
 
     @NotNull
-    private RaceCategory category;
+    private final RaceCategory category;
 
     @Valid
-    private Cash cash;
+    private final Cash cash;
 
-    public Race toEntity() {
-        return Race.of(
-            title,
-            description,
-            raceDuration,
-            category,
-            cash
-        );
+    public Race toEntity(ImageUrl certification, ImageUrl thumbnail) {
+        return Race.builder()
+            .title(title)
+            .description(description)
+            .thumbnail(certification)
+            .certificationExample(thumbnail)
+            .raceDuration(raceDuration)
+            .category(category)
+            .entranceFee(cash)
+            .build();
     }
 }
