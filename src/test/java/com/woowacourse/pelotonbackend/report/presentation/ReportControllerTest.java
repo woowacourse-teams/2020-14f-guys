@@ -1,6 +1,6 @@
 package com.woowacourse.pelotonbackend.report.presentation;
 
-import static com.woowacourse.pelotonbackend.report.ReportAcceptanceTest.*;
+import static com.woowacourse.pelotonbackend.report.domain.ReportFixture.*;
 import static org.assertj.core.api.Assertions.*;
 import static org.mockito.BDDMockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -24,7 +24,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.woowacourse.pelotonbackend.report.application.ReportService;
 
 @WebMvcTest(controllers = ReportController.class)
-@AutoConfigureMockMvc
 class ReportControllerTest {
     @Autowired
     private ObjectMapper objectMapper;
