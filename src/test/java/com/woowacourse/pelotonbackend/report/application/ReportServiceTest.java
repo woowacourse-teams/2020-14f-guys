@@ -4,9 +4,6 @@ import static com.woowacourse.pelotonbackend.report.domain.ReportFixture.*;
 import static org.assertj.core.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
-import com.woowacourse.pelotonbackend.report.domain.Report;
-import com.woowacourse.pelotonbackend.report.domain.ReportFixture;
-import com.woowacourse.pelotonbackend.report.domain.ReportRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -14,7 +11,9 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import com.woowacourse.pelotonbackend.report.application.ReportService;
+import com.woowacourse.pelotonbackend.report.domain.Report;
+import com.woowacourse.pelotonbackend.report.domain.ReportFixture;
+import com.woowacourse.pelotonbackend.report.domain.ReportRepository;
 import com.woowacourse.pelotonbackend.report.exception.DuplicateReportFoundException;
 
 @ExtendWith(MockitoExtension.class)
@@ -36,8 +35,7 @@ class ReportServiceTest {
         when(reportRepository.existsByMemberIdAndCertificationId(MEMBER_ID, CERTIFICATION_ID)).thenReturn(false);
         when(reportRepository.save(any())).thenReturn(savedReport);
 
-        final Long reportId = reportService.createReport(CERTIFICATION_ID, MEMBER_ID,
-            createRequestContent());
+        final Long reportId = reportService.createReport(createRequestContent());
 
         assertThat(reportId).isEqualTo(savedReport.getId());
     }
@@ -48,7 +46,7 @@ class ReportServiceTest {
         when(reportRepository.existsByMemberIdAndCertificationId(MEMBER_ID, CERTIFICATION_ID)).thenReturn(true);
 
         assertThatThrownBy(() ->
-            reportService.createReport(CERTIFICATION_ID, MEMBER_ID, ReportFixture.createRequestContent()))
+            reportService.createReport(createRequestContent()))
             .isInstanceOf(DuplicateReportFoundException.class)
             .hasMessageMatching("Report\\(member id: [0-9]+, certification id: [0-9]+\\) already exists!");
     }
