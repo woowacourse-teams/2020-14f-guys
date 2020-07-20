@@ -31,7 +31,7 @@ public class MemberFixture {
             .build();
     }
 
-    public static Member member() {
+    public static Member memberWithId() {
         return Member.builder()
             .id(ID)
             .email(EMAIL)

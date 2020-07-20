@@ -34,7 +34,7 @@ class MemberServiceTest {
     @Test
     void createMember() {
         final MemberCreateRequest memberCreateRequest = MemberFixture.memberCreateRequest();
-        final Member persistMember = MemberFixture.member();
+        final Member persistMember = MemberFixture.memberWithId();
 
         when(memberRepository.save(any(Member.class))).thenReturn(persistMember);
 

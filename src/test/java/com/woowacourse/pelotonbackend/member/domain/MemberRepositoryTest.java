@@ -1,6 +1,5 @@
 package com.woowacourse.pelotonbackend.member.domain;
 
-import static com.woowacourse.pelotonbackend.member.domain.MemberFixture.*;
 import static org.assertj.core.api.AssertionsForClassTypes.*;
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -22,11 +21,8 @@ class MemberRepositoryTest {
         final Member persistMember = memberRepository.save(member);
 
         assertAll(
+            () -> assertThat(persistMember).isEqualToIgnoringNullFields(member),
             () -> assertThat(persistMember.getId()).isNotNull(),
-            () -> assertThat(persistMember.getEmail()).isEqualTo(EMAIL),
-            () -> assertThat(persistMember.getName()).isEqualTo(NAME),
-            () -> assertThat(persistMember.getCash()).isEqualTo(CASH),
-            () -> assertThat(persistMember.getRole()).isEqualTo(ROLE),
             () -> assertThat(persistMember.getCreatedAt()).isNotNull(),
             () -> assertThat(persistMember.getUpdatedAt()).isNotNull()
         );
