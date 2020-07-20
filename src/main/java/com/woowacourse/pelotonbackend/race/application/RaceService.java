@@ -1,7 +1,5 @@
 package com.woowacourse.pelotonbackend.race.application;
 
-import java.util.Optional;
-
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -31,11 +29,10 @@ public class RaceService {
         return savedRace.getId();
     }
 
+    @Transactional(readOnly = true)
     public RaceRetrieveResponse retrieve(final Long raceId) {
-        final Optional<Race> raceOptional = raceRepository.findById(raceId);
-        if (!raceOptional.isPresent()) {
-            throw new NotExistRaceException(raceId);
-        }
-        return RaceRetrieveResponse.of(raceOptional.get());
+        final Race race = raceRepository.findById(raceId).orElseThrow(() -> new NotExistRaceException(raceId));
+
+        return RaceRetrieveResponse.of(race);
     }
 }

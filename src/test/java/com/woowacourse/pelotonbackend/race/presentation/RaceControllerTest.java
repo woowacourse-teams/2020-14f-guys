@@ -86,6 +86,7 @@ class RaceControllerTest {
     @Test
     void retrieveBadRequest() throws Exception {
         final String badRequestId = "bad";
-        mockMvc.perform(get(String.format("/api/races/%s", badRequestId))).andExpect(status().isBadRequest());
+        mockMvc.perform(get(String.format("/api/races/%s", badRequestId)))
+            .andExpect(status().isBadRequest());
     }
 }

@@ -2,6 +2,8 @@ package com.woowacourse.pelotonbackend.race;
 
 import static org.assertj.core.api.Assertions.*;
 
+import java.util.regex.Pattern;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -30,17 +32,28 @@ public class RaceAcceptanceTest {
         return RestAssured.given().log().all();
     }
 
+    /*
+     * Feature: Race 관리
+     *
+     * Scenario: Race를 관리한다.
+     * Given: 생성할 Race의 title, description, category, total amount, duration이 주어진다.
+     * When: Race의 생성 요청을 보낸다.
+     * Then: 새로운 Race가 생성된다.
+     *
+     * When: 생성한 Race를 찾는 요청을 보낸다.
+     * Then: 해당 Race가 조회된다.
+     */
     @DisplayName("레이스를 관리한다.(생성, 조회, 수정, 삭제)")
     @Test
     void manageRace() {
-        createRace();
-        retrieveRace();
+        final String raceLocation = createRace();
+        retrieveRace(raceLocation);
     }
 
-    void createRace() {
+    String createRace() {
         final RaceCreateRequest request = RaceFixture.createMockRequest();
 
-        given()
+        final String location = given()
             .contentType(MediaType.APPLICATION_JSON_VALUE)
             .body(request)
             .when()
@@ -48,13 +61,19 @@ public class RaceAcceptanceTest {
             .then()
             .log().all()
             .statusCode(HttpStatus.CREATED.value())
-            .header("Location", "/api/races/1");
+            .header("Location", "/api/races/1")
+            .extract()
+            .header("Location");
+
+        assertThat(location).containsPattern(Pattern.compile("/api/races/[0-9]+"));
+
+        return location;
     }
 
-    void retrieveRace() {
+    void retrieveRace(final String resourceLocation) {
         final RaceRetrieveResponse responseBody = given()
             .when()
-            .get("/api/races/1")
+            .get(resourceLocation)
             .then()
             .log().all()
             .statusCode(HttpStatus.OK.value())

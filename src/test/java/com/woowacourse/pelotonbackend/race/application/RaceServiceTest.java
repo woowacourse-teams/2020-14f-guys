@@ -36,9 +36,9 @@ public class RaceServiceTest {
         raceService = new RaceService(raceRepository, randomGenerator);
     }
 
-    @DisplayName("정상적으로 save 메서드가 호출되는지 테스트합니다.")
+    @DisplayName("Race 생성이 정상적으로 되는지 확인합니다.")
     @Test
-    void save() {
+    void create() {
         final Race race = RaceFixture.createWithoutId();
         final Race savedRace = RaceFixture.createMockRequest()
             .toEntity(RaceFixture.TEST_CERTIFICATION_URL, RaceFixture.TEST_THUMBNAIL_URL);
@@ -52,9 +52,9 @@ public class RaceServiceTest {
         assertThat(raceId).isEqualTo(race.getId());
     }
 
-    @DisplayName("find 메서드가 race를 리턴하는지 테스트합니다.")
+    @DisplayName("retrieve 메서드가 race를 리턴하는지 테스트합니다.")
     @Test
-    void find() {
+    void retrieve() {
         final Race race = RaceFixture.createWithUrls(TIME.getCertifications().get(0), TIME.getThumbnails().get(0));
         given(raceRepository.findById(race.getId())).willReturn(Optional.of(race));
 
@@ -65,11 +65,12 @@ public class RaceServiceTest {
 
     @DisplayName("존재하지 않는 Race를 찾을 때, 예외를 던지는지 테스트합니다.")
     @Test
-    void findNotExist() {
+    void retrieveNotExist() {
         given(raceRepository.findById(anyLong())).willReturn(Optional.empty());
 
-        assertThatThrownBy(() -> raceService.retrieve(100L))
+        final long notExistRaceId = 100L;
+        assertThatThrownBy(() -> raceService.retrieve(notExistRaceId))
             .isInstanceOf(NotExistRaceException.class)
-            .hasMessage(String.format("Race(id: %d) is not exists", 100L));
+            .hasMessage(String.format("Race(id: %d) is not exists", notExistRaceId));
     }
 }
