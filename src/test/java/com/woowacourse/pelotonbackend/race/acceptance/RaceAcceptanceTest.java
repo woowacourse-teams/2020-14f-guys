@@ -1,4 +1,4 @@
-package com.woowacourse.pelotonbackend.acceptance;
+package com.woowacourse.pelotonbackend.race.acceptance;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
