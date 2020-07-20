@@ -1,6 +1,5 @@
 package com.woowacourse.pelotonbackend.report.presentation;
 
-import static com.woowacourse.pelotonbackend.report.domain.ReportFixture.*;
 import static org.assertj.core.api.Assertions.*;
 import static org.mockito.BDDMockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -44,11 +43,10 @@ class ReportControllerTest {
     @Test
     void createReport() throws Exception {
         final Long createdReportId = 10L;
-        when(reportService.createReport(eq(CERTIFICATION_ID), eq(MEMBER_ID), any(ReportCreateContent.class)))
-            .thenReturn(createdReportId);
+        when(reportService.createReport(any(ReportCreateContent.class))).thenReturn(createdReportId);
 
         MvcResult mvcResult = mockMvc.perform(
-            post("/api/reports/certifications/{certificationId}/members/{reportMemberId}", CERTIFICATION_ID, MEMBER_ID)
+            post("/api/reports")
                 .content(objectMapper.writeValueAsBytes(ReportFixture.createRequestContent()))
                 .contentType(MediaType.APPLICATION_JSON))
             .andExpect(status().isCreated())
