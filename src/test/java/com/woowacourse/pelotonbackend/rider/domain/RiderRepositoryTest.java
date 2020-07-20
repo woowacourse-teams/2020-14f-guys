@@ -10,7 +10,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.jdbc.core.mapping.AggregateReference;
 
 @SpringBootTest
-class RiderRepositoryTest {
+public class RiderRepositoryTest {
     @Autowired
     private RiderRepository riderRepository;
 
