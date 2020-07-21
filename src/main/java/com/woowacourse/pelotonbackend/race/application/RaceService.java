@@ -45,4 +45,8 @@ public class RaceService {
         final Race raceUpdated = request.toEntity(race);
         raceRepository.save(raceUpdated);
     }
+
+    public void delete(final Long raceId) {
+        raceRepository.deleteById(raceId);
+    }
 }

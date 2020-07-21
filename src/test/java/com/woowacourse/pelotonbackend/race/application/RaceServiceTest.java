@@ -98,4 +98,13 @@ public class RaceServiceTest {
             .isInstanceOf(NotExistRaceException.class)
             .hasMessage(String.format("Race(id: %d) is not exists", notExistRaceId));
     }
+
+    @DisplayName("Race를 삭제할 때, 삭제 메서드를 부르는지 테스트합니다.")
+    @Test
+    void delete() {
+        final long raceId = 3L;
+        raceService.delete(raceId);
+
+        verify(raceRepository).deleteById(raceId);
+    }
 }

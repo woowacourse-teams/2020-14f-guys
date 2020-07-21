@@ -118,4 +118,13 @@ class RaceControllerTest {
         mockMvc.perform(put(String.format("%s/%d", RACE_API_URL, raceId)))
             .andExpect(status().isBadRequest());
     }
+
+    @DisplayName("레이스 삭제 요청에 정상적으로 응답한다.")
+    @Test
+    void deleteRace() throws Exception {
+        final Long raceId = 11L;
+
+        mockMvc.perform(delete(String.format("/api/races/%d", raceId)))
+            .andExpect(status().isNoContent());
+    }
 }

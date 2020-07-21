@@ -18,6 +18,7 @@ import com.woowacourse.pelotonbackend.race.presentation.RaceCreateRequest;
 import com.woowacourse.pelotonbackend.race.presentation.RaceRetrieveResponse;
 import com.woowacourse.pelotonbackend.race.presentation.RaceUpdateRequest;
 import io.restassured.RestAssured;
+import io.restassured.response.ValidatableResponse;
 import io.restassured.specification.RequestSpecification;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -46,8 +47,11 @@ public class RaceAcceptanceTest {
      * When: 생성한 Race를 찾는 요청을 보낸다.
      * Then: 해당 Race가 조회된다.
      *
-     * When: 생성한 Race의 업데이트 요청을 보낸다..
-     * Then: 해당 Race가 업데이트 된다.
+     * When: 생성한 Race의 업데이트 요청을 보낸다.
+     * Then: 해당 Race가 업데이트된다.
+     *
+     * When: 생성한 Race의 삭제 요청을 보낸다.
+     * Then: 해당 Race가 삭제된다.
      */
     @DisplayName("레이스를 관리한다.(생성, 조회, 수정, 삭제)")
     @Test
@@ -58,6 +62,9 @@ public class RaceAcceptanceTest {
 
         updateRace(raceLocation);
         retrieveRaceAndCompareTo(raceLocation, RaceFixture.retrieveUpdatedResponse());
+
+        deleteRace(raceLocation);
+        // retrieveRaceNotFound(raceLocation);
     }
 
     String createRace() {
@@ -80,17 +87,21 @@ public class RaceAcceptanceTest {
     }
 
     void retrieveRaceAndCompareTo(final String resourceLocation, final RaceRetrieveResponse expected) {
-        final RaceRetrieveResponse responseBody = given()
-            .when()
-            .get(resourceLocation)
-            .then()
-            .log().all()
-            .statusCode(HttpStatus.OK.value())
+        final RaceRetrieveResponse responseBody = retrieveRaceWithStatusCode(resourceLocation, HttpStatus.OK.value())
             .extract()
             .body()
             .as(RaceRetrieveResponse.class);
 
         assertThat(responseBody).isEqualToIgnoringGivenFields(expected, "thumbnail", "certificationExample");
+    }
+
+    private ValidatableResponse retrieveRaceWithStatusCode(final String resourceLocation, final int statusCode) {
+        return given()
+            .when()
+            .get(resourceLocation)
+            .then()
+            .log().all()
+            .statusCode(statusCode);
     }
 
     void updateRace(final String resourceLocation) {
@@ -104,5 +115,18 @@ public class RaceAcceptanceTest {
             .then()
             .log().all()
             .statusCode(HttpStatus.OK.value());
+    }
+
+    void deleteRace(final String resourceLocation) {
+        given()
+            .when()
+            .delete(resourceLocation)
+            .then()
+            .log().all()
+            .statusCode(HttpStatus.NO_CONTENT.value());
+    }
+
+    void retrieveRaceNotFound(final String resourceLocation) {
+        retrieveRaceWithStatusCode(resourceLocation, HttpStatus.NOT_FOUND.value());
     }
 }
