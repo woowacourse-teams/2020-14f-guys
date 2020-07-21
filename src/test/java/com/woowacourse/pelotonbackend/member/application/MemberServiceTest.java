@@ -5,6 +5,10 @@ import static org.assertj.core.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
+import java.util.Arrays;
+import java.util.List;
+import java.util.Optional;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -17,6 +21,7 @@ import com.woowacourse.pelotonbackend.member.domain.MemberFixture;
 import com.woowacourse.pelotonbackend.member.domain.MemberRepository;
 import com.woowacourse.pelotonbackend.member.presentation.dto.MemberCreateRequest;
 import com.woowacourse.pelotonbackend.member.presentation.dto.MemberResponse;
+import com.woowacourse.pelotonbackend.member.presentation.dto.MemberResponses;
 
 @ExtendWith(MockitoExtension.class)
 class MemberServiceTest {
@@ -49,4 +54,44 @@ class MemberServiceTest {
         );
     }
 
+    @DisplayName("회원을 조회한다.")
+    @Test
+    void findMember() {
+        final Member member = memberWithId();
+        when(memberRepository.findById(anyLong())).thenReturn(Optional.of(member));
+
+        final MemberResponse response = memberService.findMember(ID);
+
+        assertAll(
+            () -> assertThat(response.getId()).isEqualTo(member.getId()),
+            () -> assertThat(response.getName()).isEqualTo(member.getName()),
+            () -> assertThat(response.getEmail()).isEqualTo(member.getEmail()),
+            () -> assertThat(response.getCash()).isEqualTo(member.getCash()),
+            () -> assertThat(response.getRole()).isEqualTo(member.getRole())
+        );
+    }
+
+    @DisplayName("회원의 ID가 존재하지 않는 경우 예외를 반환한다.")
+    @Test
+    void notFoundMember() {
+        when(memberRepository.findById(anyLong())).thenReturn(Optional.empty());
+
+        assertThatThrownBy(() -> memberService.findMember(ID))
+            .isInstanceOf(IllegalArgumentException.class);
+    }
+
+    @DisplayName("모든 멤버를 조회한다.")
+    @Test
+    void findAll() {
+        final List<Member> members = Arrays.asList(MemberFixture.memberWithId(), MemberFixture.memberOtherWithId());
+        when(memberRepository.findAll()).thenReturn(members);
+
+        final MemberResponses memberResponses = memberService.findAll();
+
+        assertAll(
+            () -> assertThat(memberResponses.getResponses()).hasSize(members.size()),
+            () -> assertThat(memberResponses.getResponses().get(0).getId()).isEqualTo(members.get(0).getId()),
+            () -> assertThat(memberResponses.getResponses().get(1).getId()).isEqualTo(members.get(1).getId())
+        );
+    }
 }
