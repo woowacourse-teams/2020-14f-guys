@@ -51,11 +51,10 @@ class RaceControllerTest {
             .content(objectMapper.writeValueAsString(RaceFixture.createMockRequest()))
         )
             .andExpect(status().isCreated())
-            .andExpect(header().exists("Location"))
-            .andDo(print());
+            .andExpect(header().exists("Location"));
     }
 
-    @DisplayName("잘못된 body 객체를 전달하는 경우, 예외를 발생시킨다.")
+    @DisplayName("null인 필드가 있는 body 객체로 생성 요청을 하는 경우 예외를 발생시킨다.")
     @Test
     void createBadRequest() throws Exception {
         mockMvc.perform(post("/api/races")
@@ -68,7 +67,7 @@ class RaceControllerTest {
     @DisplayName("레이스 조회 요청에 정상적으로 응답한다.")
     @Test
     void retrieveRace() throws Exception {
-        final Long raceId = 1L;
+        final Long raceId = 11L;
         given(raceService.retrieve(raceId)).willReturn(RaceFixture.retrieveResponse());
 
         final MvcResult result = mockMvc.perform(get(String.format("/api/races/%d", raceId)))
@@ -87,6 +86,36 @@ class RaceControllerTest {
     void retrieveBadRequest() throws Exception {
         final String badRequestId = "bad";
         mockMvc.perform(get(String.format("/api/races/%s", badRequestId)))
+            .andExpect(status().isBadRequest());
+    }
+
+    @DisplayName("레이스 수정 요청에 정상적으로 응답한다.")
+    @Test
+    void updateRace() throws Exception {
+        final Long raceId = 11L;
+        given(raceService.update(eq(raceId), any(RaceUpdateRequest.class))).willReturn(raceId);
+
+        mockMvc.perform(put(String.format("/api/races/%d", raceId))
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(objectMapper.writeValueAsString(RaceFixture.updateRequest()))
+        )
+            .andExpect(status().isCreated())
+            .andExpect(header().string("Location", String.format("/api/races/%d", raceId)));
+    }
+
+    @DisplayName("정수가 아닌 id로 수정 요청에 Bad Request로 응답한다.")
+    @Test
+    void updateBadIdRequest() throws Exception {
+        final String badRequestId = "bad";
+        mockMvc.perform(put(String.format("/api/races/%s", badRequestId)))
+            .andExpect(status().isBadRequest());
+    }
+
+    @DisplayName("body가 없는 수정 요청에 Bad Request로 응답한다.")
+    @Test
+    void updateNullBodyRequest() throws Exception {
+        final Long raceId = 1L;
+        mockMvc.perform(put(String.format("/api/races/%d", raceId)))
             .andExpect(status().isBadRequest());
     }
 }
