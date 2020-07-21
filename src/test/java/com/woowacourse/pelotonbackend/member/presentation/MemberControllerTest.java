@@ -27,13 +27,15 @@ import org.springframework.web.filter.CharacterEncodingFilter;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.woowacourse.pelotonbackend.member.application.MemberService;
 import com.woowacourse.pelotonbackend.member.domain.MemberFixture;
+import com.woowacourse.pelotonbackend.member.presentation.dto.MemberCashUpdateRequest;
 import com.woowacourse.pelotonbackend.member.presentation.dto.MemberCreateRequest;
+import com.woowacourse.pelotonbackend.member.presentation.dto.MemberNameUpdateRequest;
 import com.woowacourse.pelotonbackend.member.presentation.dto.MemberResponse;
 import com.woowacourse.pelotonbackend.member.presentation.dto.MemberResponses;
 
 @WebMvcTest(value = {MemberController.class})
 public class MemberControllerTest {
-    public static final String RESOURCE_URL = "/api/members";
+    public static final String RESOURCE_URL = "/api/members/";
     @Autowired
     private ObjectMapper objectMapper;
 
@@ -65,7 +67,7 @@ public class MemberControllerTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(request))
             .andExpect(status().isCreated())
-            .andExpect(header().string("location", String.format("/api/members/%d", ID)));
+            .andExpect(header().string("location", String.format("%s%d", RESOURCE_URL, ID)));
     }
 
     @DisplayName("회원을 조회한다")
@@ -75,7 +77,7 @@ public class MemberControllerTest {
         when(memberService.findMember(ID)).thenReturn(expectedResponse);
 
         final MvcResult mvcResult = mockMvc.perform(
-            get(String.format("%s/%d", RESOURCE_URL, ID))
+            get(String.format("%s%d", RESOURCE_URL, ID))
                 .accept(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk())
             .andReturn();
@@ -86,7 +88,7 @@ public class MemberControllerTest {
         assertThat(memberResponse).isEqualToComparingFieldByField(expectedResponse);
     }
 
-    @DisplayName("모든 회원을 조회한다.")
+    @DisplayName("모든 회원을 조회한다")
     @Test
     void findAllMember() throws Exception {
         final List<MemberResponse> source = Arrays.asList(memberResponse(), memberResponse());
@@ -107,5 +109,38 @@ public class MemberControllerTest {
             () -> assertThat(memberResponses.getResponses().get(0).getName()).isEqualTo(source.get(0).getName()),
             () -> assertThat(memberResponses.getResponses().get(1).getName()).isEqualTo(source.get(1).getName())
         );
+    }
+
+    @DisplayName("회원 이름을 수정한다")
+    @Test
+    void updateMemberName() throws Exception {
+        final MemberResponse expectedResponse = MemberFixture.memberResponse();
+        final MemberNameUpdateRequest memberNameUpdateRequest = MemberFixture.memberNameUpdateRequest();
+        when(memberService.updateName(anyLong(), any(MemberNameUpdateRequest.class))).thenReturn(expectedResponse);
+
+        final byte[] contents = objectMapper.writeValueAsBytes(memberNameUpdateRequest);
+
+        mockMvc.perform(patch(String.format("%s%d/name", RESOURCE_URL, ID))
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(contents)
+        )
+            .andExpect(status().isOk())
+            .andExpect(header().string("Location", String.format("%s%d", RESOURCE_URL, ID)));
+    }
+
+    @DisplayName("회원의 보유 캐시를 수정한다")
+    @Test
+    void updateMemberCash() throws Exception {
+        final MemberCashUpdateRequest cashUpdateRequest = memberCashUpdateRequest();
+        when(memberService.updateCash(anyLong(), any(MemberCashUpdateRequest.class))).thenReturn(MemberFixture.memberResponse());
+
+        final byte[] contents = objectMapper.writeValueAsBytes(cashUpdateRequest);
+
+        mockMvc.perform(patch(String.format("%s%d/cash", RESOURCE_URL, ID))
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(contents)
+        )
+            .andExpect(status().isOk())
+            .andExpect(header().string("Location", String.format("%s%d", RESOURCE_URL, ID)));
     }
 }

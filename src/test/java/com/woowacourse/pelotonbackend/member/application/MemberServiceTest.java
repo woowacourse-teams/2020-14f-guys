@@ -94,4 +94,36 @@ class MemberServiceTest {
             () -> assertThat(memberResponses.getResponses().get(1).getId()).isEqualTo(members.get(1).getId())
         );
     }
+
+    @DisplayName("회원 이름을 수정한다.")
+    @Test
+    void updateName() {
+        Member originMember = MemberFixture.memberWithId();
+        Member updatedMember = MemberFixture.memberNameUpdated();
+        when(memberRepository.findById(anyLong())).thenReturn(Optional.of(originMember));
+        when(memberRepository.save(any(Member.class))).thenReturn(updatedMember);
+
+        final MemberResponse memberResponse = memberService.updateName(ID, memberNameUpdateRequest());
+
+        assertAll(
+            () -> assertThat(memberResponse.getId()).isEqualTo(ID),
+            () -> assertThat(memberResponse.getName()).isEqualTo(memberNameUpdateRequest().getName())
+        );
+    }
+
+    @DisplayName("회원의 캐시를 수정한다")
+    @Test
+    void updateCash() {
+        Member originMember = MemberFixture.memberWithId();
+        Member updatedMember = MemberFixture.memberCashUpdated();
+        when(memberRepository.findById(anyLong())).thenReturn(Optional.of(originMember));
+        when(memberRepository.save(any(Member.class))).thenReturn(updatedMember);
+
+        final MemberResponse memberResponse = memberService.updateCash(ID, memberCashUpdateRequest());
+
+        assertAll(
+            () -> assertThat(memberResponse.getId()).isEqualTo(ID),
+            () -> assertThat(memberResponse.getCash()).isEqualTo(memberCashUpdateRequest().getCash())
+        );
+    }
 }

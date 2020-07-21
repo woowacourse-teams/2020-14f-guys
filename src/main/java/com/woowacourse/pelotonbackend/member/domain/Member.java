@@ -50,4 +50,28 @@ public class Member {
     @PastOrPresent
     @With(AccessLevel.PACKAGE)
     private final LocalDateTime updatedAt;
+
+    public Member update(final String name) {
+        return Member.builder()
+            .id(this.id)
+            .email(this.email)
+            .cash(this.cash)
+            .role(this.role)
+            .name(name)
+            .createdAt(this.createdAt)
+            .updatedAt(LocalDateTime.now())
+            .build();
+    }
+
+    public Member update(final Cash cash) {
+        return Member.builder()
+            .id(this.id)
+            .email(this.email)
+            .cash(cash)
+            .role(this.role)
+            .name(this.name)
+            .createdAt(this.createdAt)
+            .updatedAt(LocalDateTime.now())
+            .build();
+    }
 }

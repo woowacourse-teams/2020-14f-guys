@@ -18,7 +18,9 @@ import org.springframework.http.MediaType;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.woowacourse.pelotonbackend.member.domain.MemberFixture;
+import com.woowacourse.pelotonbackend.member.presentation.dto.MemberCashUpdateRequest;
 import com.woowacourse.pelotonbackend.member.presentation.dto.MemberCreateRequest;
+import com.woowacourse.pelotonbackend.member.presentation.dto.MemberNameUpdateRequest;
 import com.woowacourse.pelotonbackend.member.presentation.dto.MemberResponse;
 import com.woowacourse.pelotonbackend.member.presentation.dto.MemberResponses;
 import io.restassured.RestAssured;
@@ -63,12 +65,12 @@ public class MemberAcceptanceTest {
     @Test
     void manageMember() throws JsonProcessingException {
         final MemberCreateRequest memberRequest = memberCreateRequest();
-        final Long id = createMember(memberRequest);
+        final Long createMemberId = createMember(memberRequest);
 
-        final MemberResponse memberResponse = findMember(id);
+        final MemberResponse memberResponse = findMember(createMemberId);
 
         assertAll(
-            () -> assertThat(id).isEqualTo(memberResponse.getId()),
+            () -> assertThat(createMemberId).isEqualTo(memberResponse.getId()),
             () -> assertThat(memberRequest.getEmail()).isEqualTo(memberResponse.getEmail()),
             () -> assertThat(memberRequest.getName()).isEqualTo(memberResponse.getName()),
             () -> assertThat(memberRequest.getCash()).isEqualTo(memberResponse.getCash()),
@@ -78,7 +80,7 @@ public class MemberAcceptanceTest {
         final MemberCreateRequest memberOtherRequest = MemberFixture.memberCreateOtherRequest();
         createMember(memberOtherRequest);
 
-        final List<MemberResponse> memberResponses = findAll().getResponses();
+        final List<MemberResponse> memberResponses = findAllMember().getResponses();
 
         assertAll(
             () -> assertThat(memberResponses.size()).isEqualTo(2),
@@ -93,9 +95,64 @@ public class MemberAcceptanceTest {
             () -> assertThat(memberOtherRequest.getCash()).isEqualTo(memberResponses.get(1).getCash()),
             () -> assertThat(memberOtherRequest.getRole()).isEqualTo(memberResponses.get(1).getRole())
         );
+
+        final MemberNameUpdateRequest nameUpdatedRequest = MemberFixture.memberNameUpdateRequest();
+
+        final Long updatedMemberId = updateMemberName(memberResponse.getId(), nameUpdatedRequest);
+
+        final MemberResponse updatedResponse = findMember(updatedMemberId);
+
+        assertAll(
+            () -> assertThat(updatedResponse.getName()).isEqualTo(nameUpdatedRequest.getName()),
+            () -> assertThat(updatedResponse.getId()).isEqualTo(memberResponse.getId()),
+            () -> assertThat(updatedResponse.getEmail()).isEqualTo(memberResponse.getEmail()),
+            () -> assertThat(updatedResponse.getCash()).isEqualTo(memberResponse.getCash()),
+            () -> assertThat(updatedResponse.getRole()).isEqualTo(memberResponse.getRole())
+        );
+
+        final MemberCashUpdateRequest cashUpdatedRequest = MemberFixture.memberCashUpdateRequest();
+
+        final Long cashUpdatedMemberId = updateMemberCash(memberResponse.getId(), cashUpdatedRequest);
+
+        final MemberResponse cashUpdatedResponse = findMember(cashUpdatedMemberId);
+
+        assertAll(
+            () -> assertThat(cashUpdatedResponse.getCash()).isEqualTo(cashUpdatedRequest.getCash()),
+            () -> assertThat(cashUpdatedResponse.getId()).isEqualTo(memberResponse.getId())
+        );
     }
 
-    private MemberResponses findAll() {
+    private Long updateMemberCash(final Long id, final MemberCashUpdateRequest cashUpdatedRequest) {
+        final String location = given()
+            .contentType(MediaType.APPLICATION_JSON_VALUE)
+            .body(cashUpdatedRequest)
+            .when()
+            .patch(String.format("%s%d/cash", RESOURCE_URL, id))
+            .then()
+            .log().all()
+            .statusCode(HttpStatus.OK.value())
+            .extract()
+            .header("Location");
+
+        return Long.parseLong(location.substring(RESOURCE_URL.length()));
+    }
+
+    private Long updateMemberName(final Long id, final MemberNameUpdateRequest updateRequest) {
+        final String location = given()
+            .contentType(MediaType.APPLICATION_JSON_VALUE)
+            .body(updateRequest)
+            .when()
+            .patch(String.format("%s%d/name", RESOURCE_URL, id))
+            .then()
+            .log().all()
+            .statusCode(HttpStatus.OK.value())
+            .extract()
+            .header("Location");
+
+        return Long.parseLong(location.substring(RESOURCE_URL.length()));
+    }
+
+    private MemberResponses findAllMember() {
         return given()
             .accept(MediaType.APPLICATION_JSON_VALUE)
             .when()
