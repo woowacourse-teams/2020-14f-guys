@@ -3,9 +3,9 @@ package com.woowacourse.pelotonbackend.race.domain;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
-import com.woowacourse.pelotonbackend.race.presentation.RaceCreateRequest;
-import com.woowacourse.pelotonbackend.race.presentation.RaceRetrieveResponse;
-import com.woowacourse.pelotonbackend.race.presentation.RaceUpdateRequest;
+import com.woowacourse.pelotonbackend.race.presentation.dto.RaceCreateRequest;
+import com.woowacourse.pelotonbackend.race.presentation.dto.RaceRetrieveResponse;
+import com.woowacourse.pelotonbackend.race.presentation.dto.RaceUpdateRequest;
 import com.woowacourse.pelotonbackend.vo.Cash;
 import com.woowacourse.pelotonbackend.vo.ImageUrl;
 

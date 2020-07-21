@@ -18,8 +18,8 @@ import com.woowacourse.pelotonbackend.race.domain.RaceCategory;
 import com.woowacourse.pelotonbackend.race.domain.RaceFixture;
 import com.woowacourse.pelotonbackend.race.domain.RaceRepository;
 import com.woowacourse.pelotonbackend.race.exception.NotExistRaceException;
-import com.woowacourse.pelotonbackend.race.presentation.RaceRetrieveResponse;
-import com.woowacourse.pelotonbackend.race.presentation.RaceUpdateRequest;
+import com.woowacourse.pelotonbackend.race.presentation.dto.RaceRetrieveResponse;
+import com.woowacourse.pelotonbackend.race.presentation.dto.RaceUpdateRequest;
 import com.woowacourse.pelotonbackend.support.RandomGenerator;
 
 @ExtendWith(MockitoExtension.class)

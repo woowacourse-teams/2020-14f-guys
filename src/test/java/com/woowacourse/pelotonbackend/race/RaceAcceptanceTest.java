@@ -14,9 +14,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 
 import com.woowacourse.pelotonbackend.race.domain.RaceFixture;
-import com.woowacourse.pelotonbackend.race.presentation.RaceCreateRequest;
-import com.woowacourse.pelotonbackend.race.presentation.RaceRetrieveResponse;
-import com.woowacourse.pelotonbackend.race.presentation.RaceUpdateRequest;
+import com.woowacourse.pelotonbackend.race.presentation.dto.RaceCreateRequest;
+import com.woowacourse.pelotonbackend.race.presentation.dto.RaceRetrieveResponse;
+import com.woowacourse.pelotonbackend.race.presentation.dto.RaceUpdateRequest;
 import io.restassured.RestAssured;
 import io.restassured.response.ValidatableResponse;
 import io.restassured.specification.RequestSpecification;
@@ -64,7 +64,7 @@ public class RaceAcceptanceTest {
         retrieveRaceAndCompareTo(raceLocation, RaceFixture.retrieveUpdatedResponse());
 
         deleteRace(raceLocation);
-        // retrieveRaceNotFound(raceLocation);
+        retrieveRaceNotFound(raceLocation);
     }
 
     String createRace() {

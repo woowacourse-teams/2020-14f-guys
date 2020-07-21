@@ -1,4 +1,4 @@
-package com.woowacourse.pelotonbackend.race.presentation;
+package com.woowacourse.pelotonbackend.race.presentation.dto;
 
 import java.beans.ConstructorProperties;
 import java.util.Objects;
