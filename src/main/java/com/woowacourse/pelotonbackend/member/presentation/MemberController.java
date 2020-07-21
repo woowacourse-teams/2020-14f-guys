@@ -5,6 +5,7 @@ import java.net.URI;
 import javax.validation.Valid;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -62,5 +63,17 @@ public class MemberController {
         return ResponseEntity.ok()
             .header("Location", String.format("/api/members/%d", memberResponse.getId()))
             .build();
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> delete(@PathVariable Long id) {
+        memberService.deleteById(id);
+        return ResponseEntity.noContent().build();
+    }
+
+    @DeleteMapping
+    public ResponseEntity<Void> deleteAll() {
+        memberService.deleteAll();
+        return ResponseEntity.noContent().build();
     }
 }

@@ -10,65 +10,39 @@ import com.woowacourse.pelotonbackend.vo.Cash;
 
 public class MemberFixture {
     public static final String EMAIL = "jj@woowa.com";
-    public static final String OTHER_EMAIL = "kyle@woowa.com";
+    public static final String EMAIL2 = "kyle@woowa.com";
+    public static final String EMAIL3 = "dd@woowa.com";
     public static final String NAME = "jinju";
-    public static final String OTHER_NAME = "kyle";
+    public static final String NAME2 = "kyle";
+    public static final String NAME3 = "dd";
     public static final Cash CASH = new Cash(BigDecimal.ONE);
     private static final Cash UPDATE_CASH = new Cash(BigDecimal.TEN);
     public static final Role ROLE = Role.MEMBER;
     public static final Long ID = 1L;
-    public static final Long OTHER_ID = 2L;
+    public static final Long ID2 = 2L;
     public static final String UPDATE_NAME = "blbi";
 
-    public static MemberCreateRequest memberCreateRequest() {
+    public static MemberCreateRequest createRequest(final String email, final String name) {
         return MemberCreateRequest.builder()
-            .email(EMAIL)
-            .name(NAME)
+            .email(email)
+            .name(name)
             .cash(CASH)
             .role(ROLE)
             .build();
     }
 
-    public static MemberCreateRequest memberCreateOtherRequest() {
-        return MemberCreateRequest.builder()
-            .email(OTHER_EMAIL)
-            .name(OTHER_NAME)
-            .cash(CASH)
-            .role(ROLE)
-            .build();
-    }
-
-    public static Member memberWithoutId() {
+    public static Member createWithoutId(final String email, final String name) {
         return Member.builder()
-            .email(EMAIL)
-            .name(NAME)
+            .email(email)
+            .name(name)
             .cash(CASH)
             .role(ROLE)
             .build();
     }
 
-    public static Member memberOtherWithoutId() {
+    public static Member createWithId(final Long id) {
         return Member.builder()
-            .email(OTHER_EMAIL)
-            .name(OTHER_NAME)
-            .cash(CASH)
-            .role(ROLE)
-            .build();
-    }
-
-    public static Member memberWithId() {
-        return Member.builder()
-            .id(ID)
-            .email(EMAIL)
-            .name(NAME)
-            .cash(CASH)
-            .role(ROLE)
-            .build();
-    }
-
-    public static Member memberOtherWithId() {
-        return Member.builder()
-            .id(OTHER_ID)
+            .id(id)
             .email(EMAIL)
             .name(NAME)
             .cash(CASH)
@@ -106,13 +80,13 @@ public class MemberFixture {
             .build();
     }
 
-    public static MemberNameUpdateRequest memberNameUpdateRequest() {
+    public static MemberNameUpdateRequest createNameUpdateRequest() {
         return MemberNameUpdateRequest.builder()
             .name(UPDATE_NAME)
             .build();
     }
 
-    public static MemberCashUpdateRequest memberCashUpdateRequest() {
+    public static MemberCashUpdateRequest createCashUpdateRequest() {
         return MemberCashUpdateRequest.builder()
             .cash(UPDATE_CASH)
             .build();

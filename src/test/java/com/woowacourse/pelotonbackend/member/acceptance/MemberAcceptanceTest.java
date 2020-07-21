@@ -64,7 +64,7 @@ public class MemberAcceptanceTest {
     @DisplayName("회원을 관리하는 기능")
     @Test
     void manageMember() throws JsonProcessingException {
-        final MemberCreateRequest memberRequest = memberCreateRequest();
+        final MemberCreateRequest memberRequest = createRequest(EMAIL, NAME);
         final Long createMemberId = createMember(memberRequest);
 
         final MemberResponse memberResponse = findMember(createMemberId);
@@ -77,7 +77,7 @@ public class MemberAcceptanceTest {
             () -> assertThat(memberRequest.getRole()).isEqualTo(memberResponse.getRole())
         );
 
-        final MemberCreateRequest memberOtherRequest = MemberFixture.memberCreateOtherRequest();
+        final MemberCreateRequest memberOtherRequest = MemberFixture.createRequest(EMAIL2, NAME2);
         createMember(memberOtherRequest);
 
         final List<MemberResponse> memberResponses = findAllMember().getResponses();
@@ -96,7 +96,7 @@ public class MemberAcceptanceTest {
             () -> assertThat(memberOtherRequest.getRole()).isEqualTo(memberResponses.get(1).getRole())
         );
 
-        final MemberNameUpdateRequest nameUpdatedRequest = MemberFixture.memberNameUpdateRequest();
+        final MemberNameUpdateRequest nameUpdatedRequest = MemberFixture.createNameUpdateRequest();
 
         final Long updatedMemberId = updateMemberName(memberResponse.getId(), nameUpdatedRequest);
 
@@ -110,7 +110,7 @@ public class MemberAcceptanceTest {
             () -> assertThat(updatedResponse.getRole()).isEqualTo(memberResponse.getRole())
         );
 
-        final MemberCashUpdateRequest cashUpdatedRequest = MemberFixture.memberCashUpdateRequest();
+        final MemberCashUpdateRequest cashUpdatedRequest = MemberFixture.createCashUpdateRequest();
 
         final Long cashUpdatedMemberId = updateMemberCash(memberResponse.getId(), cashUpdatedRequest);
 
@@ -120,6 +120,34 @@ public class MemberAcceptanceTest {
             () -> assertThat(cashUpdatedResponse.getCash()).isEqualTo(cashUpdatedRequest.getCash()),
             () -> assertThat(cashUpdatedResponse.getId()).isEqualTo(memberResponse.getId())
         );
+
+        createMember(MemberFixture.createRequest(EMAIL3, NAME3));
+
+        deleteMember(memberResponse.getId());
+        final MemberResponses responseAfterDelete = findAllMember();
+        assertThat(responseAfterDelete.getResponses()).hasSize(2);
+
+        deleteAllMember();
+        final MemberResponses responseAfterDeleteAll = findAllMember();
+        assertThat(responseAfterDeleteAll.getResponses()).hasSize(0);
+    }
+
+    private void deleteAllMember() {
+        given()
+            .when()
+            .delete(RESOURCE_URL)
+            .then()
+            .log().all()
+            .statusCode(HttpStatus.NO_CONTENT.value());
+    }
+
+    private void deleteMember(final Long id) {
+        given()
+            .when()
+            .delete(String.format("%s%d", RESOURCE_URL, id))
+            .then()
+            .log().all()
+            .statusCode(HttpStatus.NO_CONTENT.value());
     }
 
     private Long updateMemberCash(final Long id, final MemberCashUpdateRequest cashUpdatedRequest) {

@@ -1,6 +1,7 @@
 package com.woowacourse.pelotonbackend.member.domain;
 
 
+import static com.woowacourse.pelotonbackend.member.domain.MemberFixture.*;
 import static org.assertj.core.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -21,7 +22,7 @@ class MemberRepositoryTest {
     @DisplayName("Member 객체가 DB에 잘 저장되는지 확인")
     @Test
     void saveMember() {
-        final Member member = MemberFixture.memberWithoutId();
+        final Member member = MemberFixture.createWithoutId(EMAIL, NAME);
 
         final Member persistMember = memberRepository.save(member);
 
@@ -36,8 +37,8 @@ class MemberRepositoryTest {
     @DisplayName("모든 멤버를 리스트로 반환한다.")
     @Test
     void findAll() {
-        final Member member = MemberFixture.memberWithoutId();
-        final Member otherMember = MemberFixture.memberOtherWithoutId();
+        final Member member = MemberFixture.createWithoutId(EMAIL, NAME);
+        final Member otherMember = MemberFixture.createWithoutId(EMAIL2, NAME2);
 
         final Member savedMember = memberRepository.save(member);
         final Member savedOtherMember = memberRepository.save(otherMember);

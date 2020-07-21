@@ -2,6 +2,8 @@ package com.woowacourse.pelotonbackend.member.presentation.dto;
 
 import java.beans.ConstructorProperties;
 
+import javax.validation.constraints.NotBlank;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -10,5 +12,6 @@ import lombok.Getter;
 @Builder
 @Getter
 public class MemberNameUpdateRequest {
+    @NotBlank
     private final String name;
 }

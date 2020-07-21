@@ -1,6 +1,7 @@
 package com.woowacourse.pelotonbackend.member.application;
 
 import java.util.List;
+import java.util.Objects;
 
 import javax.validation.Valid;
 
@@ -26,7 +27,7 @@ public class MemberService {
         return MemberResponse.from(persistMember);
     }
 
-    public MemberResponse findMember(final long id) {
+    public MemberResponse findMember(final Long id) {
         final Member member = memberRepository.findById(id)
             .orElseThrow(IllegalArgumentException::new);
         return MemberResponse.from(member);
@@ -38,7 +39,7 @@ public class MemberService {
         return MemberResponses.from(members);
     }
 
-    public MemberResponse updateName(final long id, final MemberNameUpdateRequest request) {
+    public MemberResponse updateName(final Long id, final MemberNameUpdateRequest request) {
         final Member member = memberRepository.findById(id).orElseThrow(IllegalArgumentException::new);
         final Member updatedMember = member.update(request.getName());
         final Member persist = memberRepository.save(updatedMember);
@@ -46,11 +47,27 @@ public class MemberService {
         return MemberResponse.from(persist);
     }
 
-    public MemberResponse updateCash(final long id, final MemberCashUpdateRequest request) {
+    public MemberResponse updateCash(final Long id, final MemberCashUpdateRequest request) {
         final Member member = memberRepository.findById(id).orElseThrow(IllegalArgumentException::new);
         final Member updatedMember = member.update(request.getCash());
         final Member persist = memberRepository.save(updatedMember);
 
         return MemberResponse.from(persist);
+    }
+
+    public void deleteById(final Long id) {
+        if (Objects.isNull(id)) {
+            throw new IllegalArgumentException("아이디는 null이 될 수 없습니다.");
+        }
+
+        if (!memberRepository.existsById(id)) {
+            throw new IllegalArgumentException("이미 탈퇴한 회원입니다.");
+        }
+
+        memberRepository.deleteById(id);
+    }
+
+    public void deleteAll() {
+        memberRepository.deleteAll();
     }
 }

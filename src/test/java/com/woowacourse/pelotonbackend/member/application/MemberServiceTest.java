@@ -25,6 +25,7 @@ import com.woowacourse.pelotonbackend.member.presentation.dto.MemberResponses;
 
 @ExtendWith(MockitoExtension.class)
 class MemberServiceTest {
+    public static final long NOT_EXIST_ID = 100L;
     private MemberService memberService;
 
     @Mock
@@ -38,8 +39,8 @@ class MemberServiceTest {
     @DisplayName("회원을 생성한다")
     @Test
     void createMember() {
-        final MemberCreateRequest memberCreateRequest = MemberFixture.memberCreateRequest();
-        final Member persistMember = MemberFixture.memberWithId();
+        final MemberCreateRequest memberCreateRequest = MemberFixture.createRequest(EMAIL, NAME);
+        final Member persistMember = MemberFixture.createWithId(ID);
 
         when(memberRepository.save(any(Member.class))).thenReturn(persistMember);
 
@@ -57,7 +58,7 @@ class MemberServiceTest {
     @DisplayName("회원을 조회한다.")
     @Test
     void findMember() {
-        final Member member = memberWithId();
+        final Member member = createWithId(ID);
         when(memberRepository.findById(anyLong())).thenReturn(Optional.of(member));
 
         final MemberResponse response = memberService.findMember(ID);
@@ -82,8 +83,8 @@ class MemberServiceTest {
 
     @DisplayName("모든 멤버를 조회한다.")
     @Test
-    void findAll() {
-        final List<Member> members = Arrays.asList(MemberFixture.memberWithId(), MemberFixture.memberOtherWithId());
+    void findAllMember() {
+        final List<Member> members = Arrays.asList(MemberFixture.createWithId(ID), MemberFixture.createWithId(ID2));
         when(memberRepository.findAll()).thenReturn(members);
 
         final MemberResponses memberResponses = memberService.findAll();
@@ -98,32 +99,63 @@ class MemberServiceTest {
     @DisplayName("회원 이름을 수정한다.")
     @Test
     void updateName() {
-        Member originMember = MemberFixture.memberWithId();
+        Member originMember = MemberFixture.createWithId(ID);
         Member updatedMember = MemberFixture.memberNameUpdated();
         when(memberRepository.findById(anyLong())).thenReturn(Optional.of(originMember));
         when(memberRepository.save(any(Member.class))).thenReturn(updatedMember);
 
-        final MemberResponse memberResponse = memberService.updateName(ID, memberNameUpdateRequest());
+        final MemberResponse memberResponse = memberService.updateName(ID, createNameUpdateRequest());
 
         assertAll(
             () -> assertThat(memberResponse.getId()).isEqualTo(ID),
-            () -> assertThat(memberResponse.getName()).isEqualTo(memberNameUpdateRequest().getName())
+            () -> assertThat(memberResponse.getName()).isEqualTo(createNameUpdateRequest().getName())
         );
     }
 
     @DisplayName("회원의 캐시를 수정한다")
     @Test
     void updateCash() {
-        Member originMember = MemberFixture.memberWithId();
+        Member originMember = MemberFixture.createWithId(ID);
         Member updatedMember = MemberFixture.memberCashUpdated();
         when(memberRepository.findById(anyLong())).thenReturn(Optional.of(originMember));
         when(memberRepository.save(any(Member.class))).thenReturn(updatedMember);
 
-        final MemberResponse memberResponse = memberService.updateCash(ID, memberCashUpdateRequest());
+        final MemberResponse memberResponse = memberService.updateCash(ID, createCashUpdateRequest());
 
         assertAll(
             () -> assertThat(memberResponse.getId()).isEqualTo(ID),
-            () -> assertThat(memberResponse.getCash()).isEqualTo(memberCashUpdateRequest().getCash())
+            () -> assertThat(memberResponse.getCash()).isEqualTo(createCashUpdateRequest().getCash())
         );
+    }
+
+    @DisplayName("특정 회원을 삭제한다")
+    @Test
+    void deleteMember() {
+        when(memberRepository.existsById(anyLong())).thenReturn(true);
+        doNothing().when(memberRepository).deleteById(anyLong());
+        memberService.deleteById(ID);
+        verify(memberRepository).deleteById(anyLong());
+    }
+
+    @DisplayName("존재하지 않는 회원 삭제하면 예외를 반환한다")
+    @Test
+    void deleteNotExistMember() {
+        assertThatThrownBy(() -> memberService.deleteById(NOT_EXIST_ID))
+            .isInstanceOf(IllegalArgumentException.class);
+    }
+
+    @DisplayName("삭제하려는 회원의 아이디가 null이면 예외를 반환한다.")
+    @Test
+    void deleteNullMemberId() {
+        assertThatThrownBy(() -> memberService.deleteById(null))
+            .isInstanceOf(IllegalArgumentException.class);
+    }
+
+    @DisplayName("모든 회원을 삭제한다.")
+    @Test
+    void deleteAllMember() {
+        doNothing().when(memberRepository).deleteAll();
+        memberService.deleteAll();
+        verify(memberRepository).deleteAll();
     }
 }

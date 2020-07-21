@@ -56,7 +56,7 @@ public class MemberControllerTest {
     @DisplayName("회원을 생성한다")
     @Test
     void createMember() throws Exception {
-        final MemberCreateRequest memberCreateRequest = MemberFixture.memberCreateRequest();
+        final MemberCreateRequest memberCreateRequest = MemberFixture.createRequest(EMAIL, NAME);
         final MemberResponse memberResponse = MemberFixture.memberResponse();
 
         final String request = objectMapper.writeValueAsString(memberCreateRequest);
@@ -115,7 +115,7 @@ public class MemberControllerTest {
     @Test
     void updateMemberName() throws Exception {
         final MemberResponse expectedResponse = MemberFixture.memberResponse();
-        final MemberNameUpdateRequest memberNameUpdateRequest = MemberFixture.memberNameUpdateRequest();
+        final MemberNameUpdateRequest memberNameUpdateRequest = MemberFixture.createNameUpdateRequest();
         when(memberService.updateName(anyLong(), any(MemberNameUpdateRequest.class))).thenReturn(expectedResponse);
 
         final byte[] contents = objectMapper.writeValueAsBytes(memberNameUpdateRequest);
@@ -131,7 +131,7 @@ public class MemberControllerTest {
     @DisplayName("회원의 보유 캐시를 수정한다")
     @Test
     void updateMemberCash() throws Exception {
-        final MemberCashUpdateRequest cashUpdateRequest = memberCashUpdateRequest();
+        final MemberCashUpdateRequest cashUpdateRequest = createCashUpdateRequest();
         when(memberService.updateCash(anyLong(), any(MemberCashUpdateRequest.class))).thenReturn(MemberFixture.memberResponse());
 
         final byte[] contents = objectMapper.writeValueAsBytes(cashUpdateRequest);
@@ -142,5 +142,23 @@ public class MemberControllerTest {
         )
             .andExpect(status().isOk())
             .andExpect(header().string("Location", String.format("%s%d", RESOURCE_URL, ID)));
+    }
+
+    @DisplayName("특정 회원을 삭제한다.")
+    @Test
+    void deleteMember() throws Exception {
+        doNothing().when(memberService).deleteById(anyLong());
+
+        mockMvc.perform(delete(String.format("%s%d", RESOURCE_URL, ID)))
+            .andExpect(status().isNoContent());
+    }
+
+    @DisplayName("모든 회원을 삭제한다.")
+    @Test
+    void deleteAllMember() throws Exception {
+        doNothing().when(memberService).deleteAll();
+
+        mockMvc.perform(delete(RESOURCE_URL))
+            .andExpect(status().isNoContent());
     }
 }
