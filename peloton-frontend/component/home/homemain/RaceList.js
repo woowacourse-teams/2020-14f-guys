@@ -1,11 +1,12 @@
 import React from "react";
-import { StyleSheet, View } from "react-native";
+import { StyleSheet, Text, View } from "react-native";
 import RaceListBanner from "./RaceListBanner";
 import RaceItems from "./RaceItems";
 
 const RaceList = () => {
   return (
     <View style={styles.container}>
+      <Text style={styles.title}>달리고 있는 레이스들</Text>
       <View style={styles.raceItems}>
         <RaceItems />
       </View>
@@ -16,9 +17,15 @@ const RaceList = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    paddingTop: 50,
   },
   raceItems: {
-    flex: 5,
+    marginTop: 17,
+  },
+  title: {
+    paddingLeft: 35,
+    fontSize: 18,
+    fontWeight: "600",
   },
 });
 
