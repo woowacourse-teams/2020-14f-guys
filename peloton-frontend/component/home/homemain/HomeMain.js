@@ -1,14 +1,14 @@
 import React from "react";
 import { ScrollView, StyleSheet, View } from "react-native";
 
-import RaceList from "./homemain/RaceList";
-import RaceListBanner from "./homemain/RaceListBanner";
+import RaceList from "./RaceList";
+import HomeMainBanner from "./HomeMainBanner";
 
 const HomeMain = () => {
   return (
     <ScrollView style={styles.container}>
       <View style={styles.raceTitle}>
-        <RaceListBanner />
+        <HomeMainBanner />
       </View>
       <View style={styles.raceList}>
         <RaceList />

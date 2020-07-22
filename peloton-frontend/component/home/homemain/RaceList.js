@@ -1,6 +1,5 @@
 import React from "react";
 import { StyleSheet, Text, View } from "react-native";
-import RaceListBanner from "./RaceListBanner";
 import RaceItems from "./RaceItems";
 
 const RaceList = () => {

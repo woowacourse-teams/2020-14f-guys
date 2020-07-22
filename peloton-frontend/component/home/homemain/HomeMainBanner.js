@@ -1,10 +1,17 @@
 import React from "react";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
+import { useNavigation } from "@react-navigation/native";
 
 import { COLOR, SAMPLE_SUBTITLE } from "../../../utils/constants";
 
-const RaceListBanner = () => {
+const HomeMainBanner = () => {
+  const navigation = useNavigation();
+
+  const goToCategorySelection = () => {
+    navigation.navigate("CategorySelection");
+  };
+
   const subtitle =
     SAMPLE_SUBTITLE[Math.floor(Math.random() * SAMPLE_SUBTITLE.length)];
   return (
@@ -14,7 +21,11 @@ const RaceListBanner = () => {
         <Text style={styles.subtitle}>당신만의 레이스를 달려보세요!</Text>
         <View style={styles.bannerSeparator} />
       </View>
-      <TouchableOpacity activeOpacity={0.7} style={styles.raceStartButton}>
+      <TouchableOpacity
+        activeOpacity={0.7}
+        style={styles.raceStartButton}
+        onPress={goToCategorySelection}
+      >
         <Text style={styles.raceStart}>새로운 레이스를 시작하세요.</Text>
         <View style={styles.raceStartIconContainer}>
           <MaterialCommunityIcons
@@ -75,4 +86,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default RaceListBanner;
+export default HomeMainBanner;
