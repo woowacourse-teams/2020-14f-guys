@@ -1,6 +1,6 @@
 import React from "react";
 import { ScrollView, StyleSheet, View } from "react-native";
-import RaceList from "./racelist/RaceList";
+import RaceList from "./homemain/RaceList";
 
 const HomeMain = () => {
   return (
