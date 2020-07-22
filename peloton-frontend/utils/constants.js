@@ -5,6 +5,7 @@ export const COLOR = {
   LAVENDER: "#CAB0D9",
   PINK: "#D0B0D4",
   INDIAN_PINK: "#D9B0C0",
+  WHITE: "#FFFFFF",
 };
 
 export const SAMPLE_IMAGES = [
