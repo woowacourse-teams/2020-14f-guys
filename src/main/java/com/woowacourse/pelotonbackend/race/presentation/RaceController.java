@@ -26,7 +26,7 @@ public class RaceController {
     public ResponseEntity<Void> create(@Valid @RequestBody final RaceCreateRequest request) {
         final Long id = raceService.create(request);
 
-        return ResponseEntity.created(URI.create("/api/races/" + id)).build();
+        return ResponseEntity.created(URI.create(String.format("/api/races/%d", id))).build();
     }
 
     @GetMapping("/{id}")

@@ -49,7 +49,7 @@ class RaceControllerTest {
 
         mockMvc.perform(post(RACE_API_URL)
             .contentType(MediaType.APPLICATION_JSON)
-            .content(objectMapper.writeValueAsString(RaceFixture.createMockRequest()))
+            .content(objectMapper.writeValueAsBytes(RaceFixture.createMockRequest()))
         )
             .andExpect(status().isCreated())
             .andExpect(header().exists("Location"));
@@ -60,7 +60,7 @@ class RaceControllerTest {
     void createBadRequest() throws Exception {
         mockMvc.perform(post(RACE_API_URL)
             .contentType(MediaType.APPLICATION_JSON)
-            .content(objectMapper.writeValueAsString(RaceFixture.createBadMockRequest()))
+            .content(objectMapper.writeValueAsBytes(RaceFixture.createBadMockRequest()))
         )
             .andExpect(status().isBadRequest());
     }
