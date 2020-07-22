@@ -19,6 +19,7 @@ import com.woowacourse.pelotonbackend.race.domain.RaceFixture;
 import com.woowacourse.pelotonbackend.race.domain.RaceRepository;
 import com.woowacourse.pelotonbackend.race.exception.NotExistRaceException;
 import com.woowacourse.pelotonbackend.race.presentation.RaceRetrieveResponse;
+import com.woowacourse.pelotonbackend.race.presentation.RaceUpdateRequest;
 import com.woowacourse.pelotonbackend.support.RandomGenerator;
 
 @ExtendWith(MockitoExtension.class)
@@ -70,6 +71,30 @@ public class RaceServiceTest {
 
         final long notExistRaceId = 100L;
         assertThatThrownBy(() -> raceService.retrieve(notExistRaceId))
+            .isInstanceOf(NotExistRaceException.class)
+            .hasMessage(String.format("Race(id: %d) is not exists", notExistRaceId));
+    }
+
+    @DisplayName("Race 수정이 정상적으로 되는지 테스트합니다.")
+    @Test
+    void update() {
+        final Race race = RaceFixture.createWithId(1L);
+        final RaceUpdateRequest request = RaceFixture.updateRequest();
+        given(raceRepository.findById(race.getId())).willReturn(Optional.of(race));
+        given(raceRepository.save(request.toEntity(race))).willReturn(RaceFixture.createUpdatedRace());
+
+        raceService.update(race.getId(), request);
+
+        verify(raceRepository).save(any(Race.class));
+    }
+
+    @DisplayName("존재하지 않는 Race를 수정하려 할 때, 예외를 던지는지 테스트합니다.")
+    @Test
+    void updateNotExist() {
+        given(raceRepository.findById(anyLong())).willReturn(Optional.empty());
+
+        final long notExistRaceId = 100L;
+        assertThatThrownBy(() -> raceService.update(notExistRaceId, RaceFixture.updateRequest()))
             .isInstanceOf(NotExistRaceException.class)
             .hasMessage(String.format("Race(id: %d) is not exists", notExistRaceId));
     }

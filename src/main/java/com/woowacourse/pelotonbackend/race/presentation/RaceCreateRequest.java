@@ -35,17 +35,17 @@ public class RaceCreateRequest {
     private final RaceCategory category;
 
     @Valid
-    private final Cash cash;
+    private final Cash entranceFee;
 
     public Race toEntity(ImageUrl certification, ImageUrl thumbnail) {
         return Race.builder()
             .title(title)
             .description(description)
-            .thumbnail(certification)
-            .certificationExample(thumbnail)
+            .thumbnail(thumbnail)
+            .certificationExample(certification)
             .raceDuration(raceDuration)
             .category(category)
-            .entranceFee(cash)
+            .entranceFee(entranceFee)
             .build();
     }
 }
