@@ -5,7 +5,9 @@ import static com.woowacourse.pelotonbackend.member.domain.MemberFixture.*;
 import static org.assertj.core.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.*;
 
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -34,7 +36,7 @@ class MemberRepositoryTest {
         );
     }
 
-    @DisplayName("모든 멤버를 리스트로 반환한다.")
+    @DisplayName("모든 회원들을 리스트로 반환한다.")
     @Test
     void findAll() {
         final Member member = MemberFixture.createWithoutId(EMAIL, NAME);
@@ -50,5 +52,23 @@ class MemberRepositoryTest {
             () -> assertThat(members.get(0)).isEqualTo(savedMember),
             () -> assertThat(members.get(1)).isEqualTo(savedOtherMember)
         );
+    }
+
+    @DisplayName("아이디에 해당하는 회원들을 찾는다.")
+    @Test
+    void findAllById() {
+        memberRepository.save(MemberFixture.createWithoutId("kyle1@abc.com", "kyle1"));
+        memberRepository.save(MemberFixture.createWithoutId("kyle2@abc.com", "kyle2"));
+        memberRepository.save(MemberFixture.createWithoutId("kyle3@abc.com", "kyle3"));
+        memberRepository.save(MemberFixture.createWithoutId("kyle4@abc.com", "kyle4"));
+
+        List<Long> ids = Arrays.asList(1L, 2L, 4L);
+
+        final List<Member> members = memberRepository.findAllById(ids);
+
+        final List<Long> membersIds = members.stream()
+            .map(Member::getId)
+            .collect(Collectors.toList());
+        assertThat(membersIds).isEqualTo(ids);
     }
 }

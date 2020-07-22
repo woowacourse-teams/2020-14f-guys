@@ -6,6 +6,7 @@ import java.util.Objects;
 import javax.validation.Valid;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.woowacourse.pelotonbackend.member.domain.Member;
 import com.woowacourse.pelotonbackend.member.domain.MemberRepository;
@@ -18,6 +19,7 @@ import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 
 @AllArgsConstructor(access = AccessLevel.PACKAGE)
+@Transactional
 @Service
 public class MemberService {
     private final MemberRepository memberRepository;
@@ -27,15 +29,23 @@ public class MemberService {
         return MemberResponse.from(persistMember);
     }
 
+    @Transactional(readOnly = true)
     public MemberResponse findMember(final Long id) {
         final Member member = memberRepository.findById(id)
             .orElseThrow(IllegalArgumentException::new);
         return MemberResponse.from(member);
     }
 
+    @Transactional(readOnly = true)
     public MemberResponses findAll() {
         final List<Member> members = memberRepository.findAll();
 
+        return MemberResponses.from(members);
+    }
+
+    @Transactional(readOnly = true)
+    public MemberResponses findAllById(final List<Long> ids) {
+        final List<Member> members = memberRepository.findAllById(ids);
         return MemberResponses.from(members);
     }
 

@@ -8,6 +8,7 @@ import static org.mockito.Mockito.*;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -81,7 +82,7 @@ class MemberServiceTest {
             .isInstanceOf(IllegalArgumentException.class);
     }
 
-    @DisplayName("모든 멤버를 조회한다.")
+    @DisplayName("모든 회원을 조회한다.")
     @Test
     void findAllMember() {
         final List<Member> members = Arrays.asList(MemberFixture.createWithId(ID), MemberFixture.createWithId(ID2));
@@ -94,6 +95,26 @@ class MemberServiceTest {
             () -> assertThat(memberResponses.getResponses().get(0).getId()).isEqualTo(members.get(0).getId()),
             () -> assertThat(memberResponses.getResponses().get(1).getId()).isEqualTo(members.get(1).getId())
         );
+    }
+
+    @DisplayName("id들로 회원들을 조회한다.")
+    @Test
+    void findAllMemberById() {
+        final List<Long> ids = Arrays.asList(1L, 2L, 4L);
+        final List<Member> members = Arrays.asList(
+            MemberFixture.createWithId(1L),
+            MemberFixture.createWithId(2L),
+            MemberFixture.createWithId(4L));
+
+        when(memberRepository.findAllById(anyList())).thenReturn(members);
+
+        final MemberResponses memberResponses = memberService.findAllById(ids);
+
+        final List<Long> idsOfResponses = memberResponses.getResponses().stream()
+            .map(MemberResponse::getId)
+            .collect(Collectors.toList());
+
+        assertThat(idsOfResponses).isEqualTo(ids);
     }
 
     @DisplayName("회원 이름을 수정한다.")
