@@ -1,5 +1,6 @@
 package com.woowacourse.pelotonbackend.race;
 
+import static com.woowacourse.pelotonbackend.race.domain.RaceFixture.*;
 import static org.assertj.core.api.Assertions.*;
 
 import java.util.regex.Pattern;
@@ -21,6 +22,7 @@ import io.restassured.specification.RequestSpecification;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class RaceAcceptanceTest {
+
     @LocalServerPort
     public int port;
 
@@ -65,15 +67,14 @@ public class RaceAcceptanceTest {
             .contentType(MediaType.APPLICATION_JSON_VALUE)
             .body(request)
             .when()
-            .post("/api/races")
+            .post(RACE_API_URL)
             .then()
             .log().all()
             .statusCode(HttpStatus.CREATED.value())
-            .header("Location", "/api/races/1")
             .extract()
             .header("Location");
 
-        assertThat(location).containsPattern(Pattern.compile("/api/races/[0-9]+"));
+        assertThat(location).containsPattern(Pattern.compile(String.format("%s/[0-9]+", RACE_API_URL)));
 
         return location;
     }
@@ -102,7 +103,6 @@ public class RaceAcceptanceTest {
             .put(resourceLocation)
             .then()
             .log().all()
-            .statusCode(HttpStatus.CREATED.value())
-            .header("Location", resourceLocation);
+            .statusCode(HttpStatus.OK.value());
     }
 }

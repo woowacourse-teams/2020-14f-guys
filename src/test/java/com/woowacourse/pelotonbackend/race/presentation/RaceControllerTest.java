@@ -1,5 +1,6 @@
 package com.woowacourse.pelotonbackend.race.presentation;
 
+import static com.woowacourse.pelotonbackend.race.domain.RaceFixture.*;
 import static org.assertj.core.api.Assertions.*;
 import static org.mockito.BDDMockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -46,7 +47,7 @@ class RaceControllerTest {
     void createRace() throws Exception {
         given(raceService.create(any())).willReturn(RaceFixture.createWithId(1L).getId());
 
-        mockMvc.perform(post("/api/races")
+        mockMvc.perform(post(RACE_API_URL)
             .contentType(MediaType.APPLICATION_JSON)
             .content(objectMapper.writeValueAsString(RaceFixture.createMockRequest()))
         )
@@ -57,7 +58,7 @@ class RaceControllerTest {
     @DisplayName("null인 필드가 있는 body 객체로 생성 요청을 하는 경우 예외를 발생시킨다.")
     @Test
     void createBadRequest() throws Exception {
-        mockMvc.perform(post("/api/races")
+        mockMvc.perform(post(RACE_API_URL)
             .contentType(MediaType.APPLICATION_JSON)
             .content(objectMapper.writeValueAsString(RaceFixture.createBadMockRequest()))
         )
@@ -70,7 +71,7 @@ class RaceControllerTest {
         final Long raceId = 11L;
         given(raceService.retrieve(raceId)).willReturn(RaceFixture.retrieveResponse());
 
-        final MvcResult result = mockMvc.perform(get(String.format("/api/races/%d", raceId)))
+        final MvcResult result = mockMvc.perform(get(String.format("%s/%d", RACE_API_URL, raceId)))
             .andExpect(status().isOk())
             .andReturn();
 
@@ -85,7 +86,7 @@ class RaceControllerTest {
     @Test
     void retrieveBadRequest() throws Exception {
         final String badRequestId = "bad";
-        mockMvc.perform(get(String.format("/api/races/%s", badRequestId)))
+        mockMvc.perform(get(String.format("%s/%s", RACE_API_URL, badRequestId)))
             .andExpect(status().isBadRequest());
     }
 
@@ -93,21 +94,20 @@ class RaceControllerTest {
     @Test
     void updateRace() throws Exception {
         final Long raceId = 11L;
-        given(raceService.update(eq(raceId), any(RaceUpdateRequest.class))).willReturn(raceId);
 
-        mockMvc.perform(put(String.format("/api/races/%d", raceId))
+        mockMvc.perform(put(String.format("%s/%d", RACE_API_URL, raceId))
             .contentType(MediaType.APPLICATION_JSON)
-            .content(objectMapper.writeValueAsString(RaceFixture.updateRequest()))
+            .content(objectMapper.writeValueAsBytes(RaceFixture.updateRequest()))
         )
-            .andExpect(status().isCreated())
-            .andExpect(header().string("Location", String.format("/api/races/%d", raceId)));
+            .andExpect(status().isOk());
+        verify(raceService).update(eq(raceId), any(RaceUpdateRequest.class));
     }
 
     @DisplayName("정수가 아닌 id로 수정 요청에 Bad Request로 응답한다.")
     @Test
     void updateBadIdRequest() throws Exception {
         final String badRequestId = "bad";
-        mockMvc.perform(put(String.format("/api/races/%s", badRequestId)))
+        mockMvc.perform(put(String.format("%s/%s", RACE_API_URL, badRequestId)))
             .andExpect(status().isBadRequest());
     }
 
@@ -115,7 +115,7 @@ class RaceControllerTest {
     @Test
     void updateNullBodyRequest() throws Exception {
         final Long raceId = 1L;
-        mockMvc.perform(put(String.format("/api/races/%d", raceId)))
+        mockMvc.perform(put(String.format("%s/%d", RACE_API_URL, raceId)))
             .andExpect(status().isBadRequest());
     }
 }

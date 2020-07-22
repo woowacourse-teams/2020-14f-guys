@@ -38,13 +38,11 @@ public class RaceService {
         return RaceRetrieveResponse.of(race);
     }
 
-    public Long update(final Long raceId, final RaceUpdateRequest request) {
+    public void update(final Long raceId, final RaceUpdateRequest request) {
         final Race race = raceRepository.findById(raceId)
             .orElseThrow(() -> new NotExistRaceException(raceId));
 
         final Race raceUpdated = request.toEntity(race);
-        final Race racePersisted = raceRepository.save(raceUpdated);
-
-        return racePersisted.getId();
+        raceRepository.save(raceUpdated);
     }
 }

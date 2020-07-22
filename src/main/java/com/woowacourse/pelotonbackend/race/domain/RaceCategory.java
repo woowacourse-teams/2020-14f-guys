@@ -11,8 +11,10 @@ import lombok.Getter;
 @AllArgsConstructor
 @Getter
 public enum RaceCategory {
-    TIME(Arrays.asList(new ImageUrl("TEST_URL")),
-        Arrays.asList(new ImageUrl("TEST_CERTIFICATION_IMAGE")));
+    TIME(Arrays.asList(new ImageUrl("TEST_TIME_THUMBNAIL_URL")),
+        Arrays.asList(new ImageUrl("TEST_TIME_CERTIFICATION_IMAGE"))),
+    STUDY(Arrays.asList(new ImageUrl("TEST_STUDY_THUMBNAIL_URL")),
+        Arrays.asList(new ImageUrl("TEST_STUDY_CERTIFICATION_IMAGE")));
 
     private final List<ImageUrl> thumbnails;
     private final List<ImageUrl> certifications;

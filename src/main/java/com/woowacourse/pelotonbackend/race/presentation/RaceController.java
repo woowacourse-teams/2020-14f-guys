@@ -38,8 +38,8 @@ public class RaceController {
 
     @PutMapping("/{id}")
     public ResponseEntity<Void> update(@PathVariable final Long id, @Valid @RequestBody RaceUpdateRequest request) {
-        final Long updatedId = raceService.update(id, request);
+        raceService.update(id, request);
 
-        return ResponseEntity.created(URI.create("/api/races/" + updatedId)).build();
+        return ResponseEntity.ok().build();
     }
 }
