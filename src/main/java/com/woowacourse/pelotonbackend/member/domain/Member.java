@@ -30,24 +30,20 @@ public class Member {
     @NotBlank
     private final String name;
 
-    @NotBlank
-    @Email
+    @NotBlank @Email
     private final String email;
 
-    @Embedded.Empty
-    @Valid
+    @Embedded.Empty @Valid
     private final Cash cash;
 
     @NotNull
     private final Role role;
 
-    @CreatedDate
-    @PastOrPresent
+    @CreatedDate @PastOrPresent
     @With(AccessLevel.PACKAGE)
     private final LocalDateTime createdAt;
 
-    @LastModifiedDate
-    @PastOrPresent
+    @LastModifiedDate @PastOrPresent
     @With(AccessLevel.PACKAGE)
     private final LocalDateTime updatedAt;
 

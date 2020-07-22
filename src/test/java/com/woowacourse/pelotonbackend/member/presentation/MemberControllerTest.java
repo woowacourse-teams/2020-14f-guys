@@ -36,11 +36,12 @@ import com.woowacourse.pelotonbackend.member.presentation.dto.MemberResponses;
 @WebMvcTest(value = {MemberController.class})
 public class MemberControllerTest {
     public static final String RESOURCE_URL = "/api/members/";
-    @Autowired
-    private ObjectMapper objectMapper;
 
     @Autowired
     private MockMvc mockMvc;
+
+    @Autowired
+    private ObjectMapper objectMapper;
 
     @MockBean
     private MemberService memberService;
@@ -58,14 +59,13 @@ public class MemberControllerTest {
     void createMember() throws Exception {
         final MemberCreateRequest memberCreateRequest = MemberFixture.createRequest(EMAIL, NAME);
         final MemberResponse memberResponse = MemberFixture.memberResponse();
-
-        final String request = objectMapper.writeValueAsString(memberCreateRequest);
+        final byte[] request = objectMapper.writeValueAsBytes(memberCreateRequest);
         when(memberService.createMember(any(MemberCreateRequest.class))).thenReturn(memberResponse);
 
-        mockMvc.perform(
-            post(RESOURCE_URL)
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(request))
+        mockMvc.perform(post(RESOURCE_URL)
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(request)
+        )
             .andExpect(status().isCreated())
             .andExpect(header().string("location", String.format("%s%d", RESOURCE_URL, ID)));
     }
@@ -76,15 +76,14 @@ public class MemberControllerTest {
         final MemberResponse expectedResponse = memberResponse();
         when(memberService.findMember(ID)).thenReturn(expectedResponse);
 
-        final MvcResult mvcResult = mockMvc.perform(
-            get(String.format("%s%d", RESOURCE_URL, ID))
-                .accept(MediaType.APPLICATION_JSON))
+        final MvcResult mvcResult = mockMvc.perform(get(String.format("%s%d", RESOURCE_URL, ID))
+            .accept(MediaType.APPLICATION_JSON)
+        )
             .andExpect(status().isOk())
             .andReturn();
 
         final String contentAsString = mvcResult.getResponse().getContentAsString();
         final MemberResponse memberResponse = objectMapper.readValue(contentAsString, MemberResponse.class);
-
         assertThat(memberResponse).isEqualToComparingFieldByField(expectedResponse);
     }
 
@@ -103,11 +102,10 @@ public class MemberControllerTest {
 
         final String contentAsString = mvcResult.getResponse().getContentAsString();
         final MemberResponses memberResponses = objectMapper.readValue(contentAsString, MemberResponses.class);
-
         assertAll(
             () -> assertThat(memberResponses.getResponses()).hasSize(source.size()),
-            () -> assertThat(memberResponses.getResponses().get(0).getName()).isEqualTo(source.get(0).getName()),
-            () -> assertThat(memberResponses.getResponses().get(1).getName()).isEqualTo(source.get(1).getName())
+            () -> assertThat(memberResponses.getResponses().get(0)).isEqualToComparingFieldByField(source.get(0)),
+            () -> assertThat(memberResponses.getResponses().get(1)).isEqualToComparingFieldByField(source.get(1))
         );
     }
 
@@ -117,7 +115,6 @@ public class MemberControllerTest {
         final MemberResponse expectedResponse = MemberFixture.memberResponse();
         final MemberNameUpdateRequest memberNameUpdateRequest = MemberFixture.createNameUpdateRequest();
         when(memberService.updateName(anyLong(), any(MemberNameUpdateRequest.class))).thenReturn(expectedResponse);
-
         final byte[] contents = objectMapper.writeValueAsBytes(memberNameUpdateRequest);
 
         mockMvc.perform(patch(String.format("%s%d/name", RESOURCE_URL, ID))
@@ -132,8 +129,8 @@ public class MemberControllerTest {
     @Test
     void updateMemberCash() throws Exception {
         final MemberCashUpdateRequest cashUpdateRequest = createCashUpdateRequest();
-        when(memberService.updateCash(anyLong(), any(MemberCashUpdateRequest.class))).thenReturn(MemberFixture.memberResponse());
-
+        when(memberService.updateCash(anyLong(), any(MemberCashUpdateRequest.class)))
+            .thenReturn(MemberFixture.memberResponse());
         final byte[] contents = objectMapper.writeValueAsBytes(cashUpdateRequest);
 
         mockMvc.perform(patch(String.format("%s%d/cash", RESOURCE_URL, ID))

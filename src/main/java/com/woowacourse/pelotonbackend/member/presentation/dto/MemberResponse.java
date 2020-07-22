@@ -20,7 +20,12 @@ public class MemberResponse {
     private final Role role;
 
     public static MemberResponse from(final Member member) {
-        return new MemberResponse(member.getId(), member.getName(), member.getEmail(), member.getCash(),
-            member.getRole());
+        return MemberResponse.builder()
+            .id(member.getId())
+            .name(member.getName())
+            .email(member.getEmail())
+            .cash(member.getCash())
+            .role(member.getRole())
+            .build();
     }
 }

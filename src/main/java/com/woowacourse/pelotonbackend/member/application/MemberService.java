@@ -26,13 +26,14 @@ public class MemberService {
 
     public MemberResponse createMember(final @Valid MemberCreateRequest memberCreateRequest) {
         final Member persistMember = memberRepository.save(memberCreateRequest.toMember());
+
         return MemberResponse.from(persistMember);
     }
 
     @Transactional(readOnly = true)
     public MemberResponse findMember(final Long id) {
-        final Member member = memberRepository.findById(id)
-            .orElseThrow(IllegalArgumentException::new);
+        final Member member = findMemberById(id);
+
         return MemberResponse.from(member);
     }
 
@@ -46,11 +47,12 @@ public class MemberService {
     @Transactional(readOnly = true)
     public MemberResponses findAllById(final List<Long> ids) {
         final List<Member> members = memberRepository.findAllById(ids);
+
         return MemberResponses.from(members);
     }
 
     public MemberResponse updateName(final Long id, final MemberNameUpdateRequest request) {
-        final Member member = memberRepository.findById(id).orElseThrow(IllegalArgumentException::new);
+        final Member member = findMemberById(id);
         final Member updatedMember = member.update(request.getName());
         final Member persist = memberRepository.save(updatedMember);
 
@@ -58,7 +60,7 @@ public class MemberService {
     }
 
     public MemberResponse updateCash(final Long id, final MemberCashUpdateRequest request) {
-        final Member member = memberRepository.findById(id).orElseThrow(IllegalArgumentException::new);
+        final Member member = findMemberById(id);
         final Member updatedMember = member.update(request.getCash());
         final Member persist = memberRepository.save(updatedMember);
 
@@ -79,5 +81,10 @@ public class MemberService {
 
     public void deleteAll() {
         memberRepository.deleteAll();
+    }
+
+    private Member findMemberById(final Long id) {
+        return memberRepository.findById(id)
+            .orElseThrow(IllegalArgumentException::new);
     }
 }

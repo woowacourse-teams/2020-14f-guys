@@ -26,7 +26,8 @@ import com.woowacourse.pelotonbackend.member.presentation.dto.MemberResponses;
 
 @ExtendWith(MockitoExtension.class)
 class MemberServiceTest {
-    public static final long NOT_EXIST_ID = 100L;
+    private static final long NOT_EXIST_ID = 100L;
+
     private MemberService memberService;
 
     @Mock
@@ -42,35 +43,22 @@ class MemberServiceTest {
     void createMember() {
         final MemberCreateRequest memberCreateRequest = MemberFixture.createRequest(EMAIL, NAME);
         final Member persistMember = MemberFixture.createWithId(ID);
-
         when(memberRepository.save(any(Member.class))).thenReturn(persistMember);
 
-        final MemberResponse memberResponse = memberService.createMember(memberCreateRequest);
+        final MemberResponse response = memberService.createMember(memberCreateRequest);
 
-        assertAll(
-            () -> assertThat(memberResponse.getId()).isEqualTo(ID),
-            () -> assertThat(memberResponse.getEmail()).isEqualTo(EMAIL),
-            () -> assertThat(memberResponse.getName()).isEqualTo(NAME),
-            () -> assertThat(memberResponse.getCash()).isEqualTo(CASH),
-            () -> assertThat(memberResponse.getRole()).isEqualTo(ROLE)
-        );
+        assertThat(response).isEqualToIgnoringGivenFields(persistMember, "createdAt", "updatedAt");
     }
 
     @DisplayName("회원을 조회한다.")
     @Test
     void findMember() {
-        final Member member = createWithId(ID);
-        when(memberRepository.findById(anyLong())).thenReturn(Optional.of(member));
+        final Member persistMember = createWithId(ID);
+        when(memberRepository.findById(anyLong())).thenReturn(Optional.of(persistMember));
 
         final MemberResponse response = memberService.findMember(ID);
 
-        assertAll(
-            () -> assertThat(response.getId()).isEqualTo(member.getId()),
-            () -> assertThat(response.getName()).isEqualTo(member.getName()),
-            () -> assertThat(response.getEmail()).isEqualTo(member.getEmail()),
-            () -> assertThat(response.getCash()).isEqualTo(member.getCash()),
-            () -> assertThat(response.getRole()).isEqualTo(member.getRole())
-        );
+        assertThat(response).isEqualToIgnoringGivenFields(persistMember, "createdAt", "updatedAt");
     }
 
     @DisplayName("회원의 ID가 존재하지 않는 경우 예외를 반환한다.")
@@ -85,15 +73,18 @@ class MemberServiceTest {
     @DisplayName("모든 회원을 조회한다.")
     @Test
     void findAllMember() {
-        final List<Member> members = Arrays.asList(MemberFixture.createWithId(ID), MemberFixture.createWithId(ID2));
-        when(memberRepository.findAll()).thenReturn(members);
+        final List<Member> persistMembers = Arrays.asList(MemberFixture.createWithId(ID),
+            MemberFixture.createWithId(ID2));
+        when(memberRepository.findAll()).thenReturn(persistMembers);
 
-        final MemberResponses memberResponses = memberService.findAll();
+        final MemberResponses response = memberService.findAll();
 
         assertAll(
-            () -> assertThat(memberResponses.getResponses()).hasSize(members.size()),
-            () -> assertThat(memberResponses.getResponses().get(0).getId()).isEqualTo(members.get(0).getId()),
-            () -> assertThat(memberResponses.getResponses().get(1).getId()).isEqualTo(members.get(1).getId())
+            () -> assertThat(response.getResponses()).hasSize(persistMembers.size()),
+            () -> assertThat(response.getResponses().get(0)).isEqualToIgnoringGivenFields(persistMembers.get(0),
+                "createdAt", "updatedAt"),
+            () -> assertThat(response.getResponses().get(1)).isEqualToIgnoringGivenFields(persistMembers.get(1),
+                "createdAt", "updatedAt")
         );
     }
 
@@ -105,7 +96,6 @@ class MemberServiceTest {
             MemberFixture.createWithId(1L),
             MemberFixture.createWithId(2L),
             MemberFixture.createWithId(4L));
-
         when(memberRepository.findAllById(anyList())).thenReturn(members);
 
         final MemberResponses memberResponses = memberService.findAllById(ids);
@@ -113,7 +103,6 @@ class MemberServiceTest {
         final List<Long> idsOfResponses = memberResponses.getResponses().stream()
             .map(MemberResponse::getId)
             .collect(Collectors.toList());
-
         assertThat(idsOfResponses).isEqualTo(ids);
     }
 
@@ -125,11 +114,11 @@ class MemberServiceTest {
         when(memberRepository.findById(anyLong())).thenReturn(Optional.of(originMember));
         when(memberRepository.save(any(Member.class))).thenReturn(updatedMember);
 
-        final MemberResponse memberResponse = memberService.updateName(ID, createNameUpdateRequest());
+        final MemberResponse memberResponse = memberService.updateName(originMember.getId(), createNameUpdateRequest());
 
         assertAll(
-            () -> assertThat(memberResponse.getId()).isEqualTo(ID),
-            () -> assertThat(memberResponse.getName()).isEqualTo(createNameUpdateRequest().getName())
+            () -> assertThat(memberResponse.getName()).isEqualTo(createNameUpdateRequest().getName()),
+            () -> assertThat(memberResponse).isEqualToIgnoringGivenFields(originMember, "name", "createdAt", "updatedAt")
         );
     }
 
@@ -141,11 +130,11 @@ class MemberServiceTest {
         when(memberRepository.findById(anyLong())).thenReturn(Optional.of(originMember));
         when(memberRepository.save(any(Member.class))).thenReturn(updatedMember);
 
-        final MemberResponse memberResponse = memberService.updateCash(ID, createCashUpdateRequest());
+        final MemberResponse memberResponse = memberService.updateCash(originMember.getId(), createCashUpdateRequest());
 
         assertAll(
-            () -> assertThat(memberResponse.getId()).isEqualTo(ID),
-            () -> assertThat(memberResponse.getCash()).isEqualTo(createCashUpdateRequest().getCash())
+            () -> assertThat(memberResponse.getCash()).isEqualTo(createCashUpdateRequest().getCash()),
+            () -> assertThat(memberResponse).isEqualToIgnoringGivenFields(originMember, "cash", "createdAt", "updatedAt")
         );
     }
 
@@ -154,7 +143,9 @@ class MemberServiceTest {
     void deleteMember() {
         when(memberRepository.existsById(anyLong())).thenReturn(true);
         doNothing().when(memberRepository).deleteById(anyLong());
+
         memberService.deleteById(ID);
+
         verify(memberRepository).deleteById(anyLong());
     }
 
@@ -176,7 +167,9 @@ class MemberServiceTest {
     @Test
     void deleteAllMember() {
         doNothing().when(memberRepository).deleteAll();
+
         memberService.deleteAll();
+
         verify(memberRepository).deleteAll();
     }
 }

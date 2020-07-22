@@ -21,7 +21,7 @@ class MemberRepositoryTest {
     @Autowired
     private MemberRepository memberRepository;
 
-    @DisplayName("Member 객체가 DB에 잘 저장되는지 확인")
+    @DisplayName("회원을 저장한다.")
     @Test
     void saveMember() {
         final Member member = MemberFixture.createWithoutId(EMAIL, NAME);
@@ -41,7 +41,6 @@ class MemberRepositoryTest {
     void findAll() {
         final Member member = MemberFixture.createWithoutId(EMAIL, NAME);
         final Member otherMember = MemberFixture.createWithoutId(EMAIL2, NAME2);
-
         final Member savedMember = memberRepository.save(member);
         final Member savedOtherMember = memberRepository.save(otherMember);
 
@@ -61,7 +60,6 @@ class MemberRepositoryTest {
         memberRepository.save(MemberFixture.createWithoutId("kyle2@abc.com", "kyle2"));
         memberRepository.save(MemberFixture.createWithoutId("kyle3@abc.com", "kyle3"));
         memberRepository.save(MemberFixture.createWithoutId("kyle4@abc.com", "kyle4"));
-
         List<Long> ids = Arrays.asList(1L, 2L, 4L);
 
         final List<Member> members = memberRepository.findAllById(ids);

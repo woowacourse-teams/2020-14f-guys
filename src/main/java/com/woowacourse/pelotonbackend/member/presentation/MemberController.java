@@ -20,10 +20,9 @@ import com.woowacourse.pelotonbackend.member.presentation.dto.MemberCreateReques
 import com.woowacourse.pelotonbackend.member.presentation.dto.MemberNameUpdateRequest;
 import com.woowacourse.pelotonbackend.member.presentation.dto.MemberResponse;
 import com.woowacourse.pelotonbackend.member.presentation.dto.MemberResponses;
-import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 
-@AllArgsConstructor(access = AccessLevel.PACKAGE)
+@AllArgsConstructor
 @RestController
 @RequestMapping("/api/members")
 public class MemberController {
@@ -32,6 +31,7 @@ public class MemberController {
     @PostMapping
     public ResponseEntity<Void> createMember(@RequestBody @Valid final MemberCreateRequest memberCreateRequest) {
         final MemberResponse memberResponse = memberService.createMember(memberCreateRequest);
+
         return ResponseEntity
             .created(URI.create("/api/members/" + memberResponse.getId()))
             .build();
@@ -40,18 +40,21 @@ public class MemberController {
     @GetMapping("/{id}")
     public ResponseEntity<MemberResponse> findMember(@PathVariable Long id) {
         final MemberResponse memberResponse = memberService.findMember(id);
+
         return ResponseEntity.ok(memberResponse);
     }
 
     @GetMapping
     public ResponseEntity<MemberResponses> findAll() {
         final MemberResponses memberResponses = memberService.findAll();
+
         return ResponseEntity.ok(memberResponses);
     }
 
     @PatchMapping("/{id}/name")
     public ResponseEntity<Void> updateName(@PathVariable Long id, @RequestBody @Valid MemberNameUpdateRequest request) {
         final MemberResponse memberResponse = memberService.updateName(id, request);
+
         return ResponseEntity.ok()
             .header("Location", String.format("/api/members/%d", memberResponse.getId()))
             .build();
@@ -60,6 +63,7 @@ public class MemberController {
     @PatchMapping("/{id}/cash")
     public ResponseEntity<Void> updateCash(@PathVariable Long id, @RequestBody @Valid MemberCashUpdateRequest request) {
         final MemberResponse memberResponse = memberService.updateCash(id, request);
+
         return ResponseEntity.ok()
             .header("Location", String.format("/api/members/%d", memberResponse.getId()))
             .build();
@@ -68,12 +72,14 @@ public class MemberController {
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable Long id) {
         memberService.deleteById(id);
+
         return ResponseEntity.noContent().build();
     }
 
     @DeleteMapping
     public ResponseEntity<Void> deleteAll() {
         memberService.deleteAll();
+
         return ResponseEntity.noContent().build();
     }
 }

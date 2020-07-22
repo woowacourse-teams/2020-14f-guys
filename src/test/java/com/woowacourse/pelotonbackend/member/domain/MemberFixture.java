@@ -15,12 +15,12 @@ public class MemberFixture {
     public static final String NAME = "jinju";
     public static final String NAME2 = "kyle";
     public static final String NAME3 = "dd";
+    public static final String UPDATE_NAME = "blbi";
     public static final Cash CASH = new Cash(BigDecimal.ONE);
-    private static final Cash UPDATE_CASH = new Cash(BigDecimal.TEN);
+    public static final Cash UPDATE_CASH = new Cash(BigDecimal.TEN);
     public static final Role ROLE = Role.MEMBER;
     public static final Long ID = 1L;
     public static final Long ID2 = 2L;
-    public static final String UPDATE_NAME = "blbi";
 
     public static MemberCreateRequest createRequest(final String email, final String name) {
         return MemberCreateRequest.builder()
