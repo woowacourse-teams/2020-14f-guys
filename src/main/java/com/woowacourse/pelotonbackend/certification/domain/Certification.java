@@ -25,7 +25,8 @@ import lombok.With;
 @EqualsAndHashCode(of = "id")
 @Getter
 public class Certification {
-    @Id @With(value = AccessLevel.PACKAGE)
+    @Id
+    @With(value = AccessLevel.PACKAGE)
     private final Long id;
 
     @NotNull
@@ -33,18 +34,21 @@ public class Certification {
 
     private final String description;
 
-    @Embedded.Empty @Valid
+    @Embedded.Empty
+    @Valid
     private final ImageUrl image;
 
     private final AggregateReference<Rider, @NotNull Long> riderId;
 
     private final AggregateReference<Mission, @NotNull Long> missionId;
 
-    @CreatedDate @PastOrPresent
+    @CreatedDate
+    @PastOrPresent
     @With
     private final LocalDateTime createdAt;
 
-    @LastModifiedDate @PastOrPresent
+    @LastModifiedDate
+    @PastOrPresent
     @With
     private final LocalDateTime updatedAt;
 }

@@ -20,11 +20,12 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.With;
 
-@Builder
+@Builder(toBuilder = true)
 @EqualsAndHashCode(of = "id")
 @Getter
 public class Member {
-    @Id @With(value = AccessLevel.PACKAGE)
+    @Id
+    @With(value = AccessLevel.PACKAGE)
     private final Long id;
 
     @NotBlank
@@ -50,4 +51,16 @@ public class Member {
     @PastOrPresent
     @With(AccessLevel.PACKAGE)
     private final LocalDateTime updatedAt;
+
+    public Member update(final String name) {
+        return this.toBuilder()
+            .name(name)
+            .build();
+    }
+
+    public Member update(final Cash cash) {
+        return this.toBuilder()
+            .cash(cash)
+            .build();
+    }
 }

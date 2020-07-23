@@ -21,7 +21,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.woowacourse.pelotonbackend.certification.application.CertificationService;
 import com.woowacourse.pelotonbackend.certification.domain.dto.CertificationCreateRequest;
-import com.woowacourse.pelotonbackend.certification.domain.dto.ErrorCode;
+import com.woowacourse.pelotonbackend.common.ErrorCode;
 
 @WebMvcTest(controllers = CertificationController.class)
 class CertificationControllerTest {
@@ -78,8 +78,7 @@ class CertificationControllerTest {
             .param("description", badCertificationCreateRequest.getDescription())
             .param("riderId", badCertificationCreateRequest.getRiderId().toString()))
             .andExpect(status().isBadRequest())
-            .andExpect(jsonPath("message").value(ErrorCode.INVALID_INPUT_VALUE.getMessage()))
-            .andExpect(jsonPath("status").value(ErrorCode.INVALID_INPUT_VALUE.getStatusCode()))
+            .andExpect(jsonPath("status").value(ErrorCode.INVALID_VALIDATE.getStatus()))
             .andExpect(jsonPath("errors").exists());
     }
 }

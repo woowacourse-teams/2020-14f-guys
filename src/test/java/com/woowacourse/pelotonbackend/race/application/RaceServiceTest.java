@@ -13,11 +13,11 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import com.woowacourse.pelotonbackend.common.exception.RaceNotFoundException;
 import com.woowacourse.pelotonbackend.race.domain.Race;
 import com.woowacourse.pelotonbackend.race.domain.RaceCategory;
 import com.woowacourse.pelotonbackend.race.domain.RaceFixture;
 import com.woowacourse.pelotonbackend.race.domain.RaceRepository;
-import com.woowacourse.pelotonbackend.race.exception.RaceNotFoundException;
 import com.woowacourse.pelotonbackend.race.presentation.dto.RaceRetrieveResponse;
 import com.woowacourse.pelotonbackend.race.presentation.dto.RaceUpdateRequest;
 import com.woowacourse.pelotonbackend.support.RandomGenerator;
@@ -90,7 +90,7 @@ public class RaceServiceTest {
 
     @DisplayName("존재하지 않는 Race를 수정하려 할 때, 예외를 던지는지 테스트합니다.")
     @Test
-    void updateNotExist() {
+    void updateNotFound() {
         given(raceRepository.findById(anyLong())).willReturn(Optional.empty());
 
         final long notExistRaceId = 100L;

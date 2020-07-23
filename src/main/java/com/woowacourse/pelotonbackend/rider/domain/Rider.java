@@ -24,7 +24,8 @@ import lombok.With;
 @EqualsAndHashCode(of = "id")
 @Getter
 public class Rider {
-    @Id @With(value = AccessLevel.PACKAGE)
+    @Id
+    @With(value = AccessLevel.PACKAGE)
     private final Long id;
 
     private final AggregateReference<Member, @NotNull Long> memberId;

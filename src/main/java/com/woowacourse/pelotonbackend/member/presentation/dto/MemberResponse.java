@@ -1,11 +1,16 @@
 package com.woowacourse.pelotonbackend.member.presentation.dto;
 
+import java.beans.ConstructorProperties;
+
 import com.woowacourse.pelotonbackend.member.domain.Member;
 import com.woowacourse.pelotonbackend.member.domain.Role;
 import com.woowacourse.pelotonbackend.vo.Cash;
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 
+@AllArgsConstructor(access = AccessLevel.PRIVATE, onConstructor_ = {@ConstructorProperties({"id", "name", "email", "cash", "role"})})
 @Builder
 @Getter
 public class MemberResponse {
@@ -16,7 +21,12 @@ public class MemberResponse {
     private final Role role;
 
     public static MemberResponse from(final Member member) {
-        return new MemberResponse(member.getId(), member.getName(), member.getEmail(), member.getCash(),
-            member.getRole());
+        return MemberResponse.builder()
+            .id(member.getId())
+            .name(member.getName())
+            .email(member.getEmail())
+            .cash(member.getCash())
+            .role(member.getRole())
+            .build();
     }
 }
