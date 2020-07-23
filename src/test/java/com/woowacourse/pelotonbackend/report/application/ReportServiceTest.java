@@ -11,7 +11,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import com.woowacourse.pelotonbackend.common.exception.DuplicateReportException;
+import com.woowacourse.pelotonbackend.common.exception.ReportDuplicateException;
 import com.woowacourse.pelotonbackend.report.domain.Report;
 import com.woowacourse.pelotonbackend.report.domain.ReportFixture;
 import com.woowacourse.pelotonbackend.report.domain.ReportRepository;
@@ -47,7 +47,7 @@ class ReportServiceTest {
 
         assertThatThrownBy(() ->
             reportService.createReport(createRequestContent()))
-            .isInstanceOf(DuplicateReportException.class)
+            .isInstanceOf(ReportDuplicateException.class)
             .hasMessageMatching("Report\\(member id: [0-9]+, certification id: [0-9]+\\) already exists!");
     }
 }

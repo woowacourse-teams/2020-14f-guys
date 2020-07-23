@@ -56,11 +56,11 @@ class MemberRepositoryTest {
     @DisplayName("아이디에 해당하는 회원들을 찾는다.")
     @Test
     void findAllById() {
-        memberRepository.save(MemberFixture.createWithoutId("kyle1@abc.com", "kyle1"));
-        memberRepository.save(MemberFixture.createWithoutId("kyle2@abc.com", "kyle2"));
-        memberRepository.save(MemberFixture.createWithoutId("kyle3@abc.com", "kyle3"));
-        memberRepository.save(MemberFixture.createWithoutId("kyle4@abc.com", "kyle4"));
-        List<Long> ids = Arrays.asList(1L, 2L, 4L);
+        final Member member1 = memberRepository.save(createWithoutId("kyle1@abc.com", "kyle1"));
+        final Member member2 = memberRepository.save(createWithoutId("kyle2@abc.com", "kyle2"));
+        final Member member3 = memberRepository.save(createWithoutId("kyle3@abc.com", "kyle3"));
+        final Member member4 = memberRepository.save(createWithoutId("kyle4@abc.com", "kyle4"));
+        final List<Long> ids = Arrays.asList(member1.getId(), member2.getId(), member4.getId());
 
         final List<Member> members = memberRepository.findAllById(ids);
 

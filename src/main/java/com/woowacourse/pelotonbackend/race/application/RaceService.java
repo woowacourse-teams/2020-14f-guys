@@ -3,10 +3,10 @@ package com.woowacourse.pelotonbackend.race.application;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.woowacourse.pelotonbackend.common.exception.RaceNotFoundException;
 import com.woowacourse.pelotonbackend.race.domain.Race;
 import com.woowacourse.pelotonbackend.race.domain.RaceCategory;
 import com.woowacourse.pelotonbackend.race.domain.RaceRepository;
-import com.woowacourse.pelotonbackend.race.exception.RaceNotFoundException;
 import com.woowacourse.pelotonbackend.race.presentation.dto.RaceCreateRequest;
 import com.woowacourse.pelotonbackend.race.presentation.dto.RaceRetrieveResponse;
 import com.woowacourse.pelotonbackend.race.presentation.dto.RaceUpdateRequest;

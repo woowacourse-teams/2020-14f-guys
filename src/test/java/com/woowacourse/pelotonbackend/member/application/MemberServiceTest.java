@@ -17,8 +17,8 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import com.woowacourse.pelotonbackend.common.exception.InvalidMemberIdException;
-import com.woowacourse.pelotonbackend.common.exception.NotFoundMemberException;
+import com.woowacourse.pelotonbackend.common.exception.MemberIdInvalidException;
+import com.woowacourse.pelotonbackend.common.exception.MemberNotFoundException;
 import com.woowacourse.pelotonbackend.member.domain.Member;
 import com.woowacourse.pelotonbackend.member.domain.MemberFixture;
 import com.woowacourse.pelotonbackend.member.domain.MemberRepository;
@@ -67,7 +67,7 @@ class MemberServiceTest {
         when(memberRepository.findById(anyLong())).thenReturn(Optional.empty());
 
         assertThatThrownBy(() -> memberService.findMember(ID))
-            .isInstanceOf(NotFoundMemberException.class);
+            .isInstanceOf(MemberNotFoundException.class);
     }
 
     @DisplayName("모든 회원을 조회한다.")
@@ -109,8 +109,8 @@ class MemberServiceTest {
     @DisplayName("회원 이름을 수정한다.")
     @Test
     void updateName() {
-        Member originMember = MemberFixture.createWithId(ID);
-        Member updatedMember = MemberFixture.memberNameUpdated();
+        final Member originMember = MemberFixture.createWithId(ID);
+        final Member updatedMember = MemberFixture.memberNameUpdated();
         when(memberRepository.findById(anyLong())).thenReturn(Optional.of(originMember));
         when(memberRepository.save(any(Member.class))).thenReturn(updatedMember);
 
@@ -125,8 +125,8 @@ class MemberServiceTest {
     @DisplayName("회원의 캐시를 수정한다")
     @Test
     void updateCash() {
-        Member originMember = MemberFixture.createWithId(ID);
-        Member updatedMember = MemberFixture.memberCashUpdated();
+        final Member originMember = MemberFixture.createWithId(ID);
+        final Member updatedMember = MemberFixture.memberCashUpdated(ID);
         when(memberRepository.findById(anyLong())).thenReturn(Optional.of(originMember));
         when(memberRepository.save(any(Member.class))).thenReturn(updatedMember);
 
@@ -141,35 +141,15 @@ class MemberServiceTest {
     @DisplayName("특정 회원을 삭제한다")
     @Test
     void deleteMember() {
-        when(memberRepository.existsById(anyLong())).thenReturn(true);
-        doNothing().when(memberRepository).deleteById(anyLong());
-
         memberService.deleteById(ID);
 
         verify(memberRepository).deleteById(anyLong());
-    }
-
-    @DisplayName("존재하지 않는 회원 삭제하면 예외를 반환한다")
-    @Test
-    void deleteNotExistMember() {
-        assertThatThrownBy(() -> memberService.deleteById(NOT_EXIST_ID))
-            .isInstanceOf(NotFoundMemberException.class);
     }
 
     @DisplayName("삭제하려는 회원의 아이디가 null이면 예외를 반환한다.")
     @Test
     void deleteNullMemberId() {
         assertThatThrownBy(() -> memberService.deleteById(null))
-            .isInstanceOf(InvalidMemberIdException.class);
-    }
-
-    @DisplayName("모든 회원을 삭제한다.")
-    @Test
-    void deleteAllMember() {
-        doNothing().when(memberRepository).deleteAll();
-
-        memberService.deleteAll();
-
-        verify(memberRepository).deleteAll();
+            .isInstanceOf(MemberIdInvalidException.class);
     }
 }

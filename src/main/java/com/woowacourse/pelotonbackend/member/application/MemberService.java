@@ -8,8 +8,8 @@ import javax.validation.Valid;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.woowacourse.pelotonbackend.common.exception.InvalidMemberIdException;
-import com.woowacourse.pelotonbackend.common.exception.NotFoundMemberException;
+import com.woowacourse.pelotonbackend.common.exception.MemberIdInvalidException;
+import com.woowacourse.pelotonbackend.common.exception.MemberNotFoundException;
 import com.woowacourse.pelotonbackend.member.domain.Member;
 import com.woowacourse.pelotonbackend.member.domain.MemberRepository;
 import com.woowacourse.pelotonbackend.member.presentation.dto.MemberCashUpdateRequest;
@@ -71,22 +71,14 @@ public class MemberService {
 
     public void deleteById(final Long id) {
         if (Objects.isNull(id)) {
-            throw new InvalidMemberIdException(id);
-        }
-
-        if (!memberRepository.existsById(id)) {
-            throw new NotFoundMemberException(id);
+            throw new MemberIdInvalidException(id);
         }
 
         memberRepository.deleteById(id);
     }
 
-    public void deleteAll() {
-        memberRepository.deleteAll();
-    }
-
     private Member findMemberById(final Long id) {
         return memberRepository.findById(id)
-            .orElseThrow(() -> new NotFoundMemberException(id));
+            .orElseThrow(() -> new MemberNotFoundException(id));
     }
 }

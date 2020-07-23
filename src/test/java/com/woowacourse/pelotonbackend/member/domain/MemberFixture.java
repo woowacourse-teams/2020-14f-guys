@@ -51,9 +51,9 @@ public class MemberFixture {
             .build();
     }
 
-    public static Member memberCashUpdated() {
+    public static Member memberCashUpdated(final Long id) {
         return Member.builder()
-            .id(ID)
+            .id(id)
             .email(EMAIL)
             .name(NAME)
             .cash(UPDATE_CASH)

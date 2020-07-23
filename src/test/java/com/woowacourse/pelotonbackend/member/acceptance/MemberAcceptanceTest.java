@@ -15,7 +15,6 @@ import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.woowacourse.pelotonbackend.member.domain.MemberFixture;
 import com.woowacourse.pelotonbackend.member.presentation.dto.MemberCashUpdateRequest;
 import com.woowacourse.pelotonbackend.member.presentation.dto.MemberCreateRequest;
@@ -58,12 +57,11 @@ public class MemberAcceptanceTest {
 
     @DisplayName("회원을 관리하는 기능")
     @Test
-    void manageMember() throws JsonProcessingException {
+    void manageMember() {
         final MemberResponse memberResponse = createAndFindMember();
         updateName(memberResponse);
         updateCash(memberResponse);
         requestDelete(memberResponse);
-        deleteAll();
     }
 
     private MemberResponse createAndFindMember() {
@@ -110,28 +108,12 @@ public class MemberAcceptanceTest {
         );
     }
 
-    private void requestDelete(final MemberResponse memberResponse) throws JsonProcessingException {
+    private void requestDelete(final MemberResponse memberResponse) {
         requestCreate(MemberFixture.createRequest(EMAIL3, NAME3));
         requestDelete(memberResponse.getId());
         final MemberResponses responseAfterDelete = requestFindAll();
 
         assertThat(responseAfterDelete.getResponses()).hasSize(2);
-    }
-
-    private void deleteAll() {
-        requestDeleteAll();
-        final MemberResponses responseAfterDeleteAll = requestFindAll();
-
-        assertThat(responseAfterDeleteAll.getResponses()).hasSize(0);
-    }
-
-    private void requestDeleteAll() {
-        given()
-            .when()
-            .delete(RESOURCE_URL)
-            .then()
-            .log().all()
-            .statusCode(HttpStatus.NO_CONTENT.value());
     }
 
     private void requestDelete(final Long id) {
@@ -155,7 +137,8 @@ public class MemberAcceptanceTest {
             .extract()
             .header("Location");
 
-        return Long.parseLong(location.substring(RESOURCE_URL.length()));
+        final long resourceId = Long.parseLong(location.substring(RESOURCE_URL.length()));
+        return resourceId;
     }
 
     private Long requestUpdateName(final Long id, final MemberNameUpdateRequest updateRequest) {
@@ -170,7 +153,8 @@ public class MemberAcceptanceTest {
             .extract()
             .header("Location");
 
-        return Long.parseLong(location.substring(RESOURCE_URL.length()));
+        final long resourceId = Long.parseLong(location.substring(RESOURCE_URL.length()));
+        return resourceId;
     }
 
     private MemberResponses requestFindAll() {
@@ -208,6 +192,7 @@ public class MemberAcceptanceTest {
             .extract()
             .header("Location");
 
-        return Long.parseLong(header.substring(RESOURCE_URL.length()));
+        final long resourceId = Long.parseLong(header.substring(RESOURCE_URL.length()));
+        return resourceId;
     }
 }

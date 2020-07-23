@@ -4,11 +4,12 @@ import java.beans.ConstructorProperties;
 
 import javax.validation.constraints.NotBlank;
 
+import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 
-@AllArgsConstructor(onConstructor_ = {@ConstructorProperties({"name"})})
+@AllArgsConstructor(access = AccessLevel.PRIVATE, onConstructor_ = {@ConstructorProperties("name")})
 @Builder
 @Getter
 public class MemberNameUpdateRequest {

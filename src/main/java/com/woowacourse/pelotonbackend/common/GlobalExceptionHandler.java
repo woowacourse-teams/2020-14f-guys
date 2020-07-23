@@ -30,8 +30,11 @@ public class GlobalExceptionHandler {
         log.error("HandleBind Exception ! ", exception);
 
         final ErrorCode errorCode = ErrorCode.INVALID_VALIDATE;
-        final ErrorResponse errorResponse = ErrorResponse.of(errorCode.getStatus(), errorCode.getCode(),
-            "Invalid Binding", exception.getBindingResult());
+        final ErrorResponse errorResponse = ErrorResponse.of(
+            errorCode.getStatus(),
+            errorCode.getCode(),
+            "Invalid Binding",
+            exception.getBindingResult());
 
         return new ResponseEntity<>(errorResponse, HttpStatus.valueOf(errorCode.getStatus()));
     }
@@ -41,11 +44,10 @@ public class GlobalExceptionHandler {
         log.error("Business Exception ! ", exception);
 
         final ErrorCode errorCode = exception.getErrorCode();
-        final ErrorResponse errorResponse = ErrorResponse.builder()
-            .status(errorCode.getStatus())
-            .code(errorCode.getCode())
-            .message(exception.getMessage())
-            .build();
+        final ErrorResponse errorResponse = ErrorResponse.of(
+            errorCode.getStatus(),
+            errorCode.getCode(),
+            exception.getMessage());
 
         return new ResponseEntity<>(errorResponse, HttpStatus.valueOf(errorCode.getStatus()));
     }

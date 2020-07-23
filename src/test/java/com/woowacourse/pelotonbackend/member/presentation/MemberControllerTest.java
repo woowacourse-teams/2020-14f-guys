@@ -26,7 +26,7 @@ import org.springframework.web.filter.CharacterEncodingFilter;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.woowacourse.pelotonbackend.common.ErrorCode;
-import com.woowacourse.pelotonbackend.common.exception.NotFoundMemberException;
+import com.woowacourse.pelotonbackend.common.exception.MemberNotFoundException;
 import com.woowacourse.pelotonbackend.member.application.MemberService;
 import com.woowacourse.pelotonbackend.member.domain.MemberFixture;
 import com.woowacourse.pelotonbackend.member.presentation.dto.MemberCashUpdateRequest;
@@ -49,7 +49,7 @@ public class MemberControllerTest {
     private MemberService memberService;
 
     @BeforeEach
-    public void setup(WebApplicationContext webApplicationContext) {
+    public void setup(final WebApplicationContext webApplicationContext) {
         mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext)
             .addFilters(new CharacterEncodingFilter("UTF-8", true))
             .alwaysDo(print())
@@ -146,18 +146,7 @@ public class MemberControllerTest {
     @DisplayName("특정 회원을 삭제한다.")
     @Test
     void deleteMember() throws Exception {
-        doNothing().when(memberService).deleteById(anyLong());
-
         mockMvc.perform(delete(String.format("%s%d", RESOURCE_URL, ID)))
-            .andExpect(status().isNoContent());
-    }
-
-    @DisplayName("모든 회원을 삭제한다.")
-    @Test
-    void deleteAllMember() throws Exception {
-        doNothing().when(memberService).deleteAll();
-
-        mockMvc.perform(delete(RESOURCE_URL))
             .andExpect(status().isNoContent());
     }
 
@@ -176,23 +165,25 @@ public class MemberControllerTest {
     @DisplayName("존재하지 않는 멤버의 요청에 예외를 반환한다.")
     @Test
     void notFoundMemberException() throws Exception {
-        when(memberService.findMember(any())).thenThrow(new NotFoundMemberException(100L));
+        when(memberService.findMember(any())).thenThrow(new MemberNotFoundException(100L));
 
         mockMvc.perform(get(String.format("%s%d", RESOURCE_URL, NOT_EXIST_ID))
             .accept(MediaType.APPLICATION_JSON)
         )
             .andExpect(status().isBadRequest())
-            .andExpect(jsonPath("code").value(ErrorCode.NOT_FOUND_MEMBER.getCode()));
+            .andExpect(jsonPath("code").value(ErrorCode.MEMBER_NOT_FOUND.getCode()))
+            .andExpect(jsonPath("errors").doesNotExist());
     }
 
     @DisplayName("존재하지 않는 멤버를 삭제하려 할 때 예외를 반환한다.")
     @Test
     void invalidMemberIdException() throws Exception {
-        doThrow(new NotFoundMemberException(NOT_EXIST_ID)).when(memberService).deleteById(any());
+        doThrow(new MemberNotFoundException(NOT_EXIST_ID)).when(memberService).deleteById(any());
 
         mockMvc.perform(delete(String.format("%s%d", RESOURCE_URL, NOT_EXIST_ID))
         )
             .andExpect(status().isBadRequest())
-            .andExpect(jsonPath("code").value(ErrorCode.NOT_FOUND_MEMBER.getCode()));
+            .andExpect(jsonPath("code").value(ErrorCode.MEMBER_NOT_FOUND.getCode()))
+            .andExpect(jsonPath("errors").doesNotExist());
     }
 }

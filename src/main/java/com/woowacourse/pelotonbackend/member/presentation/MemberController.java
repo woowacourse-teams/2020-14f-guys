@@ -38,7 +38,7 @@ public class MemberController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<MemberResponse> findMember(@PathVariable Long id) {
+    public ResponseEntity<MemberResponse> findMember(@PathVariable final Long id) {
         final MemberResponse memberResponse = memberService.findMember(id);
 
         return ResponseEntity.ok(memberResponse);
@@ -52,7 +52,7 @@ public class MemberController {
     }
 
     @PatchMapping("/{id}/name")
-    public ResponseEntity<Void> updateName(@PathVariable Long id, @RequestBody @Valid MemberNameUpdateRequest request) {
+    public ResponseEntity<Void> updateName(@PathVariable final Long id, @RequestBody @Valid final MemberNameUpdateRequest request) {
         final MemberResponse memberResponse = memberService.updateName(id, request);
 
         return ResponseEntity.ok()
@@ -61,7 +61,7 @@ public class MemberController {
     }
 
     @PatchMapping("/{id}/cash")
-    public ResponseEntity<Void> updateCash(@PathVariable Long id, @RequestBody @Valid MemberCashUpdateRequest request) {
+    public ResponseEntity<Void> updateCash(@PathVariable final Long id, @RequestBody @Valid final MemberCashUpdateRequest request) {
         final MemberResponse memberResponse = memberService.updateCash(id, request);
 
         return ResponseEntity.ok()
@@ -70,15 +70,8 @@ public class MemberController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> delete(@PathVariable Long id) {
+    public ResponseEntity<Void> delete(@PathVariable final Long id) {
         memberService.deleteById(id);
-
-        return ResponseEntity.noContent().build();
-    }
-
-    @DeleteMapping
-    public ResponseEntity<Void> deleteAll() {
-        memberService.deleteAll();
 
         return ResponseEntity.noContent().build();
     }

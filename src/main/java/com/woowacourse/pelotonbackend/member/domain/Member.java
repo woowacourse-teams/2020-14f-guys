@@ -20,7 +20,7 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.With;
 
-@Builder
+@Builder(toBuilder = true)
 @EqualsAndHashCode(of = "id")
 @Getter
 public class Member {
@@ -53,25 +53,15 @@ public class Member {
     private final LocalDateTime updatedAt;
 
     public Member update(final String name) {
-        return Member.builder()
-            .id(this.id)
-            .email(this.email)
-            .cash(this.cash)
-            .role(this.role)
+        return this.toBuilder()
             .name(name)
-            .createdAt(this.createdAt)
             .updatedAt(LocalDateTime.now())
             .build();
     }
 
     public Member update(final Cash cash) {
-        return Member.builder()
-            .id(this.id)
-            .email(this.email)
+        return this.toBuilder()
             .cash(cash)
-            .role(this.role)
-            .name(this.name)
-            .createdAt(this.createdAt)
             .updatedAt(LocalDateTime.now())
             .build();
     }
