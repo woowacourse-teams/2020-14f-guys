@@ -17,9 +17,9 @@ import com.woowacourse.pelotonbackend.race.domain.Race;
 import com.woowacourse.pelotonbackend.race.domain.RaceCategory;
 import com.woowacourse.pelotonbackend.race.domain.RaceFixture;
 import com.woowacourse.pelotonbackend.race.domain.RaceRepository;
-import com.woowacourse.pelotonbackend.race.exception.NotExistRaceException;
-import com.woowacourse.pelotonbackend.race.presentation.RaceRetrieveResponse;
-import com.woowacourse.pelotonbackend.race.presentation.RaceUpdateRequest;
+import com.woowacourse.pelotonbackend.race.exception.RaceNotFoundException;
+import com.woowacourse.pelotonbackend.race.presentation.dto.RaceRetrieveResponse;
+import com.woowacourse.pelotonbackend.race.presentation.dto.RaceUpdateRequest;
 import com.woowacourse.pelotonbackend.support.RandomGenerator;
 
 @ExtendWith(MockitoExtension.class)
@@ -71,7 +71,7 @@ public class RaceServiceTest {
 
         final long notExistRaceId = 100L;
         assertThatThrownBy(() -> raceService.retrieve(notExistRaceId))
-            .isInstanceOf(NotExistRaceException.class)
+            .isInstanceOf(RaceNotFoundException.class)
             .hasMessage(String.format("Race(id: %d) is not exists", notExistRaceId));
     }
 
@@ -95,7 +95,16 @@ public class RaceServiceTest {
 
         final long notExistRaceId = 100L;
         assertThatThrownBy(() -> raceService.update(notExistRaceId, RaceFixture.updateRequest()))
-            .isInstanceOf(NotExistRaceException.class)
+            .isInstanceOf(RaceNotFoundException.class)
             .hasMessage(String.format("Race(id: %d) is not exists", notExistRaceId));
+    }
+
+    @DisplayName("Race를 삭제할 때, 삭제 메서드를 부르는지 테스트합니다.")
+    @Test
+    void delete() {
+        final long raceId = 3L;
+        raceService.delete(raceId);
+
+        verify(raceRepository).deleteById(raceId);
     }
 }
