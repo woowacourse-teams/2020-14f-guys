@@ -17,7 +17,7 @@ import com.woowacourse.pelotonbackend.race.domain.Race;
 import com.woowacourse.pelotonbackend.race.domain.RaceCategory;
 import com.woowacourse.pelotonbackend.race.domain.RaceFixture;
 import com.woowacourse.pelotonbackend.race.domain.RaceRepository;
-import com.woowacourse.pelotonbackend.race.exception.NotExistRaceException;
+import com.woowacourse.pelotonbackend.race.exception.RaceNotFoundException;
 import com.woowacourse.pelotonbackend.race.presentation.dto.RaceRetrieveResponse;
 import com.woowacourse.pelotonbackend.race.presentation.dto.RaceUpdateRequest;
 import com.woowacourse.pelotonbackend.support.RandomGenerator;
@@ -71,7 +71,7 @@ public class RaceServiceTest {
 
         final long notExistRaceId = 100L;
         assertThatThrownBy(() -> raceService.retrieve(notExistRaceId))
-            .isInstanceOf(NotExistRaceException.class)
+            .isInstanceOf(RaceNotFoundException.class)
             .hasMessage(String.format("Race(id: %d) is not exists", notExistRaceId));
     }
 
@@ -95,7 +95,7 @@ public class RaceServiceTest {
 
         final long notExistRaceId = 100L;
         assertThatThrownBy(() -> raceService.update(notExistRaceId, RaceFixture.updateRequest()))
-            .isInstanceOf(NotExistRaceException.class)
+            .isInstanceOf(RaceNotFoundException.class)
             .hasMessage(String.format("Race(id: %d) is not exists", notExistRaceId));
     }
 

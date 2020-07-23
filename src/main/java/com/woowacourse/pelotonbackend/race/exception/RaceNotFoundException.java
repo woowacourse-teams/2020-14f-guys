@@ -1,7 +1,7 @@
 package com.woowacourse.pelotonbackend.race.exception;
 
-public class NotExistRaceException extends RuntimeException {
-    public NotExistRaceException(final Long id) {
+public class RaceNotFoundException extends RuntimeException {
+    public RaceNotFoundException(final Long id) {
         super(String.format("Race(id: %d) is not exists", id));
     }
 }

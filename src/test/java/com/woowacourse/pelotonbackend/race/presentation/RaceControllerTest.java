@@ -23,7 +23,7 @@ import org.springframework.web.filter.CharacterEncodingFilter;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.woowacourse.pelotonbackend.race.application.RaceService;
 import com.woowacourse.pelotonbackend.race.domain.RaceFixture;
-import com.woowacourse.pelotonbackend.race.exception.NotExistRaceException;
+import com.woowacourse.pelotonbackend.race.exception.RaceNotFoundException;
 import com.woowacourse.pelotonbackend.race.presentation.dto.RaceRetrieveResponse;
 import com.woowacourse.pelotonbackend.race.presentation.dto.RaceUpdateRequest;
 
@@ -135,7 +135,7 @@ class RaceControllerTest {
     @Test
     void retrieveNotExist() throws Exception {
         final Long notExistRaceId = 100L;
-        given(raceService.retrieve(notExistRaceId)).willThrow(new NotExistRaceException(notExistRaceId));
+        given(raceService.retrieve(notExistRaceId)).willThrow(new RaceNotFoundException(notExistRaceId));
 
         mockMvc.perform(get(String.format("/api/races/%d", notExistRaceId)))
             .andExpect(status().isNotFound())
@@ -146,7 +146,7 @@ class RaceControllerTest {
     @Test
     void updateNotExist() throws Exception {
         final Long notExistRaceId = 100L;
-        doThrow(new NotExistRaceException(notExistRaceId))
+        doThrow(new RaceNotFoundException(notExistRaceId))
             .when(raceService).update(eq(notExistRaceId), any(RaceUpdateRequest.class));
 
         mockMvc.perform(put(String.format("/api/races/%d", notExistRaceId))

@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.woowacourse.pelotonbackend.race.application.RaceService;
-import com.woowacourse.pelotonbackend.race.exception.NotExistRaceException;
+import com.woowacourse.pelotonbackend.race.exception.RaceNotFoundException;
 import com.woowacourse.pelotonbackend.race.presentation.dto.ErrorCode;
 import com.woowacourse.pelotonbackend.race.presentation.dto.RaceCreateRequest;
 import com.woowacourse.pelotonbackend.race.presentation.dto.RaceRetrieveResponse;
@@ -59,8 +59,8 @@ public class RaceController {
         return ResponseEntity.noContent().build();
     }
 
-    @ExceptionHandler(NotExistRaceException.class)
-    public ResponseEntity<String> notExistRaceExceptionHandler(NotExistRaceException e) {
+    @ExceptionHandler(RaceNotFoundException.class)
+    public ResponseEntity<String> notExistRaceExceptionHandler(RaceNotFoundException e) {
         log.error(e.getMessage());
 
         ErrorCode errorCode = ErrorCode.NOT_EXIT_RACE;

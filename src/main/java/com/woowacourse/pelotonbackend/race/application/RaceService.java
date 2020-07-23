@@ -6,7 +6,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.woowacourse.pelotonbackend.race.domain.Race;
 import com.woowacourse.pelotonbackend.race.domain.RaceCategory;
 import com.woowacourse.pelotonbackend.race.domain.RaceRepository;
-import com.woowacourse.pelotonbackend.race.exception.NotExistRaceException;
+import com.woowacourse.pelotonbackend.race.exception.RaceNotFoundException;
 import com.woowacourse.pelotonbackend.race.presentation.dto.RaceCreateRequest;
 import com.woowacourse.pelotonbackend.race.presentation.dto.RaceRetrieveResponse;
 import com.woowacourse.pelotonbackend.race.presentation.dto.RaceUpdateRequest;
@@ -33,14 +33,14 @@ public class RaceService {
     @Transactional(readOnly = true)
     public RaceRetrieveResponse retrieve(final Long raceId) {
         final Race race = raceRepository.findById(raceId)
-            .orElseThrow(() -> new NotExistRaceException(raceId));
+            .orElseThrow(() -> new RaceNotFoundException(raceId));
 
         return RaceRetrieveResponse.of(race);
     }
 
     public void update(final Long raceId, final RaceUpdateRequest request) {
         final Race race = raceRepository.findById(raceId)
-            .orElseThrow(() -> new NotExistRaceException(raceId));
+            .orElseThrow(() -> new RaceNotFoundException(raceId));
 
         final Race raceUpdated = request.toEntity(race);
         raceRepository.save(raceUpdated);
