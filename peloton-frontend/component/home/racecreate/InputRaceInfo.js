@@ -7,30 +7,50 @@ import RaceCreateInputBox from "./RaceCreateInputBox";
 import { raceCreateInfoState } from "../../../state/race/CreateState";
 
 const InputRaceInfo = () => {
-  const raceCreateInfo = useRecoilValue(raceCreateInfoState);
+  const {
+    title,
+    description,
+    startDate,
+    endDate,
+    category,
+    entranceFee,
+  } = useRecoilValue(raceCreateInfoState);
 
   const formatInfo = () => {
     return {
-      title: raceCreateInfo.title,
-      description: raceCreateInfo.description,
+      title,
+      description,
+      category,
+      entranceFee,
       raceDuration: {
-        startDate: raceCreateInfo.startDate,
-        endDate: raceCreateInfo.endDate,
-      },
-      category: raceCreateInfo.category,
-      entranceFee: {
-        cash: raceCreateInfo.entranceFee,
+        startDate,
+        endDate,
       },
     };
   };
 
   const onPress = async () => {
-    const response = await axios({
-      method: "post",
-      baseURL: "http://localhost:8080",
-      url: "/api/races",
-      data: formatInfo(),
-    });
+    if (
+      !title ||
+      !description ||
+      !category ||
+      !entranceFee ||
+      !startDate ||
+      !endDate
+    ) {
+      alert("필드를 모두 채워주세요");
+      return;
+    }
+    try {
+      await axios({
+        method: "post",
+        baseURL: "https://c79b7070ce58.ngrok.io",
+        url: "/api/races",
+        data: formatInfo(),
+      });
+    } catch (e) {
+      alert("문제가 발생했습니다. 다시 시도해주세요.");
+    }
   };
 
   return (
