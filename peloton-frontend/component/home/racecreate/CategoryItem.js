@@ -1,10 +1,15 @@
 import React from "react";
 import { Image, StyleSheet, Text, TouchableOpacity } from "react-native";
+
 import { COLOR } from "../../../utils/constants";
 
-const CategoryItem = ({ item }) => {
+const CategoryItem = ({ item, onSelect }) => {
   return (
-    <TouchableOpacity activeOpacity={0.7} style={styles.item}>
+    <TouchableOpacity
+      activeOpacity={0.7}
+      style={styles.item}
+      onPress={() => onSelect(item.category)}
+    >
       <Image style={styles.itemImage} source={{ uri: item.src }} />
       <Text style={styles.itemTitle}>{item.title}</Text>
       <Text style={styles.itemSubtitle}>{item.subtitle}</Text>

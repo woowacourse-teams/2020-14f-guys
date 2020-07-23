@@ -5,6 +5,7 @@ import HomeMain from "./homemain/HomeMain";
 import RaceDetail from "./race/RaceDetail";
 import CategorySelection from "./racecreate/CategorySelection";
 import ShareButton from "./race/ShareButton";
+import InputRaceInfo from "./racecreate/InputRaceInfo";
 
 const Stack = createStackNavigator();
 
@@ -30,6 +31,11 @@ const Home = () => {
         name="CategorySelection"
         component={CategorySelection}
         options={{ title: "카테고리 선택" }}
+      />
+      <Stack.Screen
+        name="InputRaceInfo"
+        component={InputRaceInfo}
+        options={{ title: "레이스 정보 입력" }}
       />
     </Stack.Navigator>
   );
