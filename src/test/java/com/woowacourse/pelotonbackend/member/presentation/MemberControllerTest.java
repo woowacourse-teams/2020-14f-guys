@@ -25,6 +25,8 @@ import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.filter.CharacterEncodingFilter;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.woowacourse.pelotonbackend.common.ErrorCode;
+import com.woowacourse.pelotonbackend.common.exception.NotFoundMemberException;
 import com.woowacourse.pelotonbackend.member.application.MemberService;
 import com.woowacourse.pelotonbackend.member.domain.MemberFixture;
 import com.woowacourse.pelotonbackend.member.presentation.dto.MemberCashUpdateRequest;
@@ -157,5 +159,40 @@ public class MemberControllerTest {
 
         mockMvc.perform(delete(RESOURCE_URL))
             .andExpect(status().isNoContent());
+    }
+
+    @DisplayName("잘못된 요청 객체를 전달하면 예외를 반환한다.")
+    @Test
+    void validationException() throws Exception {
+        mockMvc.perform(post(RESOURCE_URL)
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(objectMapper.writeValueAsBytes(MemberFixture.createBadRequest()))
+        )
+            .andExpect(status().isBadRequest())
+            .andExpect(jsonPath("code").value(ErrorCode.INVALID_VALIDATE.getCode()))
+            .andExpect(jsonPath("errors").exists());
+    }
+
+    @DisplayName("존재하지 않는 멤버의 요청에 예외를 반환한다.")
+    @Test
+    void notFoundMemberException() throws Exception {
+        when(memberService.findMember(any())).thenThrow(new NotFoundMemberException(100L));
+
+        mockMvc.perform(get(String.format("%s%d", RESOURCE_URL, NOT_EXIST_ID))
+            .accept(MediaType.APPLICATION_JSON)
+        )
+            .andExpect(status().isBadRequest())
+            .andExpect(jsonPath("code").value(ErrorCode.NOT_FOUND_MEMBER.getCode()));
+    }
+
+    @DisplayName("존재하지 않는 멤버를 삭제하려 할 때 예외를 반환한다.")
+    @Test
+    void invalidMemberIdException() throws Exception {
+        doThrow(new NotFoundMemberException(NOT_EXIST_ID)).when(memberService).deleteById(any());
+
+        mockMvc.perform(delete(String.format("%s%d", RESOURCE_URL, NOT_EXIST_ID))
+        )
+            .andExpect(status().isBadRequest())
+            .andExpect(jsonPath("code").value(ErrorCode.NOT_FOUND_MEMBER.getCode()));
     }
 }

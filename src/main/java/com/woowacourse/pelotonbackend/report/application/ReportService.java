@@ -3,9 +3,9 @@ package com.woowacourse.pelotonbackend.report.application;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.woowacourse.pelotonbackend.common.exception.DuplicateReportException;
 import com.woowacourse.pelotonbackend.report.domain.Report;
 import com.woowacourse.pelotonbackend.report.domain.ReportRepository;
-import com.woowacourse.pelotonbackend.report.exception.DuplicateReportFoundException;
 import com.woowacourse.pelotonbackend.report.presentation.ReportCreateContent;
 import lombok.AllArgsConstructor;
 
@@ -21,7 +21,7 @@ public class ReportService {
 
         final boolean isReportExists = reportRepository.existsByMemberIdAndCertificationId(memberId, certificationId);
         if (isReportExists) {
-            throw new DuplicateReportFoundException(memberId, certificationId);
+            throw new DuplicateReportException(memberId, certificationId);
         }
 
         final Report report = requestContent.toEntity();

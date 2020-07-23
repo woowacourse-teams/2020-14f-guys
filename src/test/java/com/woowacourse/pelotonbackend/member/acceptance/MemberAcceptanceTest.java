@@ -10,14 +10,12 @@ import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.woowacourse.pelotonbackend.member.domain.MemberFixture;
 import com.woowacourse.pelotonbackend.member.presentation.dto.MemberCashUpdateRequest;
 import com.woowacourse.pelotonbackend.member.presentation.dto.MemberCreateRequest;
@@ -29,8 +27,6 @@ import io.restassured.specification.RequestSpecification;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class MemberAcceptanceTest {
-    @Autowired
-    private ObjectMapper objectMapper;
 
     @LocalServerPort
     public int port;
@@ -70,7 +66,7 @@ public class MemberAcceptanceTest {
         deleteAll();
     }
 
-    private MemberResponse createAndFindMember() throws JsonProcessingException {
+    private MemberResponse createAndFindMember() {
         final MemberCreateRequest memberRequest = createRequest(EMAIL, NAME);
         final Long createMemberId = requestCreate(memberRequest);
         final MemberResponse memberResponse = requestFind(createMemberId);
@@ -200,11 +196,9 @@ public class MemberAcceptanceTest {
             .as(MemberResponse.class);
     }
 
-    private Long requestCreate(final MemberCreateRequest memberRequest) throws JsonProcessingException {
-        final byte[] request = objectMapper.writeValueAsBytes(memberRequest);
-
+    private Long requestCreate(final MemberCreateRequest memberRequest) {
         final String header = given()
-            .body(request)
+            .body(memberRequest)
             .contentType(MediaType.APPLICATION_JSON_VALUE)
             .when()
             .post(RESOURCE_URL)

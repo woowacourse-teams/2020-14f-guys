@@ -14,10 +14,12 @@ import lombok.Getter;
 @AllArgsConstructor(onConstructor_ = {@ConstructorProperties({"member_id", "race_id"})})
 @Getter
 public class RiderCreateRequest {
-    @JsonProperty("member_id") @NotNull
+    @JsonProperty("member_id")
+    @NotNull
     private final Long memberId;
 
-    @JsonProperty("race_id") @NotNull
+    @JsonProperty("race_id")
+    @NotNull
     private final Long raceId;
 
     public Rider toRider() {

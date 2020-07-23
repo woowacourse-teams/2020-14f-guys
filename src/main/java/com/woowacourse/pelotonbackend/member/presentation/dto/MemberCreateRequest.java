@@ -20,7 +20,8 @@ public class MemberCreateRequest {
     @NotBlank
     private final String name;
 
-    @NotBlank @Email
+    @NotBlank
+    @Email
     private final String email;
 
     @NotNull

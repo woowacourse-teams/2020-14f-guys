@@ -8,6 +8,8 @@ import javax.validation.Valid;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.woowacourse.pelotonbackend.common.exception.InvalidMemberIdException;
+import com.woowacourse.pelotonbackend.common.exception.NotFoundMemberException;
 import com.woowacourse.pelotonbackend.member.domain.Member;
 import com.woowacourse.pelotonbackend.member.domain.MemberRepository;
 import com.woowacourse.pelotonbackend.member.presentation.dto.MemberCashUpdateRequest;
@@ -69,11 +71,11 @@ public class MemberService {
 
     public void deleteById(final Long id) {
         if (Objects.isNull(id)) {
-            throw new IllegalArgumentException("아이디는 null이 될 수 없습니다.");
+            throw new InvalidMemberIdException(id);
         }
 
         if (!memberRepository.existsById(id)) {
-            throw new IllegalArgumentException("이미 탈퇴한 회원입니다.");
+            throw new NotFoundMemberException(id);
         }
 
         memberRepository.deleteById(id);
@@ -85,6 +87,6 @@ public class MemberService {
 
     private Member findMemberById(final Long id) {
         return memberRepository.findById(id)
-            .orElseThrow(IllegalArgumentException::new);
+            .orElseThrow(() -> new NotFoundMemberException(id));
     }
 }

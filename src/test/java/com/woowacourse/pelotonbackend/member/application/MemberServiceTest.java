@@ -17,6 +17,8 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import com.woowacourse.pelotonbackend.common.exception.InvalidMemberIdException;
+import com.woowacourse.pelotonbackend.common.exception.NotFoundMemberException;
 import com.woowacourse.pelotonbackend.member.domain.Member;
 import com.woowacourse.pelotonbackend.member.domain.MemberFixture;
 import com.woowacourse.pelotonbackend.member.domain.MemberRepository;
@@ -26,8 +28,6 @@ import com.woowacourse.pelotonbackend.member.presentation.dto.MemberResponses;
 
 @ExtendWith(MockitoExtension.class)
 class MemberServiceTest {
-    private static final long NOT_EXIST_ID = 100L;
-
     private MemberService memberService;
 
     @Mock
@@ -67,7 +67,7 @@ class MemberServiceTest {
         when(memberRepository.findById(anyLong())).thenReturn(Optional.empty());
 
         assertThatThrownBy(() -> memberService.findMember(ID))
-            .isInstanceOf(IllegalArgumentException.class);
+            .isInstanceOf(NotFoundMemberException.class);
     }
 
     @DisplayName("모든 회원을 조회한다.")
@@ -153,14 +153,14 @@ class MemberServiceTest {
     @Test
     void deleteNotExistMember() {
         assertThatThrownBy(() -> memberService.deleteById(NOT_EXIST_ID))
-            .isInstanceOf(IllegalArgumentException.class);
+            .isInstanceOf(NotFoundMemberException.class);
     }
 
     @DisplayName("삭제하려는 회원의 아이디가 null이면 예외를 반환한다.")
     @Test
     void deleteNullMemberId() {
         assertThatThrownBy(() -> memberService.deleteById(null))
-            .isInstanceOf(IllegalArgumentException.class);
+            .isInstanceOf(InvalidMemberIdException.class);
     }
 
     @DisplayName("모든 회원을 삭제한다.")

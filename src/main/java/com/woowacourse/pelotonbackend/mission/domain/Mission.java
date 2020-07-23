@@ -25,7 +25,8 @@ import lombok.With;
 @EqualsAndHashCode(of = "id")
 @Getter
 public class Mission {
-    @Id @With(value = AccessLevel.PACKAGE)
+    @Id
+    @With(value = AccessLevel.PACKAGE)
     private final Long id;
 
     @Embedded.Empty

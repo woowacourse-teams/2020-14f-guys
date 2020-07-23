@@ -24,26 +24,31 @@ import lombok.With;
 @EqualsAndHashCode(of = "id")
 @Getter
 public class Member {
-    @Id @With(value = AccessLevel.PACKAGE)
+    @Id
+    @With(value = AccessLevel.PACKAGE)
     private final Long id;
 
     @NotBlank
     private final String name;
 
-    @NotBlank @Email
+    @NotBlank
+    @Email
     private final String email;
 
-    @Embedded.Empty @Valid
+    @Embedded.Empty
+    @Valid
     private final Cash cash;
 
     @NotNull
     private final Role role;
 
-    @CreatedDate @PastOrPresent
+    @CreatedDate
+    @PastOrPresent
     @With(AccessLevel.PACKAGE)
     private final LocalDateTime createdAt;
 
-    @LastModifiedDate @PastOrPresent
+    @LastModifiedDate
+    @PastOrPresent
     @With(AccessLevel.PACKAGE)
     private final LocalDateTime updatedAt;
 

@@ -21,6 +21,7 @@ public class MemberFixture {
     public static final Role ROLE = Role.MEMBER;
     public static final Long ID = 1L;
     public static final Long ID2 = 2L;
+    public static final Long NOT_EXIST_ID = 100L;
 
     public static MemberCreateRequest createRequest(final String email, final String name) {
         return MemberCreateRequest.builder()
@@ -90,5 +91,9 @@ public class MemberFixture {
         return MemberCashUpdateRequest.builder()
             .cash(UPDATE_CASH)
             .build();
+    }
+
+    public static MemberCreateRequest createBadRequest() {
+        return MemberCreateRequest.builder().build();
     }
 }

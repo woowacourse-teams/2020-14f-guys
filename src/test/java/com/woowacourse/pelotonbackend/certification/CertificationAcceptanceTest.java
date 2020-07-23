@@ -13,7 +13,7 @@ import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 
-import com.woowacourse.pelotonbackend.certification.domain.dto.ErrorCode;
+import com.woowacourse.pelotonbackend.common.ErrorCode;
 import io.restassured.RestAssured;
 import io.restassured.specification.RequestSpecification;
 
@@ -71,8 +71,7 @@ public class CertificationAcceptanceTest {
                     .then()
                     .log().all()
                     .statusCode(HttpStatus.BAD_REQUEST.value())
-                    .body("message", equalTo(ErrorCode.INVALID_INPUT_VALUE.getMessage()))
-                    .body("status", equalTo(ErrorCode.INVALID_INPUT_VALUE.getStatusCode()))
+                    .body("status", equalTo(ErrorCode.INVALID_VALIDATE.getStatus()))
                     .body("errors", notNullValue())
             )
         );
