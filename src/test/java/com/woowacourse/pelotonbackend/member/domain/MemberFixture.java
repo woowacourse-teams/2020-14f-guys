@@ -13,7 +13,7 @@ public class MemberFixture {
     public static final String EMAIL2 = "kyle@woowa.com";
     public static final String EMAIL3 = "dd@woowa.com";
     public static final String NAME = "jinju";
-    public static final String NAME2 = "kyle";
+    public static final String NAME2 = "sika";
     public static final String NAME3 = "dd";
     public static final String UPDATE_NAME = "blbi";
     public static final Cash CASH = new Cash(BigDecimal.ONE);

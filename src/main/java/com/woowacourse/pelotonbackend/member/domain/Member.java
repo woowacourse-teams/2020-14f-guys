@@ -55,14 +55,12 @@ public class Member {
     public Member update(final String name) {
         return this.toBuilder()
             .name(name)
-            .updatedAt(LocalDateTime.now())
             .build();
     }
 
     public Member update(final Cash cash) {
         return this.toBuilder()
             .cash(cash)
-            .updatedAt(LocalDateTime.now())
             .build();
     }
 }
