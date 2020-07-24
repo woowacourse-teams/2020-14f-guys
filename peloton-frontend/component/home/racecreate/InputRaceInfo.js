@@ -1,10 +1,18 @@
 import React from "react";
-import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import {
+  Keyboard,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  TouchableWithoutFeedback,
+} from "react-native";
 import axios from "axios";
 import { useRecoilValue } from "recoil";
+import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 
-import RaceCreateInputBox from "./RaceCreateInputBox";
+import RaceCreateUnit from "./RaceCreateUnit";
 import { raceCreateInfoState } from "../../../state/race/CreateState";
+import { BASE_URL } from "../../../utils/constants";
 
 const InputRaceInfo = () => {
   const {
@@ -44,7 +52,7 @@ const InputRaceInfo = () => {
     try {
       await axios({
         method: "post",
-        baseURL: "https://c79b7070ce58.ngrok.io",
+        baseURL: BASE_URL,
         url: "/api/races",
         data: formatInfo(),
       });
@@ -54,24 +62,51 @@ const InputRaceInfo = () => {
   };
 
   return (
-    <View style={styles.container}>
-      <RaceCreateInputBox fieldName="title">제목</RaceCreateInputBox>
-      <RaceCreateInputBox fieldName="description">설명</RaceCreateInputBox>
-      <RaceCreateInputBox fieldName="startDate">시작 날짜</RaceCreateInputBox>
-      <RaceCreateInputBox fieldName="endDate">종료 날짜</RaceCreateInputBox>
-      <RaceCreateInputBox fieldName="entranceFee">입장료</RaceCreateInputBox>
-      <TouchableOpacity onPress={onPress}>
-        <Text>만들기</Text>
-      </TouchableOpacity>
-    </View>
+    <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
+      <KeyboardAwareScrollView extraHeight={150} style={styles.container}>
+        <RaceCreateUnit fieldName="title">제목</RaceCreateUnit>
+        <RaceCreateUnit fieldName="description">설명</RaceCreateUnit>
+        <RaceCreateUnit date fieldName="startDate">
+          시작 날짜
+        </RaceCreateUnit>
+        <RaceCreateUnit date fieldName="endDate">
+          종료 날짜
+        </RaceCreateUnit>
+        <RaceCreateUnit fieldName="entranceFee">입장료</RaceCreateUnit>
+        <TouchableOpacity style={styles.button} onPress={onPress}>
+          <Text style={styles.buttonText}>만들기</Text>
+        </TouchableOpacity>
+      </KeyboardAwareScrollView>
+    </TouchableWithoutFeedback>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: "center",
     paddingTop: 30,
+    paddingBottom: 20,
+    paddingHorizontal: 35,
+  },
+  button: {
+    width: 178,
+    height: 50,
+    borderRadius: 100,
+    backgroundColor: "#ffffff",
+    shadowColor: "rgba(0, 0, 0, 0.3)",
+    shadowOffset: {
+      width: 0,
+      height: 20,
+    },
+    shadowRadius: 50,
+    shadowOpacity: 1,
+    marginBottom: 50,
+    alignSelf: "center",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  buttonText: {
+    fontSize: 14,
   },
 });
 
