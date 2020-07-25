@@ -22,6 +22,7 @@ import com.woowacourse.pelotonbackend.member.presentation.dto.MemberResponse;
 import com.woowacourse.pelotonbackend.member.presentation.dto.MemberResponses;
 import com.woowacourse.pelotonbackend.support.RandomGenerator;
 import com.woowacourse.pelotonbackend.vo.Cash;
+import com.woowacourse.pelotonbackend.vo.ImageUrl;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 
@@ -97,6 +98,7 @@ public class MemberService {
 
         return member.map(MemberResponse::from).orElseGet(() -> createMember(MemberCreateRequest.builder()
             .kakaoId(kakaoUserResponse.getId())
+            .profile(new ImageUrl(kakaoUserResponse.getProfileImage()))
             .cash(Cash.initial())
             .email(kakaoUserResponse.getEmail())
             .name(kakaoUserResponse.getNickname() + randomGenerator.getRandomString())

@@ -6,9 +6,8 @@ import com.woowacourse.pelotonbackend.member.presentation.dto.MemberCashUpdateRe
 import com.woowacourse.pelotonbackend.member.presentation.dto.MemberCreateRequest;
 import com.woowacourse.pelotonbackend.member.presentation.dto.MemberNameUpdateRequest;
 import com.woowacourse.pelotonbackend.member.presentation.dto.MemberResponse;
-import com.woowacourse.pelotonbackend.support.annotation.LoginMember;
-import com.woowacourse.pelotonbackend.support.annotation.RequiredAuth;
 import com.woowacourse.pelotonbackend.vo.Cash;
+import com.woowacourse.pelotonbackend.vo.ImageUrl;
 
 public class MemberFixture {
     public static final String EMAIL = "jj@woowa.com";
@@ -20,6 +19,8 @@ public class MemberFixture {
     public static final String UPDATE_NAME = "blbi";
     public static final Cash CASH = new Cash(BigDecimal.ONE);
     public static final Cash UPDATE_CASH = new Cash(BigDecimal.TEN);
+    public static final ImageUrl PROFILE = new ImageUrl(
+        "https://lh3.googleusercontent.com/5EfQBHDb47tchiART6U6yk3yYS9qBYr6VUssB5wHE1AgavqV5E2SSuzyiNkc7UgVng");
     public static final Role ROLE = Role.MEMBER;
     public static final Long ID = 1L;
     public static final Long ID2 = 2L;
@@ -31,6 +32,7 @@ public class MemberFixture {
     public static MemberCreateRequest createRequest(final Long kakaoId, final String email, final String name) {
         return MemberCreateRequest.builder()
             .kakaoId(kakaoId)
+            .profile(PROFILE)
             .email(email)
             .name(name)
             .cash(CASH)
@@ -41,6 +43,7 @@ public class MemberFixture {
     public static Member createWithoutId(final Long kakaoId, final String email, final String name) {
         return Member.builder()
             .kakaoId(kakaoId)
+            .profile(PROFILE)
             .email(email)
             .name(name)
             .cash(CASH)
@@ -52,6 +55,7 @@ public class MemberFixture {
         return Member.builder()
             .id(id)
             .kakaoId(KAKAO_ID)
+            .profile(PROFILE)
             .email(EMAIL)
             .name(NAME)
             .cash(CASH)
@@ -63,6 +67,7 @@ public class MemberFixture {
         return Member.builder()
             .id(id)
             .kakaoId(KAKAO_ID)
+            .profile(PROFILE)
             .email(EMAIL)
             .name(NAME)
             .cash(UPDATE_CASH)
@@ -74,6 +79,7 @@ public class MemberFixture {
         return Member.builder()
             .id(ID)
             .kakaoId(KAKAO_ID)
+            .profile(PROFILE)
             .email(EMAIL)
             .name(UPDATE_NAME)
             .cash(CASH)
@@ -85,6 +91,7 @@ public class MemberFixture {
         return MemberResponse.builder()
             .id(ID)
             .kakaoId(KAKAO_ID)
+            .profile(PROFILE)
             .email(EMAIL)
             .name(NAME)
             .cash(CASH)

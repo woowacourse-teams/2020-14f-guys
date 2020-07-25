@@ -10,12 +10,13 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.woowacourse.pelotonbackend.member.domain.Member;
 import com.woowacourse.pelotonbackend.member.domain.Role;
 import com.woowacourse.pelotonbackend.vo.Cash;
+import com.woowacourse.pelotonbackend.vo.ImageUrl;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 
-@AllArgsConstructor(access = AccessLevel.PRIVATE, onConstructor_ = {@ConstructorProperties({"kakaoId", "name", "email", "cash", "role"})})
+@AllArgsConstructor(access = AccessLevel.PRIVATE, onConstructor_ = {@ConstructorProperties({"kakaoId", "profile", "name", "email", "cash", "role"})})
 @Builder
 @Getter
 public class MemberCreateRequest {
@@ -23,6 +24,9 @@ public class MemberCreateRequest {
 
     @NotNull
     private final Long kakaoId;
+
+    @NotNull
+    private final ImageUrl profile;
 
     @NotBlank
     private final String name;
@@ -41,6 +45,7 @@ public class MemberCreateRequest {
         return Member.builder()
             .id(id)
             .kakaoId(kakaoId)
+            .profile(profile)
             .name(name)
             .email(email)
             .cash(cash)
