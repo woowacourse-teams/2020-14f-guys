@@ -6,9 +6,13 @@ import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.woowacourse.pelotonbackend.race.domain.DateDuration;
 import com.woowacourse.pelotonbackend.race.domain.Race;
 import com.woowacourse.pelotonbackend.race.domain.RaceCategory;
+import com.woowacourse.pelotonbackend.support.jsonparser.CashDeserializer;
+import com.woowacourse.pelotonbackend.support.jsonparser.CashSerializer;
 import com.woowacourse.pelotonbackend.vo.Cash;
 import com.woowacourse.pelotonbackend.vo.ImageUrl;
 import lombok.AccessLevel;
@@ -18,7 +22,7 @@ import lombok.Getter;
 
 @AllArgsConstructor(access = AccessLevel.PRIVATE,
     onConstructor_ = {
-        @ConstructorProperties({"title", "description", "raceDuration", "category", "cash"})})
+        @ConstructorProperties({"title", "description", "raceDuration", "category", "entranceFee"})})
 @Builder
 @Getter
 public class RaceCreateRequest {
@@ -35,6 +39,8 @@ public class RaceCreateRequest {
     private final RaceCategory category;
 
     @Valid
+    @JsonSerialize(using = CashSerializer.class)
+    @JsonDeserialize(using = CashDeserializer.class)
     private final Cash entranceFee;
 
     public Race toEntity(ImageUrl certification, ImageUrl thumbnail) {
