@@ -6,15 +6,15 @@ import DateTimePickerModal from "react-native-modal-datetime-picker";
 import { raceCreateInfoState } from "../../../state/race/CreateState";
 import InputBox from "./InputBox";
 import CalendarButton from "./CalendarButton";
+import { DateFormatter } from "../util/DateFormatter";
 
 const RaceCreateUnit = ({ date = false, fieldName, children }) => {
-  const [raceCreateInfo, setRaceCreateInfo] = useRecoilState(
-    raceCreateInfoState,
-  );
+  // eslint-disable-next-line prettier/prettier
+  const [raceCreateInfo, setRaceCreateInfo] = useRecoilState(raceCreateInfoState);
   const [isShowPicker, setIsShowPicker] = useState(false);
 
   const onPickDate = (pickedDate) => {
-    const formattedDate = pickedDate.toISOString().split("T")[0];
+    const formattedDate = DateFormatter.yyyyMMdd(pickedDate);
 
     setRaceCreateInfo((info) => ({
       ...info,

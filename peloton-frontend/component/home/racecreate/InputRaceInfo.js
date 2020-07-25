@@ -1,64 +1,81 @@
-import React from "react";
+import React, { useEffect } from "react";
 import {
+  ActivityIndicator,
   Keyboard,
   StyleSheet,
   Text,
   TouchableOpacity,
   TouchableWithoutFeedback,
+  View,
 } from "react-native";
-import axios from "axios";
 import { useRecoilValue } from "recoil";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
+import { useNavigation, CommonActions } from "@react-navigation/native";
+import useAxios from "axios-hooks";
 
 import RaceCreateUnit from "./RaceCreateUnit";
 import { raceCreateInfoState } from "../../../state/race/CreateState";
-import { BASE_URL } from "../../../utils/constants";
+import { BASE_URL, COLOR } from "../../../utils/constants";
 
 const InputRaceInfo = () => {
-  const {
-    title,
-    description,
-    startDate,
-    endDate,
-    category,
-    entranceFee,
-  } = useRecoilValue(raceCreateInfoState);
+  // eslint-disable-next-line prettier/prettier
+  const { title, description, startDate, endDate, category, entranceFee } = useRecoilValue(raceCreateInfoState);
 
-  const formatInfo = () => {
-    return {
-      title,
-      description,
-      category,
-      entranceFee,
-      raceDuration: {
-        startDate,
-        endDate,
-      },
-    };
+  const formatPostRaceBody = () => {
+    // eslint-disable-next-line prettier/prettier
+    return { title, description, category, entranceFee, raceDuration: { startDate, endDate } };
   };
 
+  const [{ response, loading, error }, createRaceRequest] = useAxios(
+    {
+      method: "post",
+      baseURL: BASE_URL,
+      url: "/api/races",
+      data: formatPostRaceBody(),
+    },
+    { manual: true }
+  );
+  const navigation = useNavigation();
+
+  useEffect(() => {
+    if (response) {
+      navigation.dispatch({
+        ...CommonActions.reset({
+          index: 1,
+          routes: [
+            {
+              name: "HomeMain",
+            },
+            {
+              name: "RaceDetail",
+              params: { location: response.headers.location },
+            },
+          ],
+        }),
+        target: navigation.dangerouslyGetState().key,
+      });
+    }
+    if (error) {
+      alert(error.toString());
+    }
+  }, [response, error]);
+
   const onPress = async () => {
-    if (
-      !title ||
-      !description ||
-      !category ||
-      !entranceFee ||
-      !startDate ||
-      !endDate
-    ) {
+    // eslint-disable-next-line prettier/prettier
+    if (!title || !description || !category || !entranceFee || !startDate || !endDate) {
       alert("필드를 모두 채워주세요");
       return;
     }
-    try {
-      await axios({
-        method: "post",
-        baseURL: BASE_URL,
-        url: "/api/races",
-        data: formatInfo(),
-      });
-    } catch (e) {
-      alert("문제가 발생했습니다. 다시 시도해주세요.");
+    if (startDate > endDate) {
+      alert("레이스 종료 날짜가 시작 날짜보다 빠릅니다.");
+      return;
     }
+    if (entranceFee < 0) {
+      alert("입장료는 음수가 될 수 없습니다.");
+      return;
+    }
+
+    createRaceRequest();
   };
 
   return (
@@ -76,6 +93,11 @@ const InputRaceInfo = () => {
         <TouchableOpacity style={styles.button} onPress={onPress}>
           <Text style={styles.buttonText}>만들기</Text>
         </TouchableOpacity>
+        {loading && (
+          <View style={styles.loadingIndicator}>
+            <ActivityIndicator size="large" color={COLOR.GRAY5} />
+          </View>
+        )}
       </KeyboardAwareScrollView>
     </TouchableWithoutFeedback>
   );
@@ -107,6 +129,17 @@ const styles = StyleSheet.create({
   },
   buttonText: {
     fontSize: 14,
+  },
+  loadingIndicator: {
+    position: "absolute",
+    top: 0,
+    bottom: 0,
+    left: 0,
+    right: 0,
+    backgroundColor: COLOR.GRAY1,
+    opacity: 0.8,
+    justifyContent: "center",
+    alignItems: "center",
   },
 });
 
