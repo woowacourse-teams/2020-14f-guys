@@ -10,6 +10,7 @@ import com.woowacourse.pelotonbackend.vo.Cash;
 import com.woowacourse.pelotonbackend.vo.ImageUrl;
 
 public class MemberFixture {
+    public static final String RESOURCE_URL = "/api/members";
     public static final String EMAIL = "jj@woowa.com";
     public static final String EMAIL2 = "kyle@woowa.com";
     public static final String EMAIL3 = "dd@woowa.com";

@@ -1,50 +1,27 @@
 package com.woowacourse.pelotonbackend.member.acceptance;
 
 import static com.woowacourse.pelotonbackend.member.domain.MemberFixture.*;
-import static com.woowacourse.pelotonbackend.member.presentation.MemberControllerTest.*;
 import static org.assertj.core.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.List;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.woowacourse.pelotonbackend.member.domain.MemberFixture;
 import com.woowacourse.pelotonbackend.member.presentation.dto.MemberCashUpdateRequest;
 import com.woowacourse.pelotonbackend.member.presentation.dto.MemberCreateRequest;
 import com.woowacourse.pelotonbackend.member.presentation.dto.MemberNameUpdateRequest;
 import com.woowacourse.pelotonbackend.member.presentation.dto.MemberResponse;
 import com.woowacourse.pelotonbackend.member.presentation.dto.MemberResponses;
-import com.woowacourse.pelotonbackend.member.presentation.dto.MemberCreateRequest;
-import io.restassured.RestAssured;
-import io.restassured.specification.RequestSpecification;
+import com.woowacourse.pelotonbackend.support.AcceptanceTest;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-public class MemberAcceptanceTest {
-    @Autowired
-    private ObjectMapper objectMapper;
-
-    @LocalServerPort
-    public int port;
-
-    @BeforeEach
-    void setUp() {
-        RestAssured.port = port;
-    }
-
-    private static RequestSpecification given() {
-        return RestAssured.given().log().all();
-    }
-
+public class MemberAcceptanceTest extends AcceptanceTest {
     /*
     Scenario : 회원을 관리한다.
         when : 회원을 만든다.
@@ -73,7 +50,7 @@ public class MemberAcceptanceTest {
     private MemberResponse createAndFindMember() {
         final MemberCreateRequest memberRequest = createRequest(KAKAO_ID, EMAIL, NAME);
         final Long createMemberId = requestCreate(memberRequest);
-        final MemberResponse memberResponse = requestFind(createMemberId);
+        final MemberResponse memberResponse = requestFind(KAKAO_ID);
 
         assertAll(
             () -> assertThat(createMemberId).isEqualTo(memberResponse.getId()),
@@ -82,7 +59,7 @@ public class MemberAcceptanceTest {
 
         final MemberCreateRequest memberOtherRequest = MemberFixture.createRequest(KAKAO_ID2, EMAIL2, NAME2);
         requestCreate(memberOtherRequest);
-        final List<MemberResponse> memberResponses = requestFindAll().getResponses();
+        final List<MemberResponse> memberResponses = requestFindAll(KAKAO_ID).getResponses();
 
         assertAll(
             () -> assertThat(memberResponses.size()).isEqualTo(2),
@@ -94,8 +71,8 @@ public class MemberAcceptanceTest {
 
     private void updateName(final MemberResponse memberResponse) {
         final MemberNameUpdateRequest nameUpdatedRequest = MemberFixture.createNameUpdateRequest();
-        final Long updatedMemberId = requestUpdateName(memberResponse.getId(), nameUpdatedRequest);
-        final MemberResponse nameUpdatedResponse = requestFind(updatedMemberId);
+        requestUpdateName(memberResponse.getKakaoId(), nameUpdatedRequest);
+        final MemberResponse nameUpdatedResponse = requestFind(memberResponse.getKakaoId());
 
         assertAll(
             () -> assertThat(nameUpdatedResponse.getName()).isEqualTo(nameUpdatedRequest.getName()),
@@ -105,69 +82,66 @@ public class MemberAcceptanceTest {
 
     private void updateCash(final MemberResponse memberResponse) {
         final MemberCashUpdateRequest cashUpdatedRequest = MemberFixture.createCashUpdateRequest();
-        final Long cashUpdatedMemberId = requestUpdateCash(memberResponse.getId(), cashUpdatedRequest);
-        final MemberResponse cashUpdatedResponse = requestFind(cashUpdatedMemberId);
+        requestUpdateCash(memberResponse.getKakaoId(), cashUpdatedRequest);
+        final MemberResponse cashUpdatedResponse = requestFind(memberResponse.getKakaoId());
 
         assertAll(
             () -> assertThat(cashUpdatedResponse.getCash()).isEqualTo(cashUpdatedRequest.getCash()),
-            () -> assertThat(cashUpdatedResponse).isEqualToIgnoringGivenFields(memberResponse, "name","cash")
+            () -> assertThat(cashUpdatedResponse).isEqualToIgnoringGivenFields(memberResponse, "name", "cash")
         );
     }
 
-    private void requestDelete(final MemberResponse memberResponse) {
-        requestCreate(MemberFixture.createRequest(KAKAO_ID3, EMAIL3, NAME3));
-        requestDelete(memberResponse.getId());
-        final MemberResponses responseAfterDelete = requestFindAll();
+    private void requestDelete(MemberResponse memberResponse) {
+        requestDelete(memberResponse.getKakaoId());
+        final MemberResponses responseAfterDelete = requestFindAll(KAKAO_ID2);
 
-        assertThat(responseAfterDelete.getResponses()).hasSize(2);
+        assertThat(responseAfterDelete.getResponses()).hasSize(1);
     }
 
-    private void requestDelete(final Long id) {
+    private void requestDelete(final Long kakaoId) {
         given()
             .when()
-            .delete(String.format("%s%d", RESOURCE_URL, id))
+            .header(createTokenHeader(kakaoId))
+            .delete(RESOURCE_URL)
             .then()
             .log().all()
             .statusCode(HttpStatus.NO_CONTENT.value());
     }
 
-    private Long requestUpdateCash(final Long id, final MemberCashUpdateRequest cashUpdatedRequest) {
-        final String location = given()
+    private void requestUpdateCash(final Long kakaoId, final MemberCashUpdateRequest cashUpdatedRequest) {
+        given()
+            .header(createTokenHeader(kakaoId))
             .contentType(MediaType.APPLICATION_JSON_VALUE)
             .body(cashUpdatedRequest)
             .when()
-            .patch(String.format("%s%d/cash", RESOURCE_URL, id))
+            .patch(RESOURCE_URL + "/cash")
             .then()
             .log().all()
             .statusCode(HttpStatus.OK.value())
             .extract()
             .header("Location");
-
-        final long resourceId = Long.parseLong(location.substring(RESOURCE_URL.length()));
-        return resourceId;
     }
 
-    private Long requestUpdateName(final Long id, final MemberNameUpdateRequest updateRequest) {
-        final String location = given()
+    private void requestUpdateName(final Long kakaoId, final MemberNameUpdateRequest updateRequest) {
+        given()
+            .header(createTokenHeader(kakaoId))
             .contentType(MediaType.APPLICATION_JSON_VALUE)
             .body(updateRequest)
             .when()
-            .patch(String.format("%s%d/name", RESOURCE_URL, id))
+            .patch(RESOURCE_URL + "/name")
             .then()
             .log().all()
             .statusCode(HttpStatus.OK.value())
             .extract()
             .header("Location");
-
-        final long resourceId = Long.parseLong(location.substring(RESOURCE_URL.length()));
-        return resourceId;
     }
 
-    private MemberResponses requestFindAll() {
+    private MemberResponses requestFindAll(final Long kakaoId) {
         return given()
+            .header(createTokenHeader(kakaoId))
             .accept(MediaType.APPLICATION_JSON_VALUE)
             .when()
-            .get(RESOURCE_URL)
+            .get(RESOURCE_URL + "/all")
             .then()
             .log().all()
             .statusCode(HttpStatus.OK.value())
@@ -175,30 +149,4 @@ public class MemberAcceptanceTest {
             .as(MemberResponses.class);
     }
 
-    private MemberResponse requestFind(final Long id) {
-        return given()
-            .when()
-            .get(String.format("%s%d", RESOURCE_URL, id))
-            .then()
-            .log().all()
-            .statusCode(HttpStatus.OK.value())
-            .extract()
-            .as(MemberResponse.class);
-    }
-
-    private Long requestCreate(final MemberCreateRequest memberRequest) {
-        final String header = given()
-            .body(memberRequest)
-            .contentType(MediaType.APPLICATION_JSON_VALUE)
-            .when()
-            .post(RESOURCE_URL)
-            .then()
-            .log().all()
-            .statusCode(HttpStatus.CREATED.value())
-            .extract()
-            .header("Location");
-
-        final long resourceId = Long.parseLong(header.substring(RESOURCE_URL.length()));
-        return resourceId;
-    }
 }

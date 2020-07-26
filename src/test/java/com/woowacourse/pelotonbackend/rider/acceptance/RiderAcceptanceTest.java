@@ -1,31 +1,16 @@
 package com.woowacourse.pelotonbackend.rider.acceptance;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 
+import com.woowacourse.pelotonbackend.member.domain.MemberFixture;
 import com.woowacourse.pelotonbackend.rider.presentation.dto.RiderCreateRequest;
-import io.restassured.RestAssured;
-import io.restassured.specification.RequestSpecification;
+import com.woowacourse.pelotonbackend.support.AcceptanceTest;
+import com.woowacourse.pelotonbackend.vo.JwtTokenResponse;
 
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-public class RiderAcceptanceTest {
-    @LocalServerPort
-    public int port;
-
-    public static RequestSpecification given() {
-        return RestAssured.given().log().all();
-    }
-
-    @BeforeEach
-    void setUp() {
-        RestAssured.port = port;
-    }
-
+public class RiderAcceptanceTest extends AcceptanceTest {
     /*
      * Feature: Rider 관리
      *
@@ -40,10 +25,13 @@ public class RiderAcceptanceTest {
     void manageRider() {
         final Long memberId = 1L;
         final Long raceId = 1L;
+        final JwtTokenResponse tokenResponse = loginMember(
+            MemberFixture.createRequest(MemberFixture.KAKAO_ID, MemberFixture.EMAIL, MemberFixture.NAME));
 
         final RiderCreateRequest riderCreateRequest = new RiderCreateRequest(memberId, raceId);
 
         given()
+            .header(createTokenHeader(tokenResponse))
             .body(riderCreateRequest)
             .contentType(MediaType.APPLICATION_JSON_VALUE)
             .accept(MediaType.APPLICATION_JSON_VALUE)

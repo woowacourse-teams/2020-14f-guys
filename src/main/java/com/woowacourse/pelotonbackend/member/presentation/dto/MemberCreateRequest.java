@@ -6,7 +6,6 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.woowacourse.pelotonbackend.member.domain.Member;
 import com.woowacourse.pelotonbackend.member.domain.Role;
 import com.woowacourse.pelotonbackend.vo.Cash;
@@ -20,8 +19,6 @@ import lombok.Getter;
 @Builder
 @Getter
 public class MemberCreateRequest {
-    private final Long id;
-
     @NotNull
     private final Long kakaoId;
 
@@ -43,7 +40,6 @@ public class MemberCreateRequest {
 
     public Member toMember() {
         return Member.builder()
-            .id(id)
             .kakaoId(kakaoId)
             .profile(profile)
             .name(name)

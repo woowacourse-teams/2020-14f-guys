@@ -5,37 +5,21 @@ import static org.assertj.core.api.Assertions.*;
 
 import java.util.regex.Pattern;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 
+import com.woowacourse.pelotonbackend.member.domain.MemberFixture;
 import com.woowacourse.pelotonbackend.race.domain.RaceFixture;
 import com.woowacourse.pelotonbackend.race.presentation.dto.RaceCreateRequest;
 import com.woowacourse.pelotonbackend.race.presentation.dto.RaceRetrieveResponse;
 import com.woowacourse.pelotonbackend.race.presentation.dto.RaceUpdateRequest;
-import io.restassured.RestAssured;
+import com.woowacourse.pelotonbackend.support.AcceptanceTest;
+import com.woowacourse.pelotonbackend.vo.JwtTokenResponse;
 import io.restassured.response.ValidatableResponse;
-import io.restassured.specification.RequestSpecification;
 
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-public class RaceAcceptanceTest {
-
-    @LocalServerPort
-    public int port;
-
-    @BeforeEach
-    public void setUp() {
-        RestAssured.port = port;
-    }
-
-    public static RequestSpecification given() {
-        return RestAssured.given().log().all();
-    }
-
+public class RaceAcceptanceTest extends AcceptanceTest {
     /*
      * Feature: Race 관리
      *
@@ -56,21 +40,23 @@ public class RaceAcceptanceTest {
     @DisplayName("레이스를 관리한다.(생성, 조회, 수정, 삭제)")
     @Test
     void manageRace() {
-        final String raceLocation = createRace();
+        final JwtTokenResponse tokenResponse = loginMember(
+            MemberFixture.createRequest(MemberFixture.KAKAO_ID, MemberFixture.EMAIL, MemberFixture.NAME));
+        final String raceLocation = createRace(tokenResponse);
+        retrieveRaceAndCompareTo(raceLocation, RaceFixture.retrieveResponse(), tokenResponse);
 
-        retrieveRaceAndCompareTo(raceLocation, RaceFixture.retrieveResponse());
+        updateRace(raceLocation, tokenResponse);
+        retrieveRaceAndCompareTo(raceLocation, RaceFixture.retrieveUpdatedResponse(), tokenResponse);
 
-        updateRace(raceLocation);
-        retrieveRaceAndCompareTo(raceLocation, RaceFixture.retrieveUpdatedResponse());
-
-        deleteRace(raceLocation);
-        retrieveRaceNotFound(raceLocation);
+        deleteRace(raceLocation, tokenResponse);
+        retrieveRaceNotFound(raceLocation, tokenResponse);
     }
 
-    String createRace() {
+    String createRace(final JwtTokenResponse tokenResponse) {
         final RaceCreateRequest request = RaceFixture.createMockRequest();
 
         final String location = given()
+            .header(createTokenHeader(tokenResponse))
             .contentType(MediaType.APPLICATION_JSON_VALUE)
             .body(request)
             .when()
@@ -86,8 +72,10 @@ public class RaceAcceptanceTest {
         return location;
     }
 
-    void retrieveRaceAndCompareTo(final String resourceLocation, final RaceRetrieveResponse expected) {
-        final RaceRetrieveResponse responseBody = retrieveRaceWithStatusCode(resourceLocation, HttpStatus.OK.value())
+    void retrieveRaceAndCompareTo(final String resourceLocation, final RaceRetrieveResponse expected,
+        final JwtTokenResponse tokenResponse) {
+        final RaceRetrieveResponse responseBody = retrieveRaceWithStatusCode(resourceLocation, tokenResponse,
+            HttpStatus.OK.value())
             .extract()
             .body()
             .as(RaceRetrieveResponse.class);
@@ -95,8 +83,10 @@ public class RaceAcceptanceTest {
         assertThat(responseBody).isEqualToIgnoringGivenFields(expected, "thumbnail", "certificationExample");
     }
 
-    private ValidatableResponse retrieveRaceWithStatusCode(final String resourceLocation, final int statusCode) {
+    private ValidatableResponse retrieveRaceWithStatusCode(final String resourceLocation,
+        final JwtTokenResponse tokenResponse, final int statusCode) {
         return given()
+            .header(createTokenHeader(tokenResponse))
             .when()
             .get(resourceLocation)
             .then()
@@ -104,10 +94,11 @@ public class RaceAcceptanceTest {
             .statusCode(statusCode);
     }
 
-    void updateRace(final String resourceLocation) {
+    void updateRace(final String resourceLocation, final JwtTokenResponse tokenResponse) {
         final RaceUpdateRequest raceUpdateRequest = RaceFixture.updateRequest();
 
         given()
+            .header(createTokenHeader(tokenResponse))
             .contentType(MediaType.APPLICATION_JSON_VALUE)
             .body(raceUpdateRequest)
             .when()
@@ -117,8 +108,9 @@ public class RaceAcceptanceTest {
             .statusCode(HttpStatus.OK.value());
     }
 
-    void deleteRace(final String resourceLocation) {
+    void deleteRace(final String resourceLocation, final JwtTokenResponse tokenResponse) {
         given()
+            .header(createTokenHeader(tokenResponse))
             .when()
             .delete(resourceLocation)
             .then()
@@ -126,7 +118,7 @@ public class RaceAcceptanceTest {
             .statusCode(HttpStatus.NO_CONTENT.value());
     }
 
-    void retrieveRaceNotFound(final String resourceLocation) {
-        retrieveRaceWithStatusCode(resourceLocation, HttpStatus.BAD_REQUEST.value());
+    void retrieveRaceNotFound(final String resourceLocation, final JwtTokenResponse tokenResponse) {
+        retrieveRaceWithStatusCode(resourceLocation, tokenResponse, HttpStatus.BAD_REQUEST.value());
     }
 }

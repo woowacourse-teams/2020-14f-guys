@@ -9,7 +9,6 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 class KakaoUserResponseTest {
-
     private final ObjectMapper objectMapper = new ObjectMapper();
 
     @Test

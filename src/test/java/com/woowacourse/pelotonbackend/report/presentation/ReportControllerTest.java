@@ -21,6 +21,7 @@ import org.springframework.web.filter.CharacterEncodingFilter;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.woowacourse.pelotonbackend.report.application.ReportService;
 import com.woowacourse.pelotonbackend.report.domain.ReportFixture;
+import com.woowacourse.pelotonbackend.support.BearerAuthInterceptor;
 
 @SpringBootTest
 class ReportControllerTest {
@@ -31,6 +32,9 @@ class ReportControllerTest {
 
     @MockBean
     private ReportService reportService;
+
+    @MockBean
+    private BearerAuthInterceptor authInterceptor;
 
     @BeforeEach
     public void setup(WebApplicationContext webApplicationContext) {
@@ -43,6 +47,7 @@ class ReportControllerTest {
     @Test
     void createReport() throws Exception {
         final Long createdReportId = 10L;
+        given(authInterceptor.preHandle(any(), any(), any())).willReturn(true);
         when(reportService.createReport(any(ReportCreateContent.class))).thenReturn(createdReportId);
 
         MvcResult mvcResult = mockMvc.perform(

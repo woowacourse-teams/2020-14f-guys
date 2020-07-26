@@ -1,13 +1,10 @@
 package com.woowacourse.pelotonbackend.member.presentation;
 
 import static com.woowacourse.pelotonbackend.member.domain.LoginFixture.*;
-import static com.woowacourse.pelotonbackend.member.domain.MemberFixture.*;
 import static org.mockito.BDDMockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
-
-import java.util.Optional;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -15,7 +12,6 @@ import javax.servlet.http.HttpServletResponse;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.web.servlet.MockMvc;
@@ -23,13 +19,8 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.filter.CharacterEncodingFilter;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.woowacourse.pelotonbackend.member.application.LoginService;
-import com.woowacourse.pelotonbackend.member.application.MemberService;
-import com.woowacourse.pelotonbackend.member.domain.Member;
-import com.woowacourse.pelotonbackend.support.AuthorizationExtractor;
 import com.woowacourse.pelotonbackend.support.BearerAuthInterceptor;
-import com.woowacourse.pelotonbackend.support.JwtTokenProvider;
 
 @SpringBootTest
 class LoginControllerTest {
@@ -38,21 +29,6 @@ class LoginControllerTest {
 
     @MockBean
     private LoginService loginService;
-
-    @MockBean
-    private LoginMemberArgumentResolver argumentResolver;
-
-    @MockBean
-    private AuthorizationExtractor extractor;
-
-    @MockBean
-    private JwtTokenProvider tokenProvider;
-
-    @MockBean
-    private MemberService memberService;
-
-    @Autowired
-    private ObjectMapper objectMapper;
 
     private MockMvc mockMvc;
 
@@ -112,22 +88,5 @@ class LoginControllerTest {
         mockMvc.perform(get("/api/login/check")
             .param("success", LOGIN_FAIL))
             .andExpect(status().isUnauthorized());
-    }
-
-    @DisplayName("로그인 성공 시 토큰을 통해 유저 정보를 가져온다.")
-    @Test
-    public void getUserTest() throws Exception {
-        final Member expectedMember = createWithId(ID);
-        given(bearerAuthInterceptor.preHandle(any(), any(), any())).willReturn(true);
-        given(argumentResolver.resolveArgument(any(), any(), any(), any())).willReturn(expectedMember);
-        given(extractor.extract(any())).willReturn(TOKEN);
-        given(tokenProvider.getSubject(TOKEN)).willReturn(String.valueOf(KAKAO_ID));
-        given(memberService.findByKakaoId(KAKAO_ID)).willReturn(Optional.of(createWithId(ID)));
-        given(argumentResolver.supportsParameter(any())).willReturn(true);
-        willDoNothing().given(tokenProvider).validateToken(any());
-
-        mockMvc.perform(get("/api/login/user"))
-            .andExpect(status().isOk())
-            .andExpect(content().bytes(objectMapper.writeValueAsBytes(expectedMember)));
     }
 }

@@ -6,6 +6,8 @@ import java.util.Date;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
+import com.woowacourse.pelotonbackend.common.ErrorCode;
+import com.woowacourse.pelotonbackend.member.InvalidTokenException;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
@@ -44,7 +46,7 @@ public class JwtTokenProvider {
         try {
             Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token);
         } catch (JwtException | IllegalArgumentException e) {
-            throw new IllegalArgumentException("토큰이 만료되었습니다. 다시 로그인 해주세요.");
+            throw new InvalidTokenException(ErrorCode.TOKEN_EXPIRED, "토큰이 만료되었습니다. 다시 로그인 해주세요.");
         }
     }
 }

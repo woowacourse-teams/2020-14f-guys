@@ -2,6 +2,8 @@ package com.woowacourse.pelotonbackend.member.domain;
 
 import static com.woowacourse.pelotonbackend.member.domain.MemberFixture.*;
 
+import org.springframework.stereotype.Component;
+
 import com.woowacourse.pelotonbackend.member.infra.dto.KakaoTokenResponse;
 import com.woowacourse.pelotonbackend.member.infra.dto.KakaoUserResponse;
 import com.woowacourse.pelotonbackend.member.presentation.dto.MemberResponse;
@@ -9,6 +11,7 @@ import com.woowacourse.pelotonbackend.support.annotation.LoginMember;
 import com.woowacourse.pelotonbackend.support.annotation.RequiredAuth;
 import com.woowacourse.pelotonbackend.vo.Cash;
 
+@Component
 public class LoginFixture {
     public static final String CODE_VALUE = "CODE";
     public static final String URL = "https://14floorguys.com";

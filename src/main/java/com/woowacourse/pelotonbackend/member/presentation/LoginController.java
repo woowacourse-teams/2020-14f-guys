@@ -13,9 +13,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.woowacourse.pelotonbackend.member.application.LoginService;
-import com.woowacourse.pelotonbackend.member.domain.Member;
-import com.woowacourse.pelotonbackend.support.annotation.LoginMember;
-import com.woowacourse.pelotonbackend.support.annotation.RequiredAuth;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -50,11 +47,5 @@ public class LoginController {
             return ResponseEntity.ok(token);
         }
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
-    }
-
-    @GetMapping("/user")
-    @RequiredAuth
-    public ResponseEntity<Member> getUser(@LoginMember Member member) {
-        return ResponseEntity.ok(member);
     }
 }

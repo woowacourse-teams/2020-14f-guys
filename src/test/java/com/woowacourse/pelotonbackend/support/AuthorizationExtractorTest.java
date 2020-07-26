@@ -34,6 +34,6 @@ class AuthorizationExtractorTest {
         request.addHeader("Authorization", "");
         assertThatThrownBy(() -> authorizationExtractor.extract(request))
             .isInstanceOf(InvalidTokenException.class)
-            .hasMessage("Authorization error: 유효하지 않은 토큰입니다!!");
+            .hasMessage("유효하지 않은 토큰입니다!!");
     }
 }

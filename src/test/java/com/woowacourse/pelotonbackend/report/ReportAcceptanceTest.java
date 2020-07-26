@@ -1,31 +1,20 @@
 package com.woowacourse.pelotonbackend.report;
 
 import static com.woowacourse.pelotonbackend.report.domain.ReportFixture.*;
-import static io.restassured.RestAssured.*;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import io.restassured.RestAssured;
+import com.woowacourse.pelotonbackend.member.domain.MemberFixture;
+import com.woowacourse.pelotonbackend.support.AcceptanceTest;
+import com.woowacourse.pelotonbackend.vo.JwtTokenResponse;
 
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-public class ReportAcceptanceTest {
-    @LocalServerPort
-    public int port;
-
-    @BeforeEach
-    public void setUp() {
-        RestAssured.port = port;
-    }
-
+public class ReportAcceptanceTest extends AcceptanceTest {
     @Autowired
     private ObjectMapper objectMapper;
 
@@ -37,8 +26,12 @@ public class ReportAcceptanceTest {
     @DisplayName("Report CRUD 인수 테스트")
     @Test
     void reportCrud() throws JsonProcessingException {
+        final JwtTokenResponse tokenResponse = loginMember(
+            MemberFixture.createRequest(MemberFixture.KAKAO_ID, MemberFixture.EMAIL, MemberFixture.NAME));
+
         given()
             .log().all()
+            .header(createTokenHeader(tokenResponse))
             .body(objectMapper.writeValueAsBytes(createRequestContent()))
             .contentType(MediaType.APPLICATION_JSON_VALUE)
             .when()

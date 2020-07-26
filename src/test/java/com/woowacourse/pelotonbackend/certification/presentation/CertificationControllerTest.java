@@ -6,6 +6,9 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -17,21 +20,25 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.filter.CharacterEncodingFilter;
+import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.woowacourse.pelotonbackend.certification.application.CertificationService;
 import com.woowacourse.pelotonbackend.certification.domain.dto.CertificationCreateRequest;
 import com.woowacourse.pelotonbackend.common.ErrorCode;
+import com.woowacourse.pelotonbackend.support.BearerAuthInterceptor;
 
 @SpringBootTest
 class CertificationControllerTest {
     @MockBean
     private CertificationService certificationService;
 
+    @MockBean
+    private BearerAuthInterceptor authInterceptor;
+
     private MockMvc mockMvc;
 
     private MockMultipartFile multipartFile;
-    private CertificationCreateRequest certificationCreateRequest;
     private CertificationCreateRequest badCertificationCreateRequest;
 
     @BeforeEach
@@ -41,7 +48,6 @@ class CertificationControllerTest {
             .alwaysDo(print())
             .build();
         multipartFile = (MockMultipartFile)createMockCertificationMultipartFile();
-        certificationCreateRequest = createMockCertificationRequest();
         badCertificationCreateRequest = createBadMockCertificationRequest();
     }
 
@@ -50,6 +56,8 @@ class CertificationControllerTest {
     void create() throws Exception {
         given(certificationService.create(any(MultipartFile.class), any(CertificationCreateRequest.class)))
             .willReturn(TEST_CERTIFICATION_ID);
+        given(authInterceptor.preHandle(any(HttpServletRequest.class), any(HttpServletResponse.class),
+            any(HandlerMethod.class))).willReturn(true);
 
         mockMvc.perform(
             multipart("/api/certifications", TEST_RIDER_ID, TEST_MISSION_ID)
@@ -69,6 +77,8 @@ class CertificationControllerTest {
     void createWithBadRequest() throws Exception {
         given(certificationService.create(any(MultipartFile.class), any(CertificationCreateRequest.class)))
             .willReturn(TEST_CERTIFICATION_ID);
+        given(authInterceptor.preHandle(any(HttpServletRequest.class), any(HttpServletResponse.class),
+            any(HandlerMethod.class))).willReturn(true);
 
         mockMvc.perform(
             multipart("/api/certifications", TEST_RIDER_ID, TEST_MISSION_ID)
