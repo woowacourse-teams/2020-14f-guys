@@ -1,4 +1,4 @@
-package com.woowacourse.pelotonbackend.vo;
+package com.woowacourse.pelotonbackend.support.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

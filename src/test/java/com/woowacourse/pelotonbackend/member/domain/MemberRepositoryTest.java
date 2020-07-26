@@ -1,6 +1,5 @@
 package com.woowacourse.pelotonbackend.member.domain;
 
-
 import static com.woowacourse.pelotonbackend.member.domain.MemberFixture.*;
 import static org.assertj.core.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.*;
@@ -67,5 +66,14 @@ class MemberRepositoryTest {
             .map(Member::getId)
             .collect(Collectors.toList());
         assertThat(membersIds).isEqualTo(ids);
+    }
+
+    @Test
+    void findByKakaoId() {
+        final Member member = memberRepository.save(createWithoutId(KAKAO_ID, EMAIL, NAME));
+        final Member persistMember = memberRepository.findByKakaoId(member.getKakaoId())
+            .orElseThrow(AssertionError::new);
+
+        assertThat(persistMember).isEqualToIgnoringGivenFields(member, "createdAt", "updatedAt");
     }
 }

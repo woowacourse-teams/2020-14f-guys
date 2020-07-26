@@ -45,7 +45,6 @@ class BearerAuthInterceptorTest {
     void preHandleTest() throws NoSuchMethodException {
         given(authExtractor.extract(any(HttpServletRequest.class))).willReturn(TOKEN_TYPE + TOKEN);
         given(jwtTokenProvider.getSubject(TOKEN_TYPE + TOKEN)).willReturn(String.valueOf(KAKAO_ID));
-        willDoNothing().given(jwtTokenProvider).validateToken(TOKEN_TYPE + TOKEN);
 
         final Method method = TestController.class.getMethod("testMethod", Member.class);
         handlerMethod = new HandlerMethod(new TestController(), method);

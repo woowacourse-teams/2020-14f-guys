@@ -31,7 +31,6 @@ public class BearerAuthInterceptor implements HandlerInterceptor {
         final RequiredAuth annotation = getAnnotation((HandlerMethod)handler, RequiredAuth.class);
         if (!ObjectUtils.isEmpty(annotation) && annotation.required()) {
             final String bearer = authExtractor.extract(request);
-            jwtTokenProvider.validateToken(bearer);
             final String kakaoId = jwtTokenProvider.getSubject(bearer);
             request.setAttribute("loginMemberKakaoId", kakaoId);
         }

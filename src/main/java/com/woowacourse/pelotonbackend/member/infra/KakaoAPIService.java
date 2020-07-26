@@ -15,7 +15,7 @@ import com.woowacourse.pelotonbackend.member.infra.dto.KakaoTokenResponse;
 import com.woowacourse.pelotonbackend.member.infra.dto.KakaoUserResponse;
 import com.woowacourse.pelotonbackend.member.presentation.dto.MemberResponse;
 import com.woowacourse.pelotonbackend.support.JwtTokenProvider;
-import com.woowacourse.pelotonbackend.vo.JwtTokenResponse;
+import com.woowacourse.pelotonbackend.support.dto.JwtTokenResponse;
 import reactor.core.publisher.Mono;
 
 @Component

@@ -11,7 +11,7 @@ import org.springframework.web.context.request.NativeWebRequest;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.method.support.ModelAndViewContainer;
 
-import com.woowacourse.pelotonbackend.member.MemberNotFoundException;
+import com.woowacourse.pelotonbackend.common.exception.MemberNotFoundException;
 import com.woowacourse.pelotonbackend.member.application.MemberService;
 import com.woowacourse.pelotonbackend.member.domain.Member;
 import com.woowacourse.pelotonbackend.support.annotation.LoginMember;
@@ -30,10 +30,12 @@ public class LoginMemberArgumentResolver implements HandlerMethodArgumentResolve
     @Override
     public Object resolveArgument(final MethodParameter parameter, final ModelAndViewContainer mavContainer,
         final NativeWebRequest webRequest, final WebDataBinderFactory binderFactory) {
-        String kakaoId = (String)webRequest.getAttribute("loginMemberKakaoId", SCOPE_REQUEST);
-        if (Objects.isNull(kakaoId)) {
+        String attribute = (String)webRequest.getAttribute("loginMemberKakaoId", SCOPE_REQUEST);
+        if (Objects.isNull(attribute)) {
             return Member.builder().build();
         }
-        return memberService.findByKakaoId(Long.parseLong(kakaoId)).orElseThrow(MemberNotFoundException::new);
+        final long kakaoId = Long.parseLong(attribute);
+
+        return memberService.findByKakaoId(kakaoId).orElseThrow(() -> new MemberNotFoundException(kakaoId));
     }
 }

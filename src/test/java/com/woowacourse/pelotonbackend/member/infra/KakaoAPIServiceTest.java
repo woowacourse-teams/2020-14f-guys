@@ -15,8 +15,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.http.client.reactive.ReactorClientHttpConnector;
-import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.util.DefaultUriBuilderFactory;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -46,17 +44,10 @@ class KakaoAPIServiceTest {
 
     private String mockServerUrl;
 
-    private WebClient webClient;
-
     @BeforeEach
     void setUp() {
-        ReactorClientHttpConnector connector = new ReactorClientHttpConnector();
         mockWebServer = new MockWebServer();
         mockServerUrl = mockWebServer.url("/").toString();
-        webClient = WebClient.builder()
-            .clientConnector(connector)
-            .baseUrl(mockServerUrl)
-            .build();
         kakaoAPIService = new KakaoAPIService(mockServerUrl, mockServerUrl, SERVER_URI, CLIENT_ID_VALUE,
             CLIENT_SECRET_VALUE, RESPONSE_TYPE_VALUE, GRANT_TYPE_VALUE, memberService, jwtTokenProvider);
     }

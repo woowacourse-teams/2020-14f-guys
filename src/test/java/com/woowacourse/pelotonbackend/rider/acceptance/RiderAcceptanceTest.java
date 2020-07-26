@@ -8,7 +8,7 @@ import org.springframework.http.MediaType;
 import com.woowacourse.pelotonbackend.member.domain.MemberFixture;
 import com.woowacourse.pelotonbackend.rider.presentation.dto.RiderCreateRequest;
 import com.woowacourse.pelotonbackend.support.AcceptanceTest;
-import com.woowacourse.pelotonbackend.vo.JwtTokenResponse;
+import com.woowacourse.pelotonbackend.support.dto.JwtTokenResponse;
 
 public class RiderAcceptanceTest extends AcceptanceTest {
     /*

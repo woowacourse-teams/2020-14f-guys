@@ -13,7 +13,7 @@ class KakaoUserResponseTest {
 
     @Test
     void JsonToResponse() throws JsonProcessingException {
-        String body = "{\n"
+        String kakaoApiResponseBody = "{\n"
             + "    \"id\": 1,\n"
             + "    \"properties\": {\n"
             + "        \"nickname\": \"nickname\",\n"
@@ -43,7 +43,8 @@ class KakaoUserResponseTest {
             + "        \"gender_needs_agreement\": true\n"
             + "    }\n"
             + "}";
-        final KakaoUserResponse kakaoUserResponse = objectMapper.readValue(body, KakaoUserResponse.class);
+        final KakaoUserResponse kakaoUserResponse = objectMapper.readValue(kakaoApiResponseBody,
+            KakaoUserResponse.class);
         assertThat(kakaoUserResponse).isEqualToComparingFieldByField(createMockKakaoUserResponse());
     }
 }

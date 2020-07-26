@@ -6,9 +6,11 @@ import static org.assertj.core.api.AssertionsForClassTypes.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 import org.springframework.mock.web.MockHttpServletRequest;
 
-import com.woowacourse.pelotonbackend.member.InvalidTokenException;
+import com.woowacourse.pelotonbackend.common.exception.TokenInvalidException;
 
 class AuthorizationExtractorTest {
     private AuthorizationExtractor authorizationExtractor;
@@ -29,11 +31,12 @@ class AuthorizationExtractorTest {
     }
 
     @DisplayName("올바르지 않은 토큰인 경우 예외를 반환한다.")
-    @Test
-    void invalidTokenExtractTest() {
-        request.addHeader("Authorization", "");
+    @ParameterizedTest
+    @ValueSource(strings = {"", "Barer abc", "Digest ABC"})
+    void invalidTokenExtractTest(String expectedToken) {
+        request.addHeader("Authorization", expectedToken);
         assertThatThrownBy(() -> authorizationExtractor.extract(request))
-            .isInstanceOf(InvalidTokenException.class)
-            .hasMessage("유효하지 않은 토큰입니다!!");
+            .isInstanceOf(TokenInvalidException.class)
+            .hasMessage("유효하지 않은 토큰입니다.");
     }
 }

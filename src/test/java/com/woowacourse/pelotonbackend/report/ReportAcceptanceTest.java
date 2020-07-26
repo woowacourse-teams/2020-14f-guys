@@ -12,7 +12,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.woowacourse.pelotonbackend.member.domain.MemberFixture;
 import com.woowacourse.pelotonbackend.support.AcceptanceTest;
-import com.woowacourse.pelotonbackend.vo.JwtTokenResponse;
+import com.woowacourse.pelotonbackend.support.dto.JwtTokenResponse;
 
 public class ReportAcceptanceTest extends AcceptanceTest {
     @Autowired

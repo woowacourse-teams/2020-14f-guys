@@ -14,12 +14,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.woowacourse.pelotonbackend.member.application.LoginService;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 
 @RequestMapping("/api/login")
 @RequiredArgsConstructor
 @RestController
-@Slf4j
 public class LoginController {
     private final LoginService loginService;
 

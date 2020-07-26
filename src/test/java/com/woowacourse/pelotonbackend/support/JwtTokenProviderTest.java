@@ -5,7 +5,7 @@ import static org.assertj.core.api.AssertionsForClassTypes.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import com.woowacourse.pelotonbackend.member.InvalidTokenException;
+import com.woowacourse.pelotonbackend.common.exception.TokenInvalidException;
 
 class JwtTokenProviderTest {
     private JwtTokenProvider jwtTokenProvider;
@@ -33,8 +33,8 @@ class JwtTokenProviderTest {
     void validateTokenTest() throws InterruptedException {
         final String token = jwtTokenProvider.createToken("12341234");
         Thread.sleep(1000);
-        assertThatThrownBy(() -> jwtTokenProvider.validateToken(token))
-            .isInstanceOf(InvalidTokenException.class)
+        assertThatThrownBy(() -> jwtTokenProvider.getSubject(token))
+            .isInstanceOf(TokenInvalidException.class)
             .hasMessage("토큰이 만료되었습니다. 다시 로그인 해주세요.");
     }
 }

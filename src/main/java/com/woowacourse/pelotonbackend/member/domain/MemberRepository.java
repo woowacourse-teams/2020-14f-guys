@@ -11,5 +11,6 @@ public interface MemberRepository extends CrudRepository<Member, Long> {
 
     @Override
     List<Member> findAllById(Iterable<Long> ids);
+
     Optional<Member> findByKakaoId(Long kakaoId);
 }

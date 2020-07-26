@@ -12,7 +12,7 @@ import org.springframework.test.context.jdbc.Sql;
 
 import com.woowacourse.pelotonbackend.member.presentation.dto.MemberCreateRequest;
 import com.woowacourse.pelotonbackend.member.presentation.dto.MemberResponse;
-import com.woowacourse.pelotonbackend.vo.JwtTokenResponse;
+import com.woowacourse.pelotonbackend.support.dto.JwtTokenResponse;
 import io.restassured.RestAssured;
 import io.restassured.http.Header;
 import io.restassured.specification.RequestSpecification;

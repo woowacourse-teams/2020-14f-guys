@@ -16,7 +16,7 @@ import com.woowacourse.pelotonbackend.race.presentation.dto.RaceCreateRequest;
 import com.woowacourse.pelotonbackend.race.presentation.dto.RaceRetrieveResponse;
 import com.woowacourse.pelotonbackend.race.presentation.dto.RaceUpdateRequest;
 import com.woowacourse.pelotonbackend.support.AcceptanceTest;
-import com.woowacourse.pelotonbackend.vo.JwtTokenResponse;
+import com.woowacourse.pelotonbackend.support.dto.JwtTokenResponse;
 import io.restassured.response.ValidatableResponse;
 
 public class RaceAcceptanceTest extends AcceptanceTest {
