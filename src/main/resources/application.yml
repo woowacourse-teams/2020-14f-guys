@@ -1,2 +1,3 @@
-server:
-  uri: https://3e5cc9c0a476.ngrok.io
+spring:
+  profiles:
+    active: secret
