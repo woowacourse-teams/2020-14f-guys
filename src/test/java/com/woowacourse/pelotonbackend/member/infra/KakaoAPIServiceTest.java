@@ -106,6 +106,7 @@ class KakaoAPIServiceTest {
             .path(SERVER_URI + LOGIN_CHECK_PATH)
             .queryParam(ACCESS_TOKEN, ACCESS_TOKEN)
             .queryParam(SUCCESS, true)
+            .queryParam(IS_CREATED, true)
             .build().toString();
         assertThat(kakaoAPIService.createTokenUrl(CODE_VALUE)).isEqualTo(url);
     }

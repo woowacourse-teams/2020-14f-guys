@@ -32,6 +32,7 @@ public class LoginFixture {
     public static final String LOGIN_CHECK_PATH = "/api/login/check";
     public static final String ACCESS_TOKEN = "access_token";
     public static final String SUCCESS = "success";
+    public static final String IS_CREATED = "is_created";
     public static final String USER_INFO_PATH = "/v2/user/me";
     public static final String TOKEN_TYPE = "Bearer ";
     public static final String SCOPE = "scope ";

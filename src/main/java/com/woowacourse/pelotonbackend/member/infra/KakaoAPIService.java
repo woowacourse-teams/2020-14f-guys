@@ -33,6 +33,7 @@ public class KakaoAPIService implements LoginService {
     private static final String LOGIN_CHECK_PATH = "/api/login/check";
     private static final String ACCESS_TOKEN = "access_token";
     private static final String SUCCESS = "success";
+    private static final String IS_CREATED = "is_created";
     private static final String USER_INFO_PATH = "/v2/user/me";
     private static final String AUTHORIZATION = "Authorization";
     private static final String AUTHORIZATION_TYPE = "Bearer ";
@@ -84,6 +85,7 @@ public class KakaoAPIService implements LoginService {
             .path(serverUri + LOGIN_CHECK_PATH)
             .queryParam(ACCESS_TOKEN, token.getAccessToken())
             .queryParam(SUCCESS, true)
+            .queryParam(IS_CREATED, true)
             .build().toString();
     }
 
