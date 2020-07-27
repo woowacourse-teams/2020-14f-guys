@@ -1,6 +1,6 @@
 import React from "react";
 import { Image, StyleSheet, Text, View } from "react-native";
-import { IMAGE_URL } from "../../Const";
+import { IMAGE_URL } from "../../../utils/constants";
 import ReadMore from "../util/ReadMore";
 
 const RaceDetailInfo = () => {

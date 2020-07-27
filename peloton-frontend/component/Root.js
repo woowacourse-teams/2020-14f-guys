@@ -2,11 +2,11 @@ import React from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import Home from "./home/Home";
 import Certification from "./certification/Certification";
-import Profile from "./profile/Profile";
 import { MaterialIcons } from "@expo/vector-icons";
 import { View } from "react-native";
 import { COLOR } from "../utils/constants";
 import ProfileScreen from "./profile/ProfileScreen";
+import { RecoilRoot } from "recoil/dist";
 
 const Tab = createBottomTabNavigator();
 
@@ -42,11 +42,17 @@ const tabBarOptions = {
 
 const Root = () => {
   return (
-    <Tab.Navigator screenOptions={screenOptions} tabBarOptions={tabBarOptions}>
-      <Tab.Screen name="Home" component={Home} />
-      <Tab.Screen name="Certification" component={Certification} />
-      <Tab.Screen name="ProfileScreen" component={ProfileScreen} />
-    </Tab.Navigator>
+    <RecoilRoot>
+      <Tab.Navigator
+        screenOptions={screenOptions}
+        tabBarOptions={tabBarOptions}
+        initialRouteName="Home"
+      >
+        <Tab.Screen name="Home" component={Home} />
+        <Tab.Screen name="Certification" component={Certification} />
+        <Tab.Screen name="ProfileScreen" component={ProfileScreen} />
+      </Tab.Navigator>
+    </RecoilRoot>
   );
 };
 
