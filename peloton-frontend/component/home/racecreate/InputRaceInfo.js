@@ -8,7 +8,7 @@ import {
   TouchableWithoutFeedback,
   View,
 } from "react-native";
-import { useRecoilValue } from "recoil";
+import { useRecoilValue, useSetRecoilState } from "recoil";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import { useNavigation, CommonActions } from "@react-navigation/native";
 import useAxios from "axios-hooks";
@@ -16,10 +16,13 @@ import useAxios from "axios-hooks";
 import RaceCreateUnit from "./RaceCreateUnit";
 import { raceCreateInfoState } from "../../../state/race/CreateState";
 import { BASE_URL, COLOR } from "../../../utils/constants";
+import { loadingState } from "../../../state/loading/LoadingState";
+import LoadingIndicator from "../util/LoadingIndicator";
 
 const InputRaceInfo = () => {
   // eslint-disable-next-line prettier/prettier
   const { title, description, startDate, endDate, category, entranceFee } = useRecoilValue(raceCreateInfoState);
+  const setGlobalLoading = useSetRecoilState(loadingState);
 
   const formatPostRaceBody = () => {
     // eslint-disable-next-line prettier/prettier
@@ -58,7 +61,8 @@ const InputRaceInfo = () => {
     if (error) {
       alert(error.toString());
     }
-  }, [response, error]);
+    setGlobalLoading(loading);
+  }, [response, loading, error]);
 
   const onPress = async () => {
     // eslint-disable-next-line prettier/prettier
@@ -80,27 +84,29 @@ const InputRaceInfo = () => {
 
   return (
     <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
-      <KeyboardAwareScrollView extraHeight={150} style={styles.container}>
-        <RaceCreateUnit fieldName="title">제목</RaceCreateUnit>
-        <RaceCreateUnit fieldName="description">설명</RaceCreateUnit>
-        <RaceCreateUnit date fieldName="startDate">
-          시작 날짜
-        </RaceCreateUnit>
-        <RaceCreateUnit date fieldName="endDate">
-          종료 날짜
-        </RaceCreateUnit>
-        <RaceCreateUnit fieldName="entranceFee" number>
-          입장료
-        </RaceCreateUnit>
-        <TouchableOpacity style={styles.button} onPress={onPress}>
-          <Text style={styles.buttonText}>만들기</Text>
-        </TouchableOpacity>
-        {loading && (
-          <View style={styles.loadingIndicator}>
-            <ActivityIndicator size="large" color={COLOR.GRAY5} />
-          </View>
-        )}
-      </KeyboardAwareScrollView>
+      <LoadingIndicator>
+        <KeyboardAwareScrollView extraHeight={150} style={styles.container}>
+          <RaceCreateUnit fieldName="title">제목</RaceCreateUnit>
+          <RaceCreateUnit fieldName="description">설명</RaceCreateUnit>
+          <RaceCreateUnit date fieldName="startDate">
+            시작 날짜
+          </RaceCreateUnit>
+          <RaceCreateUnit date fieldName="endDate">
+            종료 날짜
+          </RaceCreateUnit>
+          <RaceCreateUnit fieldName="entranceFee" number>
+            입장료
+          </RaceCreateUnit>
+          <TouchableOpacity style={styles.button} onPress={onPress}>
+            <Text style={styles.buttonText}>만들기</Text>
+          </TouchableOpacity>
+          {loading && (
+            <View style={styles.loadingIndicator}>
+              <ActivityIndicator size="large" color={COLOR.GRAY5} />
+            </View>
+          )}
+        </KeyboardAwareScrollView>
+      </LoadingIndicator>
     </TouchableWithoutFeedback>
   );
 };
@@ -131,17 +137,6 @@ const styles = StyleSheet.create({
   },
   buttonText: {
     fontSize: 14,
-  },
-  loadingIndicator: {
-    position: "absolute",
-    top: 0,
-    bottom: 0,
-    left: 0,
-    right: 0,
-    backgroundColor: COLOR.GRAY1,
-    opacity: 0.8,
-    justifyContent: "center",
-    alignItems: "center",
   },
 });
 
