@@ -6,6 +6,7 @@ import Profile from "./profile/Profile";
 import { MaterialIcons } from "@expo/vector-icons";
 import { View } from "react-native";
 import { COLOR } from "../utils/constants";
+import ProfileScreen from "./profile/ProfileScreen";
 
 const Tab = createBottomTabNavigator();
 
@@ -17,7 +18,7 @@ const screenOptions = ({ route }) => ({
       iconName = "home";
     } else if (route.name === "Certification") {
       iconName = "camera";
-    } else if (route.name === "Profile") {
+    } else if (route.name === "ProfileScreen") {
       iconName = "person";
     }
     return (
@@ -44,7 +45,7 @@ const Root = () => {
     <Tab.Navigator screenOptions={screenOptions} tabBarOptions={tabBarOptions}>
       <Tab.Screen name="Home" component={Home} />
       <Tab.Screen name="Certification" component={Certification} />
-      <Tab.Screen name="Profile" component={Profile} />
+      <Tab.Screen name="ProfileScreen" component={ProfileScreen} />
     </Tab.Navigator>
   );
 };
