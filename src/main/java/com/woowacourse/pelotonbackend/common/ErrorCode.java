@@ -20,7 +20,11 @@ public enum ErrorCode {
 
     RACE_NOT_FOUND(400, "Race-001"),
     RACE_DUPLICATE(400, "Race-002"),
-    RACE_ID_INVALID(400, "Race-003");
+    RACE_ID_INVALID(400, "Race-003"),
+
+    UN_AUTHORIZED(401, "Auth-001"),
+    TOKEN_EXPIRED(401, "Auth-002"),
+    INVALID_TOKEN(401, "Auth-003");
 
     private final int status;
     private final String code;

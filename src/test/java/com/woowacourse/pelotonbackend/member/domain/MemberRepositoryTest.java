@@ -1,6 +1,5 @@
 package com.woowacourse.pelotonbackend.member.domain;
 
-
 import static com.woowacourse.pelotonbackend.member.domain.MemberFixture.*;
 import static org.assertj.core.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.*;
@@ -24,7 +23,7 @@ class MemberRepositoryTest {
     @DisplayName("회원을 저장한다.")
     @Test
     void saveMember() {
-        final Member member = MemberFixture.createWithoutId(EMAIL, NAME);
+        final Member member = MemberFixture.createWithoutId(KAKAO_ID, EMAIL, NAME);
 
         final Member persistMember = memberRepository.save(member);
 
@@ -39,8 +38,8 @@ class MemberRepositoryTest {
     @DisplayName("모든 회원들을 리스트로 반환한다.")
     @Test
     void findAll() {
-        final Member member = MemberFixture.createWithoutId(EMAIL, NAME);
-        final Member otherMember = MemberFixture.createWithoutId(EMAIL2, NAME2);
+        final Member member = MemberFixture.createWithoutId(KAKAO_ID, EMAIL, NAME);
+        final Member otherMember = MemberFixture.createWithoutId(KAKAO_ID2, EMAIL2, NAME2);
         final Member savedMember = memberRepository.save(member);
         final Member savedOtherMember = memberRepository.save(otherMember);
 
@@ -56,11 +55,10 @@ class MemberRepositoryTest {
     @DisplayName("아이디에 해당하는 회원들을 찾는다.")
     @Test
     void findAllById() {
-        final Member member1 = memberRepository.save(createWithoutId("kyle1@abc.com", "kyle1"));
-        final Member member2 = memberRepository.save(createWithoutId("kyle2@abc.com", "kyle2"));
-        final Member member3 = memberRepository.save(createWithoutId("kyle3@abc.com", "kyle3"));
-        final Member member4 = memberRepository.save(createWithoutId("kyle4@abc.com", "kyle4"));
-        final List<Long> ids = Arrays.asList(member1.getId(), member2.getId(), member4.getId());
+        final Member member1 = memberRepository.save(createWithoutId(KAKAO_ID, EMAIL, NAME));
+        final Member member2 = memberRepository.save(createWithoutId(KAKAO_ID2, EMAIL2, NAME2));
+        final Member member3 = memberRepository.save(createWithoutId(KAKAO_ID3, EMAIL3, NAME3));
+        final List<Long> ids = Arrays.asList(member1.getId(), member2.getId(), member3.getId());
 
         final List<Member> members = memberRepository.findAllById(ids);
 
@@ -68,5 +66,14 @@ class MemberRepositoryTest {
             .map(Member::getId)
             .collect(Collectors.toList());
         assertThat(membersIds).isEqualTo(ids);
+    }
+
+    @Test
+    void findByKakaoId() {
+        final Member member = memberRepository.save(createWithoutId(KAKAO_ID, EMAIL, NAME));
+        final Member persistMember = memberRepository.findByKakaoId(member.getKakaoId())
+            .orElseThrow(AssertionError::new);
+
+        assertThat(persistMember).isEqualToIgnoringGivenFields(member, "createdAt", "updatedAt");
     }
 }

@@ -1,7 +1,7 @@
 import React from "react";
 import { StyleSheet, View } from "react-native";
 import Carousel, { ParallaxImage } from "react-native-snap-carousel";
-import { MOCK_DATA } from "../../Const";
+import { MOCK_DATA } from "../../../utils/constants";
 import RaceSubTitle from "./RaceSubTitle";
 
 const _renderEachImage = ({ item, index }, parallaxProps) => {

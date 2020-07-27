@@ -1,5 +1,6 @@
 package com.woowacourse.pelotonbackend.member.application;
 
+import static com.woowacourse.pelotonbackend.member.domain.LoginFixture.*;
 import static com.woowacourse.pelotonbackend.member.domain.MemberFixture.*;
 import static org.assertj.core.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.*;
@@ -25,6 +26,7 @@ import com.woowacourse.pelotonbackend.member.domain.MemberRepository;
 import com.woowacourse.pelotonbackend.member.presentation.dto.MemberCreateRequest;
 import com.woowacourse.pelotonbackend.member.presentation.dto.MemberResponse;
 import com.woowacourse.pelotonbackend.member.presentation.dto.MemberResponses;
+import com.woowacourse.pelotonbackend.support.RandomGenerator;
 
 @ExtendWith(MockitoExtension.class)
 class MemberServiceTest {
@@ -33,21 +35,26 @@ class MemberServiceTest {
     @Mock
     private MemberRepository memberRepository;
 
+    @Mock
+    private RandomGenerator randomGenerator;
+
+    private Member expectedMember;
+
     @BeforeEach
     void setUp() {
-        memberService = new MemberService(memberRepository);
+        memberService = new MemberService(memberRepository, randomGenerator);
+        expectedMember = createWithId(ID);
     }
 
     @DisplayName("회원을 생성한다")
     @Test
     void createMember() {
-        final MemberCreateRequest memberCreateRequest = MemberFixture.createRequest(EMAIL, NAME);
-        final Member persistMember = MemberFixture.createWithId(ID);
-        when(memberRepository.save(any(Member.class))).thenReturn(persistMember);
+        final MemberCreateRequest memberCreateRequest = MemberFixture.createRequest(KAKAO_ID, EMAIL, NAME);
+        when(memberRepository.save(any(Member.class))).thenReturn(expectedMember);
 
         final MemberResponse response = memberService.createMember(memberCreateRequest);
 
-        assertThat(response).isEqualToIgnoringGivenFields(persistMember, "createdAt", "updatedAt");
+        assertThat(response).isEqualToIgnoringGivenFields(expectedMember, "createdAt", "updatedAt");
     }
 
     @DisplayName("회원을 조회한다.")
@@ -118,7 +125,8 @@ class MemberServiceTest {
 
         assertAll(
             () -> assertThat(memberResponse.getName()).isEqualTo(createNameUpdateRequest().getName()),
-            () -> assertThat(memberResponse).isEqualToIgnoringGivenFields(originMember, "name", "createdAt", "updatedAt")
+            () -> assertThat(memberResponse).isEqualToIgnoringGivenFields(originMember, "name", "createdAt",
+                "updatedAt")
         );
     }
 
@@ -134,7 +142,8 @@ class MemberServiceTest {
 
         assertAll(
             () -> assertThat(memberResponse.getCash()).isEqualTo(createCashUpdateRequest().getCash()),
-            () -> assertThat(memberResponse).isEqualToIgnoringGivenFields(originMember, "cash", "createdAt", "updatedAt")
+            () -> assertThat(memberResponse).isEqualToIgnoringGivenFields(originMember, "cash", "createdAt",
+                "updatedAt")
         );
     }
 
@@ -151,5 +160,32 @@ class MemberServiceTest {
     void deleteNullMemberId() {
         assertThatThrownBy(() -> memberService.deleteById(null))
             .isInstanceOf(MemberIdInvalidException.class);
+    }
+
+    @DisplayName("Kakao Id로 회원을 조회한다.")
+    @Test
+    void findByKakaoIdTest() {
+        when(memberRepository.findByKakaoId(KAKAO_ID)).thenReturn(Optional.of(expectedMember));
+
+        assertThat(memberService.findByKakaoId(KAKAO_ID).get()).isEqualToComparingFieldByField(expectedMember);
+    }
+
+    @DisplayName("Kakao User Response를 통해 기존 멤버를 조회한다.")
+    @Test
+    public void retrieveExistMemberTest() {
+        when(memberRepository.findByKakaoId(KAKAO_ID)).thenReturn(Optional.of(expectedMember));
+
+        assertThat(memberService.retrieve(createMockKakaoUserResponse())).isEqualToComparingFieldByField(
+            expectedMember);
+    }
+
+    @DisplayName("Kakao User Response를 통해 신규 유저인 경우 생성하고 조회한다.")
+    @Test
+    public void retrieveNewMemberTest() {
+        when(memberRepository.findByKakaoId(KAKAO_ID)).thenReturn(Optional.empty());
+        when(memberRepository.save(createRequest(KAKAO_ID, EMAIL, NAME).toMember())).thenReturn(expectedMember);
+
+        assertThat(memberService.retrieve(createMockKakaoUserResponse())).isEqualToComparingFieldByField(
+            expectedMember);
     }
 }

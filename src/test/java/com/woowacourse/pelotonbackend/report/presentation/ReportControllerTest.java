@@ -9,7 +9,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
@@ -21,8 +21,9 @@ import org.springframework.web.filter.CharacterEncodingFilter;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.woowacourse.pelotonbackend.report.application.ReportService;
 import com.woowacourse.pelotonbackend.report.domain.ReportFixture;
+import com.woowacourse.pelotonbackend.support.BearerAuthInterceptor;
 
-@WebMvcTest(controllers = ReportController.class)
+@SpringBootTest
 class ReportControllerTest {
     @Autowired
     private ObjectMapper objectMapper;
@@ -31,6 +32,9 @@ class ReportControllerTest {
 
     @MockBean
     private ReportService reportService;
+
+    @MockBean
+    private BearerAuthInterceptor authInterceptor;
 
     @BeforeEach
     public void setup(WebApplicationContext webApplicationContext) {
@@ -43,6 +47,7 @@ class ReportControllerTest {
     @Test
     void createReport() throws Exception {
         final Long createdReportId = 10L;
+        given(authInterceptor.preHandle(any(), any(), any())).willReturn(true);
         when(reportService.createReport(any(ReportCreateContent.class))).thenReturn(createdReportId);
 
         MvcResult mvcResult = mockMvc.perform(

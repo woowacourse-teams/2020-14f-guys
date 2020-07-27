@@ -5,32 +5,17 @@ import static org.hamcrest.Matchers.*;
 
 import java.util.stream.Stream;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DynamicTest;
 import org.junit.jupiter.api.TestFactory;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 
 import com.woowacourse.pelotonbackend.common.ErrorCode;
-import io.restassured.RestAssured;
-import io.restassured.specification.RequestSpecification;
+import com.woowacourse.pelotonbackend.member.domain.MemberFixture;
+import com.woowacourse.pelotonbackend.support.AcceptanceTest;
+import com.woowacourse.pelotonbackend.support.dto.JwtTokenResponse;
 
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-public class CertificationAcceptanceTest {
-    @LocalServerPort
-    public int port;
-
-    @BeforeEach
-    public void setUp() {
-        RestAssured.port = port;
-    }
-
-    public static RequestSpecification given() {
-        return RestAssured.given().log().all();
-    }
-
+public class CertificationAcceptanceTest extends AcceptanceTest {
     /*
      * Feature: Certification 관리
      *
@@ -42,9 +27,12 @@ public class CertificationAcceptanceTest {
      */
     @TestFactory
     public Stream<DynamicTest> certificationTest() {
+        final JwtTokenResponse tokenResponse = loginMember(
+            MemberFixture.createRequest(MemberFixture.KAKAO_ID, MemberFixture.EMAIL, MemberFixture.NAME));
         return Stream.of(
             DynamicTest.dynamicTest("Certification 생성", () ->
                 given()
+                    .header(createTokenHeader(tokenResponse))
                     .contentType(MediaType.MULTIPART_FORM_DATA_VALUE)
                     .multiPart("certification_image", TEST_CERTIFICATION_FILE_NAME, TEST_CERTIFICATION_FILE,
                         MediaType.IMAGE_JPEG_VALUE)
@@ -57,9 +45,11 @@ public class CertificationAcceptanceTest {
                     .then()
                     .log().all()
                     .statusCode(HttpStatus.CREATED.value())
-                    .header("location", String.format("/api/certifications/%d", TEST_CERTIFICATION_ID))),
+                    .header("location", String.format("/api/certifications/%d", TEST_CERTIFICATION_ID))
+            ),
             DynamicTest.dynamicTest("잘못된 Certification 생성", () ->
                 given()
+                    .header(createTokenHeader(tokenResponse))
                     .contentType(MediaType.MULTIPART_FORM_DATA_VALUE)
                     .multiPart("certification_image", TEST_CERTIFICATION_FILE_NAME, TEST_CERTIFICATION_FILE,
                         MediaType.IMAGE_JPEG_VALUE)

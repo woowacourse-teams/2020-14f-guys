@@ -21,11 +21,13 @@ import com.woowacourse.pelotonbackend.race.presentation.dto.ErrorCode;
 import com.woowacourse.pelotonbackend.race.presentation.dto.RaceCreateRequest;
 import com.woowacourse.pelotonbackend.race.presentation.dto.RaceRetrieveResponse;
 import com.woowacourse.pelotonbackend.race.presentation.dto.RaceUpdateRequest;
-import lombok.AllArgsConstructor;
+import com.woowacourse.pelotonbackend.support.annotation.RequiredAuth;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
-@AllArgsConstructor
 @RequestMapping("/api/races")
+@RequiredArgsConstructor
+@RequiredAuth
 @RestController
 @Slf4j
 public class RaceController {

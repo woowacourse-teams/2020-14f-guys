@@ -1,12 +1,14 @@
 create table if not exists MEMBER
 (
-    ID         bigint       not null primary key auto_increment,
-    NAME       varchar(64)  not null unique,
-    EMAIL      varchar(128) not null unique,
-    CASH       numeric      not null,
-    ROLE       varchar(16)  not null,
-    CREATED_AT datetime     not null,
-    UPDATED_AT datetime     not null
+    ID                     bigint       not null primary key auto_increment,
+    KAKAO_ID               bigint       not null unique,
+    PROFILE_BASE_IMAGE_URL text         not null,
+    NAME                   varchar(64)  not null unique,
+    EMAIL                  varchar(128) not null unique,
+    CASH                   numeric      not null,
+    ROLE                   varchar(16)  not null,
+    CREATED_AT             datetime     not null,
+    UPDATED_AT             datetime     not null
 );
 
 create table if not exists RACE
