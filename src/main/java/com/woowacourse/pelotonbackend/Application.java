@@ -9,7 +9,7 @@ public class Application {
     private static final String PROPERTIES =
         "spring.config.location="
             + "classpath:/application.yml"
-            + ",classpath:/secret.yml";
+            + ",classpath:/config/secret.yml";
 
     public static void main(String[] args) {
         new SpringApplicationBuilder(Application.class)
