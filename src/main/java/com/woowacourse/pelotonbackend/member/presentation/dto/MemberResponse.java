@@ -15,6 +15,7 @@ import lombok.Getter;
 @Getter
 public class MemberResponse {
     private final Long id;
+    private final Long kakaoId;
     private final String name;
     private final String email;
     private final Cash cash;
@@ -23,6 +24,7 @@ public class MemberResponse {
     public static MemberResponse from(final Member member) {
         return MemberResponse.builder()
             .id(member.getId())
+            .kakaoId(member.getKakaoId())
             .name(member.getName())
             .email(member.getEmail())
             .cash(member.getCash())

@@ -22,6 +22,8 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-data-jdbc'
     implementation 'org.springframework.boot:spring-boot-starter-validation'
     implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.springframework.boot:spring-boot-starter-webflux'
+    implementation 'io.jsonwebtoken:jjwt:0.9.1'
     compileOnly 'org.projectlombok:lombok'
     developmentOnly 'org.springframework.boot:spring-boot-devtools'
     runtimeOnly 'com.h2database:h2'
@@ -29,7 +31,11 @@ dependencies {
     testImplementation('org.springframework.boot:spring-boot-starter-test') {
         exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
     }
-    testImplementation group: 'io.rest-assured', name: 'rest-assured', version: '3.3.0'
+    testImplementation 'io.rest-assured:rest-assured:3.3.0'
+    testImplementation 'com.squareup.okhttp3:mockwebserver:4.8.0'
+    testImplementation 'com.squareup.okhttp3:okhttp:4.8.0'
+    testImplementation 'io.projectreactor:reactor-test'
+
 }
 
 test {

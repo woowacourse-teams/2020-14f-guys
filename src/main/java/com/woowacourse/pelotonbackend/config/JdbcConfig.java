@@ -19,9 +19,6 @@ import org.springframework.data.jdbc.repository.config.EnableJdbcAuditing;
 import org.springframework.data.relational.core.mapping.event.BeforeSaveCallback;
 import org.springframework.lang.Nullable;
 
-import com.woowacourse.pelotonbackend.certification.application.UploadService;
-import com.woowacourse.pelotonbackend.certification.infra.S3UploadService;
-
 @Configuration
 @EnableJdbcAuditing
 public class JdbcConfig extends AbstractJdbcConfiguration {
@@ -35,7 +32,6 @@ public class JdbcConfig extends AbstractJdbcConfiguration {
                     try {
                         return Math.toIntExact(clob.length()) == 0
                             ? "" : clob.getSubString(1, Math.toIntExact(clob.length()));
-
                     } catch (SQLException e) {
                         throw new IllegalStateException("Failed to convert CLOB to String.", e);
                     }
@@ -54,10 +50,5 @@ public class JdbcConfig extends AbstractJdbcConfiguration {
             }
             return aggregate;
         });
-    }
-
-    @Bean
-    public UploadService uploadService() {
-        return new S3UploadService();
     }
 }

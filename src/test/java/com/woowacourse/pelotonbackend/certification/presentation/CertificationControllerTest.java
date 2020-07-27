@@ -9,7 +9,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockMultipartFile;
@@ -23,7 +23,7 @@ import com.woowacourse.pelotonbackend.certification.application.CertificationSer
 import com.woowacourse.pelotonbackend.certification.domain.dto.CertificationCreateRequest;
 import com.woowacourse.pelotonbackend.common.ErrorCode;
 
-@WebMvcTest(controllers = CertificationController.class)
+@SpringBootTest
 class CertificationControllerTest {
     @MockBean
     private CertificationService certificationService;
@@ -74,9 +74,9 @@ class CertificationControllerTest {
             multipart("/api/certifications", TEST_RIDER_ID, TEST_MISSION_ID)
                 .file(multipartFile)
                 .contentType(MediaType.MULTIPART_FORM_DATA_VALUE)
-            .param("status", badCertificationCreateRequest.getStatus().name())
-            .param("description", badCertificationCreateRequest.getDescription())
-            .param("riderId", badCertificationCreateRequest.getRiderId().toString()))
+                .param("status", badCertificationCreateRequest.getStatus().name())
+                .param("description", badCertificationCreateRequest.getDescription())
+                .param("riderId", badCertificationCreateRequest.getRiderId().toString()))
             .andExpect(status().isBadRequest())
             .andExpect(jsonPath("status").value(ErrorCode.INVALID_VALIDATE.getStatus()))
             .andExpect(jsonPath("errors").exists());

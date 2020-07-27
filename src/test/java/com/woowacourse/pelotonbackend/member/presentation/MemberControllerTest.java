@@ -15,7 +15,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
@@ -35,11 +35,10 @@ import com.woowacourse.pelotonbackend.member.presentation.dto.MemberNameUpdateRe
 import com.woowacourse.pelotonbackend.member.presentation.dto.MemberResponse;
 import com.woowacourse.pelotonbackend.member.presentation.dto.MemberResponses;
 
-@WebMvcTest(value = {MemberController.class})
+@SpringBootTest
 public class MemberControllerTest {
     public static final String RESOURCE_URL = "/api/members/";
 
-    @Autowired
     private MockMvc mockMvc;
 
     @Autowired
@@ -59,7 +58,7 @@ public class MemberControllerTest {
     @DisplayName("회원을 생성한다")
     @Test
     void createMember() throws Exception {
-        final MemberCreateRequest memberCreateRequest = MemberFixture.createRequest(EMAIL, NAME);
+        final MemberCreateRequest memberCreateRequest = MemberFixture.createRequest(KAKAO_ID, EMAIL, NAME);
         final MemberResponse memberResponse = MemberFixture.memberResponse();
         final byte[] request = objectMapper.writeValueAsBytes(memberCreateRequest);
         when(memberService.createMember(any(MemberCreateRequest.class))).thenReturn(memberResponse);

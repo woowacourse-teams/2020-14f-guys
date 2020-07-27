@@ -34,3 +34,7 @@ out/
 ### Front ###
 /peloton-frontend/node_modules/
 /peloton-frontend/.expo/packager-info.json
+
+### Secret ###
+/src/main/resources/secret.yml
+/src/test/resources/

@@ -6,6 +6,8 @@ import com.woowacourse.pelotonbackend.member.presentation.dto.MemberCashUpdateRe
 import com.woowacourse.pelotonbackend.member.presentation.dto.MemberCreateRequest;
 import com.woowacourse.pelotonbackend.member.presentation.dto.MemberNameUpdateRequest;
 import com.woowacourse.pelotonbackend.member.presentation.dto.MemberResponse;
+import com.woowacourse.pelotonbackend.support.annotation.LoginMember;
+import com.woowacourse.pelotonbackend.support.annotation.RequiredAuth;
 import com.woowacourse.pelotonbackend.vo.Cash;
 
 public class MemberFixture {
@@ -22,9 +24,13 @@ public class MemberFixture {
     public static final Long ID = 1L;
     public static final Long ID2 = 2L;
     public static final Long NOT_EXIST_ID = 100L;
+    public static final Long KAKAO_ID = 1L;
+    public static final Long KAKAO_ID2 = 2L;
+    public static final Long KAKAO_ID3 = 3L;
 
-    public static MemberCreateRequest createRequest(final String email, final String name) {
+    public static MemberCreateRequest createRequest(final Long kakaoId, final String email, final String name) {
         return MemberCreateRequest.builder()
+            .kakaoId(kakaoId)
             .email(email)
             .name(name)
             .cash(CASH)
@@ -32,8 +38,9 @@ public class MemberFixture {
             .build();
     }
 
-    public static Member createWithoutId(final String email, final String name) {
+    public static Member createWithoutId(final Long kakaoId, final String email, final String name) {
         return Member.builder()
+            .kakaoId(kakaoId)
             .email(email)
             .name(name)
             .cash(CASH)
@@ -44,6 +51,7 @@ public class MemberFixture {
     public static Member createWithId(final Long id) {
         return Member.builder()
             .id(id)
+            .kakaoId(KAKAO_ID)
             .email(EMAIL)
             .name(NAME)
             .cash(CASH)
@@ -54,6 +62,7 @@ public class MemberFixture {
     public static Member memberCashUpdated(final Long id) {
         return Member.builder()
             .id(id)
+            .kakaoId(KAKAO_ID)
             .email(EMAIL)
             .name(NAME)
             .cash(UPDATE_CASH)
@@ -64,6 +73,7 @@ public class MemberFixture {
     public static Member memberNameUpdated() {
         return Member.builder()
             .id(ID)
+            .kakaoId(KAKAO_ID)
             .email(EMAIL)
             .name(UPDATE_NAME)
             .cash(CASH)
@@ -74,6 +84,7 @@ public class MemberFixture {
     public static MemberResponse memberResponse() {
         return MemberResponse.builder()
             .id(ID)
+            .kakaoId(KAKAO_ID)
             .email(EMAIL)
             .name(NAME)
             .cash(CASH)

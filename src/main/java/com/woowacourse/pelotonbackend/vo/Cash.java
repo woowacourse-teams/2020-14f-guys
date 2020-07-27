@@ -13,4 +13,8 @@ import lombok.Value;
 public class Cash {
     @PositiveOrZero
     private final BigDecimal cash;
+
+    public static Cash initial() {
+        return new Cash(BigDecimal.ZERO);
+    }
 }

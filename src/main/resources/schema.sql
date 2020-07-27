@@ -1,6 +1,7 @@
 create table if not exists MEMBER
 (
     ID         bigint       not null primary key auto_increment,
+    KAKAO_ID   bigint       not null unique,
     NAME       varchar(64)  not null unique,
     EMAIL      varchar(128) not null unique,
     CASH       numeric      not null,

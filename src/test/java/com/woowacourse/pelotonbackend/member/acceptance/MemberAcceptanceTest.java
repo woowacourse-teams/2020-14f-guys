@@ -10,22 +10,28 @@ import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.woowacourse.pelotonbackend.member.domain.MemberFixture;
 import com.woowacourse.pelotonbackend.member.presentation.dto.MemberCashUpdateRequest;
 import com.woowacourse.pelotonbackend.member.presentation.dto.MemberCreateRequest;
 import com.woowacourse.pelotonbackend.member.presentation.dto.MemberNameUpdateRequest;
 import com.woowacourse.pelotonbackend.member.presentation.dto.MemberResponse;
 import com.woowacourse.pelotonbackend.member.presentation.dto.MemberResponses;
+import com.woowacourse.pelotonbackend.member.presentation.dto.MemberCreateRequest;
 import io.restassured.RestAssured;
 import io.restassured.specification.RequestSpecification;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class MemberAcceptanceTest {
+    @Autowired
+    private ObjectMapper objectMapper;
 
     @LocalServerPort
     public int port;
@@ -65,7 +71,7 @@ public class MemberAcceptanceTest {
     }
 
     private MemberResponse createAndFindMember() {
-        final MemberCreateRequest memberRequest = createRequest(EMAIL, NAME);
+        final MemberCreateRequest memberRequest = createRequest(KAKAO_ID, EMAIL, NAME);
         final Long createMemberId = requestCreate(memberRequest);
         final MemberResponse memberResponse = requestFind(createMemberId);
 
@@ -74,7 +80,7 @@ public class MemberAcceptanceTest {
             () -> assertThat(memberRequest).isEqualToIgnoringGivenFields(memberResponse, "id")
         );
 
-        final MemberCreateRequest memberOtherRequest = MemberFixture.createRequest(EMAIL2, NAME2);
+        final MemberCreateRequest memberOtherRequest = MemberFixture.createRequest(KAKAO_ID2, EMAIL2, NAME2);
         requestCreate(memberOtherRequest);
         final List<MemberResponse> memberResponses = requestFindAll().getResponses();
 
@@ -109,7 +115,7 @@ public class MemberAcceptanceTest {
     }
 
     private void requestDelete(final MemberResponse memberResponse) {
-        requestCreate(MemberFixture.createRequest(EMAIL3, NAME3));
+        requestCreate(MemberFixture.createRequest(KAKAO_ID3, EMAIL3, NAME3));
         requestDelete(memberResponse.getId());
         final MemberResponses responseAfterDelete = requestFindAll();
 
