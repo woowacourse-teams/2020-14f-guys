@@ -127,6 +127,6 @@ public class RaceAcceptanceTest {
     }
 
     void retrieveRaceNotFound(final String resourceLocation) {
-        retrieveRaceWithStatusCode(resourceLocation, HttpStatus.NOT_FOUND.value());
+        retrieveRaceWithStatusCode(resourceLocation, HttpStatus.BAD_REQUEST.value());
     }
 }

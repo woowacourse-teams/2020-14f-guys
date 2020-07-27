@@ -5,6 +5,12 @@ export const COLOR = {
   LAVENDER: "#CAB0D9",
   PINK: "#D0B0D4",
   INDIAN_PINK: "#D9B0C0",
+  WHITE: "#FFFFFF",
+  GRAY1: "rgb(142,142,147)",
+  GRAY2: "rgb(174,174,178)",
+  GRAY3: "rgb(199,199,204)",
+  GRAY4: "rgb(209,209,214)",
+  GRAY5: "rgb(229,229,234)",
 };
 
 export const SAMPLE_IMAGES = [
@@ -38,3 +44,27 @@ export const SAMPLE_SUBTITLE = [
   "즐거운 하루 되세요!",
   "오늘 날씨가 참 좋네요! 😝",
 ];
+
+export const CATEGORY = [
+  {
+    title: "모임",
+    subtitle: "Ice Breaking",
+    category: "TIME",
+    src: "https://img.sbs.co.kr/newimg/news/20181019/201240131_1280.jpg",
+  },
+  {
+    title: "학습",
+    subtitle: "Learning",
+    category: "STUDY",
+    src: "https://vitahani.com/assets/20190625085334.jpg",
+  },
+  {
+    title: "제목",
+    subtitle: "subtitle",
+    category: "RACE_CATEGORY_VALUE",
+    src:
+      "https://x86.co.kr/files/attach/images/1951610/342/576/002/0555addbb9bfd672918a2539668f0dac.jpg",
+  },
+];
+
+export const BASE_URL = "https://8fa2961b8900.ngrok.io";
