@@ -2,7 +2,7 @@ import React from "react";
 import { StyleSheet, TextInput } from "react-native";
 import { COLOR } from "../../../utils/constants";
 
-const InputBox = ({ value, onChangeText, editable = true }) => {
+const InputBox = ({ value, onChangeText, editable = true, number = false }) => {
   return (
     <TextInput
       style={styles.container}
@@ -11,6 +11,7 @@ const InputBox = ({ value, onChangeText, editable = true }) => {
       value={value}
       onChangeText={onChangeText}
       editable={editable}
+      keyboardType={number ? "number-pad" : "default"}
     />
   );
 };

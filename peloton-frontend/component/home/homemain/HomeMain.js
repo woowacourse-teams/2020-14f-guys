@@ -6,7 +6,7 @@ import HomeMainBanner from "./HomeMainBanner";
 
 const HomeMain = () => {
   return (
-    <ScrollView style={styles.container}>
+    <ScrollView>
       <View style={styles.raceTitle}>
         <HomeMainBanner />
       </View>

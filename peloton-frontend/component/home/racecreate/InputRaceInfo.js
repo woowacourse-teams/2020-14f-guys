@@ -89,7 +89,9 @@ const InputRaceInfo = () => {
         <RaceCreateUnit date fieldName="endDate">
           종료 날짜
         </RaceCreateUnit>
-        <RaceCreateUnit fieldName="entranceFee">입장료</RaceCreateUnit>
+        <RaceCreateUnit fieldName="entranceFee" number>
+          입장료
+        </RaceCreateUnit>
         <TouchableOpacity style={styles.button} onPress={onPress}>
           <Text style={styles.buttonText}>만들기</Text>
         </TouchableOpacity>

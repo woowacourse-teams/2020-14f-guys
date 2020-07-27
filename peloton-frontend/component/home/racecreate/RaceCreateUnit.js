@@ -8,7 +8,12 @@ import InputBox from "./InputBox";
 import CalendarButton from "./CalendarButton";
 import { DateFormatter } from "../util/DateFormatter";
 
-const RaceCreateUnit = ({ date = false, fieldName, children }) => {
+const RaceCreateUnit = ({
+  date = false,
+  number = false,
+  fieldName,
+  children,
+}) => {
   // eslint-disable-next-line prettier/prettier
   const [raceCreateInfo, setRaceCreateInfo] = useRecoilState(raceCreateInfoState);
   const [isShowPicker, setIsShowPicker] = useState(false);
@@ -37,6 +42,7 @@ const RaceCreateUnit = ({ date = false, fieldName, children }) => {
         value={raceCreateInfo[fieldName]}
         onChangeText={onChangeText}
         editable={!date}
+        number={number}
       />
       {isShowPicker && (
         <DateTimePickerModal
