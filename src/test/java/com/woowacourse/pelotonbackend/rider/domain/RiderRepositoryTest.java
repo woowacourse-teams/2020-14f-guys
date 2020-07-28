@@ -11,7 +11,6 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.jdbc.core.mapping.AggregateReference;
 
 @SpringBootTest
@@ -41,14 +40,16 @@ public class RiderRepositoryTest {
     @DisplayName("레이스에 소속된 모든 라이더를 찾는다.")
     @Test
     void findAllByRaceId() {
+        final Rider riderWithoutId = createRiderWithoutId();
         final List<Rider> expectedRiders = Arrays.asList(
-            createRiderWithoutId(),
-            createRiderWithoutId(),
-            createRiderWithoutId());
+            riderWithoutId,
+            riderWithoutId,
+            riderWithoutId);
         riderRepository.saveAll(expectedRiders);
 
         final List<Rider> riders = riderRepository.findRidersByRaceId(TEST_RACE_ID);
 
         assertThat(riders.size()).isEqualTo(expectedRiders.size());
+        riders.forEach(rider -> assertThat(rider).isEqualToIgnoringGivenFields(riderWithoutId, "id", "createdAt", "updatedAt"));
     }
 }

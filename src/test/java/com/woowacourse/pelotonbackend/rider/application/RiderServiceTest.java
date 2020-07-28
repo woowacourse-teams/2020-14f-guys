@@ -50,7 +50,7 @@ public class RiderServiceTest {
         assertAll(
             () -> assertThat(retrieveRider.getMemberId()).isEqualTo(expectedRider.getMemberId().getId()),
             () -> assertThat(retrieveRider.getRaceId()).isEqualTo(expectedRider.getRaceId().getId()),
-            () -> assertThat(retrieveRider).isEqualToIgnoringGivenFields(expectedRider, "raceId","memberId")
+            () -> assertThat(retrieveRider).isEqualToIgnoringGivenFields(expectedRider, "raceId", "memberId")
         );
     }
 }

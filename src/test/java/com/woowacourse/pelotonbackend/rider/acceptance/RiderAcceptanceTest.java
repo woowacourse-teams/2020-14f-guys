@@ -17,7 +17,7 @@ import com.woowacourse.pelotonbackend.support.dto.JwtTokenResponse;
 
 public class RiderAcceptanceTest extends AcceptanceTest {
     private static final Long RACE_ID = 1L;
-    public static final int RIDER_NUMBER = 4;
+    private static final int RIDER_NUMBER = 4;
 
     /*
      * Feature: Rider 관리
@@ -50,7 +50,7 @@ public class RiderAcceptanceTest extends AcceptanceTest {
     }
 
     private void fetchCreateMembers(final JwtTokenResponse tokenResponse) {
-        for(int i = 0; i< RIDER_NUMBER; i++) {
+        for (int i = 0; i < RIDER_NUMBER; i++) {
             fetchCreate(tokenResponse);
         }
     }
@@ -60,7 +60,7 @@ public class RiderAcceptanceTest extends AcceptanceTest {
             .header(createTokenHeader(tokenResponse))
             .accept(MediaType.APPLICATION_JSON_VALUE)
             .when()
-            .get("/api/riders/races/1")
+            .get("/api/riders/races/" + raceId)
             .then()
             .statusCode(HttpStatus.OK.value())
             .extract()
