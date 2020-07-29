@@ -44,7 +44,7 @@ const Login = () => {
     const token = await AsyncStorage.getItem(TOKEN_STORAGE);
     if (token) {
       setToken(token);
-      await Axios({
+      Axios({
         method: "GET",
         baseURL: SERVER_BASE_URL,
         url: "/api/members",
@@ -53,17 +53,19 @@ const Login = () => {
         },
       })
         .then((response) => {
+          setIsLoading(false);
           setUserInfo(response.data);
           navigateWithoutHistory(navigation, "ApplicationNavigationRoot");
         })
-        .catch(() => {
-          toggleModal();
+        .catch((error) => {
           setIsLoading(false);
+          console.log(error);
+          toggleModal();
         });
     } else {
       toggleModal();
+      setIsLoading(false);
     }
-    setIsLoading(false);
   };
 
   const buttonOpacity = useSpring({

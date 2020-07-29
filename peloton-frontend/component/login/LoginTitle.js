@@ -1,6 +1,10 @@
 import React from "react";
 import { Platform, StyleSheet } from "react-native";
-import { AnimatedImage, AnimatedText, AnimatedView } from "../../utils/constants";
+import {
+  AnimatedImage,
+  AnimatedText,
+  AnimatedView,
+} from "../../utils/constants";
 import { useSpring } from "react-spring";
 
 const LoginTitle = ({ resetAnimation }) => {
@@ -42,7 +46,7 @@ const LoginTitle = ({ resetAnimation }) => {
         source={require("../../assets/peloton-icon.png")}
       />
       <AnimatedText style={{ ...styles.title, opacity: titleOpacity.opacity }}>
-        마닥치라
+        Peloton
       </AnimatedText>
     </AnimatedView>
   );

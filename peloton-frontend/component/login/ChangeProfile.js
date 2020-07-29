@@ -30,9 +30,8 @@ const ChangeProfile = () => {
 
   const onSubmit = async () => {
     Keyboard.dismiss();
-    setIsLoading(true);
     await AsyncStorage.setItem(TOKEN_STORAGE, userToken);
-    const response = await Axios({
+    await Axios({
       method: "PATCH",
       baseURL: SERVER_BASE_URL,
       url: "/api/members/name",
@@ -42,18 +41,19 @@ const ChangeProfile = () => {
       data: {
         name: userInput,
       },
-    }).catch((error) => {
-      setIsLoading(false);
-      console.log(error);
-    });
-    if (response.status === 200) {
-      setUserInfo({
-        ...userInfo,
-        name: userInput,
+    })
+      .then(() => {
+        setUserInfo({
+          ...userInfo,
+          name: userInput,
+        });
+        navigateWithoutHistory(navigation, "ApplicationNavigationRoot");
+        setIsLoading(false);
+      })
+      .catch((error) => {
+        console.log(error);
+        setIsLoading(false);
       });
-      setIsLoading(false);
-      navigateWithoutHistory(navigation, "ApplicationNavigationRoot");
-    }
   };
 
   return (
