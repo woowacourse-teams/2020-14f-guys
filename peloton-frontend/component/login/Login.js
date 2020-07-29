@@ -18,11 +18,11 @@ import {
 import AsyncStorage from "@react-native-community/async-storage";
 import { useSetRecoilState } from "recoil";
 import { userInfoState, userTokenState } from "../atoms";
-import { CommonActions } from "@react-navigation/native";
 import { useNavigation } from "@react-navigation/core";
 import Axios from "axios";
 import LoadingIndicator from "../../utils/LoadingIndicator";
 import { loadingState } from "../../state/loading/LoadingState";
+import { navigateWithoutHistory } from "../../utils/util";
 
 const AnimatedAppleButton = animated(
   AppleAuthentication.AppleAuthenticationButton,
@@ -39,39 +39,27 @@ const Login = () => {
     setModalVisible(!modalVisible);
   };
 
-  const navigateHome = () => {
-    navigation.dispatch({
-      ...CommonActions.reset({
-        index: 0,
-        routes: [
-          {
-            name: "Root",
-          },
-        ],
-      }),
-    });
-  };
-
   const onLogin = async () => {
     setIsLoading(true);
     const token = await AsyncStorage.getItem(TOKEN_STORAGE);
     if (token) {
       setToken(token);
-      const response = await Axios({
+      await Axios({
         method: "GET",
         baseURL: SERVER_BASE_URL,
         url: "/api/members",
         headers: {
           Authorization: "Bearer " + token,
         },
-      }).catch(() => {
-        toggleModal();
-        setIsLoading(false);
-      });
-      if (response.status === 200) {
-        setUserInfo(response.data);
-        navigateHome();
-      }
+      })
+        .then((response) => {
+          setUserInfo(response.data);
+          navigateWithoutHistory(navigation, "ApplicationNavigationRoot");
+        })
+        .catch(() => {
+          toggleModal();
+          setIsLoading(false);
+        });
     } else {
       toggleModal();
     }

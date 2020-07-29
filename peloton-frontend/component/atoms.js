@@ -19,8 +19,3 @@ export const userInfoState = atom({
     role: null,
   },
 });
-
-export const profileImageState = atom({
-  key: "profileImageState",
-  default: null,
-});

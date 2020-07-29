@@ -2,18 +2,17 @@ import React from "react";
 import { Image, StyleSheet, TouchableOpacity, View } from "react-native";
 import * as ImagePicker from "expo-image-picker";
 import { Entypo } from "@expo/vector-icons";
-import { useRecoilState, useRecoilValue } from "recoil";
-import { profileImageState, userInfoState } from "../atoms";
+import { useRecoilState } from "recoil";
+import { userInfoState } from "../atoms";
 
 const ProfileImage = () => {
-  const userInfo = useRecoilValue(userInfoState);
-  const [profileImage, setProfileImage] = useRecoilState(profileImageState);
+  const [userInfo, setUserInfo] = useRecoilState(userInfoState);
 
   const openImagePickerAsync = async () => {
     const permissionResult = await ImagePicker.requestCameraRollPermissionsAsync();
 
     if (permissionResult.granted === false) {
-      alert("Permission to access camera roll is required!");
+      console.log("cameraroll permission denied");
       return;
     }
     const pickerResult = await ImagePicker.launchImageLibraryAsync({
@@ -23,10 +22,15 @@ const ProfileImage = () => {
       base64: true,
     });
     if (pickerResult.cancelled === true) {
-      alert("Cancelled!");
+      console.log("cameraroll picker cancelled");
       return;
     }
-    setProfileImage(pickerResult);
+    setUserInfo({
+      ...userInfo,
+      profile: {
+        baseImageUrl: pickerResult.uri,
+      },
+    });
   };
 
   return (
@@ -35,9 +39,7 @@ const ProfileImage = () => {
         <Image
           style={styles.profileImage}
           source={
-            profileImage
-              ? profileImage
-              : userInfo.profile.baseImageUrl
+            userInfo.profile.baseImageUrl
               ? { uri: userInfo.profile.baseImageUrl }
               : require("../../assets/default-profile.jpg")
           }

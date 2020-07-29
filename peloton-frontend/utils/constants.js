@@ -15,6 +15,7 @@ export const COLOR = {
   GRAY4: "rgb(209,209,214)",
   GRAY5: "rgb(229,229,234)",
   GRAY6: "rgb(33,33,34)",
+  LOGIN_BLUE: "#21365d",
 };
 
 export const SAMPLE_IMAGES = [

@@ -17,6 +17,7 @@ const HomeBanner = () => {
 
   const subtitle =
     SAMPLE_SUBTITLE[Math.floor(Math.random() * SAMPLE_SUBTITLE.length)];
+
   return (
     <View style={styles.container}>
       <View style={styles.bannerTop}>

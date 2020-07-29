@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import {
   Keyboard,
+  KeyboardAvoidingView,
   StyleSheet,
   Text,
   TouchableWithoutFeedback,
@@ -9,35 +10,28 @@ import {
 import { useRecoilValue } from "recoil";
 import { userInfoState, userTokenState } from "../atoms";
 import { useNavigation } from "@react-navigation/core";
-import { SERVER_BASE_URL } from "../../utils/constants";
+import { SERVER_BASE_URL, TOKEN_STORAGE } from "../../utils/constants";
+import AsyncStorage from "@react-native-community/async-storage";
 import Axios from "axios";
-import { useRecoilState } from "recoil/dist";
-import { CommonActions } from "@react-navigation/native";
+import { useRecoilState, useSetRecoilState } from "recoil/dist";
 import ProfileImage from "./ProfileImage";
 import SubmitButton from "./SubmitButton";
 import NicknameInput from "./NicknameInput";
+import { navigateWithoutHistory } from "../../utils/util";
+import LoadingIndicator from "../../utils/LoadingIndicator";
+import { loadingState } from "../../state/loading/LoadingState";
 
 const ChangeProfile = () => {
   const userToken = useRecoilValue(userTokenState);
   const [userInfo, setUserInfo] = useRecoilState(userInfoState);
   const navigation = useNavigation();
   const [userInput, setUserInput] = useState("");
-
-  const navigateHome = () => {
-    navigation.dispatch({
-      ...CommonActions.reset({
-        index: 0,
-        routes: [
-          {
-            name: "ApplicationNavigationRoot",
-          },
-        ],
-      }),
-    });
-  };
+  const setIsLoading = useSetRecoilState(loadingState);
 
   const onSubmit = async () => {
     Keyboard.dismiss();
+    setIsLoading(true);
+    await AsyncStorage.setItem(TOKEN_STORAGE, userToken);
     const response = await Axios({
       method: "PATCH",
       baseURL: SERVER_BASE_URL,
@@ -48,36 +42,39 @@ const ChangeProfile = () => {
       data: {
         name: userInput,
       },
+    }).catch((error) => {
+      setIsLoading(false);
+      console.log(error);
     });
     if (response.status === 200) {
       setUserInfo({
         ...userInfo,
         name: userInput,
       });
-      navigateHome();
-    } else {
-      alert("알 수 없는 에러가 발생했습니다.");
-      navigation.goBack();
+      setIsLoading(false);
+      navigateWithoutHistory(navigation, "ApplicationNavigationRoot");
     }
   };
 
   return (
-    <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
-      <View style={styles.container}>
-        <View style={styles.titleContainer}>
-          <Text style={styles.title}>프로필 설정</Text>
-        </View>
-        <View style={styles.body}>
-          <ProfileImage />
-          <NicknameInput
-            userInput={userInput}
-            setUserInput={setUserInput}
-            onSubmit={onSubmit}
-          />
-          <SubmitButton onSubmit={onSubmit} />
-        </View>
-      </View>
-    </TouchableWithoutFeedback>
+    <LoadingIndicator>
+      <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
+        <KeyboardAvoidingView behavior="height" style={styles.container}>
+          <View style={styles.titleContainer}>
+            <Text style={styles.title}>프로필 설정</Text>
+          </View>
+          <View style={styles.body}>
+            <ProfileImage />
+            <NicknameInput
+              userInput={userInput}
+              setUserInput={setUserInput}
+              onSubmit={onSubmit}
+            />
+            <SubmitButton onSubmit={onSubmit} />
+          </View>
+        </KeyboardAvoidingView>
+      </TouchableWithoutFeedback>
+    </LoadingIndicator>
   );
 };
 
@@ -108,18 +105,6 @@ const styles = StyleSheet.create({
     borderStyle: "solid",
     borderBottomWidth: 2,
     borderColor: "#21365d",
-  },
-  bodyContents: {
-    fontSize: 22,
-    fontStyle: "normal",
-    lineHeight: 35,
-    letterSpacing: 0,
-    textAlign: "left",
-    color: "#ffffff",
-  },
-  bodyContainer: {
-    marginTop: 50,
-    alignItems: "center",
   },
 });
 

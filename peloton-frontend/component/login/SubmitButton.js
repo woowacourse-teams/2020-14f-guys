@@ -17,7 +17,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   nextButtonContainer: {
-    marginTop: 50,
+    marginTop: 20,
     justifyContent: "center",
     alignItems: "center",
     backgroundColor: "#284170",

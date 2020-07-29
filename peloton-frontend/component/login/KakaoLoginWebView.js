@@ -1,11 +1,12 @@
 import React from "react";
 import { Image, StyleSheet, TouchableOpacity, View } from "react-native";
 import WebView from "react-native-webview";
-import { SERVER_BASE_URL } from "../../utils/constants";
-import { CommonActions } from "@react-navigation/native";
+import { COLOR, SERVER_BASE_URL } from "../../utils/constants";
 import { useSetRecoilState } from "recoil";
 import { userTokenState } from "../atoms";
 import { useNavigation } from "@react-navigation/core";
+import { navigateWithoutHistory } from "../../utils/util";
+import WebViewCloseButton from "./WebViewCloseButton";
 
 const KakaoLoginWebView = ({ toggleModal }) => {
   const navigation = useNavigation();
@@ -34,44 +35,27 @@ const KakaoLoginWebView = ({ toggleModal }) => {
         }
       });
     if (!success) {
-      alert("알 수 없는 오류가 발생했습니다.");
+      console.log("login Fail");
       toggleModal();
+      return;
     }
-
     if (accessToken) {
-      setToken(accessToken);
       toggleModal();
+      setToken(accessToken);
       if (isCreated) {
         navigation.navigate("ChangeNickname");
       } else {
-        navigation.dispatch({
-          ...CommonActions.reset({
-            index: 0,
-            routes: [
-              {
-                name: "Root",
-              },
-            ],
-          }),
-        });
+        navigateWithoutHistory(navigation, "ApplicationNavigationRoot");
       }
     }
   };
 
   return (
     <>
-      <View style={styles.container}>
-        <TouchableOpacity
-          style={{ height: 30, marginTop: 40, marginLeft: 10 }}
-          onPress={toggleModal}
-        >
-          <Image
-            style={{ width: 25, height: 25, opacity: 0.5, padding: 10 }}
-            source={require("../../assets/close-512.png")}
-          />
-        </TouchableOpacity>
+      <View style={styles.webviewCloseButton}>
+        <WebViewCloseButton toggleModal={toggleModal} />
       </View>
-      <View style={{ flex: 8 }}>
+      <View style={styles.webview}>
         <WebView
           useWebKit={true}
           source={{ uri: `${SERVER_BASE_URL}/api/login` }}
@@ -90,9 +74,17 @@ const KakaoLoginWebView = ({ toggleModal }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#21365d",
+    backgroundColor: COLOR.LOGIN_BLUE,
     justifyContent: "center",
     alignItems: "flex-start",
+  },
+  webviewCloseButton: {
+    height: 35,
+    marginTop: 40,
+    marginLeft: 10,
+  },
+  webview: {
+    flex: 1,
   },
 });
 

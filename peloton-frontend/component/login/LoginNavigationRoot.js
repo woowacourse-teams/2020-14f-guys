@@ -1,5 +1,4 @@
 import React from "react";
-import { StyleSheet } from "react-native";
 import { createStackNavigator } from "@react-navigation/stack";
 import ChangeProfile from "./ChangeProfile";
 import Login from "./Login";
@@ -28,11 +27,5 @@ const LoginNavigationRoot = () => {
     </LoginStack.Navigator>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
-});
 
 export default LoginNavigationRoot;
