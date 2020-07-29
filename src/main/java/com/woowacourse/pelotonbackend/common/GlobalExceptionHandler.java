@@ -2,10 +2,12 @@ package com.woowacourse.pelotonbackend.common;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.validation.BindException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
 import com.woowacourse.pelotonbackend.common.exception.BusinessException;
 import lombok.extern.slf4j.Slf4j;
@@ -14,7 +16,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class GlobalExceptionHandler {
 
-    @ExceptionHandler(MethodArgumentNotValidException.class)
+    @ExceptionHandler({MethodArgumentNotValidException.class, MethodArgumentTypeMismatchException.class})
     protected ResponseEntity<ErrorResponse> validException(final MethodArgumentNotValidException exception) {
         log.error("Validate Exception ! ", exception);
 
@@ -35,6 +37,18 @@ public class GlobalExceptionHandler {
             errorCode.getCode(),
             "Invalid Binding",
             exception.getBindingResult());
+
+        return new ResponseEntity<>(errorResponse, HttpStatus.valueOf(errorCode.getStatus()));
+    }
+
+    @ExceptionHandler(HttpMessageNotReadableException.class)
+    protected ResponseEntity<ErrorResponse> HttpMessageNotReadableException(
+        final HttpMessageNotReadableException exception) {
+        log.error("HttpMessageNotReadable Exception !", exception);
+
+        final ErrorCode errorCode = ErrorCode.INVALID_VALIDATE;
+        final ErrorResponse errorResponse = ErrorResponse.of(errorCode.getStatus(), errorCode.getCode(),
+            exception.getMessage());
 
         return new ResponseEntity<>(errorResponse, HttpStatus.valueOf(errorCode.getStatus()));
     }

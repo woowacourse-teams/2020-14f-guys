@@ -10,11 +10,10 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.boot.test.autoconfigure.web.reactive.AutoConfigureWebTestClient;
 
 import com.woowacourse.pelotonbackend.common.exception.MemberNotFoundException;
-import com.woowacourse.pelotonbackend.member.infra.KakaoAPIService;
 import com.woowacourse.pelotonbackend.member.infra.dto.KakaoTokenResponse;
+import com.woowacourse.pelotonbackend.member.infra.dto.KakaoUserResponse;
 import com.woowacourse.pelotonbackend.member.presentation.dto.MemberCreateRequest;
 import com.woowacourse.pelotonbackend.support.JwtTokenProvider;
 import com.woowacourse.pelotonbackend.support.RandomGenerator;
@@ -22,12 +21,11 @@ import com.woowacourse.pelotonbackend.support.dto.JwtTokenResponse;
 import reactor.core.publisher.Mono;
 
 @ExtendWith(MockitoExtension.class)
-@AutoConfigureWebTestClient
 class LoginServiceTest {
     private LoginService loginService;
 
     @Mock
-    private KakaoAPIService kakaoAPIService;
+    private LoginAPIService<KakaoTokenResponse, KakaoUserResponse> kakaoAPIService;
 
     @Mock
     private MemberService memberService;
@@ -55,7 +53,7 @@ class LoginServiceTest {
     @Test
     void createJwtTokenUrlTest() {
         when(kakaoAPIService.createTokenUrl(any(JwtTokenResponse.class))).thenReturn(URL);
-        when(kakaoAPIService.fetchOAuthToken(anyString())).thenReturn(Mono.just(createMockKakaoTokenResponse()));
+        when(kakaoAPIService.fetchOAuthToken(CODE_VALUE)).thenReturn(Mono.just(createMockKakaoTokenResponse()));
         when(kakaoAPIService.fetchUserInfo(any(KakaoTokenResponse.class))).thenReturn(
             Mono.just(createMockKakaoUserResponse()));
         when(memberService.findByKakaoId(anyLong())).thenReturn(createMockMemberResponse());
@@ -68,7 +66,7 @@ class LoginServiceTest {
     @Test
     void createJwtTokenUrlTest2() {
         when(kakaoAPIService.createTokenUrl(any(JwtTokenResponse.class))).thenReturn(URL);
-        when(kakaoAPIService.fetchOAuthToken(anyString())).thenReturn(Mono.just(createMockKakaoTokenResponse()));
+        when(kakaoAPIService.fetchOAuthToken(CODE_VALUE)).thenReturn(Mono.just(createMockKakaoTokenResponse()));
         when(kakaoAPIService.fetchUserInfo(any(KakaoTokenResponse.class))).thenReturn(
             Mono.just(createMockKakaoUserResponse()));
         when(memberService.findByKakaoId(anyLong())).thenThrow(MemberNotFoundException.class);

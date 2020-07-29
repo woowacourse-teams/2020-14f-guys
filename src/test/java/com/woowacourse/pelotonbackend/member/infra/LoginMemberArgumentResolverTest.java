@@ -58,11 +58,11 @@ class LoginMemberArgumentResolverTest {
         assertThat(memberResponse).isEqualToComparingFieldByField(createWithId(ID));
     }
 
-    @DisplayName("kakaoId 정보가 없을 때 빈 멤버를 리턴한다.")
+    @DisplayName("kakaoId 정보가 없을 때 AssertionError로 예외처리한다.")
     @Test
     void resolveArgumentTest3() {
-        final MemberResponse memberResponse = loginMemberArgumentResolver.resolveArgument(methodParameter, null,
-            servletWebRequest, null);
-        assertThat(memberResponse).isEqualToComparingFieldByField(Member.builder().build());
+        assertThatThrownBy(() -> loginMemberArgumentResolver.resolveArgument(methodParameter, null,
+            servletWebRequest, null)).isInstanceOf(AssertionError.class)
+            .hasMessageContaining("Can not found 'loginMemberKakaoId");
     }
 }
