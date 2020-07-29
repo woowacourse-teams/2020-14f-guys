@@ -2,8 +2,8 @@ import React from "react";
 import { ActivityIndicator, StyleSheet, View } from "react-native";
 import { useRecoilValue } from "recoil";
 
-import { COLOR } from "../../../utils/constants";
-import { loadingState } from "../../../state/loading/LoadingState";
+import { COLOR } from "./constants";
+import { loadingState } from "../state/loading/LoadingState";
 
 const LoadingIndicator = ({ children }) => {
   const isLoading = useRecoilValue(loadingState);
@@ -30,8 +30,8 @@ const styles = StyleSheet.create({
     bottom: 0,
     left: 0,
     right: 0,
-    backgroundColor: COLOR.GRAY1,
-    opacity: 0.8,
+    backgroundColor: COLOR.GRAY6,
+    opacity: 0.9,
     justifyContent: "center",
     alignItems: "center",
   },

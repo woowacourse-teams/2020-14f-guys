@@ -1,31 +1,34 @@
 {
-    "env": {
-        "browser": true,
-        "es2020": true
+  "env": {
+    "browser": true,
+    "es2020": true
+  },
+  "extends": [
+    "@react-native-community"
+  ],
+  "parserOptions": {
+    "ecmaFeatures": {
+      "jsx": true
     },
-    "extends": [
-        "@react-native-community"
+    "ecmaVersion": 11,
+    "sourceType": "module"
+  },
+  "plugins": [
+    "react",
+    "prefer-arrow"
+  ],
+  "rules": {
+    "quotes": [
+      1,
+      "double"
     ],
-    "parserOptions": {
-        "ecmaFeatures": {
-            "jsx": true
-        },
-        "ecmaVersion": 11,
-        "sourceType": "module"
-    },
-    "plugins": [
-        "react",
-        "prefer-arrow"
-    ],
-    "rules": {
-        "quotes": [1, "double"],
-        "prefer-arrow/prefer-arrow-functions": [
-            "error",
-            {
-                "disallowPrototype": true,
-                "singleReturnOnly": false,
-                "classPropertiesAllowed": false
-            }
-        ]
-    }
+    "prefer-arrow/prefer-arrow-functions": [
+      "error",
+      {
+        "disallowPrototype": true,
+        "singleReturnOnly": false,
+        "classPropertiesAllowed": false
+      }
+    ]
+  }
 }

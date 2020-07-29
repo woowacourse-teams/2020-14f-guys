@@ -23,7 +23,6 @@ public class MemberCreateRequest {
     @NotNull
     private final Long kakaoId;
 
-    @NotNull
     private final ImageUrl profile;
 
     @NotBlank

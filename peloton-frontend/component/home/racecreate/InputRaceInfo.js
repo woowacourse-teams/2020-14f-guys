@@ -10,18 +10,19 @@ import {
 } from "react-native";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
-import { useNavigation, CommonActions } from "@react-navigation/native";
+import { CommonActions, useNavigation } from "@react-navigation/native";
 import useAxios from "axios-hooks";
 
 import RaceCreateUnit from "./RaceCreateUnit";
 import { raceCreateInfoState } from "../../../state/race/CreateState";
-import { BASE_URL, COLOR } from "../../../utils/constants";
+import { COLOR, SERVER_BASE_URL } from "../../../utils/constants";
 import { loadingState } from "../../../state/loading/LoadingState";
-import LoadingIndicator from "../util/LoadingIndicator";
+import LoadingIndicator from "../../../utils/LoadingIndicator";
 
 const InputRaceInfo = () => {
   // eslint-disable-next-line prettier/prettier
-  const { title, description, startDate, endDate, category, entranceFee } = useRecoilValue(raceCreateInfoState);
+  const { title, description, startDate, endDate, category, entranceFee } = useRecoilValue(
+    raceCreateInfoState);
   const setGlobalLoading = useSetRecoilState(loadingState);
 
   const formatPostRaceBody = () => {
@@ -32,11 +33,11 @@ const InputRaceInfo = () => {
   const [{ response, loading, error }, createRaceRequest] = useAxios(
     {
       method: "post",
-      baseURL: BASE_URL,
+      baseURL: SERVER_BASE_URL,
       url: "/api/races",
       data: formatPostRaceBody(),
     },
-    { manual: true }
+    { manual: true },
   );
   const navigation = useNavigation();
 
@@ -58,6 +59,7 @@ const InputRaceInfo = () => {
         target: navigation.dangerouslyGetState().key,
       });
     }
+
     if (error) {
       alert(error.toString());
     }

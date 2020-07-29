@@ -1,3 +1,6 @@
+import { animated } from "react-spring";
+import { Image, Text, View } from "react-native";
+
 export const COLOR = {
   GREEN: "#B0D4D9",
   BLUE: "#B0C0D9",
@@ -11,6 +14,7 @@ export const COLOR = {
   GRAY3: "rgb(199,199,204)",
   GRAY4: "rgb(209,209,214)",
   GRAY5: "rgb(229,229,234)",
+  GRAY6: "rgb(33,33,34)",
 };
 
 export const SAMPLE_IMAGES = [
@@ -95,7 +99,9 @@ export const CATEGORY = [
       "https://x86.co.kr/files/attach/images/1951610/342/576/002/0555addbb9bfd672918a2539668f0dac.jpg",
   },
 ];
-
-export const BASE_URL = "https://8fa2961b8900.ngrok.io";
-export const SERVER_BASE_URL = "https://3e5cc9c0a476.ngrok.io";
+export const SERVER_BASE_URL = "https://f6770f8ad49b.ngrok.io";
 export const TOKEN_STORAGE = "@token_storage";
+
+export const AnimatedImage = animated(Image);
+export const AnimatedView = animated(View);
+export const AnimatedText = animated(Text);

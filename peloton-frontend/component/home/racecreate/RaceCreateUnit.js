@@ -6,7 +6,7 @@ import DateTimePickerModal from "react-native-modal-datetime-picker";
 import { raceCreateInfoState } from "../../../state/race/CreateState";
 import InputBox from "./InputBox";
 import CalendarButton from "./CalendarButton";
-import { DateFormatter } from "../util/DateFormatter";
+import { DateFormatter } from "../../../utils/DateFormatter";
 
 const RaceCreateUnit = ({
   date = false,

@@ -2,13 +2,13 @@ import React from "react";
 import { ScrollView, StyleSheet, View } from "react-native";
 
 import RaceList from "./RaceList";
-import HomeMainBanner from "./HomeMainBanner";
+import HomeBanner from "./HomeBanner";
 
-const HomeMain = () => {
+const Home = () => {
   return (
     <ScrollView>
       <View style={styles.raceTitle}>
-        <HomeMainBanner />
+        <HomeBanner />
       </View>
       <View style={styles.raceList}>
         <RaceList />
@@ -31,4 +31,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default HomeMain;
+export default Home;
