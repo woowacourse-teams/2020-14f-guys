@@ -11,8 +11,8 @@ import com.woowacourse.pelotonbackend.report.domain.ReportType;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
-@AllArgsConstructor(onConstructor_ = {
-    @ConstructorProperties({"reportType", "description", "reportMemberId", "certificationId"})})
+@AllArgsConstructor(onConstructor_ = @ConstructorProperties(
+    {"reportType", "description", "reportMemberId", "certificationId"}))
 @Getter
 public class ReportCreateContent {
     @NotNull

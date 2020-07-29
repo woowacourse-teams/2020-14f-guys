@@ -5,8 +5,6 @@ import java.util.Map;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.databind.PropertyNamingStrategy;
-import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -16,7 +14,6 @@ import lombok.Getter;
     "hasBirthday", "birthdayNeedsAgreement", "birthday", "hasGender", "genderNeedsAgreement"}))
 @Builder
 @Getter
-@JsonNaming(value = PropertyNamingStrategy.SnakeCaseStrategy.class)
 public class KakaoUserResponse {
     private final long id;
     private String nickname;

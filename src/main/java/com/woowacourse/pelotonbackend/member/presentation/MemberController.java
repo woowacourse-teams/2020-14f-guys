@@ -8,31 +8,26 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.woowacourse.pelotonbackend.member.application.MemberService;
-import com.woowacourse.pelotonbackend.member.domain.Member;
 import com.woowacourse.pelotonbackend.member.presentation.dto.MemberCashUpdateRequest;
 import com.woowacourse.pelotonbackend.member.presentation.dto.MemberCreateRequest;
 import com.woowacourse.pelotonbackend.member.presentation.dto.MemberNameUpdateRequest;
 import com.woowacourse.pelotonbackend.member.presentation.dto.MemberResponse;
 import com.woowacourse.pelotonbackend.member.presentation.dto.MemberResponses;
 import com.woowacourse.pelotonbackend.support.annotation.LoginMember;
-import com.woowacourse.pelotonbackend.support.annotation.RequiredAuth;
 import lombok.RequiredArgsConstructor;
 
 @RequestMapping("/api/members")
 @RequiredArgsConstructor
-@RequiredAuth
 @RestController
 public class MemberController {
     private final MemberService memberService;
 
-    @RequiredAuth(required = false)
     @PostMapping
     public ResponseEntity<Void> createMember(@RequestBody @Valid final MemberCreateRequest memberCreateRequest) {
         final MemberResponse memberResponse = memberService.createMember(memberCreateRequest);
@@ -43,17 +38,17 @@ public class MemberController {
     }
 
     @GetMapping
-    public ResponseEntity<MemberResponse> findMember(@LoginMember Member member) {
-        final MemberResponse memberResponse = memberService.findMember(member.getId());
+    public ResponseEntity<MemberResponse> findMember(@LoginMember MemberResponse loginMemberResponse) {
+        final MemberResponse memberResponse = memberService.findMember(loginMemberResponse.getId());
 
         return ResponseEntity.ok(memberResponse);
     }
 
-    @GetMapping("{id}")
-    public ResponseEntity<MemberResponse> findMember(@PathVariable Long id) {
-        final MemberResponse memberResponse = memberService.findMember(id);
+    @DeleteMapping
+    public ResponseEntity<Void> delete(@LoginMember MemberResponse loginMemberResponse) {
+        memberService.deleteById(loginMemberResponse.getId());
 
-        return ResponseEntity.ok(memberResponse);
+        return ResponseEntity.noContent().build();
     }
 
     @GetMapping("/all")
@@ -64,9 +59,9 @@ public class MemberController {
     }
 
     @PatchMapping("/name")
-    public ResponseEntity<Void> updateName(@LoginMember Member member,
+    public ResponseEntity<Void> updateName(@LoginMember MemberResponse loginMemberResponse,
         @RequestBody @Valid final MemberNameUpdateRequest request) {
-        final MemberResponse memberResponse = memberService.updateName(member.getId(), request);
+        final MemberResponse memberResponse = memberService.updateName(loginMemberResponse.getId(), request);
 
         return ResponseEntity.ok()
             .header("Location", String.format("/api/members/%d", memberResponse.getId()))
@@ -74,20 +69,13 @@ public class MemberController {
     }
 
     @PatchMapping("/cash")
-    public ResponseEntity<Void> updateCash(@LoginMember Member member,
+    public ResponseEntity<Void> updateCash(@LoginMember MemberResponse loginMemberResponse,
         @RequestBody @Valid final MemberCashUpdateRequest request) {
-        final MemberResponse memberResponse = memberService.updateCash(member.getId(), request);
+        final MemberResponse memberResponse = memberService.updateCash(loginMemberResponse.getId(), request);
 
         return ResponseEntity.ok()
             .header("Location", String.format("/api/members/%d", memberResponse.getId()))
             .build();
-    }
-
-    @DeleteMapping
-    public ResponseEntity<Void> delete(@LoginMember Member member) {
-        memberService.deleteById(member.getId());
-
-        return ResponseEntity.noContent().build();
     }
 }
 

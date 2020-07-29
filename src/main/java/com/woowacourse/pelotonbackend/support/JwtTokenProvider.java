@@ -9,10 +9,12 @@ import org.springframework.stereotype.Component;
 import com.woowacourse.pelotonbackend.common.ErrorCode;
 import com.woowacourse.pelotonbackend.common.exception.TokenInvalidException;
 import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jws;
-import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.MalformedJwtException;
 import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.SignatureException;
 
 @Component
 public class JwtTokenProvider {
@@ -46,7 +48,9 @@ public class JwtTokenProvider {
     private Jws<Claims> validateToken(String token) {
         try {
             return Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token);
-        } catch (JwtException | IllegalArgumentException e) {
+        } catch (MalformedJwtException | SignatureException | IllegalArgumentException e) {
+            throw new TokenInvalidException(ErrorCode.INVALID_TOKEN, "토큰이 유효하지 않습니다. 다시 로그인 해주세요.");
+        } catch (ExpiredJwtException e) {
             throw new TokenInvalidException(ErrorCode.TOKEN_EXPIRED, "토큰이 만료되었습니다. 다시 로그인 해주세요.");
         }
     }

@@ -12,13 +12,11 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.woowacourse.pelotonbackend.rider.application.RiderService;
 import com.woowacourse.pelotonbackend.rider.presentation.dto.RiderCreateRequest;
-import com.woowacourse.pelotonbackend.support.annotation.RequiredAuth;
 import lombok.RequiredArgsConstructor;
 
 @RestController
 @RequestMapping("/api/riders")
 @RequiredArgsConstructor
-@RequiredAuth
 public class RiderController {
     private final RiderService riderService;
 

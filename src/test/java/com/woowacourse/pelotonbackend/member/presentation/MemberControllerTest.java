@@ -18,7 +18,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.core.MethodParameter;
 import org.springframework.http.MediaType;
@@ -36,7 +36,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.woowacourse.pelotonbackend.common.ErrorCode;
 import com.woowacourse.pelotonbackend.common.exception.MemberNotFoundException;
 import com.woowacourse.pelotonbackend.member.application.MemberService;
-import com.woowacourse.pelotonbackend.member.domain.Member;
 import com.woowacourse.pelotonbackend.member.domain.MemberFixture;
 import com.woowacourse.pelotonbackend.member.presentation.dto.MemberCashUpdateRequest;
 import com.woowacourse.pelotonbackend.member.presentation.dto.MemberCreateRequest;
@@ -45,7 +44,7 @@ import com.woowacourse.pelotonbackend.member.presentation.dto.MemberResponse;
 import com.woowacourse.pelotonbackend.member.presentation.dto.MemberResponses;
 import com.woowacourse.pelotonbackend.support.BearerAuthInterceptor;
 
-@SpringBootTest
+@WebMvcTest(controllers = MemberController.class)
 public class MemberControllerTest {
     private MockMvc mockMvc;
 
@@ -90,12 +89,11 @@ public class MemberControllerTest {
     @DisplayName("회원을 조회한다")
     @Test
     void findMember() throws Exception {
-        final Member expectedMember = createWithId(ID);
-        final MemberResponse expectedResponse = MemberResponse.from(expectedMember);
+        final MemberResponse expectedResponse = memberResponse();
         given(bearerAuthInterceptor.preHandle(any(HttpServletRequest.class), any(HttpServletResponse.class),
             any(HandlerMethod.class))).willReturn(true);
         given(argumentResolver.resolveArgument(any(MethodParameter.class), any(ModelAndViewContainer.class),
-            any(NativeWebRequest.class), any(WebDataBinderFactory.class))).willReturn(expectedMember);
+            any(NativeWebRequest.class), any(WebDataBinderFactory.class))).willReturn(expectedResponse);
         given(argumentResolver.supportsParameter(any())).willReturn(true);
         given(memberService.findMember(ID)).willReturn(expectedResponse);
 
@@ -136,16 +134,16 @@ public class MemberControllerTest {
     @DisplayName("회원 이름을 수정한다")
     @Test
     void updateMemberName() throws Exception {
-        final Member expectedMember = createWithId(ID);
-        final MemberResponse expectedResponse = MemberResponse.from(expectedMember);
+        final MemberResponse expectedResponse = memberResponse();
         given(bearerAuthInterceptor.preHandle(any(HttpServletRequest.class), any(HttpServletResponse.class),
             any(HandlerMethod.class))).willReturn(true);
         given(argumentResolver.resolveArgument(any(MethodParameter.class), any(ModelAndViewContainer.class), any(
-            NativeWebRequest.class), any(WebDataBinderFactory.class))).willReturn(expectedMember);
+            NativeWebRequest.class), any(WebDataBinderFactory.class))).willReturn(expectedResponse);
         given(argumentResolver.supportsParameter(any())).willReturn(true);
         given(memberService.updateName(anyLong(), any(MemberNameUpdateRequest.class))).willReturn(expectedResponse);
 
         mockMvc.perform(patch(RESOURCE_URL + "/name")
+            .header("Authorization", "Bearer asdfaslkdfhjaklsjfqwlkefhjqklwehrfjlkqwer")
             .contentType(MediaType.APPLICATION_JSON)
             .content(objectMapper.writeValueAsBytes(createNameUpdateRequest()))
         )
@@ -156,12 +154,11 @@ public class MemberControllerTest {
     @DisplayName("회원의 보유 캐시를 수정한다")
     @Test
     void updateMemberCash() throws Exception {
-        final Member expectedMember = createWithId(ID);
-        final MemberResponse expectedResponse = MemberResponse.from(expectedMember);
+        final MemberResponse expectedResponse = memberResponse();
         given(bearerAuthInterceptor.preHandle(any(HttpServletRequest.class), any(HttpServletResponse.class),
             any(HandlerMethod.class))).willReturn(true);
         given(argumentResolver.resolveArgument(any(MethodParameter.class), any(ModelAndViewContainer.class), any(
-            NativeWebRequest.class), any(WebDataBinderFactory.class))).willReturn(expectedMember);
+            NativeWebRequest.class), any(WebDataBinderFactory.class))).willReturn(expectedResponse);
         given(argumentResolver.supportsParameter(any())).willReturn(true);
         given(memberService.findMember(ID)).willReturn(expectedResponse);
         given(memberService.updateCash(anyLong(), any(MemberCashUpdateRequest.class)))
@@ -178,11 +175,12 @@ public class MemberControllerTest {
     @DisplayName("특정 회원을 삭제한다.")
     @Test
     void deleteMember() throws Exception {
-        final Member expectedMember = createWithId(ID);
+        final MemberResponse expectedResponse = memberResponse();
         given(bearerAuthInterceptor.preHandle(any(HttpServletRequest.class), any(HttpServletResponse.class),
             any(HandlerMethod.class))).willReturn(true);
         given(argumentResolver.resolveArgument(any(MethodParameter.class), any(ModelAndViewContainer.class), any(
-            NativeWebRequest.class), any(WebDataBinderFactory.class))).willReturn(expectedMember);
+            NativeWebRequest.class), any(WebDataBinderFactory.class))).willReturn(expectedResponse);
+        given(argumentResolver.supportsParameter(any())).willReturn(true);
 
         mockMvc.perform(delete(RESOURCE_URL))
             .andExpect(status().isNoContent());
@@ -208,7 +206,7 @@ public class MemberControllerTest {
         given(bearerAuthInterceptor.preHandle(any(HttpServletRequest.class), any(HttpServletResponse.class),
             any(HandlerMethod.class))).willReturn(true);
         given(argumentResolver.resolveArgument(any(MethodParameter.class), any(ModelAndViewContainer.class), any(
-            NativeWebRequest.class), any(WebDataBinderFactory.class))).willReturn(Member.builder().build());
+            NativeWebRequest.class), any(WebDataBinderFactory.class))).willReturn(MemberResponse.builder().build());
         given(argumentResolver.supportsParameter(any())).willReturn(true);
         given(memberService.findMember(any())).willThrow(new MemberNotFoundException(100L));
 
@@ -226,7 +224,7 @@ public class MemberControllerTest {
         given(bearerAuthInterceptor.preHandle(any(HttpServletRequest.class), any(HttpServletResponse.class),
             any(HandlerMethod.class))).willReturn(true);
         given(argumentResolver.resolveArgument(any(MethodParameter.class), any(ModelAndViewContainer.class), any(
-            NativeWebRequest.class), any(WebDataBinderFactory.class))).willReturn(createWithId(NOT_EXIST_ID));
+            NativeWebRequest.class), any(WebDataBinderFactory.class))).willReturn(MemberResponse.builder().build());
         given(argumentResolver.supportsParameter(any())).willReturn(true);
         doThrow(new MemberNotFoundException(NOT_EXIST_ID)).when(memberService).deleteById(any());
 

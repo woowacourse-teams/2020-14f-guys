@@ -12,13 +12,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.woowacourse.pelotonbackend.report.application.ReportService;
-import com.woowacourse.pelotonbackend.support.annotation.RequiredAuth;
 import lombok.RequiredArgsConstructor;
 
 @RestController
 @RequestMapping("/api/reports")
 @RequiredArgsConstructor
-@RequiredAuth
 public class ReportController {
     private final ReportService reportService;
 

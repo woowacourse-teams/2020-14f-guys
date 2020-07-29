@@ -14,9 +14,8 @@ import lombok.Getter;
 
 @AllArgsConstructor(
     access = AccessLevel.PRIVATE,
-    onConstructor_ = {
-        @ConstructorProperties({"id", "title", "description", "thumbnail", "certificationExample", "raceDuration",
-            "category", "cash"})})
+    onConstructor_ = @ConstructorProperties(
+        {"id", "title", "description", "thumbnail", "certificationExample", "raceDuration", "category", "cash"}))
 @Builder
 @Getter
 public class RaceRetrieveResponse {

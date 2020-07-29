@@ -7,8 +7,8 @@ import javax.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Value;
 
-@Value
 @AllArgsConstructor(onConstructor_ = @ConstructorProperties("baseImageUrl"))
+@Value
 public class ImageUrl {
     @NotBlank
     private final String baseImageUrl;

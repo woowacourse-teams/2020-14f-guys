@@ -1,7 +1,5 @@
 package com.woowacourse.pelotonbackend.member.infra;
 
-import java.util.Objects;
-
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
@@ -9,18 +7,15 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.util.DefaultUriBuilderFactory;
 
-import com.woowacourse.pelotonbackend.member.application.LoginService;
-import com.woowacourse.pelotonbackend.member.application.MemberService;
+import com.woowacourse.pelotonbackend.member.application.LoginAPIService;
 import com.woowacourse.pelotonbackend.member.infra.dto.KakaoTokenResponse;
 import com.woowacourse.pelotonbackend.member.infra.dto.KakaoUserResponse;
-import com.woowacourse.pelotonbackend.member.presentation.dto.MemberResponse;
-import com.woowacourse.pelotonbackend.support.JwtTokenProvider;
 import com.woowacourse.pelotonbackend.support.dto.JwtTokenResponse;
 import reactor.core.publisher.Mono;
 
 @Component
 @Transactional
-public class KakaoAPIService implements LoginService {
+public class KakaoAPIService implements LoginAPIService<KakaoTokenResponse, KakaoUserResponse> {
     private static final String AUTHORIZE_PATH = "/oauth/authorize";
     private static final String RESPONSE_TYPE = "response_type";
     private static final String CLIENT_ID = "client_id";
@@ -45,16 +40,13 @@ public class KakaoAPIService implements LoginService {
     private final String clientSecretValue;
     private final String responseTypeValue;
     private final String grantTypeValue;
-    private final MemberService memberService;
-    private final JwtTokenProvider tokenProvider;
 
     public KakaoAPIService(@Value("${secrets.kakao.authorizeUri}") final String authorizeUri,
         @Value("${secrets.kakao.apiUri}") final String apiUri, @Value("${server.uri}") final String serverUri,
         @Value("${secrets.kakao.clientId}") final String clientIdValue,
         @Value("${secrets.kakao.clientSecret}") final String clientSecretValue,
         @Value("${secrets.kakao.responseType}") final String responseTypeValue,
-        @Value("${secrets.kakao.grantType}") final String grantTypeValue,
-        final MemberService memberService, final JwtTokenProvider tokenProvider) {
+        @Value("${secrets.kakao.grantType}") final String grantTypeValue) {
         this.authorizeUri = authorizeUri;
         this.apiUri = apiUri;
         this.serverUri = serverUri;
@@ -62,8 +54,6 @@ public class KakaoAPIService implements LoginService {
         this.clientSecretValue = clientSecretValue;
         this.responseTypeValue = responseTypeValue;
         this.grantTypeValue = grantTypeValue;
-        this.memberService = memberService;
-        this.tokenProvider = tokenProvider;
     }
 
     @Override
@@ -78,26 +68,17 @@ public class KakaoAPIService implements LoginService {
     }
 
     @Override
-    public String createTokenUrl(final String code) {
-        final JwtTokenResponse token = createToken(code);
-
+    public String createTokenUrl(final JwtTokenResponse token) {
         return new DefaultUriBuilderFactory().builder()
             .path(serverUri + LOGIN_CHECK_PATH)
             .queryParam(ACCESS_TOKEN, token.getAccessToken())
             .queryParam(SUCCESS, true)
-            .queryParam(IS_CREATED, true)
+            .queryParam(IS_CREATED, token.isCreated())
             .build().toString();
     }
 
-    private JwtTokenResponse createToken(final String codeValue) {
-        final Mono<KakaoTokenResponse> kakaoTokenResponse = fetchOAuthToken(codeValue);
-        final Mono<KakaoUserResponse> kakaoUserResponse = fetchKakaoUserInfo(
-            Objects.requireNonNull(kakaoTokenResponse.block()));
-        MemberResponse memberResponse = memberService.retrieve(Objects.requireNonNull(kakaoUserResponse.block()));
-        return JwtTokenResponse.of(tokenProvider.createToken(memberResponse.getKakaoId().toString()));
-    }
-
-    private Mono<KakaoTokenResponse> fetchOAuthToken(final String codeValue) {
+    @Override
+    public Mono<KakaoTokenResponse> fetchOAuthToken(final String code) {
         final WebClient webClient = WebClient.builder()
             .baseUrl(authorizeUri)
             .build();
@@ -107,7 +88,7 @@ public class KakaoAPIService implements LoginService {
                 .queryParam(GRANT_TYPE, grantTypeValue)
                 .queryParam(CLIENT_ID, clientIdValue)
                 .queryParam(CLIENT_SECRET, clientSecretValue)
-                .queryParam(CODE, codeValue)
+                .queryParam(CODE, code)
                 .queryParam(REDIRECT_URI, serverUri + REDIRECT_PATH)
                 .build())
             .contentType(MediaType.APPLICATION_FORM_URLENCODED)
@@ -116,8 +97,9 @@ public class KakaoAPIService implements LoginService {
             .bodyToMono(KakaoTokenResponse.class);
     }
 
-    private Mono<KakaoUserResponse> fetchKakaoUserInfo(final KakaoTokenResponse token) {
-        WebClient webClient = WebClient.builder()
+    @Override
+    public Mono<KakaoUserResponse> fetchUserInfo(final KakaoTokenResponse token) {
+        final WebClient webClient = WebClient.builder()
             .baseUrl(apiUri)
             .build();
         return webClient.get()

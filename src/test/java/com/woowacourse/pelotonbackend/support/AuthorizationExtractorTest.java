@@ -14,7 +14,6 @@ import com.woowacourse.pelotonbackend.common.exception.TokenInvalidException;
 
 class AuthorizationExtractorTest {
     private AuthorizationExtractor authorizationExtractor;
-
     private MockHttpServletRequest request;
 
     @BeforeEach

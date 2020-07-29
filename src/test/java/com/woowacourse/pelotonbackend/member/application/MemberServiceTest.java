@@ -1,6 +1,5 @@
 package com.woowacourse.pelotonbackend.member.application;
 
-import static com.woowacourse.pelotonbackend.member.domain.LoginFixture.*;
 import static com.woowacourse.pelotonbackend.member.domain.MemberFixture.*;
 import static org.assertj.core.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.*;
@@ -26,7 +25,6 @@ import com.woowacourse.pelotonbackend.member.domain.MemberRepository;
 import com.woowacourse.pelotonbackend.member.presentation.dto.MemberCreateRequest;
 import com.woowacourse.pelotonbackend.member.presentation.dto.MemberResponse;
 import com.woowacourse.pelotonbackend.member.presentation.dto.MemberResponses;
-import com.woowacourse.pelotonbackend.support.RandomGenerator;
 
 @ExtendWith(MockitoExtension.class)
 class MemberServiceTest {
@@ -35,20 +33,17 @@ class MemberServiceTest {
     @Mock
     private MemberRepository memberRepository;
 
-    @Mock
-    private RandomGenerator randomGenerator;
-
     private Member expectedMember;
 
     @BeforeEach
     void setUp() {
-        memberService = new MemberService(memberRepository, randomGenerator);
+        memberService = new MemberService(memberRepository);
         expectedMember = createWithId(ID);
     }
 
     @DisplayName("회원을 생성한다")
     @Test
-    void createMember() {
+    void createMemberTest() {
         final MemberCreateRequest memberCreateRequest = MemberFixture.createRequest(KAKAO_ID, EMAIL, NAME);
         when(memberRepository.save(any(Member.class))).thenReturn(expectedMember);
 
@@ -59,7 +54,7 @@ class MemberServiceTest {
 
     @DisplayName("회원을 조회한다.")
     @Test
-    void findMember() {
+    void findMemberTest() {
         final Member persistMember = createWithId(ID);
         when(memberRepository.findById(anyLong())).thenReturn(Optional.of(persistMember));
 
@@ -70,7 +65,7 @@ class MemberServiceTest {
 
     @DisplayName("회원의 ID가 존재하지 않는 경우 예외를 반환한다.")
     @Test
-    void notFoundMember() {
+    void notFoundMemberTest() {
         when(memberRepository.findById(anyLong())).thenReturn(Optional.empty());
 
         assertThatThrownBy(() -> memberService.findMember(ID))
@@ -79,7 +74,7 @@ class MemberServiceTest {
 
     @DisplayName("모든 회원을 조회한다.")
     @Test
-    void findAllMember() {
+    void findAllMemberTest() {
         final List<Member> persistMembers = Arrays.asList(MemberFixture.createWithId(ID),
             MemberFixture.createWithId(ID2));
         when(memberRepository.findAll()).thenReturn(persistMembers);
@@ -97,7 +92,7 @@ class MemberServiceTest {
 
     @DisplayName("id들로 회원들을 조회한다.")
     @Test
-    void findAllMemberById() {
+    void findAllMemberByIdTest() {
         final List<Long> ids = Arrays.asList(1L, 2L, 4L);
         final List<Member> members = Arrays.asList(
             MemberFixture.createWithId(1L),
@@ -115,7 +110,7 @@ class MemberServiceTest {
 
     @DisplayName("회원 이름을 수정한다.")
     @Test
-    void updateName() {
+    void updateNameTest() {
         final Member originMember = MemberFixture.createWithId(ID);
         final Member updatedMember = MemberFixture.memberNameUpdated();
         when(memberRepository.findById(anyLong())).thenReturn(Optional.of(originMember));
@@ -132,7 +127,7 @@ class MemberServiceTest {
 
     @DisplayName("회원의 캐시를 수정한다")
     @Test
-    void updateCash() {
+    void updateCashTest() {
         final Member originMember = MemberFixture.createWithId(ID);
         final Member updatedMember = MemberFixture.memberCashUpdated(ID);
         when(memberRepository.findById(anyLong())).thenReturn(Optional.of(originMember));
@@ -149,7 +144,7 @@ class MemberServiceTest {
 
     @DisplayName("특정 회원을 삭제한다")
     @Test
-    void deleteMember() {
+    void deleteMemberTest() {
         memberService.deleteById(ID);
 
         verify(memberRepository).deleteById(anyLong());
@@ -157,7 +152,7 @@ class MemberServiceTest {
 
     @DisplayName("삭제하려는 회원의 아이디가 null이면 예외를 반환한다.")
     @Test
-    void deleteNullMemberId() {
+    void deleteNullMemberIdTest() {
         assertThatThrownBy(() -> memberService.deleteById(null))
             .isInstanceOf(MemberIdInvalidException.class);
     }
@@ -167,25 +162,16 @@ class MemberServiceTest {
     void findByKakaoIdTest() {
         when(memberRepository.findByKakaoId(KAKAO_ID)).thenReturn(Optional.of(expectedMember));
 
-        assertThat(memberService.findByKakaoId(KAKAO_ID).get()).isEqualToComparingFieldByField(expectedMember);
+        assertThat(memberService.findByKakaoId(KAKAO_ID)).isEqualToComparingFieldByField(expectedMember);
     }
 
-    @DisplayName("Kakao User Response를 통해 기존 멤버를 조회한다.")
+    @DisplayName("Kakao Id로 없는 회원을 조회하는 경우 예외를 반환한다.")
     @Test
-    public void retrieveExistMemberTest() {
-        when(memberRepository.findByKakaoId(KAKAO_ID)).thenReturn(Optional.of(expectedMember));
-
-        assertThat(memberService.retrieve(createMockKakaoUserResponse())).isEqualToComparingFieldByField(
-            expectedMember);
-    }
-
-    @DisplayName("Kakao User Response를 통해 신규 유저인 경우 생성하고 조회한다.")
-    @Test
-    public void retrieveNewMemberTest() {
+    void findByKakaoIdTest2() {
         when(memberRepository.findByKakaoId(KAKAO_ID)).thenReturn(Optional.empty());
-        when(memberRepository.save(createRequest(KAKAO_ID, EMAIL, NAME).toMember())).thenReturn(expectedMember);
 
-        assertThat(memberService.retrieve(createMockKakaoUserResponse())).isEqualToComparingFieldByField(
-            expectedMember);
+        assertThatThrownBy(() -> memberService.findByKakaoId(KAKAO_ID))
+            .isInstanceOf(MemberNotFoundException.class)
+            .hasMessageContaining("kakaoId");
     }
 }

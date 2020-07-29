@@ -9,7 +9,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 @Getter
-@AllArgsConstructor(onConstructor_ = {@ConstructorProperties({"responses"})})
+@AllArgsConstructor(onConstructor_ = @ConstructorProperties("responses"))
 public class MemberResponses {
     private final List<MemberResponse> responses;
 

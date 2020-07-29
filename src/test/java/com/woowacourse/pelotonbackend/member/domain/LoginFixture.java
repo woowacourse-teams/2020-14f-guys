@@ -3,16 +3,17 @@ package com.woowacourse.pelotonbackend.member.domain;
 import static com.woowacourse.pelotonbackend.member.domain.MemberFixture.*;
 
 import org.springframework.stereotype.Component;
+import org.springframework.web.util.DefaultUriBuilderFactory;
 
 import com.woowacourse.pelotonbackend.member.infra.dto.KakaoTokenResponse;
 import com.woowacourse.pelotonbackend.member.infra.dto.KakaoUserResponse;
 import com.woowacourse.pelotonbackend.member.presentation.dto.MemberResponse;
 import com.woowacourse.pelotonbackend.support.annotation.LoginMember;
-import com.woowacourse.pelotonbackend.support.annotation.RequiredAuth;
 import com.woowacourse.pelotonbackend.vo.Cash;
 
 @Component
 public class LoginFixture {
+    public static final String CODE = "code";
     public static final String CODE_VALUE = "CODE";
     public static final String URL = "https://14floorguys.com";
     public static final String TOKEN = "SIKAKYLEDDBUMBLEBEEMOONI";
@@ -22,10 +23,12 @@ public class LoginFixture {
     public static final String CLIENT_ID_VALUE = "1231234";
     public static final String CLIENT_SECRET_VALUE = "SECRET";
     public static final String RESPONSE_TYPE_VALUE = "RESPONSE";
-    public static final String GRANT_TYPE_VALUE = "GRANT";
+    public static final String GRANT_TYPE_VALUE = "code";
+    public static final String GRANT_TYPE = "GRANT_TYPE";
     public static final String AUTHORIZE_PATH = "/oauth/authorize";
     public static final String RESPONSE_TYPE = "response_type";
     public static final String CLIENT_ID = "client_id";
+    public static final String CLIENT_SECRET = "client_secret";
     public static final String REDIRECT_URI = "redirect_uri";
     public static final String REDIRECT_PATH = "/api/login/token";
     public static final String OAUTH_TOKEN_PATH = "/oauth/token";
@@ -42,7 +45,6 @@ public class LoginFixture {
     public static final boolean ADMIT = true;
 
     public static class TestController {
-        @RequiredAuth
         public void testMethod(@LoginMember Member member) {
         }
     }
@@ -65,8 +67,8 @@ public class LoginFixture {
             .profileImage(URL)
             .thumbnailImage(URL)
             .hasEmail(ADMIT)
-            .isEmailValid(ADMIT)
-            .isEmailVerified(ADMIT)
+            .isEmailValid(!ADMIT)
+            .isEmailVerified(!ADMIT)
             .email(EMAIL)
             .emailNeedsAgreement(ADMIT)
             .hasBirthday(ADMIT)
@@ -86,5 +88,15 @@ public class LoginFixture {
             .role(Role.MEMBER)
             .id(KAKAO_ID)
             .build();
+    }
+
+    public static String createMockCodeUrl() {
+        return new DefaultUriBuilderFactory().builder()
+            .path(URL + AUTHORIZE_PATH)
+            .queryParam(RESPONSE_TYPE, RESPONSE_TYPE_VALUE)
+            .queryParam(CLIENT_ID, CLIENT_ID_VALUE)
+            .queryParam(REDIRECT_URI, SERVER_URI + REDIRECT_PATH)
+            .build()
+            .toString();
     }
 }

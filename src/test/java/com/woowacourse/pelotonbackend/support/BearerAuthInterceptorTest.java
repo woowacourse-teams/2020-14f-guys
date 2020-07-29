@@ -29,7 +29,6 @@ class BearerAuthInterceptorTest {
     private JwtTokenProvider jwtTokenProvider;
 
     private HandlerMethod handlerMethod;
-
     private MockHttpServletRequest mockHttpServletRequest;
     private MockHttpServletResponse mockHttpServletResponse;
     private BearerAuthInterceptor bearerAuthInterceptor;
