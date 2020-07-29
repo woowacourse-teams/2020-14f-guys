@@ -32,7 +32,7 @@ public class LoginMemberArgumentResolver implements HandlerMethodArgumentResolve
         final String attribute = (String)webRequest.getAttribute("loginMemberKakaoId", SCOPE_REQUEST);
 
         if (Objects.isNull(attribute)) {
-            return MemberResponse.builder().build();
+            throw new AssertionError("Can not found 'loginMemberKakaoId' NativeWebRequest attribute!");
         }
 
         final long kakaoId = Long.parseLong(attribute);

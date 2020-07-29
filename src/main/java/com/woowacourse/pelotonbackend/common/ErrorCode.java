@@ -7,6 +7,7 @@ import lombok.Getter;
 @Getter
 public enum ErrorCode {
     BUSINESS(500, "Server-001"),
+    UNEXPECTED(500, "Server-002"),
 
     INVALID_VALIDATE(400, "Validation-001"),
 

@@ -15,7 +15,7 @@ import lombok.extern.slf4j.Slf4j;
 public class GlobalExceptionHandler {
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    protected ResponseEntity<ErrorResponse> validException(MethodArgumentNotValidException exception) {
+    protected ResponseEntity<ErrorResponse> validException(final MethodArgumentNotValidException exception) {
         log.error("Validate Exception ! ", exception);
 
         final ErrorCode errorCode = ErrorCode.INVALID_VALIDATE;
@@ -26,7 +26,7 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(BindException.class)
-    protected ResponseEntity<ErrorResponse> bindException(BindException exception) {
+    protected ResponseEntity<ErrorResponse> bindException(final BindException exception) {
         log.error("HandleBind Exception ! ", exception);
 
         final ErrorCode errorCode = ErrorCode.INVALID_VALIDATE;
@@ -40,7 +40,7 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(BusinessException.class)
-    protected ResponseEntity<ErrorResponse> businessException(BusinessException exception) {
+    protected ResponseEntity<ErrorResponse> businessException(final BusinessException exception) {
         log.error("Business Exception ! ", exception);
 
         final ErrorCode errorCode = exception.getErrorCode();
@@ -52,4 +52,15 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(errorResponse, HttpStatus.valueOf(errorCode.getStatus()));
     }
 
+    @ExceptionHandler(Exception.class)
+    protected ResponseEntity<ErrorResponse> UnexpectedException(final Exception exception) {
+        log.error("Unexpected Exception ! ", exception);
+
+        final ErrorResponse errorResponse = ErrorResponse.of(
+            ErrorCode.UNEXPECTED.getStatus(),
+            ErrorCode.UNEXPECTED.getCode(),
+            exception.getMessage());
+
+        return new ResponseEntity<>(errorResponse, HttpStatus.valueOf(ErrorCode.UNEXPECTED.getStatus()));
+    }
 }

@@ -5,7 +5,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.woowacourse.pelotonbackend.common.exception.MemberNotFoundException;
 import com.woowacourse.pelotonbackend.member.domain.Role;
-import com.woowacourse.pelotonbackend.member.infra.KakaoAPIService;
 import com.woowacourse.pelotonbackend.member.infra.dto.KakaoTokenResponse;
 import com.woowacourse.pelotonbackend.member.infra.dto.KakaoUserResponse;
 import com.woowacourse.pelotonbackend.member.presentation.dto.MemberCreateRequest;
@@ -22,7 +21,10 @@ import lombok.AllArgsConstructor;
 @Service
 @Transactional
 public class LoginService {
-    private final KakaoAPIService kakaoAPIService;
+    private static final boolean NOT_CREATED = false;
+    private static final boolean CREATED = true;
+
+    private final LoginAPIService<KakaoTokenResponse, KakaoUserResponse> kakaoAPIService;
     private final MemberService memberService;
     private final JwtTokenProvider jwtTokenProvider;
     private final RandomGenerator randomGenerator;
@@ -42,7 +44,8 @@ public class LoginService {
         try {
             final MemberResponse memberResponse = memberService.findByKakaoId(kakaoUserResponse.getId());
 
-            return JwtTokenResponse.of(jwtTokenProvider.createToken(memberResponse.getKakaoId().toString()), false);
+            return JwtTokenResponse.of(jwtTokenProvider.createToken(memberResponse.getKakaoId().toString()),
+                NOT_CREATED);
         } catch (MemberNotFoundException e) {
             final MemberCreateRequest memberCreateRequest = MemberCreateRequest.builder()
                 .email(kakaoUserResponse.getEmail())
@@ -55,7 +58,7 @@ public class LoginService {
 
             return JwtTokenResponse.of(
                 jwtTokenProvider.createToken(
-                    memberService.createMember(memberCreateRequest).getKakaoId().toString()), true);
+                    memberService.createMember(memberCreateRequest).getKakaoId().toString()), CREATED);
         }
     }
 }
