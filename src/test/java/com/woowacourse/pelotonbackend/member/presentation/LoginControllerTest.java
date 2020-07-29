@@ -45,7 +45,7 @@ class LoginControllerTest {
     void redirectLoginPageTest() throws Exception {
         given(bearerAuthInterceptor.preHandle(any(HttpServletRequest.class), any(HttpServletResponse.class), any()))
             .willReturn(true);
-        given(loginService.getCodeUrl()).willReturn(URL);
+        given(loginService.createCodeUrl()).willReturn(URL);
 
         mockMvc.perform(get("/api/login"))
             .andExpect(status().is3xxRedirection())
@@ -58,7 +58,7 @@ class LoginControllerTest {
     void redirectTokenPageTest() throws Exception {
         given(bearerAuthInterceptor.preHandle(any(HttpServletRequest.class), any(HttpServletResponse.class), any()))
             .willReturn(true);
-        given(loginService.createTokenUrl(CODE_VALUE)).willReturn(URL);
+        given(loginService.createJwtTokenUrl(CODE_VALUE)).willReturn(URL);
 
         mockMvc.perform(get("/api/login/token")
             .param("code", CODE_VALUE))
@@ -75,7 +75,9 @@ class LoginControllerTest {
 
         mockMvc.perform(get("/api/login/check")
             .param("access_token", TOKEN)
-            .param("success", LOGIN_SUCCESS))
+            .param("success", LOGIN_SUCCESS)
+            .param("is_created", IS_CREATED)
+        )
             .andExpect(status().isOk())
             .andExpect(content().string(TOKEN));
     }

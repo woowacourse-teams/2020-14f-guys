@@ -14,7 +14,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
@@ -25,7 +25,6 @@ import org.springframework.web.filter.CharacterEncodingFilter;
 import org.springframework.web.method.HandlerMethod;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.woowacourse.pelotonbackend.member.application.MemberService;
 import com.woowacourse.pelotonbackend.member.presentation.LoginMemberArgumentResolver;
 import com.woowacourse.pelotonbackend.race.application.RaceService;
 import com.woowacourse.pelotonbackend.race.domain.RaceFixture;
@@ -34,7 +33,7 @@ import com.woowacourse.pelotonbackend.race.presentation.dto.RaceRetrieveResponse
 import com.woowacourse.pelotonbackend.race.presentation.dto.RaceUpdateRequest;
 import com.woowacourse.pelotonbackend.support.BearerAuthInterceptor;
 
-@SpringBootTest
+@WebMvcTest(RaceController.class)
 class RaceControllerTest {
     private MockMvc mockMvc;
 
@@ -43,9 +42,6 @@ class RaceControllerTest {
 
     @MockBean
     private RaceService raceService;
-
-    @MockBean
-    private MemberService memberService;
 
     @MockBean
     private BearerAuthInterceptor bearerAuthInterceptor;
@@ -172,8 +168,7 @@ class RaceControllerTest {
         given(raceService.retrieve(notExistRaceId)).willThrow(new RaceNotFoundException(notExistRaceId));
 
         mockMvc.perform(get(String.format("/api/races/%d", notExistRaceId)))
-            .andExpect(status().isNotFound())
-            .andExpect(content().string("Race가 존재하지 않습니다."));
+            .andExpect(status().isBadRequest());
     }
 
     @DisplayName("존재하지 않는 아이디의 update 요청에 예외처리")
@@ -189,7 +184,6 @@ class RaceControllerTest {
             .contentType(MediaType.APPLICATION_JSON)
             .content(objectMapper.writeValueAsBytes(RaceFixture.createUpdatedRace()))
         )
-            .andExpect(status().isNotFound())
-            .andExpect(content().string("Race가 존재하지 않습니다."));
+            .andExpect(status().isBadRequest());
     }
 }

@@ -23,8 +23,7 @@ import lombok.With;
 @EqualsAndHashCode(of = "id")
 @Getter
 public class Report {
-    @Id
-    @With(value = AccessLevel.PACKAGE)
+    @Id @With(value = AccessLevel.PACKAGE)
     private final Long id;
 
     @NotNull
@@ -37,13 +36,11 @@ public class Report {
 
     private final AggregateReference<Member, @NotNull Long> memberId;
 
-    @CreatedDate
-    @PastOrPresent
+    @CreatedDate @PastOrPresent
     @With(AccessLevel.PACKAGE)
     private final LocalDateTime createdAt;
 
-    @LastModifiedDate
-    @PastOrPresent
+    @LastModifiedDate @PastOrPresent
     @With(AccessLevel.PACKAGE)
     private final LocalDateTime updatedAt;
 }

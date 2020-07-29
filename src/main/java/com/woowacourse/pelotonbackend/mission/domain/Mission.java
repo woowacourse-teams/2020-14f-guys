@@ -25,25 +25,20 @@ import lombok.With;
 @EqualsAndHashCode(of = "id")
 @Getter
 public class Mission {
-    @Id
-    @With(value = AccessLevel.PACKAGE)
+    @Id @With(value = AccessLevel.PACKAGE)
     private final Long id;
 
-    @Embedded.Empty
-    @Valid
+    @Embedded.Empty @Valid
     private final TimeDuration missionDuration;
 
-    @Embedded.Empty
-    @Valid
+    @Embedded.Empty @Valid
     private final MissionInstruction missionInstruction;
 
     private final AggregateReference<Race, @NotNull Long> raceId;
 
-    @CreatedDate
-    @PastOrPresent
+    @CreatedDate @PastOrPresent
     private LocalDateTime createdAt;
 
-    @LastModifiedDate
-    @PastOrPresent
+    @LastModifiedDate @PastOrPresent
     private LocalDateTime updatedAt;
 }

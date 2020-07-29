@@ -12,7 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockMultipartFile;
@@ -26,9 +26,10 @@ import org.springframework.web.multipart.MultipartFile;
 import com.woowacourse.pelotonbackend.certification.application.CertificationService;
 import com.woowacourse.pelotonbackend.certification.domain.dto.CertificationCreateRequest;
 import com.woowacourse.pelotonbackend.common.ErrorCode;
+import com.woowacourse.pelotonbackend.member.presentation.LoginMemberArgumentResolver;
 import com.woowacourse.pelotonbackend.support.BearerAuthInterceptor;
 
-@SpringBootTest
+@WebMvcTest(controllers = CertificationController.class)
 class CertificationControllerTest {
     @MockBean
     private CertificationService certificationService;
@@ -36,8 +37,10 @@ class CertificationControllerTest {
     @MockBean
     private BearerAuthInterceptor authInterceptor;
 
-    private MockMvc mockMvc;
+    @MockBean
+    private LoginMemberArgumentResolver loginMemberArgumentResolver;
 
+    private MockMvc mockMvc;
     private MockMultipartFile multipartFile;
     private CertificationCreateRequest badCertificationCreateRequest;
 

@@ -7,4 +7,5 @@ import lombok.Getter;
 @Getter
 public class JwtTokenResponse {
     private final String accessToken;
+    private final boolean isCreated;
 }

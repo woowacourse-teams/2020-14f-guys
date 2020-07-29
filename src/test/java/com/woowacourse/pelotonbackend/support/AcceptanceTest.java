@@ -1,5 +1,6 @@
 package com.woowacourse.pelotonbackend.support;
 
+import static com.woowacourse.pelotonbackend.member.domain.LoginFixture.*;
 import static com.woowacourse.pelotonbackend.member.domain.MemberFixture.*;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -39,7 +40,7 @@ public class AcceptanceTest {
         requestCreate(request);
 
         final String token = jwtTokenProvider.createToken(String.valueOf(request.getKakaoId()));
-        return JwtTokenResponse.of(token);
+        return JwtTokenResponse.of(token, ADMIT);
     }
 
     protected Long requestCreate(final MemberCreateRequest memberRequest) {

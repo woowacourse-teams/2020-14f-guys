@@ -2,7 +2,6 @@ package com.woowacourse.pelotonbackend.member.application;
 
 import java.util.List;
 import java.util.Objects;
-import java.util.Optional;
 
 import javax.validation.Valid;
 
@@ -13,16 +12,11 @@ import com.woowacourse.pelotonbackend.common.exception.MemberIdInvalidException;
 import com.woowacourse.pelotonbackend.common.exception.MemberNotFoundException;
 import com.woowacourse.pelotonbackend.member.domain.Member;
 import com.woowacourse.pelotonbackend.member.domain.MemberRepository;
-import com.woowacourse.pelotonbackend.member.domain.Role;
-import com.woowacourse.pelotonbackend.member.infra.dto.KakaoUserResponse;
 import com.woowacourse.pelotonbackend.member.presentation.dto.MemberCashUpdateRequest;
 import com.woowacourse.pelotonbackend.member.presentation.dto.MemberCreateRequest;
 import com.woowacourse.pelotonbackend.member.presentation.dto.MemberNameUpdateRequest;
 import com.woowacourse.pelotonbackend.member.presentation.dto.MemberResponse;
 import com.woowacourse.pelotonbackend.member.presentation.dto.MemberResponses;
-import com.woowacourse.pelotonbackend.support.RandomGenerator;
-import com.woowacourse.pelotonbackend.vo.Cash;
-import com.woowacourse.pelotonbackend.vo.ImageUrl;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 
@@ -31,7 +25,6 @@ import lombok.AllArgsConstructor;
 @Service
 public class MemberService {
     private final MemberRepository memberRepository;
-    private final RandomGenerator randomGenerator;
 
     public MemberResponse createMember(final @Valid MemberCreateRequest memberCreateRequest) {
         final Member persistMember = memberRepository.save(memberCreateRequest.toMember());
@@ -89,20 +82,11 @@ public class MemberService {
             .orElseThrow(() -> new MemberNotFoundException(id));
     }
 
-    public Optional<Member> findByKakaoId(final Long kakaoId) {
-        return memberRepository.findByKakaoId(kakaoId);
-    }
+    public MemberResponse findByKakaoId(final Long kakaoId) {
+        final Member member = memberRepository.findByKakaoId(kakaoId)
+            .orElseThrow(
+                () -> new MemberNotFoundException(String.format("Member(member kakaoId = %d not exist)", kakaoId)));
 
-    public MemberResponse retrieve(final KakaoUserResponse kakaoUserResponse) {
-        final Optional<Member> member = findByKakaoId(kakaoUserResponse.getId());
-
-        return member.map(MemberResponse::from).orElseGet(() -> createMember(MemberCreateRequest.builder()
-            .kakaoId(kakaoUserResponse.getId())
-            .profile(new ImageUrl(kakaoUserResponse.getProfileImage()))
-            .cash(Cash.initial())
-            .email(kakaoUserResponse.getEmail())
-            .name(kakaoUserResponse.getNickname() + randomGenerator.getRandomString())
-            .role(Role.MEMBER)
-            .build()));
+        return MemberResponse.from(member);
     }
 }

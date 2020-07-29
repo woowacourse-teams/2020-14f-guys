@@ -7,12 +7,14 @@ import lombok.Getter;
 @Getter
 public enum ErrorCode {
     BUSINESS(500, "Server-001"),
+    UNEXPECTED(500, "Server-002"),
 
     INVALID_VALIDATE(400, "Validation-001"),
 
     MEMBER_NOT_FOUND(400, "Member-001"),
     MEMBER_DUPLICATE(400, "Member-002"),
     MEMBER_ID_INVALID(400, "Member-003"),
+    MEMBER_NOT_FOUND_WITH_KAKAO_ID(400, "Member-004"),
 
     REPORT_NOT_FOUND(400, "Certification-001"),
     REPORT_DUPLICATE(400, "Certification-002"),

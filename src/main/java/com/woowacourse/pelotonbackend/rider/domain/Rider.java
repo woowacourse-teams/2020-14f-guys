@@ -24,19 +24,16 @@ import lombok.With;
 @EqualsAndHashCode(of = "id")
 @Getter
 public class Rider {
-    @Id
-    @With(value = AccessLevel.PACKAGE)
+    @Id @With(value = AccessLevel.PACKAGE)
     private final Long id;
 
     private final AggregateReference<Member, @NotNull Long> memberId;
 
     private final AggregateReference<Race, @NotNull Long> raceId;
 
-    @CreatedDate
-    @PastOrPresent
+    @CreatedDate @PastOrPresent
     private LocalDateTime createdAt;
 
-    @LastModifiedDate
-    @PastOrPresent
+    @LastModifiedDate @PastOrPresent
     private LocalDateTime updatedAt;
 }

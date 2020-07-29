@@ -33,7 +33,6 @@ public class RaceFixture {
     public static final RaceCategory TEST_CHANGED_CATEGORY = RaceCategory.STUDY;
     public static final String RACE_API_URL = "/api/races";
 
-
     public static Race createWithoutId() {
         return createWithId(null);
     }

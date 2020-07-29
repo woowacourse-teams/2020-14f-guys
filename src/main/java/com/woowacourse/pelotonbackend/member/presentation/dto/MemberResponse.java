@@ -11,7 +11,8 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 
-@AllArgsConstructor(access = AccessLevel.PRIVATE, onConstructor_ = {@ConstructorProperties({"id", "kakaoId", "profile", "name", "email", "cash", "role"})})
+@AllArgsConstructor(access = AccessLevel.PRIVATE,
+    onConstructor_ = @ConstructorProperties({"id", "kakaoId", "profile", "name", "email", "cash", "role"}))
 @Builder
 @Getter
 public class MemberResponse {

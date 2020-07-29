@@ -28,7 +28,7 @@ public class JdbcConfig extends AbstractJdbcConfiguration {
             Arrays.asList(new Converter<Clob, String>() {
                 @Nullable
                 @Override
-                public String convert(Clob clob) {
+                public String convert(final Clob clob) {
                     try {
                         return Math.toIntExact(clob.length()) == 0
                             ? "" : clob.getSubString(1, Math.toIntExact(clob.length()));

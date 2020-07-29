@@ -23,7 +23,7 @@ public class LoginController {
 
     @GetMapping
     public ResponseEntity<Void> redirectLoginPage(final HttpServletResponse response) throws IOException {
-        String url = loginService.getCodeUrl();
+        String url = loginService.createCodeUrl();
         response.sendRedirect(url);
 
         return ResponseEntity.ok().location(URI.create(url)).build();
@@ -32,7 +32,7 @@ public class LoginController {
     @GetMapping("/token")
     public ResponseEntity<Void> redirectTokenPage(@RequestParam final String code,
         final HttpServletResponse response) throws IOException {
-        final String redirectUrl = loginService.createTokenUrl(code);
+        final String redirectUrl = loginService.createJwtTokenUrl(code);
         response.sendRedirect(redirectUrl);
 
         return ResponseEntity.ok().location(URI.create(redirectUrl)).build();

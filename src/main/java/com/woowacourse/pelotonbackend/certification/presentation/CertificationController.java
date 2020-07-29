@@ -14,14 +14,12 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.woowacourse.pelotonbackend.certification.application.CertificationService;
 import com.woowacourse.pelotonbackend.certification.domain.dto.CertificationCreateRequest;
-import com.woowacourse.pelotonbackend.support.annotation.RequiredAuth;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 @RestController
 @RequestMapping("/api/certifications")
 @RequiredArgsConstructor
-@RequiredAuth
 @Slf4j
 public class CertificationController {
     private final CertificationService certificationService;

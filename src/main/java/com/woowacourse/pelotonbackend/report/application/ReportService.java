@@ -25,8 +25,8 @@ public class ReportService {
         }
 
         final Report report = requestContent.toEntity();
-
         final Report persisted = reportRepository.save(report);
+
         return persisted.getId();
     }
 }

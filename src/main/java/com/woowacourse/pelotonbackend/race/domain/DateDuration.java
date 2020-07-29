@@ -12,7 +12,7 @@ import com.woowacourse.pelotonbackend.support.jsonparser.LocalDateSerializer;
 import lombok.AllArgsConstructor;
 import lombok.Value;
 
-@AllArgsConstructor(onConstructor_ = {@ConstructorProperties({"startDate", "endDate"})})
+@AllArgsConstructor(onConstructor_ = @ConstructorProperties({"startDate", "endDate"}))
 @Value
 public class DateDuration {
     @FutureOrPresent

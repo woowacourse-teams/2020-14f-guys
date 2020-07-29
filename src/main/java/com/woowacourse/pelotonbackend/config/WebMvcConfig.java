@@ -1,5 +1,6 @@
 package com.woowacourse.pelotonbackend.config;
 
+import java.util.Arrays;
 import java.util.List;
 
 import org.springframework.context.annotation.Configuration;
@@ -19,8 +20,10 @@ public class WebMvcConfig implements WebMvcConfigurer {
 
     @Override
     public void addInterceptors(final InterceptorRegistry registry) {
-        registry.addInterceptor(bearerAuthInterceptor)
-            .addPathPatterns("/**");
+        final List<String> pathPatterns = Arrays.asList(
+            "/api/certifications/**", "/api/members/**", "/api/missions/**",
+            "/api/races/**", "/api/reports/**", "/api/riders/**");
+        registry.addInterceptor(bearerAuthInterceptor).addPathPatterns(pathPatterns);
     }
 
     @Override
