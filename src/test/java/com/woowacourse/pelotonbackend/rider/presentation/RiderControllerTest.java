@@ -84,9 +84,9 @@ public class RiderControllerTest {
     @DisplayName("Rider의 아이디로 Rider를 조회한다.")
     @Test
     void findRiderById() throws Exception {
-        when(riderService.retrieve(anyLong())).thenReturn(RiderFixture.createRiderResponse(RiderFixture.TEST_RIDER_ID));
-        when(bearerAuthInterceptor.preHandle(any(HttpServletRequest.class), any(HttpServletResponse.class),
-            any(HandlerMethod.class))).thenReturn(true);
+        given(riderService.retrieve(anyLong())).willReturn(RiderFixture.createRiderResponse(RiderFixture.TEST_RIDER_ID));
+        given(bearerAuthInterceptor.preHandle(any(HttpServletRequest.class), any(HttpServletResponse.class),
+            any(HandlerMethod.class))).willReturn(true);
 
         mockMvc.perform(get("/api/riders/100")
             .accept(MediaType.APPLICATION_JSON)
@@ -97,9 +97,9 @@ public class RiderControllerTest {
     @DisplayName("존재하지 않는 ID로 조회하는 경우 예외를 반환한다.")
     @Test
     void findNotExistRider() throws Exception {
-        when(riderService.retrieve(anyLong())).thenThrow(new RiderNotFoundException(100L));
-        when(bearerAuthInterceptor.preHandle(any(HttpServletRequest.class), any(HttpServletResponse.class),
-            any(HandlerMethod.class))).thenReturn(true);
+        given(riderService.retrieve(anyLong())).willThrow(new RiderNotFoundException(100L));
+        given(bearerAuthInterceptor.preHandle(any(HttpServletRequest.class), any(HttpServletResponse.class),
+            any(HandlerMethod.class))).willReturn(true);
 
         mockMvc.perform(get("/api/riders/100")
             .accept(MediaType.APPLICATION_JSON)
@@ -112,9 +112,9 @@ public class RiderControllerTest {
     @Test
     void findRidersByRaceId() throws Exception {
         final List<RiderResponse> expectedRiders = RiderFixture.createRidersInSameRace();
-        when(riderService.retrieveByRaceId(anyLong())).thenReturn(expectedRiders);
-        when(bearerAuthInterceptor.preHandle(any(HttpServletRequest.class), any(HttpServletResponse.class),
-            any(HandlerMethod.class))).thenReturn(true);
+        given(riderService.retrieveByRaceId(anyLong())).willReturn(expectedRiders);
+        given(bearerAuthInterceptor.preHandle(any(HttpServletRequest.class), any(HttpServletResponse.class),
+            any(HandlerMethod.class))).willReturn(true);
 
         mockMvc.perform(get("/api/riders/races/1")
             .accept(MediaType.APPLICATION_JSON)

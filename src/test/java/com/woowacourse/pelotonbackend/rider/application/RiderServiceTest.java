@@ -1,7 +1,6 @@
 package com.woowacourse.pelotonbackend.rider.application;
 
 import static org.assertj.core.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.BDDMockito.*;
 
 import java.util.Optional;
@@ -43,14 +42,12 @@ public class RiderServiceTest {
     @Test
     void findById() {
         final Rider expectedRider = RiderFixture.createRiderWithId(RiderFixture.TEST_RIDER_ID);
-        when(riderRepository.findById(anyLong())).thenReturn(Optional.of(expectedRider));
+        given(riderRepository.findById(anyLong())).willReturn(Optional.of(expectedRider));
 
         final RiderResponse retrieveRider = riderService.retrieve(1L);
 
-        assertAll(
-            () -> assertThat(retrieveRider.getMemberId()).isEqualTo(expectedRider.getMemberId().getId()),
-            () -> assertThat(retrieveRider.getRaceId()).isEqualTo(expectedRider.getRaceId().getId()),
-            () -> assertThat(retrieveRider).isEqualToIgnoringGivenFields(expectedRider, "raceId", "memberId")
-        );
+        assertThat(retrieveRider.getId()).isEqualTo(expectedRider.getId());
+        assertThat(retrieveRider.getRaceId()).isEqualTo(expectedRider.getRaceId().getId());
+        assertThat(retrieveRider.getMemberId()).isEqualTo(expectedRider.getMemberId().getId());
     }
 }

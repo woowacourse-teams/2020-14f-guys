@@ -29,20 +29,21 @@ public class RiderController {
     public ResponseEntity<Void> create(@LoginMember MemberResponse member,
         @Valid @RequestBody final RiderCreateRequest riderCreateRequest) {
 
-        return ResponseEntity.created(URI.create("/api/riders/" + riderService.create(member, riderCreateRequest)))
+        return ResponseEntity
+            .created(URI.create("/api/riders/" + riderService.create(member, riderCreateRequest)))
             .build();
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<RiderResponse> find(@PathVariable Long id) {
-        RiderResponse response = riderService.retrieve(id);
+    public ResponseEntity<RiderResponse> find(@PathVariable final Long id) {
+        final RiderResponse response = riderService.retrieve(id);
 
         return ResponseEntity.ok(response);
     }
 
     @GetMapping("/races/{raceId}")
-    public ResponseEntity<List<RiderResponse>> findRidersByRaceId(@PathVariable Long raceId) {
-        List<RiderResponse> riders = riderService.retrieveByRaceId(raceId);
+    public ResponseEntity<List<RiderResponse>> findRidersByRaceId(@PathVariable final Long raceId) {
+        final List<RiderResponse> riders = riderService.retrieveByRaceId(raceId);
 
         return ResponseEntity.ok(riders);
     }

@@ -1,5 +1,6 @@
 package com.woowacourse.pelotonbackend.rider.acceptance;
 
+import static com.woowacourse.pelotonbackend.rider.domain.RiderFixture.*;
 import static org.assertj.core.api.Assertions.*;
 
 import java.util.List;
@@ -10,15 +11,13 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 
 import com.woowacourse.pelotonbackend.member.domain.MemberFixture;
+import com.woowacourse.pelotonbackend.rider.domain.RiderFixture;
 import com.woowacourse.pelotonbackend.rider.presentation.RiderResponse;
 import com.woowacourse.pelotonbackend.rider.presentation.dto.RiderCreateRequest;
 import com.woowacourse.pelotonbackend.support.AcceptanceTest;
 import com.woowacourse.pelotonbackend.support.dto.JwtTokenResponse;
 
 public class RiderAcceptanceTest extends AcceptanceTest {
-    private static final Long RACE_ID = 1L;
-    private static final int RIDER_NUMBER = 4;
-
     /*
      * Feature: Rider 관리
      *
@@ -46,7 +45,7 @@ public class RiderAcceptanceTest extends AcceptanceTest {
         fetchFind(resource, tokenResponse);
 
         fetchCreateMembers(tokenResponse);
-        fetchFindRidersByRaceId(RACE_ID, tokenResponse);
+        fetchFindRidersByRaceId(TEST_RACE_ID, tokenResponse);
     }
 
     private void fetchCreateMembers(final JwtTokenResponse tokenResponse) {
@@ -83,7 +82,7 @@ public class RiderAcceptanceTest extends AcceptanceTest {
     }
 
     private String fetchCreate(JwtTokenResponse tokenResponse) {
-        final RiderCreateRequest riderCreateRequest = new RiderCreateRequest(RACE_ID);
+        final RiderCreateRequest riderCreateRequest = RiderFixture.createMockRequest();
 
         return given()
             .header(createTokenHeader(tokenResponse))

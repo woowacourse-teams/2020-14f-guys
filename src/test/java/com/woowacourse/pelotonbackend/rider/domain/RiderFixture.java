@@ -14,6 +14,7 @@ public class RiderFixture {
     public static Long TEST_RIDER_ID = 1L;
     public static Long TEST_RACE_ID = 1L;
     public static Long TEST_MEMBER_ID = 1L;
+    public static final int RIDER_NUMBER = 4;
 
     public static RiderCreateRequest createMockRequest() {
         return new RiderCreateRequest(TEST_RACE_ID);
