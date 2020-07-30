@@ -7,24 +7,28 @@ import {
   TouchableWithoutFeedback,
   View,
 } from "react-native";
+import { useRecoilValue } from "recoil";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import { useNavigation } from "@react-navigation/native";
 
 import RaceCreateUnit from "./RaceCreateUnit";
-import { useRecoilValue } from "recoil";
 import { raceCreateInfoState } from "../../../state/race/CreateState";
 import LoadingIndicator from "../../../utils/LoadingIndicator";
 
 const InputRaceInfo = () => {
+  const { startDate, endDate } = useRecoilValue(raceCreateInfoState);
   const navigation = useNavigation();
-  const { title, description } = useRecoilValue(raceCreateInfoState);
 
   const onPress = async () => {
-    if (!title || !description) {
+    if (!startDate || !endDate) {
       alert("필드를 모두 채워주세요");
       return;
     }
-    navigation.navigate("InputRaceDates");
+    if (startDate > endDate) {
+      alert("레이스 종료 날짜가 시작 날짜보다 빠릅니다.");
+      return;
+    }
+    navigation.navigate("InputRaceFee");
   };
 
   return (
@@ -34,11 +38,11 @@ const InputRaceInfo = () => {
           <View style={styles.subjectContainer}>
             <Text style={styles.subject}>{"Create" + "\n" + "Your Race"}</Text>
           </View>
-          <RaceCreateUnit fieldName="title">
-            Race의 이름을 선택해주세요
+          <RaceCreateUnit date fieldName="startDate">
+            레이스가 시작되는 날짜를 입력해주세요
           </RaceCreateUnit>
-          <RaceCreateUnit fieldName="description">
-            레이스에 대해 설명해주세요
+          <RaceCreateUnit date fieldName="endDate">
+            레이스가 종료되는 날짜를 입력해주세요
           </RaceCreateUnit>
           <TouchableOpacity style={styles.button} onPress={onPress}>
             <Text style={styles.buttonText}>NEXT</Text>
