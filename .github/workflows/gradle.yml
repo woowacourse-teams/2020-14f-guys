@@ -13,11 +13,11 @@ jobs:
       - name: Checkout main repository
         uses: actions/checkout@v2
 
-      - name: Checkout submodules
-        uses: textbook/git-checkout-submodule-action@master
+      - name: Checkout main submodule
+        uses: Mushus/checkout-submodule@v1
         with:
-          ssh-key: ${{ secrets.SSH_KEY }}
-          remote: true
+          submodulePath: ./src/main/resources/config
+          identifier: ${{ secrets.SSH_KEY }}
 
       - name: Caching gradle
         uses: actions/cache@v2
