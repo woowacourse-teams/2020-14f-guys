@@ -16,6 +16,7 @@ jobs:
       - name: Checkout submodules
         uses: textbook/git-checkout-submodule-action@master
         with:
+          ssh-key: ${{ secrets.SSH_KEY }}
           remote: true
 
       - name: Caching gradle
