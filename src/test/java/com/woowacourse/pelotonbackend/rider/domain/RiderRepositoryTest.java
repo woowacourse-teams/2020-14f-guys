@@ -1,7 +1,11 @@
 package com.woowacourse.pelotonbackend.rider.domain;
 
+import static com.woowacourse.pelotonbackend.rider.domain.RiderFixture.*;
 import static org.assertj.core.api.AssertionsForClassTypes.*;
 import static org.junit.jupiter.api.Assertions.*;
+
+import java.util.Arrays;
+import java.util.List;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -31,5 +35,21 @@ public class RiderRepositoryTest {
             () -> assertThat(persist.getCreatedAt()).isNotNull(),
             () -> assertThat(persist.getUpdatedAt()).isNotNull()
         );
+    }
+
+    @DisplayName("레이스에 소속된 모든 라이더를 찾는다.")
+    @Test
+    void findAllByRaceId() {
+        final Rider riderWithoutId = createRiderWithoutId();
+        final List<Rider> expectedRiders = Arrays.asList(
+            riderWithoutId,
+            riderWithoutId,
+            riderWithoutId);
+        riderRepository.saveAll(expectedRiders);
+
+        final List<Rider> riders = riderRepository.findRidersByRaceId(TEST_RACE_ID);
+
+        assertThat(riders.size()).isEqualTo(expectedRiders.size());
+        riders.forEach(rider -> assertThat(rider).isEqualToIgnoringGivenFields(riderWithoutId, "id", "createdAt", "updatedAt"));
     }
 }

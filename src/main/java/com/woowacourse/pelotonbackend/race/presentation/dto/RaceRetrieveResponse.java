@@ -47,5 +47,4 @@ public class RaceRetrieveResponse {
             .thumbnail(race.getThumbnail())
             .build();
     }
-
 }
