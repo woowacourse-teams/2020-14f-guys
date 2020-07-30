@@ -13,11 +13,12 @@ jobs:
       - name: Checkout main repository
         uses: actions/checkout@v2
 
-      - name: Checkout main submodule
-        uses: Mushus/checkout-submodule@v1
+      - name: Checkout submodules
+        uses: actions/checkout@v2
         with:
-          submodulePath: ./14f-guys-secret-main
-          identifier: ${{ secrets.SSH_KEY }}
+          repository: fucct/14f-guys-secret-main
+          path: ./src/main/resources/config
+          ssh-key: ${{ secrets.SSH_KEY }}
 
       - name: Caching gradle
         uses: actions/cache@v2
