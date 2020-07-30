@@ -17,6 +17,7 @@ const CalendarButton = ({ showCalendar }) => {
 
 const styles = StyleSheet.create({
   container: {
+    flex: 1,
     backgroundColor: COLOR.GREEN,
     borderRadius: 20,
     marginLeft: 10,

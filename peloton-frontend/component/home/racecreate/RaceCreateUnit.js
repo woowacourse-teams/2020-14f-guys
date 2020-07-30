@@ -36,14 +36,16 @@ const RaceCreateUnit = ({
     <View style={styles.container}>
       <View style={styles.subjectContainer}>
         <Text style={styles.subject}>{children}</Text>
+      </View>
+      <View style={styles.inputContainer}>
+        <InputBox
+          value={raceCreateInfo[fieldName]}
+          onChangeText={onChangeText}
+          editable={!date}
+          number={number}
+        />
         {date && <CalendarButton showCalendar={() => setIsShowPicker(true)} />}
       </View>
-      <InputBox
-        value={raceCreateInfo[fieldName]}
-        onChangeText={onChangeText}
-        editable={!date}
-        number={number}
-      />
       {isShowPicker && (
         <DateTimePickerModal
           isVisible={isShowPicker}
@@ -61,16 +63,23 @@ const RaceCreateUnit = ({
 
 const styles = StyleSheet.create({
   container: {
-    marginBottom: 30,
+    marginBottom: 56,
   },
   subjectContainer: {
     flexDirection: "row",
     alignItems: "center",
-    marginBottom: 20,
+    marginBottom: 30,
   },
   subject: {
     fontSize: 18,
-    fontWeight: "bold",
+    fontWeight: "normal",
+    lineHeight: 25,
+    letterSpacing: 0,
+    textAlign: "left",
+    color: "#a0a0a0",
+  },
+  inputContainer: {
+    flexDirection: "row",
   },
 });
 

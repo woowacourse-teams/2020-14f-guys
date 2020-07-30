@@ -37,6 +37,7 @@ const CategorySelection = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: "#FFFFFF",
     paddingHorizontal: Dimensions.get("window").width * 0.075,
   },
   title: {

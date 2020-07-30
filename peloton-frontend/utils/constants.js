@@ -74,9 +74,9 @@ export const MOCK_DATA = [
 ];
 
 export const SAMPLE_SUBTITLE = [
-  "당신만의 레이스를 달려보세요!",
-  "즐거운 하루 되세요!",
-  "오늘 날씨가 참 좋네요! 😝",
+  "당신만의 레이스를 \n달려보세요! 😆",
+  "오늘도 힘차게 \n도전하는 당신! 😁",
+  "오늘 날씨가 \n참 좋네요! 😝",
 ];
 
 export const CATEGORY = [
@@ -100,7 +100,8 @@ export const CATEGORY = [
       "https://x86.co.kr/files/attach/images/1951610/342/576/002/0555addbb9bfd672918a2539668f0dac.jpg",
   },
 ];
-export const SERVER_BASE_URL = "https://75dd53bc223b.ngrok.io";
+export const SERVER_BASE_URL =
+  "http://http://ec2-13-125-130-232.ap-northeast-2.compute.amazonaws.com";
 export const TOKEN_STORAGE = "@token_storage";
 
 export const AnimatedImage = animated(Image);

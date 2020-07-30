@@ -4,8 +4,7 @@ import RaceDetailInfo from "./RaceDetailInfo";
 import RaceCertificationImage from "./RaceCertificationImage";
 import RaceSpec from "./RaceSpec";
 
-const RaceDetail = ({ route }) => {
-  const { location } = route.params;
+const RaceDetail = () => {
   return (
     <ScrollView style={styles.container}>
       <RaceDetailInfo />

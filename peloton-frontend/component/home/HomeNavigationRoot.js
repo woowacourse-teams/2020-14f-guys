@@ -6,6 +6,8 @@ import RaceDetail from "./race/RaceDetail";
 import CategorySelection from "./racecreate/CategorySelection";
 import ShareButton from "./race/ShareButton";
 import InputRaceInfo from "./racecreate/InputRaceInfo";
+import InputRaceDates from "./racecreate/InputRaceDates";
+import InputRaceFee from "./racecreate/InputRaceFee";
 
 const HomeStack = createStackNavigator();
 
@@ -35,6 +37,16 @@ const HomeNavigationRoot = () => {
       <HomeStack.Screen
         name="InputRaceInfo"
         component={InputRaceInfo}
+        options={{ title: "레이스 정보 입력" }}
+      />
+      <HomeStack.Screen
+        name="InputRaceDates"
+        component={InputRaceDates}
+        options={{ title: "레이스 정보 입력" }}
+      />
+      <HomeStack.Screen
+        name="InputRaceFee"
+        component={InputRaceFee}
         options={{ title: "레이스 정보 입력" }}
       />
     </HomeStack.Navigator>
