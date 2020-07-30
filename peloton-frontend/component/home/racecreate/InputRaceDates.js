@@ -83,7 +83,7 @@ const styles = StyleSheet.create({
       height: 20,
     },
     shadowRadius: 50,
-    shadowOpacity: 1,
+    shadowOpacity: 0.5,
     marginBottom: 50,
     alignSelf: "center",
     justifyContent: "center",

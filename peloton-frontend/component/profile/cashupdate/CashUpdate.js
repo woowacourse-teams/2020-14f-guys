@@ -101,7 +101,7 @@ const styles = StyleSheet.create({
       height: 20,
     },
     shadowRadius: 30,
-    shadowOpacity: 1,
+    shadowOpacity: 0.2,
     borderRadius: 10,
     alignSelf: "center",
   },
@@ -125,7 +125,7 @@ const styles = StyleSheet.create({
       height: 20,
     },
     shadowRadius: 50,
-    shadowOpacity: 1,
+    shadowOpacity: 0.5,
   },
   buttonText: {
     color: "#334856",
