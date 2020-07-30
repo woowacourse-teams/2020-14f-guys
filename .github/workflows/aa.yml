@@ -37,4 +37,4 @@ jobs:
         run: zip -qq -r ./$GITHUB_SHA.zip .
         shell: bash
       - name: Upload to S3
-        run: aws s3 cp -no-sign-request --region ap-northeast-2 ./$GITHUB_SHA.zip s3://14f-guys/$PROJECT_NAME/$GITHUB_SHA.zip
+        run: aws s3 cp --region ap-northeast-2 ./$GITHUB_SHA.zip s3://14f-guys/$PROJECT_NAME/$GITHUB_SHA.zip --no-sign-request
