@@ -13,6 +13,7 @@ jobs:
       - name: Checkout with submodules
         uses: actions/checkout@v2
         with:
+          lfs: true
           ssh-key: ${{ secrets.SSH_KEY }}
           submodules: recursive
 
