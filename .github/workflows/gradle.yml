@@ -11,13 +11,13 @@ jobs:
 
     steps:
       - name: Checkout with submodules
-      - uses: actions/checkout@v2
+        uses: actions/checkout@v2
         with:
           token: ${{ secrets.PRIVATE_REPO_ACCESS_TOKEN }}
           submudules: recursive
 
       - name: Caching gradle
-      - uses: actions/cache@v2
+        uses: actions/cache@v2
         with:
           path: |
             ~/.gradle/caches
