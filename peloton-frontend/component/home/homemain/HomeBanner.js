@@ -22,7 +22,7 @@ const HomeBanner = () => {
     <View style={styles.container}>
       <View style={styles.bannerTop}>
         <Text style={styles.title}>{userInfo.name}님,</Text>
-        <Text style={styles.subtitle}>당신만의 레이스를 달려보세요!</Text>
+        <Text style={styles.subtitle}>{subtitle}</Text>
         <View style={styles.bannerSeparator} />
       </View>
       <TouchableOpacity
@@ -48,7 +48,7 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: COLOR.GREEN,
     justifyContent: "center",
-    paddingLeft: 35,
+    paddingHorizontal: 35,
   },
   title: {
     fontSize: 30,
@@ -68,14 +68,12 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     flex: 1,
+    marginBottom: 10,
   },
   raceStart: {
     fontSize: 18,
     fontWeight: "300",
     color: COLOR.WHITE,
-  },
-  bannerTop: {
-    width: 172,
   },
   bannerSeparator: {
     position: "absolute",
