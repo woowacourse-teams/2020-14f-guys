@@ -26,7 +26,9 @@ public enum ErrorCode {
 
     UN_AUTHORIZED(401, "Auth-001"),
     TOKEN_EXPIRED(401, "Auth-002"),
-    INVALID_TOKEN(401, "Auth-003");
+    INVALID_TOKEN(401, "Auth-003"),
+
+    RIDER_NOT_FOUND(400, "Rider-001");
 
     private final int status;
     private final String code;
