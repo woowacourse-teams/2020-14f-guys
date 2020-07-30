@@ -17,7 +17,7 @@ jobs:
         uses: actions/checkout@v2
         with:
           repository: fucct/14f-guys-secret-main
-          path: ./src/main/resources/config
+          path: ./
           ssh-key: ${{ secrets.SSH_KEY }}
 
       - name: Caching gradle
