@@ -13,13 +13,6 @@ jobs:
       - name: Checkout main repository
         uses: actions/checkout@v2
 
-      - name: Checkout submodules
-        uses: actions/checkout@v2
-        with:
-          repository: fucct/14f-guys-secret-main
-          path: ./
-          ssh-key: ${{ secrets.SSH_KEY }}
-
       - name: Caching gradle
         uses: actions/cache@v2
         with:
