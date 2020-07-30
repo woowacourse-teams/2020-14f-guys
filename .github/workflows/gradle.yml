@@ -10,11 +10,13 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout with submodules
+      - name: Checkout main repository
         uses: actions/checkout@v2
+
+      - name: Checkout submodules
+        uses: textbook/git-checkout-submodule-action@master
         with:
-          token: $ {{ secrets.PRIVATE_REPO_ACCESS_TOKEN }}
-          submodules: recursive
+          remote: true
 
       - name: Caching gradle
         uses: actions/cache@v2
