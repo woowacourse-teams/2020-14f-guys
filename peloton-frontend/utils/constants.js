@@ -101,7 +101,7 @@ export const CATEGORY = [
   },
 ];
 export const SERVER_BASE_URL =
-  "http://http://ec2-13-125-130-232.ap-northeast-2.compute.amazonaws.com";
+  "http://ec2-13-125-130-232.ap-northeast-2.compute.amazonaws.com";
 export const TOKEN_STORAGE = "@token_storage";
 
 export const AnimatedImage = animated(Image);
