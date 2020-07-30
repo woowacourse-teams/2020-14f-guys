@@ -1,8 +1,8 @@
 import React from "react";
 import { createStackNavigator } from "@react-navigation/stack";
-import ChangeProfile from "./ChangeProfile";
-import Login from "./Login";
-import ApplicationNavigationRoot from "../ApplicationNavigationRoot";
+import ChangeProfile from "./login/ChangeProfile";
+import Login from "./login/Login";
+import ApplicationNavigationRoot from "./ApplicationNavigationRoot";
 
 const LoginStack = createStackNavigator();
 

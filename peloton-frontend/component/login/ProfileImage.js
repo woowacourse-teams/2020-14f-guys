@@ -1,5 +1,12 @@
 import React from "react";
-import { Image, StyleSheet, TouchableOpacity, View } from "react-native";
+import {
+  Alert,
+  Image,
+  Linking,
+  StyleSheet,
+  TouchableOpacity,
+  View,
+} from "react-native";
 import * as ImagePicker from "expo-image-picker";
 import { Entypo } from "@expo/vector-icons";
 import { useRecoilState } from "recoil";
@@ -10,27 +17,37 @@ const ProfileImage = () => {
 
   const openImagePickerAsync = async () => {
     const permissionResult = await ImagePicker.requestCameraRollPermissionsAsync();
-
     if (permissionResult.granted === false) {
-      console.log("cameraroll permission denied");
-      return;
+      Alert.alert(
+        "카메라 롤 권한이 없습니다.",
+        "권한 설정 페이지로 이동하시겠습니까?",
+        [
+          {
+            text: "Cancel",
+            style: "cancel",
+          },
+          { text: "OK", onPress: async () => await Linking.openSettings() },
+        ],
+        { cancelable: false },
+      );
+    } else {
+      const pickerResult = await ImagePicker.launchImageLibraryAsync({
+        allowsEditing: true,
+        aspect: [4, 3],
+        quality: 0.1,
+        base64: true,
+      });
+      if (pickerResult.cancelled === true) {
+        console.log("cameraroll picker cancelled");
+        return;
+      }
+      setUserInfo({
+        ...userInfo,
+        profile: {
+          baseImageUrl: pickerResult.uri,
+        },
+      });
     }
-    const pickerResult = await ImagePicker.launchImageLibraryAsync({
-      allowsEditing: true,
-      aspect: [4, 3],
-      quality: 0.1,
-      base64: true,
-    });
-    if (pickerResult.cancelled === true) {
-      console.log("cameraroll picker cancelled");
-      return;
-    }
-    setUserInfo({
-      ...userInfo,
-      profile: {
-        baseImageUrl: pickerResult.uri,
-      },
-    });
   };
 
   return (

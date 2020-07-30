@@ -2,7 +2,7 @@ import React from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { StatusBar } from "expo-status-bar";
 import { RecoilRoot } from "recoil";
-import LoginNavigationRoot from "./component/login/LoginNavigationRoot";
+import LoginNavigationRoot from "./component/LoginNavigationRoot";
 
 const App = () => (
   <RecoilRoot>

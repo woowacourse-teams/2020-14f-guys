@@ -44,28 +44,24 @@ const Login = () => {
     const token = await AsyncStorage.getItem(TOKEN_STORAGE);
     if (token) {
       setToken(token);
-      Axios({
-        method: "GET",
-        baseURL: SERVER_BASE_URL,
-        url: "/api/members",
-        headers: {
-          Authorization: "Bearer " + token,
-        },
-      })
-        .then((response) => {
-          setIsLoading(false);
-          setUserInfo(response.data);
-          navigateWithoutHistory(navigation, "ApplicationNavigationRoot");
-        })
-        .catch((error) => {
-          setIsLoading(false);
-          console.log(error);
-          toggleModal();
+      try {
+        const response = await Axios({
+          method: "GET",
+          baseURL: SERVER_BASE_URL,
+          url: "/api/members",
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
         });
+        setUserInfo(response.data);
+        navigateWithoutHistory(navigation, "ApplicationNavigationRoot");
+      } catch (error) {
+        toggleModal();
+      }
     } else {
       toggleModal();
-      setIsLoading(false);
     }
+    setIsLoading(false);
   };
 
   const buttonOpacity = useSpring({

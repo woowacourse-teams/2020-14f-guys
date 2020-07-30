@@ -30,30 +30,27 @@ const ChangeProfile = () => {
 
   const onSubmit = async () => {
     Keyboard.dismiss();
+    setIsLoading(true);
     await AsyncStorage.setItem(TOKEN_STORAGE, userToken);
-    await Axios({
-      method: "PATCH",
-      baseURL: SERVER_BASE_URL,
-      url: "/api/members/name",
-      headers: {
-        Authorization: "Bearer " + userToken,
-      },
-      data: {
-        name: userInput,
-      },
-    })
-      .then(() => {
-        setUserInfo({
-          ...userInfo,
+    try {
+      await Axios({
+        method: "PATCH",
+        baseURL: SERVER_BASE_URL,
+        url: "/api/members/name",
+        headers: {
+          Authorization: `Bearer ${userToken}`,
+        },
+        data: {
           name: userInput,
-        });
-        navigateWithoutHistory(navigation, "ApplicationNavigationRoot");
-        setIsLoading(false);
-      })
-      .catch((error) => {
-        console.log(error);
-        setIsLoading(false);
+        },
       });
+      setUserInfo({
+        ...userInfo,
+        name: userInput,
+      });
+      navigateWithoutHistory(navigation, "ApplicationNavigationRoot");
+    } catch (error) {}
+    setIsLoading(false);
   };
 
   return (

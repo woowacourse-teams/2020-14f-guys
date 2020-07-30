@@ -22,7 +22,7 @@ const Home = () => {
         baseURL: SERVER_BASE_URL,
         url: "/api/members",
         headers: {
-          Authorization: "Bearer " + token,
+          Authorization: `Bearer ${token}`,
         },
       });
       setUserInfo(response.data);
@@ -30,6 +30,7 @@ const Home = () => {
     fetchUser();
     setIsLoading(false);
   }, []);
+
   return (
     <ScrollView>
       <View style={styles.raceTitle}>
