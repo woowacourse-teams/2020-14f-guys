@@ -1,30 +1,70 @@
 import React from "react";
-import { StyleSheet, Text, TextInput, TouchableOpacity, View, } from "react-native";
+import {
+  Keyboard,
+  StyleSheet,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  TouchableWithoutFeedback,
+  View,
+} from "react-native";
+import Axios from "axios";
+import { SERVER_BASE_URL } from "../../../utils/constants";
+import { useRecoilValue, useSetRecoilState } from "recoil/dist";
+import { userInfoState, userTokenState } from "../../atoms";
+import { useNavigation } from "@react-navigation/core";
 
 const CashUpdate = () => {
-  const [value, onChangeText] = React.useState("5000");
+  const [cash, setCash] = React.useState(5000);
+  const token = useRecoilValue(userTokenState);
+  const navigation = useNavigation();
+  const setUserInfo = useSetRecoilState(userInfoState);
+  const userInfo = useRecoilValue(userInfoState);
+
+  const requestChangeCash = () => {
+    Axios.patch(
+      `${SERVER_BASE_URL}/api/members/cash`,
+      {
+        cash: `${Number(userInfo.cash) + Number(cash)}`,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    )
+      .then(async () => {
+        const response = await Axios.get(`${SERVER_BASE_URL}/api/members`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        await setUserInfo(response.data);
+        navigation.navigate("ProfileEdit");
+      })
+      .catch((error) => console.log(error));
+  };
 
   return (
-    <View style={styles.container}>
-      <View style={styles.chargeContainer}>
-        <View style={{ alignItems: "left", width: "100%" }}>
-          <Text style={styles.chargeText}>충전 금액을 입력해주세요</Text>
-          <TextInput
-            style={styles.chargeInput}
-            onChangeText={(text) => onChangeText(text)}
-            value={value}
-          />
+    <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
+      <View style={styles.container}>
+        <View style={styles.chargeContainer}>
+          <View style={{ alignItems: "left", width: "100%" }}>
+            <Text style={styles.chargeText}>충전 금액을 입력해주세요</Text>
+            <TextInput
+              style={styles.chargeInput}
+              onChangeText={(text) => setCash(text)}
+              value={cash}
+            />
+          </View>
+        </View>
+        <View style={styles.buttonContainer}>
+          <TouchableOpacity style={styles.button} onPress={requestChangeCash}>
+            <Text style={styles.buttonText}>충전하기</Text>
+          </TouchableOpacity>
         </View>
       </View>
-      <View style={styles.buttonContainer}>
-        <TouchableOpacity
-          style={styles.button}
-          onPress={() => alert("로그아웃")}
-        >
-          <Text style={styles.buttonText}>충전하기</Text>
-        </TouchableOpacity>
-      </View>
-    </View>
+    </TouchableWithoutFeedback>
   );
 };
 

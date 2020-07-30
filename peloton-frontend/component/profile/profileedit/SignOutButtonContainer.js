@@ -7,14 +7,14 @@ import { TOKEN_STORAGE } from "../../../utils/constants";
 
 const SignOutButtonContainer = () => {
   const navigation = useNavigation();
-  const onLogout = async () => {
+  const onSignOut = async () => {
     await AsyncStorage.removeItem(TOKEN_STORAGE);
     navigateWithoutHistory(navigation, "Login");
   };
 
   return (
     <View style={styles.signOutBtnContainer}>
-      <TouchableOpacity style={styles.button} onPress={onLogout}>
+      <TouchableOpacity style={styles.button} onPress={onSignOut}>
         <Text style={styles.buttonText}>Sign Out</Text>
       </TouchableOpacity>
       <Text style={styles.version}>Version 4.8.42</Text>

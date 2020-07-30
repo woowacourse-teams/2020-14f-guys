@@ -33,7 +33,8 @@ const ProfileEditInfo = () => {
             Authorization: `Bearer ${token}`,
           },
         });
-        setUserInfo(response.data);
+        await setUserInfo(response.data);
+        navigation.navigate("ProfileDetail");
       })
       .catch((error) => console.log(error));
   };

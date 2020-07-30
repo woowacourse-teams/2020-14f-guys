@@ -13,6 +13,7 @@ const ProfileDetail = () => {
         <ImageBackground
           source={{ url: userInfo.profile.baseImageUrl }}
           style={styles.background}
+          blurRadius={6}
         >
           <MemberInfo />
         </ImageBackground>
@@ -33,7 +34,7 @@ const styles = StyleSheet.create({
   },
   background: {
     flex: 1,
-    width: "100%",
+    width: "120%",
   },
   raceContainer: {
     flex: 11,
