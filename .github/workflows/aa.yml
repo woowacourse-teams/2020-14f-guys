@@ -43,4 +43,4 @@ jobs:
           aws-secret-access-key:  ${{ secrets.AWS_SECRET_KEY }}
           aws-region: ap-northeast-2
       - name: Upload to S3
-        run: aws s3 cp --region ap-northeast-2 ./build/libs/*.jar s3://14f-guys/$PROJECT_NAME/server.zip 
+        run: aws s3 cp --region ap-northeast-2 `find ./build/libs/* -name *.jar` s3://14f-guys/$PROJECT_NAME/server.jar
