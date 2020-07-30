@@ -3,7 +3,6 @@ package com.woowacourse.pelotonbackend.member.application;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.woowacourse.pelotonbackend.common.exception.MemberNotFoundException;
 import com.woowacourse.pelotonbackend.member.domain.Role;
 import com.woowacourse.pelotonbackend.member.infra.dto.KakaoTokenResponse;
 import com.woowacourse.pelotonbackend.member.infra.dto.KakaoUserResponse;
@@ -40,25 +39,21 @@ public class LoginService {
     private JwtTokenResponse createJwtToken(final String code) {
         final KakaoTokenResponse kakaoTokenResponse = kakaoAPIService.fetchOAuthToken(code).block();
         final KakaoUserResponse kakaoUserResponse = kakaoAPIService.fetchUserInfo(kakaoTokenResponse).block();
-
-        try {
+        if (memberService.existsByKakaoId(kakaoUserResponse.getId())) {
             final MemberResponse memberResponse = memberService.findByKakaoId(kakaoUserResponse.getId());
-
             return JwtTokenResponse.of(jwtTokenProvider.createToken(memberResponse.getKakaoId().toString()),
                 NOT_CREATED);
-        } catch (MemberNotFoundException e) {
-            final MemberCreateRequest memberCreateRequest = MemberCreateRequest.builder()
-                .email(kakaoUserResponse.getEmail())
-                .cash(Cash.initial())
-                .kakaoId(kakaoUserResponse.getId())
-                .name(kakaoUserResponse.getNickname() + randomGenerator.getRandomString())
-                .profile(new ImageUrl(kakaoUserResponse.getProfileImage()))
-                .role(Role.MEMBER)
-                .build();
-
-            return JwtTokenResponse.of(
-                jwtTokenProvider.createToken(
-                    memberService.createMember(memberCreateRequest).getKakaoId().toString()), CREATED);
         }
+        final MemberCreateRequest memberCreateRequest = MemberCreateRequest.builder()
+            .email(kakaoUserResponse.getEmail())
+            .cash(Cash.initial())
+            .kakaoId(kakaoUserResponse.getId())
+            .name(kakaoUserResponse.getNickname() + randomGenerator.getRandomString())
+            .profile(new ImageUrl(kakaoUserResponse.getProfileImage()))
+            .role(Role.MEMBER)
+            .build();
+        return JwtTokenResponse.of(
+            jwtTokenProvider.createToken(
+                memberService.createMember(memberCreateRequest).getKakaoId().toString()), CREATED);
     }
 }

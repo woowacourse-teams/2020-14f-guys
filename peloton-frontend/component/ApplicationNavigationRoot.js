@@ -1,12 +1,11 @@
 import React from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import Home from "./home/Home";
+import HomeNavigationRoot from "./home/HomeNavigationRoot";
 import Certification from "./certification/Certification";
 import { MaterialIcons } from "@expo/vector-icons";
 import { View } from "react-native";
 import { COLOR } from "../utils/constants";
-import ProfileScreen from "./profile/ProfileScreen";
-import { RecoilRoot } from "recoil/dist";
+import ProfileNavigationRoot from "./profile/ProfileStackRoot";
 
 const Tab = createBottomTabNavigator();
 
@@ -18,7 +17,7 @@ const screenOptions = ({ route }) => ({
       iconName = "home";
     } else if (route.name === "Certification") {
       iconName = "camera";
-    } else if (route.name === "ProfileScreen") {
+    } else if (route.name === "Profile") {
       iconName = "person";
     }
     return (
@@ -40,20 +39,18 @@ const tabBarOptions = {
   inactiveTintColor: COLOR.BLUE,
 };
 
-const Root = () => {
+const ApplicationNavigationRoot = () => {
   return (
-    <RecoilRoot>
-      <Tab.Navigator
-        screenOptions={screenOptions}
-        tabBarOptions={tabBarOptions}
-        initialRouteName="Home"
-      >
-        <Tab.Screen name="Home" component={Home} />
-        <Tab.Screen name="Certification" component={Certification} />
-        <Tab.Screen name="ProfileScreen" component={ProfileScreen} />
-      </Tab.Navigator>
-    </RecoilRoot>
+    <Tab.Navigator
+      screenOptions={screenOptions}
+      tabBarOptions={tabBarOptions}
+      initialRouteName="Home"
+    >
+      <Tab.Screen name="Home" component={HomeNavigationRoot} />
+      <Tab.Screen name="Certification" component={Certification} />
+      <Tab.Screen name="Profile" component={ProfileNavigationRoot} />
+    </Tab.Navigator>
   );
 };
 
-export default Root;
+export default ApplicationNavigationRoot;

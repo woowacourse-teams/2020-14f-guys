@@ -53,6 +53,11 @@ public class MemberService {
         return MemberResponses.from(members);
     }
 
+    @Transactional(readOnly = true)
+    public boolean existsByKakaoId(final Long kakaoId) {
+        return memberRepository.existsByKakaoId(kakaoId);
+    }
+
     public MemberResponse updateName(final Long id, final MemberNameUpdateRequest request) {
         final Member member = findMemberById(id);
         final Member updatedMember = member.update(request.getName());

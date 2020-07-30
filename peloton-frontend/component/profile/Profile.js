@@ -1,50 +1,51 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
-import { useNavigation } from "@react-navigation/core";
-import { useRecoilValue } from "recoil/dist";
-import { userTokenState } from "../atoms";
+import { useRecoilValue } from "recoil";
+import { userInfoState } from "../atoms";
+import { COLOR, TOKEN_STORAGE } from "../../utils/constants";
 import AsyncStorage from "@react-native-community/async-storage";
-import { TOKEN_STORAGE } from "../../utils/constants";
+import { navigateWithoutHistory } from "../../utils/util";
+import { useNavigation } from "@react-navigation/core";
 
-const Profile = ({ route }) => {
+const Profile = () => {
+  const userInfo = useRecoilValue(userInfoState);
   const navigation = useNavigation();
-  const token = useRecoilValue(userTokenState);
 
-  useEffect(() => {
-    const saveToken = async () => {
-      if (!token) {
-        return;
-      }
-      try {
-        await AsyncStorage.setItem(TOKEN_STORAGE, token);
-      } catch (e) {
-        return;
-      }
-    };
-    saveToken();
-  });
+  const onLogout = async () => {
+    await AsyncStorage.removeItem(TOKEN_STORAGE);
+    navigateWithoutHistory(navigation, "Login");
+  };
 
-  return token ? (
-    <View style={styles.loginButton}>
-      <TouchableOpacity onPress={() => navigation.navigate("WebScreen")}>
-        <Image source={require("../../assets/kakao_login_button.png")} />
-        <Text>{token}</Text>
-      </TouchableOpacity>
-    </View>
-  ) : (
-    <View style={styles.loginButton}>
-      <TouchableOpacity onPress={() => navigation.navigate("WebScreen")}>
-        <Image source={require("../../assets/kakao_login_button.png")} />
+  return (
+    <View style={styles.container}>
+      <Text>닉네임 : {userInfo.name}</Text>
+      <Text>이메일 : {userInfo.email}</Text>
+      <Image
+        style={{ width: 150, height: 150, resizeMode: "contain" }}
+        source={{ uri: userInfo.profile.baseImageUrl }}
+      />
+      <Text>{userInfo.cash}</Text>
+      <Text>{userInfo.role}</Text>
+      <TouchableOpacity onPress={onLogout}>
+        <View
+          style={{
+            justifyContent: "center",
+            alignItems: "center",
+            width: 150,
+            height: 50,
+            backgroundColor: COLOR.LOGIN_BLUE,
+          }}
+        >
+          <Text style={{ color: COLOR.WHITE }}>로그아웃</Text>
+        </View>
       </TouchableOpacity>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
-  loginButton: {
+  container: {
     flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
   },
 });
 

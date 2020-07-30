@@ -2,6 +2,11 @@ package com.woowacourse.pelotonbackend.member.infra.dto;
 
 import java.beans.ConstructorProperties;
 
+import org.springframework.data.mapping.model.SnakeCaseFieldNamingStrategy;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.PropertyNamingStrategy;
+import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -11,6 +16,7 @@ import lombok.Getter;
     "refreshToken", "expiresIn", "refreshTokenExpiresIn", "scope"}))
 @Builder
 @Getter
+@JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class)
 public class KakaoTokenResponse {
     private final String accessToken;
 

@@ -13,4 +13,6 @@ public interface MemberRepository extends CrudRepository<Member, Long> {
     List<Member> findAllById(Iterable<Long> ids);
 
     Optional<Member> findByKakaoId(Long kakaoId);
+
+    boolean existsByKakaoId(Long kakaoId);
 }

@@ -4,9 +4,12 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 
 import { COLOR, SAMPLE_SUBTITLE } from "../../../utils/constants";
+import { useRecoilValue } from "recoil/dist";
+import { userInfoState } from "../../atoms";
 
-const HomeMainBanner = () => {
+const HomeBanner = () => {
   const navigation = useNavigation();
+  const userInfo = useRecoilValue(userInfoState);
 
   const goToCategorySelection = () => {
     navigation.navigate("CategorySelection");
@@ -14,10 +17,11 @@ const HomeMainBanner = () => {
 
   const subtitle =
     SAMPLE_SUBTITLE[Math.floor(Math.random() * SAMPLE_SUBTITLE.length)];
+
   return (
     <View style={styles.container}>
       <View style={styles.bannerTop}>
-        <Text style={styles.title}>블비씨,</Text>
+        <Text style={styles.title}>{userInfo.name}님,</Text>
         <Text style={styles.subtitle}>당신만의 레이스를 달려보세요!</Text>
         <View style={styles.bannerSeparator} />
       </View>
@@ -86,4 +90,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default HomeMainBanner;
+export default HomeBanner;

@@ -1,5 +1,5 @@
 import React from "react";
-import { Text, StyleSheet } from "react-native";
+import { StyleSheet, Text } from "react-native";
 
 const RaceSubTitle = ({ children }) => {
   return <Text style={styles.subtitle}>{children}</Text>;
