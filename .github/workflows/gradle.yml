@@ -16,7 +16,7 @@ jobs:
       - name: Checkout main submodule
         uses: Mushus/checkout-submodule@v1
         with:
-          submodulePath: ./src/main/resources/config
+          submodulePath: ./14f-guys-secret-main
           identifier: ${{ secrets.SSH_KEY }}
 
       - name: Caching gradle
