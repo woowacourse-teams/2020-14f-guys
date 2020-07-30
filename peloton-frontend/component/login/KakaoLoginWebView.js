@@ -42,7 +42,7 @@ const KakaoLoginWebView = ({ toggleModal }) => {
     if (accessToken) {
       toggleModal();
       setToken(accessToken);
-      if (isCreated) {
+      if (isCreated === "true") {
         navigation.navigate("ChangeNickname");
       } else {
         navigateWithoutHistory(navigation, "ApplicationNavigationRoot");
