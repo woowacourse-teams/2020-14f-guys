@@ -13,6 +13,7 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.relational.core.mapping.Embedded;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.woowacourse.pelotonbackend.vo.Cash;
 import com.woowacourse.pelotonbackend.vo.ImageUrl;
 import lombok.AccessLevel;

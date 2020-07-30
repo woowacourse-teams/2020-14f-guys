@@ -56,6 +56,7 @@ class LoginServiceTest {
         when(kakaoAPIService.fetchOAuthToken(CODE_VALUE)).thenReturn(Mono.just(createMockKakaoTokenResponse()));
         when(kakaoAPIService.fetchUserInfo(any(KakaoTokenResponse.class))).thenReturn(
             Mono.just(createMockKakaoUserResponse()));
+        when(memberService.existsByKakaoId(anyLong())).thenReturn(true);
         when(memberService.findByKakaoId(anyLong())).thenReturn(createMockMemberResponse());
         when(jwtTokenProvider.createToken(anyString())).thenReturn(TOKEN);
 
@@ -69,9 +70,10 @@ class LoginServiceTest {
         when(kakaoAPIService.fetchOAuthToken(CODE_VALUE)).thenReturn(Mono.just(createMockKakaoTokenResponse()));
         when(kakaoAPIService.fetchUserInfo(any(KakaoTokenResponse.class))).thenReturn(
             Mono.just(createMockKakaoUserResponse()));
-        when(memberService.findByKakaoId(anyLong())).thenThrow(MemberNotFoundException.class);
+        when(memberService.existsByKakaoId(anyLong())).thenReturn(false);
         when(randomGenerator.getRandomString()).thenReturn(NICKNAME);
         when(memberService.createMember(any(MemberCreateRequest.class))).thenReturn(createMockMemberResponse());
+        when(jwtTokenProvider.createToken(anyString())).thenReturn(TOKEN);
 
         assertThat(loginService.createJwtTokenUrl(CODE_VALUE)).isEqualTo(URL);
     }
