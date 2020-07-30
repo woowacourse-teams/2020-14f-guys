@@ -13,8 +13,7 @@ jobs:
       - name: Checkout with submodules
         uses: actions/checkout@v2
         with:
-          lfs: true
-          ssh-key: ${{ secrets.SSH_KEY }}
+          token: $ {{ secrets.PRIVATE_REPO_ACCESS_TOKEN }}
           submodules: recursive
 
       - name: Caching gradle
