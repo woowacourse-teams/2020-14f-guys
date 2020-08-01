@@ -1,5 +1,7 @@
 package com.woowacourse.pelotonbackend.common;
 
+import javax.validation.ConstraintViolationException;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
@@ -45,6 +47,18 @@ public class GlobalExceptionHandler {
     protected ResponseEntity<ErrorResponse> HttpMessageNotReadableException(
         final HttpMessageNotReadableException exception) {
         log.error("HttpMessageNotReadable Exception !", exception);
+
+        final ErrorCode errorCode = ErrorCode.INVALID_VALIDATE;
+        final ErrorResponse errorResponse = ErrorResponse.of(errorCode.getStatus(), errorCode.getCode(),
+            exception.getMessage());
+
+        return new ResponseEntity<>(errorResponse, HttpStatus.valueOf(errorCode.getStatus()));
+    }
+
+    @ExceptionHandler(ConstraintViolationException.class)
+    protected ResponseEntity<ErrorResponse> ConstraintViolationExceptionException(
+        final ConstraintViolationException exception) {
+        log.error("ConstraintViolation Exception !", exception);
 
         final ErrorCode errorCode = ErrorCode.INVALID_VALIDATE;
         final ErrorResponse errorResponse = ErrorResponse.of(errorCode.getStatus(), errorCode.getCode(),

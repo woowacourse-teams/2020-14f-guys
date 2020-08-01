@@ -13,6 +13,7 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.validation.ConstraintViolationException;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -32,6 +33,7 @@ import org.springframework.web.filter.CharacterEncodingFilter;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.method.support.ModelAndViewContainer;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.woowacourse.pelotonbackend.common.ErrorCode;
 import com.woowacourse.pelotonbackend.common.exception.MemberNotFoundException;
@@ -60,20 +62,26 @@ public class MemberControllerTest {
     @MockBean
     private LoginMemberArgumentResolver argumentResolver;
 
+    private MemberCreateRequest memberCreateRequest;
+
+    private byte[] request;
+
     @BeforeEach
-    public void setup(final WebApplicationContext webApplicationContext) {
+    public void setup(final WebApplicationContext webApplicationContext) throws JsonProcessingException {
         mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext)
             .addFilters(new CharacterEncodingFilter("UTF-8", true))
             .alwaysDo(print())
             .build();
+
+        memberCreateRequest = MemberFixture.createRequest(KAKAO_ID, EMAIL, NAME);
+        request = objectMapper.writeValueAsBytes(memberCreateRequest);
     }
 
     @DisplayName("회원을 생성한다")
     @Test
     void createMember() throws Exception {
-        final MemberCreateRequest memberCreateRequest = MemberFixture.createRequest(KAKAO_ID, EMAIL, NAME);
+
         final MemberResponse memberResponse = MemberFixture.memberResponse();
-        final byte[] request = objectMapper.writeValueAsBytes(memberCreateRequest);
         given(bearerAuthInterceptor.preHandle(any(HttpServletRequest.class), any(HttpServletResponse.class),
             any(HandlerMethod.class))).willReturn(true);
         given(memberService.createMember(any(MemberCreateRequest.class))).willReturn(memberResponse);
@@ -233,5 +241,24 @@ public class MemberControllerTest {
             .andExpect(status().isNotFound())
             .andExpect(jsonPath("code").value(ErrorCode.MEMBER_NOT_FOUND.getCode()))
             .andExpect(jsonPath("errors").doesNotExist());
+    }
+
+    @DisplayName("Valid하지 않은 멤버를 저장하려 할 때, 400 bad request")
+    @Test
+    void invalidMemberException() throws Exception {
+        given(bearerAuthInterceptor.preHandle(any(HttpServletRequest.class), any(HttpServletResponse.class),
+            any(HandlerMethod.class))).willReturn(true);
+        given(argumentResolver.resolveArgument(any(MethodParameter.class), any(ModelAndViewContainer.class), any(
+            NativeWebRequest.class), any(WebDataBinderFactory.class))).willReturn(MemberResponse.builder().build());
+        given(argumentResolver.supportsParameter(any())).willReturn(true);
+        doThrow(new ConstraintViolationException("공백일 수 없습니다.", null)).when(memberService)
+            .createMember(any(MemberCreateRequest.class));
+
+        mockMvc.perform(post(RESOURCE_URL)
+            .content(request)
+            .contentType(MediaType.APPLICATION_JSON)
+        )
+            .andExpect(status().isBadRequest())
+            .andExpect(jsonPath("code").value(ErrorCode.INVALID_VALIDATE.getCode()));
     }
 }
