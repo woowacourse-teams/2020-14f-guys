@@ -1,6 +1,6 @@
 [submodule "src/test/resources/config"]
 	path = src/test/resources/config
-	url = git@github.com:fucct/14f-guys-secret-test
+	url = https://github.com/fucct/14f-guys-secret-test
 [submodule "src/main/resources/config"]
 	path = src/main/resources/config
-	url = git@github.com:fucct/14f-guys-secret-main
+	url = https://github.com/fucct/14f-guys-secret-main
