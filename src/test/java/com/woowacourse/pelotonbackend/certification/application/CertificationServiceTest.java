@@ -17,7 +17,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.woowacourse.pelotonbackend.certification.domain.CertificationRepository;
 import com.woowacourse.pelotonbackend.certification.domain.dto.CertificationCreateRequest;
-import com.woowacourse.pelotonbackend.common.upload.UploadService;
+import com.woowacourse.pelotonbackend.infra.upload.UploadService;
 
 @ExtendWith(SpringExtension.class)
 class CertificationServiceTest {

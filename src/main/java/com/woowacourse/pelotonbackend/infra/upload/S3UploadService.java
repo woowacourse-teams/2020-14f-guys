@@ -1,4 +1,4 @@
-package com.woowacourse.pelotonbackend.common.upload;
+package com.woowacourse.pelotonbackend.infra.upload;
 
 import javax.annotation.PostConstruct;
 
