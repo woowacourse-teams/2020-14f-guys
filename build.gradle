@@ -26,7 +26,7 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-webflux'
     implementation 'io.jsonwebtoken:jjwt:0.9.1'
     implementation 'com.google.code.findbugs:jsr305:3.0.2'
-    implementation group: 'com.amazonaws', name: 'aws-java-sdk-s3', version: '1.11.820'
+    implementation 'com.amazonaws:aws-java-sdk-s3:1.11.820'
     compileOnly 'org.projectlombok:lombok'
     developmentOnly 'org.springframework.boot:spring-boot-devtools'
     runtimeOnly 'com.h2database:h2'
