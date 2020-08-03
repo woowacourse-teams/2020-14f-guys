@@ -45,7 +45,7 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler({ConstraintViolationException.class, HttpMessageNotReadableException.class})
     protected ResponseEntity<ErrorResponse> invalidInputException(final RuntimeException exception) {
-        log.error(exception.getClass().getName() + " Exception !", exception);
+        log.error(exception.getClass().getSimpleName() + " Exception !", exception);
 
         final ErrorCode errorCode = ErrorCode.INVALID_VALIDATE;
         final ErrorResponse errorResponse = ErrorResponse.of(errorCode.getStatus(), errorCode.getCode(),
