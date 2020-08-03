@@ -7,14 +7,14 @@ on:
 jobs:
   build:
 
-    runs-on: [ ubuntu-latest, macos-latest ]
+    runs-on: [ ubuntu-latest ]
 
     steps:
       - name: Checkout with submodules
         uses: actions/checkout@v2
         with:
           token: ${{ secrets.PRIVATE_REPO_ACCESS_TOKEN }}
-          submudules: recursive
+          submodules: recursive
 
       - name: Caching gradle
         uses: actions/cache@v2
