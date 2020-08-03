@@ -2,9 +2,12 @@ package com.woowacourse.pelotonbackend.member.domain;
 
 import java.math.BigDecimal;
 
+import org.springframework.mock.web.MockMultipartFile;
+
 import com.woowacourse.pelotonbackend.member.presentation.dto.MemberCashUpdateRequest;
 import com.woowacourse.pelotonbackend.member.presentation.dto.MemberCreateRequest;
 import com.woowacourse.pelotonbackend.member.presentation.dto.MemberNameUpdateRequest;
+import com.woowacourse.pelotonbackend.member.presentation.dto.MemberProfileResponse;
 import com.woowacourse.pelotonbackend.member.presentation.dto.MemberResponse;
 import com.woowacourse.pelotonbackend.vo.Cash;
 import com.woowacourse.pelotonbackend.vo.ImageUrl;
@@ -29,6 +32,8 @@ public class MemberFixture {
     public static final Long KAKAO_ID = 1L;
     public static final Long KAKAO_ID2 = 2L;
     public static final Long KAKAO_ID3 = 3L;
+    public static final String TEST_UPDATED_URL = "DDDDDDDDDDDDDDDDDDDDDDDDD";
+    public static final String BASIC_PROFILE_URL = "https://market-photos.s3.ap-northeast-2.amazonaws.com/asdasdsadasd.png";
 
     public static MemberCreateRequest createRequest(final Long kakaoId, final String email, final String name) {
         return MemberCreateRequest.builder()
@@ -88,6 +93,10 @@ public class MemberFixture {
             .build();
     }
 
+    public static MockMultipartFile createMockMultiPart() {
+        return new MockMultipartFile("TEST", "TEST".getBytes());
+    }
+
     public static MemberResponse memberResponse() {
         return MemberResponse.builder()
             .id(ID)
@@ -114,5 +123,37 @@ public class MemberFixture {
 
     public static MemberCreateRequest createBadRequest() {
         return MemberCreateRequest.builder().build();
+    }
+
+    public static MemberProfileResponse memberProfileUpdated() {
+        return new MemberProfileResponse(TEST_UPDATED_URL);
+    }
+
+    public static MockMultipartFile mockMultipartFile() {
+        return new MockMultipartFile(TEST_UPDATED_URL, TEST_UPDATED_URL.getBytes());
+    }
+
+    public static Member memberProfileUpdated(final Long id) {
+        return Member.builder()
+            .id(id)
+            .kakaoId(KAKAO_ID)
+            .profile(new ImageUrl(TEST_UPDATED_URL))
+            .email(EMAIL)
+            .name(NAME)
+            .cash(CASH)
+            .role(ROLE)
+            .build();
+    }
+
+    public static Member memberUpdatedBasicProfile(final Long id) {
+        return Member.builder()
+            .id(id)
+            .kakaoId(KAKAO_ID)
+            .profile(new ImageUrl(BASIC_PROFILE_URL))
+            .email(EMAIL)
+            .name(NAME)
+            .cash(CASH)
+            .role(ROLE)
+            .build();
     }
 }

@@ -1,5 +1,6 @@
 package com.woowacourse.pelotonbackend.certification.presentation;
 
+import java.io.IOException;
 import java.net.URI;
 
 import javax.validation.Valid;
@@ -24,7 +25,7 @@ public class CertificationController {
 
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<Void> create(@RequestPart(value = "certification_image") final MultipartFile file,
-        @Valid final CertificationCreateRequest certificationCreateRequest) {
+        @Valid final CertificationCreateRequest certificationCreateRequest) throws IOException {
 
         final Long certificationId = certificationService.create(file, certificationCreateRequest);
 

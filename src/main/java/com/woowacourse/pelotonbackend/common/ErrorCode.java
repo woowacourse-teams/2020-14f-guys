@@ -23,11 +23,13 @@ public enum ErrorCode {
     RACE_DUPLICATE(400, "Race-002"),
     RACE_ID_INVALID(400, "Race-003"),
 
+    RIDER_NOT_FOUND(404,"RIDER-001"),
+
     UN_AUTHORIZED(401, "Auth-001"),
     TOKEN_EXPIRED(401, "Auth-002"),
     INVALID_TOKEN(401, "Auth-003"),
 
-    RIDER_NOT_FOUND(404, "Rider-001");
+    FILE_UPLOAD(400, "FILE-004");
 
     private final int status;
     private final String code;

@@ -21,6 +21,7 @@ import org.springframework.web.util.DefaultUriBuilderFactory;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.woowacourse.pelotonbackend.infra.login.KakaoAPIService;
 import com.woowacourse.pelotonbackend.support.JwtTokenProvider;
 import com.woowacourse.pelotonbackend.support.dto.JwtTokenResponse;
 import okhttp3.mockwebserver.Dispatcher;

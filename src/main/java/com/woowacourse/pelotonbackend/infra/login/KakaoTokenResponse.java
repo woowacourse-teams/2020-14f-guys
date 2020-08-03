@@ -1,4 +1,4 @@
-package com.woowacourse.pelotonbackend.member.infra.dto;
+package com.woowacourse.pelotonbackend.infra.login;
 
 import java.beans.ConstructorProperties;
 

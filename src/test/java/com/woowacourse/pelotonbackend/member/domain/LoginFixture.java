@@ -5,8 +5,8 @@ import static com.woowacourse.pelotonbackend.member.domain.MemberFixture.*;
 import org.springframework.stereotype.Component;
 import org.springframework.web.util.DefaultUriBuilderFactory;
 
-import com.woowacourse.pelotonbackend.member.infra.dto.KakaoTokenResponse;
-import com.woowacourse.pelotonbackend.member.infra.dto.KakaoUserResponse;
+import com.woowacourse.pelotonbackend.infra.login.KakaoTokenResponse;
+import com.woowacourse.pelotonbackend.infra.login.KakaoUserResponse;
 import com.woowacourse.pelotonbackend.member.presentation.dto.MemberResponse;
 import com.woowacourse.pelotonbackend.support.annotation.LoginMember;
 import com.woowacourse.pelotonbackend.vo.Cash;

@@ -1,4 +1,4 @@
-package com.woowacourse.pelotonbackend.member.application;
+package com.woowacourse.pelotonbackend.infra.login;
 
 import com.woowacourse.pelotonbackend.support.dto.JwtTokenResponse;
 import reactor.core.publisher.Mono;

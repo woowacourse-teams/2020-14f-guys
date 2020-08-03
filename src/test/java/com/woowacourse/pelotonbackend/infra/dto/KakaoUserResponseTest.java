@@ -1,4 +1,4 @@
-package com.woowacourse.pelotonbackend.member.infra.dto;
+package com.woowacourse.pelotonbackend.infra.dto;
 
 import static com.woowacourse.pelotonbackend.member.domain.LoginFixture.*;
 import static org.assertj.core.api.AssertionsForClassTypes.*;
@@ -7,6 +7,7 @@ import org.junit.jupiter.api.Test;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.woowacourse.pelotonbackend.infra.login.KakaoUserResponse;
 
 class KakaoUserResponseTest {
     private final ObjectMapper objectMapper = new ObjectMapper();
