@@ -32,7 +32,7 @@ const HomeNavigationRoot = () => {
       <HomeStack.Screen
         name="CategorySelection"
         component={CategorySelection}
-        options={{ title: "카테고리 선택" }}
+        options={{ title: "레이스 카테고리 선택" }}
       />
       <HomeStack.Screen
         name="InputRaceInfo"

@@ -1,15 +1,6 @@
 import React, { useEffect } from "react";
-import {
-  ActivityIndicator,
-  Keyboard,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  TouchableWithoutFeedback,
-  View,
-} from "react-native";
-import { useRecoilValue, useSetRecoilState } from "recoil";
-import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
+import { ActivityIndicator, StyleSheet, View } from "react-native";
+import { useRecoilValue, useResetRecoilState, useSetRecoilState } from "recoil";
 import { CommonActions, useNavigation } from "@react-navigation/native";
 import useAxios from "axios-hooks";
 
@@ -20,16 +11,26 @@ import { loadingState } from "../../../state/loading/LoadingState";
 import LoadingIndicator from "../../../utils/LoadingIndicator";
 import { userTokenState } from "../../atoms";
 import RaceCreateView from "./RaceCreateView";
+import { navigateWithHistory } from "../../../utils/util";
 
 const InputRaceInfo = () => {
   // eslint-disable-next-line prettier/prettier
-  const { title, description, startDate, endDate, category, entranceFee } = useRecoilValue(raceCreateInfoState);
+  const {title, description, startDate, endDate, category, entranceFee} = useRecoilValue(raceCreateInfoState);
+  const resetRaceCreateInfo = useResetRecoilState(raceCreateInfoState);
   const setGlobalLoading = useSetRecoilState(loadingState);
   const token = useRecoilValue(userTokenState);
 
   const formatPostRaceBody = () => {
-    // eslint-disable-next-line prettier/prettier
-    return { title, description, category, entranceFee, raceDuration: { startDate, endDate } };
+    return {
+      title,
+      description,
+      category,
+      entranceFee,
+      raceDuration: {
+        startDate,
+        endDate,
+      },
+    };
   };
 
   const [{ response, loading, error }, createRaceRequest] = useAxios(
@@ -42,27 +43,17 @@ const InputRaceInfo = () => {
         Authorization: `Bearer ${token}`,
       },
     },
-    { manual: true }
+    { manual: true },
   );
   const navigation = useNavigation();
 
   useEffect(() => {
     if (response) {
-      navigation.dispatch({
-        ...CommonActions.reset({
-          index: 1,
-          routes: [
-            {
-              name: "HomeMain",
-            },
-            {
-              name: "RaceDetail",
-              params: { location: response.headers.location },
-            },
-          ],
-        }),
-        target: navigation.dangerouslyGetState().key,
-      });
+      resetRaceCreateInfo();
+      navigateWithHistory(navigation, [
+        { name: "Home" },
+        { name: "RaceDetail", params: { location: response.headers.location } },
+      ]);
     }
     if (error) {
       alert(error.toString());
@@ -80,9 +71,11 @@ const InputRaceInfo = () => {
       return;
     }
 
-    createRaceRequest()
-      .then(() => navigation.navigate("RaceDetail"))
-      .catch((err) => console.log(err));
+    try {
+      await createRaceRequest();
+    } catch (e) {
+      console.log(e);
+    }
   };
 
   return (
