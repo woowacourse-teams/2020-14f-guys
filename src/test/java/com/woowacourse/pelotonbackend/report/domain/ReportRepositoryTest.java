@@ -8,7 +8,6 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.dao.IncorrectResultSizeDataAccessException;
 
 @SpringBootTest
 class ReportRepositoryTest {
@@ -58,9 +57,8 @@ class ReportRepositoryTest {
         reportRepository.save(report);
         reportRepository.save(anotherReport);
 
-        assertThatThrownBy(() -> {
-            reportRepository.existsByMemberIdAndCertificationId(MEMBER_ID, CERTIFICATION_ID);
-        })
-        .isInstanceOf(AssertionError.class);
+        assertThatThrownBy(() -> reportRepository.existsByMemberIdAndCertificationId(MEMBER_ID, CERTIFICATION_ID))
+            .isInstanceOf(AssertionError.class)
+            .hasMessageContaining("There should not be duplicated (member_id, certification_id)");
     }
 }
