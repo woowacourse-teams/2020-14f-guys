@@ -12,9 +12,9 @@ import com.woowacourse.pelotonbackend.race.presentation.dto.RaceRetrieveResponse
 import com.woowacourse.pelotonbackend.race.presentation.dto.RaceUpdateRequest;
 import com.woowacourse.pelotonbackend.support.RandomGenerator;
 import com.woowacourse.pelotonbackend.vo.ImageUrl;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 
-@AllArgsConstructor
+@RequiredArgsConstructor
 @Service
 @Transactional
 public class RaceService {
@@ -25,7 +25,7 @@ public class RaceService {
         final RaceCategory category = request.getCategory();
         final ImageUrl randomCertification = category.getRandomCertification(randomGenerator);
         final ImageUrl randomThumbnail = category.getRandomThumbnail(randomGenerator);
-        final Race savedRace = raceRepository.save(request.toEntity(randomCertification, randomThumbnail));
+        final Race savedRace = raceRepository.save(request.toRace(randomCertification, randomThumbnail));
 
         return savedRace.getId();
     }
@@ -42,7 +42,7 @@ public class RaceService {
         final Race race = raceRepository.findById(raceId)
             .orElseThrow(() -> new RaceNotFoundException(raceId));
 
-        final Race raceUpdated = request.toEntity(race);
+        final Race raceUpdated = request.toRace(race);
         raceRepository.save(raceUpdated);
     }
 

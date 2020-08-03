@@ -1,20 +1,20 @@
 package com.woowacourse.pelotonbackend.race.domain;
 
-import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import com.woowacourse.pelotonbackend.support.RandomGenerator;
 import com.woowacourse.pelotonbackend.vo.ImageUrl;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 
-@AllArgsConstructor
+@RequiredArgsConstructor
 @Getter
 public enum RaceCategory {
-    TIME(Arrays.asList(new ImageUrl("TEST_TIME_THUMBNAIL_URL")),
-        Arrays.asList(new ImageUrl("TEST_TIME_CERTIFICATION_IMAGE"))),
-    STUDY(Arrays.asList(new ImageUrl("TEST_STUDY_THUMBNAIL_URL")),
-        Arrays.asList(new ImageUrl("TEST_STUDY_CERTIFICATION_IMAGE")));
+    TIME(Collections.singletonList(new ImageUrl("TEST_TIME_THUMBNAIL_URL")),
+        Collections.singletonList(new ImageUrl("TEST_TIME_CERTIFICATION_IMAGE"))),
+    STUDY(Collections.singletonList(new ImageUrl("TEST_STUDY_THUMBNAIL_URL")),
+        Collections.singletonList(new ImageUrl("TEST_STUDY_CERTIFICATION_IMAGE")));
 
     private final List<ImageUrl> thumbnails;
     private final List<ImageUrl> certifications;

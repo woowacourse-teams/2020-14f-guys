@@ -38,7 +38,7 @@ class JwtTokenProviderTest {
 
         assertThatThrownBy(() -> jwtTokenProvider.getSubject(expiredToken))
             .isInstanceOf(TokenInvalidException.class)
-            .hasMessage("토큰이 만료되었습니다. 다시 로그인 해주세요.");
+            .hasMessage("Token is expired. Login again.");
     }
 
     @DisplayName("토큰이 invalid일 시 예외처리한다.")
@@ -49,6 +49,6 @@ class JwtTokenProviderTest {
 
         assertThatThrownBy(() -> invalidJwtTokenProvider.getSubject(token))
             .isInstanceOf(TokenInvalidException.class)
-            .hasMessage("토큰이 유효하지 않습니다. 다시 로그인 해주세요.");
+            .hasMessage("Token is Invalid. Login again.");
     }
 }

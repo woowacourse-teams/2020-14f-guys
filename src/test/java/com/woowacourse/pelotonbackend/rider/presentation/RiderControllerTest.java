@@ -31,7 +31,6 @@ import org.springframework.web.method.support.ModelAndViewContainer;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.woowacourse.pelotonbackend.common.ErrorCode;
 import com.woowacourse.pelotonbackend.common.exception.RiderNotFoundException;
-import com.woowacourse.pelotonbackend.member.domain.Member;
 import com.woowacourse.pelotonbackend.member.domain.MemberFixture;
 import com.woowacourse.pelotonbackend.member.presentation.LoginMemberArgumentResolver;
 import com.woowacourse.pelotonbackend.member.presentation.dto.MemberResponse;
@@ -104,7 +103,7 @@ public class RiderControllerTest {
         mockMvc.perform(get("/api/riders/100")
             .accept(MediaType.APPLICATION_JSON)
         )
-            .andExpect(status().isBadRequest())
+            .andExpect(status().isNotFound())
             .andExpect(jsonPath("code").value(ErrorCode.RIDER_NOT_FOUND.getCode()));
     }
 

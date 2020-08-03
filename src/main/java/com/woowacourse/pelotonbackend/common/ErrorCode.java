@@ -11,16 +11,15 @@ public enum ErrorCode {
 
     INVALID_VALIDATE(400, "Validation-001"),
 
-    MEMBER_NOT_FOUND(400, "Member-001"),
+    MEMBER_NOT_FOUND(404, "Member-001"),
     MEMBER_DUPLICATE(400, "Member-002"),
     MEMBER_ID_INVALID(400, "Member-003"),
-    MEMBER_NOT_FOUND_WITH_KAKAO_ID(400, "Member-004"),
 
-    REPORT_NOT_FOUND(400, "Certification-001"),
-    REPORT_DUPLICATE(400, "Certification-002"),
-    REPORT_ID_INVALID(400, "Certification-003"),
+    REPORT_NOT_FOUND(404, "Report-001"),
+    REPORT_DUPLICATE(400, "Report-002"),
+    REPORT_ID_INVALID(400, "Report-003"),
 
-    RACE_NOT_FOUND(400, "Race-001"),
+    RACE_NOT_FOUND(404, "Race-001"),
     RACE_DUPLICATE(400, "Race-002"),
     RACE_ID_INVALID(400, "Race-003"),
 
@@ -28,7 +27,7 @@ public enum ErrorCode {
     TOKEN_EXPIRED(401, "Auth-002"),
     INVALID_TOKEN(401, "Auth-003"),
 
-    RIDER_NOT_FOUND(400, "Rider-001");
+    RIDER_NOT_FOUND(404, "Rider-001");
 
     private final int status;
     private final String code;

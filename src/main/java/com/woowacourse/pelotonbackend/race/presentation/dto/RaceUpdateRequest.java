@@ -47,7 +47,7 @@ public class RaceUpdateRequest {
     @Nullable
     private final ImageUrl thumbnail;
 
-    public Race toEntity(final Race race) {
+    public Race toRace(final Race race) {
         final Race.RaceBuilder builder = race.toBuilder();
         if (Objects.nonNull(title)) {
             builder.title(title);

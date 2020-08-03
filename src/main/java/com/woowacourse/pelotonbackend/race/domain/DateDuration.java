@@ -9,10 +9,10 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.woowacourse.pelotonbackend.support.jsonparser.LocalDateDeserializer;
 import com.woowacourse.pelotonbackend.support.jsonparser.LocalDateSerializer;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import lombok.Value;
 
-@AllArgsConstructor(onConstructor_ = @ConstructorProperties({"startDate", "endDate"}))
+@RequiredArgsConstructor(onConstructor_ = @ConstructorProperties({"startDate", "endDate"}))
 @Value
 public class DateDuration {
     @FutureOrPresent

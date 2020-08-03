@@ -14,7 +14,7 @@ import lombok.Getter;
 @AllArgsConstructor(onConstructor_ = @ConstructorProperties(
     {"reportType", "description", "reportMemberId", "certificationId"}))
 @Getter
-public class ReportCreateContent {
+public class ReportCreateRequest {
     @NotNull
     private final ReportType reportType;
 
@@ -27,7 +27,7 @@ public class ReportCreateContent {
     @NotNull
     private final Long certificationId;
 
-    public Report toEntity() {
+    public Report toReport() {
         return Report.builder()
             .memberId(AggregateReference.to(reportMemberId))
             .certificationId(AggregateReference.to(certificationId))

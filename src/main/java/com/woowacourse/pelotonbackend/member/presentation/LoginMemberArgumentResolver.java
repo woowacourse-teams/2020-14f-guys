@@ -13,7 +13,6 @@ import org.springframework.web.method.support.ModelAndViewContainer;
 
 import com.woowacourse.pelotonbackend.common.exception.MemberNotFoundException;
 import com.woowacourse.pelotonbackend.member.application.MemberService;
-import com.woowacourse.pelotonbackend.member.domain.Member;
 import com.woowacourse.pelotonbackend.member.presentation.dto.MemberResponse;
 import com.woowacourse.pelotonbackend.support.annotation.LoginMember;
 import lombok.RequiredArgsConstructor;
@@ -30,6 +29,7 @@ public class LoginMemberArgumentResolver implements HandlerMethodArgumentResolve
 
     @Override
     public MemberResponse resolveArgument(final MethodParameter parameter, final ModelAndViewContainer mavContainer,
+        // todo : MemberResponse를 LoginMemberInfo라는 별개의 DTO로 분리
         final NativeWebRequest webRequest, final WebDataBinderFactory binderFactory) {
         final String attribute = (String)webRequest.getAttribute("loginMemberKakaoId", SCOPE_REQUEST);
 

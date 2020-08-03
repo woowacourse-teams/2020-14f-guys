@@ -8,6 +8,7 @@ import org.springframework.stereotype.Component;
 public class RandomGeneratorImpl implements RandomGenerator {
     private static final int STRING_LENGTH = 8;
     private static final String RANDOM_STRING = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+
     private final Random random;
 
     public RandomGeneratorImpl() {

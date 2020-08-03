@@ -42,8 +42,8 @@ public class ErrorResponse {
         return new ErrorResponse(status.value(), code, message, null);
     }
 
-    @Getter
     @AllArgsConstructor
+    @Getter
     @NoArgsConstructor(access = AccessLevel.PROTECTED)
     public static class FieldError {
         private String field;

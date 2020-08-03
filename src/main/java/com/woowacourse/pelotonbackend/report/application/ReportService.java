@@ -6,16 +6,16 @@ import org.springframework.transaction.annotation.Transactional;
 import com.woowacourse.pelotonbackend.common.exception.ReportDuplicateException;
 import com.woowacourse.pelotonbackend.report.domain.Report;
 import com.woowacourse.pelotonbackend.report.domain.ReportRepository;
-import com.woowacourse.pelotonbackend.report.presentation.ReportCreateContent;
-import lombok.AllArgsConstructor;
+import com.woowacourse.pelotonbackend.report.presentation.ReportCreateRequest;
+import lombok.RequiredArgsConstructor;
 
-@AllArgsConstructor
+@RequiredArgsConstructor
 @Service
+@Transactional
 public class ReportService {
     private final ReportRepository reportRepository;
 
-    @Transactional
-    public Long createReport(final ReportCreateContent requestContent) {
+    public Long createReport(final ReportCreateRequest requestContent) {
         final Long memberId = requestContent.getReportMemberId();
         final Long certificationId = requestContent.getCertificationId();
 
@@ -24,7 +24,7 @@ public class ReportService {
             throw new ReportDuplicateException(memberId, certificationId);
         }
 
-        final Report report = requestContent.toEntity();
+        final Report report = requestContent.toReport();
         final Report persisted = reportRepository.save(report);
 
         return persisted.getId();

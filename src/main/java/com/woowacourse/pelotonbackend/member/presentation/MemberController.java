@@ -38,14 +38,14 @@ public class MemberController {
     }
 
     @GetMapping
-    public ResponseEntity<MemberResponse> findMember(@LoginMember MemberResponse loginMemberResponse) {
+    public ResponseEntity<MemberResponse> findMember(@LoginMember final MemberResponse loginMemberResponse) {
         final MemberResponse memberResponse = memberService.findMember(loginMemberResponse.getId());
 
         return ResponseEntity.ok(memberResponse);
     }
 
     @DeleteMapping
-    public ResponseEntity<Void> delete(@LoginMember MemberResponse loginMemberResponse) {
+    public ResponseEntity<Void> delete(@LoginMember final MemberResponse loginMemberResponse) {
         memberService.deleteById(loginMemberResponse.getId());
 
         return ResponseEntity.noContent().build();
@@ -59,7 +59,7 @@ public class MemberController {
     }
 
     @PatchMapping("/name")
-    public ResponseEntity<Void> updateName(@LoginMember MemberResponse loginMemberResponse,
+    public ResponseEntity<Void> updateName(@LoginMember final MemberResponse loginMemberResponse,
         @RequestBody @Valid final MemberNameUpdateRequest request) {
         final MemberResponse memberResponse = memberService.updateName(loginMemberResponse.getId(), request);
 
@@ -69,7 +69,7 @@ public class MemberController {
     }
 
     @PatchMapping("/cash")
-    public ResponseEntity<Void> updateCash(@LoginMember MemberResponse loginMemberResponse,
+    public ResponseEntity<Void> updateCash(@LoginMember final MemberResponse loginMemberResponse,
         @RequestBody @Valid final MemberCashUpdateRequest request) {
         final MemberResponse memberResponse = memberService.updateCash(loginMemberResponse.getId(), request);
 

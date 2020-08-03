@@ -119,6 +119,6 @@ public class RaceAcceptanceTest extends AcceptanceTest {
     }
 
     void retrieveRaceNotFound(final String resourceLocation, final JwtTokenResponse tokenResponse) {
-        retrieveRaceWithStatusCode(resourceLocation, tokenResponse, HttpStatus.BAD_REQUEST.value());
+        retrieveRaceWithStatusCode(resourceLocation, tokenResponse, HttpStatus.NOT_FOUND.value());
     }
 }

@@ -42,7 +42,7 @@ public class RaceCreateRequest {
     @JsonDeserialize(using = CashDeserializer.class)
     private final Cash entranceFee;
 
-    public Race toEntity(ImageUrl certification, ImageUrl thumbnail) {
+    public Race toRace(ImageUrl certification, ImageUrl thumbnail) {
         return Race.builder()
             .title(title)
             .description(description)

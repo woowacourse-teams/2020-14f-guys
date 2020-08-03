@@ -11,7 +11,6 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import com.woowacourse.pelotonbackend.common.exception.MemberNotFoundException;
 import com.woowacourse.pelotonbackend.member.infra.dto.KakaoTokenResponse;
 import com.woowacourse.pelotonbackend.member.infra.dto.KakaoUserResponse;
 import com.woowacourse.pelotonbackend.member.presentation.dto.MemberCreateRequest;
