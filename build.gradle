@@ -63,7 +63,7 @@ jacocoTestCoverageVerification {
     violationRules {
         rule {
             limit {
-                minimum = 0.70
+                minimum = 0.30
             }
         }
 
@@ -82,6 +82,12 @@ jacocoTestCoverageVerification {
                 value = 'COVEREDRATIO'
                 minimum = 0.70
             }
+
+            excludes = [
+                    '*.config.*',
+                    '*.common.*',
+                    '*.Application'
+            ]
         }
 
         rule {
