@@ -47,4 +47,18 @@ class ReportRepositoryTest {
 
         assertThat(notExistReport).isFalse();
     }
+
+    @DisplayName("MemberId와 CertificationId가 중복되는 데이터가 있다면 AssertionError")
+    @Test
+    void throwErrorIfMemberIdAndCertificationIdDuplicate() {
+        final Report report = ReportFixture.createWithoutId();
+        final Report anotherReport = ReportFixture.createWithoutId();
+
+        reportRepository.save(report);
+        reportRepository.save(anotherReport);
+
+        assertThatThrownBy(() -> reportRepository.existsByMemberIdAndCertificationId(MEMBER_ID, CERTIFICATION_ID))
+            .isInstanceOf(AssertionError.class)
+            .hasMessageContaining("There should not be duplicated (member_id, certification_id)");
+    }
 }

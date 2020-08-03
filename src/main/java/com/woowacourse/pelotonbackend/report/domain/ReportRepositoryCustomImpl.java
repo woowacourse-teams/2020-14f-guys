@@ -1,6 +1,7 @@
 package com.woowacourse.pelotonbackend.report.domain;
 
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.dao.IncorrectResultSizeDataAccessException;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcOperations;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
@@ -23,8 +24,11 @@ public class ReportRepositoryCustomImpl implements ReportRepositoryCustom {
             return jdbcOperations.queryForObject(existsReportByMemberIdAndCertificationId(), parameterSource,
                 Boolean.class);
         } catch (EmptyResultDataAccessException e) {
-            // todo : 데이터가 2개 이상일 경우에도 예외 처리
             return false;
+        } catch (IncorrectResultSizeDataAccessException e) {
+            throw new AssertionError(
+                String.format("There should not be duplicated (member_id, certification_id), but (%d, %d)",
+                    memberId, certificationId));
         }
     }
 
