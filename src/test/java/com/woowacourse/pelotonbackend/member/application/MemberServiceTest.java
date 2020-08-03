@@ -1,14 +1,11 @@
 package com.woowacourse.pelotonbackend.member.application;
 
-<<<<<<< HEAD
-=======
 import static com.woowacourse.pelotonbackend.member.acceptance.MemberAcceptanceTest.*;
 import static com.woowacourse.pelotonbackend.member.domain.LoginFixture.*;
->>>>>>> caa85f5... feat: 회원 프로필 수정(사진 업로드) 구현
 import static com.woowacourse.pelotonbackend.member.domain.MemberFixture.*;
 import static org.assertj.core.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.*;
+import static org.mockito.BDDMockito.*;
 
 import java.util.Arrays;
 import java.util.List;
@@ -23,9 +20,9 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.woowacourse.pelotonbackend.common.upload.S3UploadService;
 import com.woowacourse.pelotonbackend.common.exception.MemberIdInvalidException;
 import com.woowacourse.pelotonbackend.common.exception.MemberNotFoundException;
+import com.woowacourse.pelotonbackend.common.upload.UploadService;
 import com.woowacourse.pelotonbackend.member.domain.Member;
 import com.woowacourse.pelotonbackend.member.domain.MemberFixture;
 import com.woowacourse.pelotonbackend.member.domain.MemberRepository;
@@ -41,24 +38,14 @@ class MemberServiceTest {
     @Mock
     private MemberRepository memberRepository;
 
-<<<<<<< HEAD
-=======
     @Mock
-    private RandomGenerator randomGenerator;
+    private UploadService uploadService;
 
-    @Mock
-    private S3UploadService s3UploadService;
-
->>>>>>> caa85f5... feat: 회원 프로필 수정(사진 업로드) 구현
     private Member expectedMember;
 
     @BeforeEach
     void setUp() {
-<<<<<<< HEAD
-        memberService = new MemberService(memberRepository);
-=======
-        memberService = new MemberService(memberRepository, randomGenerator, s3UploadService);
->>>>>>> caa85f5... feat: 회원 프로필 수정(사진 업로드) 구현
+        memberService = new MemberService(memberRepository, uploadService);
         expectedMember = createWithId(ID);
     }
 
@@ -66,7 +53,7 @@ class MemberServiceTest {
     @Test
     void createMemberTest() {
         final MemberCreateRequest memberCreateRequest = MemberFixture.createRequest(KAKAO_ID, EMAIL, NAME);
-        when(memberRepository.save(any(Member.class))).thenReturn(expectedMember);
+        given(memberRepository.save(any(Member.class))).willReturn(expectedMember);
 
         final MemberResponse response = memberService.createMember(memberCreateRequest);
 
@@ -77,7 +64,7 @@ class MemberServiceTest {
     @Test
     void findMemberTest() {
         final Member persistMember = createWithId(ID);
-        when(memberRepository.findById(anyLong())).thenReturn(Optional.of(persistMember));
+        given(memberRepository.findById(anyLong())).willReturn(Optional.of(persistMember));
 
         final MemberResponse response = memberService.findMember(ID);
 
@@ -86,8 +73,8 @@ class MemberServiceTest {
 
     @DisplayName("회원의 ID가 존재하지 않는 경우 예외를 반환한다.")
     @Test
-    void notFoundMemberTest() {
-        when(memberRepository.findById(anyLong())).thenReturn(Optional.empty());
+    void notFoundMember() {
+        given(memberRepository.findById(anyLong())).willReturn(Optional.empty());
 
         assertThatThrownBy(() -> memberService.findMember(ID))
             .isInstanceOf(MemberNotFoundException.class);
@@ -98,7 +85,7 @@ class MemberServiceTest {
     void findAllMemberTest() {
         final List<Member> persistMembers = Arrays.asList(MemberFixture.createWithId(ID),
             MemberFixture.createWithId(ID2));
-        when(memberRepository.findAll()).thenReturn(persistMembers);
+        given(memberRepository.findAll()).willReturn(persistMembers);
 
         final MemberResponses response = memberService.findAll();
 
@@ -119,7 +106,7 @@ class MemberServiceTest {
             MemberFixture.createWithId(1L),
             MemberFixture.createWithId(2L),
             MemberFixture.createWithId(4L));
-        when(memberRepository.findAllById(anyList())).thenReturn(members);
+        given(memberRepository.findAllById(anyList())).willReturn(members);
 
         final MemberResponses memberResponses = memberService.findAllById(ids);
 
@@ -134,10 +121,11 @@ class MemberServiceTest {
     void updateNameTest() {
         final Member originMember = MemberFixture.createWithId(ID);
         final Member updatedMember = MemberFixture.memberNameUpdated();
-        when(memberRepository.findById(anyLong())).thenReturn(Optional.of(originMember));
-        when(memberRepository.save(any(Member.class))).thenReturn(updatedMember);
+        given(memberRepository.findById(anyLong())).willReturn(Optional.of(originMember));
+        given(memberRepository.save(any(Member.class))).willReturn(updatedMember);
 
-        final MemberResponse memberResponse = memberService.updateName(originMember.getId(), createNameUpdateRequest());
+        final MemberResponse memberResponse = memberService.updateName(originMember.getId(),
+            createNameUpdateRequest());
 
         assertAll(
             () -> assertThat(memberResponse.getName()).isEqualTo(createNameUpdateRequest().getName()),
@@ -151,10 +139,11 @@ class MemberServiceTest {
     void updateCashTest() {
         final Member originMember = MemberFixture.createWithId(ID);
         final Member updatedMember = MemberFixture.memberCashUpdated(ID);
-        when(memberRepository.findById(anyLong())).thenReturn(Optional.of(originMember));
-        when(memberRepository.save(any(Member.class))).thenReturn(updatedMember);
+        given(memberRepository.findById(anyLong())).willReturn(Optional.of(originMember));
+        given(memberRepository.save(any(Member.class))).willReturn(updatedMember);
 
-        final MemberResponse memberResponse = memberService.updateCash(originMember.getId(), createCashUpdateRequest());
+        final MemberResponse memberResponse = memberService.updateCash(originMember.getId(),
+            createCashUpdateRequest());
 
         assertAll(
             () -> assertThat(memberResponse.getCash()).isEqualTo(createCashUpdateRequest().getCash()),
@@ -168,14 +157,26 @@ class MemberServiceTest {
     void updateProfile() {
         final Member originMember = MemberFixture.createWithId(ID);
         final Member updatedMember = MemberFixture.memberProfileUpdated(ID);
-        when(memberRepository.findById(anyLong())).thenReturn(Optional.of(originMember));
-        when(memberRepository.save(any(Member.class))).thenReturn(updatedMember);
-        when(s3UploadService.upload(any(MultipartFile.class))).thenReturn(S3_BASIC_URL);
+        given(memberRepository.findById(ID)).willReturn(Optional.of(originMember));
+        given(memberRepository.save(any(Member.class))).willReturn(updatedMember);
+        given(uploadService.upload(any(MultipartFile.class))).willReturn(S3_BASIC_URL);
 
         final MemberProfileResponse response = memberService.updateProfileImage(originMember.getId(),
             mockMultipartFile());
 
         assertThat(response.getImageUrl()).contains(S3_BASIC_URL);
+    }
+
+    @DisplayName("프로필의 바디가 null인 경우 기본 이미지를 등록한다.")
+    @Test
+    void updateProfileBasic() {
+        final Member originMember = MemberFixture.createWithId(ID);
+        final Member updatedMember = MemberFixture.memberUpdatedBasicProfile(ID);
+        given(memberRepository.findById(ID)).willReturn(Optional.of(originMember));
+        given(memberRepository.save(any(Member.class))).willReturn(updatedMember);
+
+        final MemberProfileResponse response = memberService.updateProfileImage(ID, null);
+        assertThat(response.getImageUrl()).isEqualTo(BASIC_PROFILE_URL);
     }
 
     @DisplayName("특정 회원을 삭제한다")
@@ -196,15 +197,24 @@ class MemberServiceTest {
     @DisplayName("Kakao Id로 회원을 조회한다.")
     @Test
     void findByKakaoIdTest() {
-        when(memberRepository.findByKakaoId(KAKAO_ID)).thenReturn(Optional.of(expectedMember));
+        given(memberRepository.findByKakaoId(KAKAO_ID)).willReturn(Optional.of(expectedMember));
 
         assertThat(memberService.findByKakaoId(KAKAO_ID)).isEqualToComparingFieldByField(expectedMember);
     }
 
     @DisplayName("Kakao Id로 없는 회원을 조회하는 경우 예외를 반환한다.")
     @Test
-    void findByKakaoIdTest2() {
-        when(memberRepository.findByKakaoId(KAKAO_ID)).thenReturn(Optional.empty());
+    public void retrieveExistMemberTest() {
+        given(memberRepository.findByKakaoId(KAKAO_ID)).willReturn(Optional.of(expectedMember));
+
+        assertThat(memberService.findByKakaoId(createMockKakaoUserResponse().getId())).isEqualToComparingFieldByField(
+            expectedMember);
+    }
+
+    @DisplayName("Kakao User Response를 통해 신규 유저인 경우 생성하고 조회한다.")
+    @Test
+    public void retrieveNewMemberTest() {
+        given(memberRepository.findByKakaoId(KAKAO_ID)).willReturn(Optional.empty());
 
         assertThatThrownBy(() -> memberService.findByKakaoId(KAKAO_ID))
             .isInstanceOf(MemberNotFoundException.class)

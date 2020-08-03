@@ -33,6 +33,7 @@ public class MemberFixture {
     public static final Long KAKAO_ID2 = 2L;
     public static final Long KAKAO_ID3 = 3L;
     public static final String TEST_UPDATED_URL = "DDDDDDDDDDDDDDDDDDDDDDDDD";
+    public static final String BASIC_PROFILE_URL = "https://market-photos.s3.ap-northeast-2.amazonaws.com/asdasdsadasd.png";
 
     public static MemberCreateRequest createRequest(final Long kakaoId, final String email, final String name) {
         return MemberCreateRequest.builder()
@@ -137,6 +138,18 @@ public class MemberFixture {
             .id(id)
             .kakaoId(KAKAO_ID)
             .profile(new ImageUrl(TEST_UPDATED_URL))
+            .email(EMAIL)
+            .name(NAME)
+            .cash(CASH)
+            .role(ROLE)
+            .build();
+    }
+
+    public static Member memberUpdatedBasicProfile(final Long id) {
+        return Member.builder()
+            .id(id)
+            .kakaoId(KAKAO_ID)
+            .profile(new ImageUrl(BASIC_PROFILE_URL))
             .email(EMAIL)
             .name(NAME)
             .cash(CASH)

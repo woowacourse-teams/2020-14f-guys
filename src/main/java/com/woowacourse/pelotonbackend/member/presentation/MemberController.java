@@ -1,6 +1,7 @@
 package com.woowacourse.pelotonbackend.member.presentation;
 
 import java.net.URI;
+import java.util.Objects;
 
 import javax.validation.Valid;
 
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.woowacourse.pelotonbackend.common.exception.UploadFailureException;
 import com.woowacourse.pelotonbackend.member.application.MemberService;
 import com.woowacourse.pelotonbackend.member.presentation.dto.MemberCashUpdateRequest;
 import com.woowacourse.pelotonbackend.member.presentation.dto.MemberCreateRequest;
@@ -84,7 +86,7 @@ public class MemberController {
 
     @PostMapping(value = "/profile", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<MemberProfileResponse> updateProfileImage(@LoginMember MemberResponse memberResponse,
-        @RequestParam(value = "profile_image") final MultipartFile file) {
+        @RequestParam(value = "profile_image", required = false) final MultipartFile file) {
         MemberProfileResponse response = memberService.updateProfileImage(memberResponse.getId(), file);
 
         return ResponseEntity.ok(response);

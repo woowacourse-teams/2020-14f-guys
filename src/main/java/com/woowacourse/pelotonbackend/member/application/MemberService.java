@@ -28,6 +28,8 @@ import lombok.AllArgsConstructor;
 @Transactional
 @Service
 public class MemberService {
+    private static final String BASIC_URL = "https://market-photos.s3.ap-northeast-2.amazonaws.com/asdasdsadasd.png";
+
     private final MemberRepository memberRepository;
     private final UploadService uploadService;
 
@@ -83,7 +85,6 @@ public class MemberService {
         if (Objects.isNull(id)) {
             throw new MemberIdInvalidException(id);
         }
-
         memberRepository.deleteById(id);
     }
 
@@ -101,7 +102,7 @@ public class MemberService {
 
     public MemberProfileResponse updateProfileImage(final Long memberId, final MultipartFile file) {
         final Member member = findMemberById(memberId);
-        final String changedProfileUrl = uploadService.upload(file);
+        String changedProfileUrl = Objects.isNull(file) ? BASIC_URL : uploadService.upload(file);
         final Member updatedMember = member.changeProfile(new ImageUrl(changedProfileUrl));
 
         memberRepository.save(updatedMember);
