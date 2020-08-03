@@ -67,10 +67,10 @@ public class RaceFixture {
         return Race.builder()
             .id(TEST_RACE_ID)
             .title(TEST_CHANGED_TITLE)
+            .description(TEST_CHANGED_DESCRIPTION)
+            .raceDuration(new DateDuration(TEST_CHANGED_START_TIME, TEST_CHANGED_END_TIME))
             .entranceFee(new Cash(TEST_CHANGED_MONEY_AMOUNT))
             .category(TEST_CHANGED_CATEGORY)
-            .raceDuration(new DateDuration(TEST_CHANGED_START_TIME, TEST_CHANGED_END_TIME))
-            .description(TEST_CHANGED_DESCRIPTION)
             .certificationExample(TEST_CHANGED_CERTIFICATION_URL)
             .thumbnail(TEST_CHANGED_THUMBNAIL_URL)
             .build();

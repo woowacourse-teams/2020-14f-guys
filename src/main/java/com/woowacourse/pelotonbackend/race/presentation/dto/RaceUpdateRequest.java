@@ -3,10 +3,16 @@ package com.woowacourse.pelotonbackend.race.presentation.dto;
 import java.beans.ConstructorProperties;
 
 import javax.validation.Valid;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.woowacourse.pelotonbackend.race.domain.DateDuration;
 import com.woowacourse.pelotonbackend.race.domain.Race;
 import com.woowacourse.pelotonbackend.race.domain.RaceCategory;
+import com.woowacourse.pelotonbackend.support.jsonparser.CashDeserializer;
+import com.woowacourse.pelotonbackend.support.jsonparser.CashSerializer;
 import com.woowacourse.pelotonbackend.vo.Cash;
 import com.woowacourse.pelotonbackend.vo.ImageUrl;
 import lombok.AccessLevel;
@@ -20,16 +26,19 @@ import lombok.Getter;
 @Builder
 @Getter
 public class RaceUpdateRequest {
+    @NotBlank
     private final String title;
 
+    @NotBlank
     private final String description;
 
-    @Valid
+    @NotNull @Valid
     private final DateDuration raceDuration;
 
+    @NotNull
     private final RaceCategory category;
 
-    @Valid
+    @NotNull @Valid
     private final Cash entranceFee;
 
     // TODO: Url이 아닌 파일을 직접 업로드하도록 수정해야함
