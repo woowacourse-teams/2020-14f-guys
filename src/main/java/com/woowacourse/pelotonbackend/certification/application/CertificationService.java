@@ -7,6 +7,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.woowacourse.pelotonbackend.certification.domain.Certification;
 import com.woowacourse.pelotonbackend.certification.domain.CertificationRepository;
 import com.woowacourse.pelotonbackend.certification.domain.dto.CertificationCreateRequest;
+import com.woowacourse.pelotonbackend.common.upload.UploadService;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor

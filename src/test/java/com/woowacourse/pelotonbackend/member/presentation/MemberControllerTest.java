@@ -32,6 +32,7 @@ import org.springframework.web.context.request.NativeWebRequest;
 import org.springframework.web.filter.CharacterEncodingFilter;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.method.support.ModelAndViewContainer;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -177,6 +178,26 @@ public class MemberControllerTest {
         )
             .andExpect(status().isOk())
             .andExpect(header().string("Location", String.format("%s/%d", RESOURCE_URL, ID)));
+    }
+
+    @DisplayName("회원의 Profile 사진을 수정한다.")
+    @Test
+    void updateMemberProfile() throws Exception {
+        final Member expectedMember = createWithId(ID);
+        final MemberResponse expectedResponse = MemberResponse.from(expectedMember);
+        given(bearerAuthInterceptor.preHandle(any(HttpServletRequest.class), any(HttpServletResponse.class),
+            any(HandlerMethod.class))).willReturn(true);
+        given(argumentResolver.resolveArgument(any(MethodParameter.class), any(ModelAndViewContainer.class), any(
+            NativeWebRequest.class), any(WebDataBinderFactory.class))).willReturn(expectedMember);
+        given(argumentResolver.supportsParameter(any())).willReturn(true);
+        given(memberService.findMember(ID)).willReturn(expectedResponse);
+        given(memberService.updateProfileImage(anyLong(), any(MultipartFile.class)))
+            .willReturn(MemberFixture.memberProfileUpdated());
+
+        mockMvc.perform(multipart(RESOURCE_URL + "/profile")
+            .file("profile_image",createMockMultiPart().getBytes())
+        )
+            .andExpect(status().isOk());
     }
 
     @DisplayName("특정 회원을 삭제한다.")

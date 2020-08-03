@@ -1,5 +1,10 @@
 package com.woowacourse.pelotonbackend.member.application;
 
+<<<<<<< HEAD
+=======
+import static com.woowacourse.pelotonbackend.member.acceptance.MemberAcceptanceTest.*;
+import static com.woowacourse.pelotonbackend.member.domain.LoginFixture.*;
+>>>>>>> caa85f5... feat: 회원 프로필 수정(사진 업로드) 구현
 import static com.woowacourse.pelotonbackend.member.domain.MemberFixture.*;
 import static org.assertj.core.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.*;
@@ -16,13 +21,16 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.web.multipart.MultipartFile;
 
+import com.woowacourse.pelotonbackend.common.upload.S3UploadService;
 import com.woowacourse.pelotonbackend.common.exception.MemberIdInvalidException;
 import com.woowacourse.pelotonbackend.common.exception.MemberNotFoundException;
 import com.woowacourse.pelotonbackend.member.domain.Member;
 import com.woowacourse.pelotonbackend.member.domain.MemberFixture;
 import com.woowacourse.pelotonbackend.member.domain.MemberRepository;
 import com.woowacourse.pelotonbackend.member.presentation.dto.MemberCreateRequest;
+import com.woowacourse.pelotonbackend.member.presentation.dto.MemberProfileResponse;
 import com.woowacourse.pelotonbackend.member.presentation.dto.MemberResponse;
 import com.woowacourse.pelotonbackend.member.presentation.dto.MemberResponses;
 
@@ -33,11 +41,24 @@ class MemberServiceTest {
     @Mock
     private MemberRepository memberRepository;
 
+<<<<<<< HEAD
+=======
+    @Mock
+    private RandomGenerator randomGenerator;
+
+    @Mock
+    private S3UploadService s3UploadService;
+
+>>>>>>> caa85f5... feat: 회원 프로필 수정(사진 업로드) 구현
     private Member expectedMember;
 
     @BeforeEach
     void setUp() {
+<<<<<<< HEAD
         memberService = new MemberService(memberRepository);
+=======
+        memberService = new MemberService(memberRepository, randomGenerator, s3UploadService);
+>>>>>>> caa85f5... feat: 회원 프로필 수정(사진 업로드) 구현
         expectedMember = createWithId(ID);
     }
 
@@ -140,6 +161,21 @@ class MemberServiceTest {
             () -> assertThat(memberResponse).isEqualToIgnoringGivenFields(originMember, "cash", "createdAt",
                 "updatedAt")
         );
+    }
+
+    @DisplayName("회원의 프로필을 수정한다.")
+    @Test
+    void updateProfile() {
+        final Member originMember = MemberFixture.createWithId(ID);
+        final Member updatedMember = MemberFixture.memberProfileUpdated(ID);
+        when(memberRepository.findById(anyLong())).thenReturn(Optional.of(originMember));
+        when(memberRepository.save(any(Member.class))).thenReturn(updatedMember);
+        when(s3UploadService.upload(any(MultipartFile.class))).thenReturn(S3_BASIC_URL);
+
+        final MemberProfileResponse response = memberService.updateProfileImage(originMember.getId(),
+            mockMultipartFile());
+
+        assertThat(response.getImageUrl()).contains(S3_BASIC_URL);
     }
 
     @DisplayName("특정 회원을 삭제한다")

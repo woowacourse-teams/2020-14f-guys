@@ -55,17 +55,23 @@ public class Member {
     @With(AccessLevel.PACKAGE)
     private final LocalDateTime updatedAt;
 
-    public Member update(final String name) {
+    public Member changeName(final String name) {
         return this.toBuilder()
             .name(name)
             .build();
         // todo : 테스트 추가 필요
     }
 
-    public Member update(final Cash cash) {
+    public Member changeCash(final Cash cash) {
         return this.toBuilder()
             .cash(cash)
             .build();
         // todo : 테스트 추가 필요
+    }
+
+    public Member changeProfile(final ImageUrl profileImageUrl) {
+        return this.toBuilder()
+            .profile(profileImageUrl)
+            .build();
     }
 }

@@ -1,4 +1,4 @@
-package com.woowacourse.pelotonbackend.certification.application;
+package com.woowacourse.pelotonbackend.common.upload;
 
 import org.springframework.web.multipart.MultipartFile;
 

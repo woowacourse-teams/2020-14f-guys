@@ -7,16 +7,20 @@ import javax.validation.Valid;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.woowacourse.pelotonbackend.common.exception.MemberIdInvalidException;
 import com.woowacourse.pelotonbackend.common.exception.MemberNotFoundException;
+import com.woowacourse.pelotonbackend.common.upload.UploadService;
 import com.woowacourse.pelotonbackend.member.domain.Member;
 import com.woowacourse.pelotonbackend.member.domain.MemberRepository;
 import com.woowacourse.pelotonbackend.member.presentation.dto.MemberCashUpdateRequest;
 import com.woowacourse.pelotonbackend.member.presentation.dto.MemberCreateRequest;
 import com.woowacourse.pelotonbackend.member.presentation.dto.MemberNameUpdateRequest;
+import com.woowacourse.pelotonbackend.member.presentation.dto.MemberProfileResponse;
 import com.woowacourse.pelotonbackend.member.presentation.dto.MemberResponse;
 import com.woowacourse.pelotonbackend.member.presentation.dto.MemberResponses;
+import com.woowacourse.pelotonbackend.vo.ImageUrl;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 
@@ -25,6 +29,7 @@ import lombok.AllArgsConstructor;
 @Service
 public class MemberService {
     private final MemberRepository memberRepository;
+    private final UploadService uploadService;
 
     public MemberResponse createMember(final @Valid MemberCreateRequest memberCreateRequest) {
         final Member persistMember = memberRepository.save(memberCreateRequest.toMember());
@@ -60,7 +65,7 @@ public class MemberService {
 
     public MemberResponse updateName(final Long id, final MemberNameUpdateRequest request) {
         final Member member = findMemberById(id);
-        final Member updatedMember = member.update(request.getName());
+        final Member updatedMember = member.changeName(request.getName());
         final Member persist = memberRepository.save(updatedMember);
 
         return MemberResponse.from(persist);
@@ -68,7 +73,7 @@ public class MemberService {
 
     public MemberResponse updateCash(final Long id, final MemberCashUpdateRequest request) {
         final Member member = findMemberById(id);
-        final Member updatedMember = member.update(request.getCash());
+        final Member updatedMember = member.changeCash(request.getCash());
         final Member persist = memberRepository.save(updatedMember);
 
         return MemberResponse.from(persist);
@@ -91,7 +96,16 @@ public class MemberService {
         final Member member = memberRepository.findByKakaoId(kakaoId)
             .orElseThrow(
                 () -> new MemberNotFoundException(String.format("Member(member kakaoId = %d not exist)", kakaoId)));
-
         return MemberResponse.from(member);
+    }
+
+    public MemberProfileResponse updateProfileImage(final Long memberId, final MultipartFile file) {
+        final Member member = findMemberById(memberId);
+        final String changedProfileUrl = uploadService.upload(file);
+        final Member updatedMember = member.changeProfile(new ImageUrl(changedProfileUrl));
+
+        memberRepository.save(updatedMember);
+
+        return new MemberProfileResponse(changedProfileUrl);
     }
 }

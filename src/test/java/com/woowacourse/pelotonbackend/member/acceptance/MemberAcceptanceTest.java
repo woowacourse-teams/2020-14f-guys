@@ -4,6 +4,9 @@ import static com.woowacourse.pelotonbackend.member.domain.MemberFixture.*;
 import static org.assertj.core.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.*;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.util.List;
 
 import org.junit.jupiter.api.DisplayName;
@@ -22,6 +25,10 @@ import com.woowacourse.pelotonbackend.support.AcceptanceTest;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class MemberAcceptanceTest extends AcceptanceTest {
+    public static final String S3_BASIC_URL = "https://market-photos.s3.ap-northeast-2.amazonaws.com/";
+    public static final String FILE_PATH = "src/test/resources";
+    public static final String FILE_NAME = "SampleFile.jpeg";
+    public static final File FILE = new File(String.format("%s/%s", FILE_PATH, FILE_NAME));
     /*
     Scenario : 회원을 관리한다.
         when : 회원을 만든다.
@@ -40,10 +47,11 @@ public class MemberAcceptanceTest extends AcceptanceTest {
 
     @DisplayName("회원을 관리하는 기능")
     @Test
-    void manageMember() {
+    void manageMember() throws FileNotFoundException {
         final MemberResponse memberResponse = createAndFindMember();
         updateName(memberResponse);
         updateCash(memberResponse);
+        updateProfile(memberResponse);
         requestDelete(memberResponse);
     }
 
@@ -91,6 +99,13 @@ public class MemberAcceptanceTest extends AcceptanceTest {
         );
     }
 
+    private void updateProfile(final MemberResponse memberResponse) throws FileNotFoundException {
+        requestUpdateProfile(memberResponse.getKakaoId());
+        final MemberResponse imageUpdatedResponse = requestFind(memberResponse.getKakaoId());
+
+        assertThat(imageUpdatedResponse.getProfile().getBaseImageUrl()).contains(S3_BASIC_URL);
+    }
+
     private void requestDelete(MemberResponse memberResponse) {
         requestDelete(memberResponse.getKakaoId());
         final MemberResponses responseAfterDelete = requestFindAll(KAKAO_ID2);
@@ -106,6 +121,20 @@ public class MemberAcceptanceTest extends AcceptanceTest {
             .then()
             .log().all()
             .statusCode(HttpStatus.NO_CONTENT.value());
+    }
+
+    private void requestUpdateProfile(final Long kakaoId) throws FileNotFoundException {
+        FileInputStream fileInputStream = new FileInputStream(FILE);
+
+        given()
+            .when()
+            .header(createTokenHeader(kakaoId))
+            .contentType(MediaType.MULTIPART_FORM_DATA_VALUE)
+            .multiPart("profile_image", FILE_NAME, fileInputStream, MediaType.IMAGE_JPEG_VALUE)
+            .post(RESOURCE_URL + "/profile")
+            .then()
+            .log().all()
+            .statusCode(HttpStatus.OK.value());
     }
 
     private void requestUpdateCash(final Long kakaoId, final MemberCashUpdateRequest cashUpdatedRequest) {
