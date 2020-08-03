@@ -3,7 +3,6 @@ package com.woowacourse.pelotonbackend.common;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import org.springframework.http.HttpStatus;
 import org.springframework.validation.BindingResult;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -21,29 +20,18 @@ public class ErrorResponse {
     private final String message;
     private final List<FieldError> errors;
 
-    public static ErrorResponse of(final int status, final String code,
-        final String message, final BindingResult result) {
-
-        return new ErrorResponse(status, code, message, FieldError.listOf(result));
-    }
-
-    public static ErrorResponse of(final HttpStatus status, final String code,
-        final String message,
+    public static ErrorResponse of(final int status, final String code, final String message,
         final BindingResult result) {
 
-        return new ErrorResponse(status.value(), code, message, FieldError.listOf(result));
+        return new ErrorResponse(status, code, message, FieldError.listOf(result));
     }
 
     public static ErrorResponse of(final int status, final String code, final String message) {
         return new ErrorResponse(status, code, message, null);
     }
 
-    public static ErrorResponse of(final HttpStatus status, final String code, final String message) {
-        return new ErrorResponse(status.value(), code, message, null);
-    }
-
-    @AllArgsConstructor
     @Getter
+    @AllArgsConstructor
     @NoArgsConstructor(access = AccessLevel.PROTECTED)
     public static class FieldError {
         private String field;
