@@ -80,7 +80,6 @@ public class MemberControllerTest {
     @DisplayName("회원을 생성한다")
     @Test
     void createMember() throws Exception {
-
         final MemberResponse memberResponse = MemberFixture.memberResponse();
         given(bearerAuthInterceptor.preHandle(any(HttpServletRequest.class), any(HttpServletResponse.class),
             any(HandlerMethod.class))).willReturn(true);
