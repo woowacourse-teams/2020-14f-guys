@@ -8,8 +8,8 @@ import com.woowacourse.pelotonbackend.member.domain.Member;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
-@Getter
 @AllArgsConstructor(onConstructor_ = @ConstructorProperties("responses"))
+@Getter
 public class MemberResponses {
     private final List<MemberResponse> responses;
 

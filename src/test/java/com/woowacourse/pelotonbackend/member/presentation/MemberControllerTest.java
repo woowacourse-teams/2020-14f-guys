@@ -213,7 +213,7 @@ public class MemberControllerTest {
         mockMvc.perform(get(RESOURCE_URL)
             .accept(MediaType.APPLICATION_JSON)
         )
-            .andExpect(status().isBadRequest())
+            .andExpect(status().isNotFound())
             .andExpect(jsonPath("code").value(ErrorCode.MEMBER_NOT_FOUND.getCode()))
             .andExpect(jsonPath("errors").doesNotExist());
     }
@@ -230,7 +230,7 @@ public class MemberControllerTest {
 
         mockMvc.perform(delete(RESOURCE_URL)
         )
-            .andExpect(status().isBadRequest())
+            .andExpect(status().isNotFound())
             .andExpect(jsonPath("code").value(ErrorCode.MEMBER_NOT_FOUND.getCode()))
             .andExpect(jsonPath("errors").doesNotExist());
     }

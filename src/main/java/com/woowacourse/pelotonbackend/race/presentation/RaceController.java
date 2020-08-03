@@ -19,12 +19,10 @@ import com.woowacourse.pelotonbackend.race.presentation.dto.RaceCreateRequest;
 import com.woowacourse.pelotonbackend.race.presentation.dto.RaceRetrieveResponse;
 import com.woowacourse.pelotonbackend.race.presentation.dto.RaceUpdateRequest;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 
 @RequestMapping("/api/races")
 @RequiredArgsConstructor
 @RestController
-@Slf4j
 public class RaceController {
     private final RaceService raceService;
 

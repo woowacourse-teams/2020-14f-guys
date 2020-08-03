@@ -15,23 +15,24 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.MalformedJwtException;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.SignatureException;
+import io.jsonwebtoken.UnsupportedJwtException;
 
 @Component
 public class JwtTokenProvider {
     private final String secretKey;
     private final long validityInMilliseconds;
 
-    public JwtTokenProvider(@Value("${secrets.jwt.token.secret-key}") String secretKey,
-        @Value("${secrets.jwt.token.expire-length}") long validityInMilliseconds) {
+    public JwtTokenProvider(@Value("${secrets.jwt.token.secret-key}") final String secretKey,
+        @Value("${secrets.jwt.token.expire-length}") final long validityInMilliseconds) {
         this.secretKey = Base64.getEncoder().encodeToString(secretKey.getBytes());
         this.validityInMilliseconds = validityInMilliseconds;
     }
 
-    public String createToken(String subject) {
-        Claims claims = Jwts.claims().setSubject(subject);
+    public String createToken(final String subject) {
+        final Claims claims = Jwts.claims().setSubject(subject);
 
-        Date now = new Date();
-        Date validity = new Date(now.getTime() + validityInMilliseconds);
+        final Date now = new Date();
+        final Date validity = new Date(now.getTime() + validityInMilliseconds);
 
         return Jwts.builder()
             .setClaims(claims)
@@ -41,17 +42,17 @@ public class JwtTokenProvider {
             .compact();
     }
 
-    public String getSubject(String token) {
+    public String getSubject(final String token) {
         return validateToken(token).getBody().getSubject();
     }
 
-    private Jws<Claims> validateToken(String token) {
+    private Jws<Claims> validateToken(final String token) {
         try {
             return Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token);
-        } catch (MalformedJwtException | SignatureException | IllegalArgumentException e) {
-            throw new TokenInvalidException(ErrorCode.INVALID_TOKEN, "토큰이 유효하지 않습니다. 다시 로그인 해주세요.");
+        } catch (MalformedJwtException | SignatureException | IllegalArgumentException| UnsupportedJwtException e) {
+            throw new TokenInvalidException(ErrorCode.INVALID_TOKEN, "Token is Invalid. Login again.");
         } catch (ExpiredJwtException e) {
-            throw new TokenInvalidException(ErrorCode.TOKEN_EXPIRED, "토큰이 만료되었습니다. 다시 로그인 해주세요.");
+            throw new TokenInvalidException(ErrorCode.TOKEN_EXPIRED, "Token is expired. Login again.");
         }
     }
 }

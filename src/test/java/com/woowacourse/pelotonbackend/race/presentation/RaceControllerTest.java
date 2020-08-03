@@ -25,10 +25,10 @@ import org.springframework.web.filter.CharacterEncodingFilter;
 import org.springframework.web.method.HandlerMethod;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.woowacourse.pelotonbackend.common.exception.RaceNotFoundException;
 import com.woowacourse.pelotonbackend.member.presentation.LoginMemberArgumentResolver;
 import com.woowacourse.pelotonbackend.race.application.RaceService;
 import com.woowacourse.pelotonbackend.race.domain.RaceFixture;
-import com.woowacourse.pelotonbackend.race.exception.RaceNotFoundException;
 import com.woowacourse.pelotonbackend.race.presentation.dto.RaceRetrieveResponse;
 import com.woowacourse.pelotonbackend.race.presentation.dto.RaceUpdateRequest;
 import com.woowacourse.pelotonbackend.support.BearerAuthInterceptor;
@@ -168,7 +168,7 @@ class RaceControllerTest {
         given(raceService.retrieve(notExistRaceId)).willThrow(new RaceNotFoundException(notExistRaceId));
 
         mockMvc.perform(get(String.format("/api/races/%d", notExistRaceId)))
-            .andExpect(status().isBadRequest());
+            .andExpect(status().isNotFound());
     }
 
     @DisplayName("존재하지 않는 아이디의 update 요청에 예외처리")
@@ -184,6 +184,6 @@ class RaceControllerTest {
             .contentType(MediaType.APPLICATION_JSON)
             .content(objectMapper.writeValueAsBytes(RaceFixture.createUpdatedRace()))
         )
-            .andExpect(status().isBadRequest());
+            .andExpect(status().isNotFound());
     }
 }

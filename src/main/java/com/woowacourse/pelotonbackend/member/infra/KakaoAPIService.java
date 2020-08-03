@@ -42,7 +42,8 @@ public class KakaoAPIService implements LoginAPIService<KakaoTokenResponse, Kaka
     private final String grantTypeValue;
 
     public KakaoAPIService(@Value("${secrets.kakao.authorizeUri}") final String authorizeUri,
-        @Value("${secrets.kakao.apiUri}") final String apiUri, @Value("${server.uri}") final String serverUri,
+        @Value("${secrets.kakao.apiUri}") final String apiUri,
+        @Value("${server.uri}") final String serverUri,
         @Value("${secrets.kakao.clientId}") final String clientIdValue,
         @Value("${secrets.kakao.clientSecret}") final String clientSecretValue,
         @Value("${secrets.kakao.responseType}") final String responseTypeValue,

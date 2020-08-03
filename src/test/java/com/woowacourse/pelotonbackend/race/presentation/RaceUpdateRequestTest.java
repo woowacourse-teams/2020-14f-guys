@@ -16,6 +16,6 @@ class RaceUpdateRequestTest {
         final Race race = RaceFixture.createWithId(1L);
         final RaceUpdateRequest updateRequest = RaceFixture.updateRequest();
 
-        assertThat(updateRequest.toEntity(race)).isEqualToComparingFieldByField(RaceFixture.createUpdatedRace());
+        assertThat(updateRequest.toRace(race)).isEqualToComparingFieldByField(RaceFixture.createUpdatedRace());
     }
 }

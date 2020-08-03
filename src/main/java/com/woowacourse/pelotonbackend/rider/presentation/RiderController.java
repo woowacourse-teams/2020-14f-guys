@@ -19,14 +19,14 @@ import com.woowacourse.pelotonbackend.rider.presentation.dto.RiderCreateRequest;
 import com.woowacourse.pelotonbackend.support.annotation.LoginMember;
 import lombok.RequiredArgsConstructor;
 
-@RestController
 @RequestMapping("/api/riders")
 @RequiredArgsConstructor
+@RestController
 public class RiderController {
     private final RiderService riderService;
 
     @PostMapping
-    public ResponseEntity<Void> create(@LoginMember MemberResponse member,
+    public ResponseEntity<Void> create(@LoginMember final MemberResponse member,
         @Valid @RequestBody final RiderCreateRequest riderCreateRequest) {
 
         return ResponseEntity

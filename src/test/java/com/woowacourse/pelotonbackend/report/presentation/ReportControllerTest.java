@@ -48,7 +48,7 @@ class ReportControllerTest {
     void createReport() throws Exception {
         final Long createdReportId = 10L;
         given(authInterceptor.preHandle(any(), any(), any())).willReturn(true);
-        when(reportService.createReport(any(ReportCreateContent.class))).thenReturn(createdReportId);
+        when(reportService.createReport(any(ReportCreateRequest.class))).thenReturn(createdReportId);
 
         MvcResult mvcResult = mockMvc.perform(
             post("/api/reports")

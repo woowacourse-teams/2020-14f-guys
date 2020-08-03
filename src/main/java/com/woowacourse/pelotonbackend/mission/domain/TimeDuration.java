@@ -10,6 +10,7 @@ import lombok.Value;
 public class TimeDuration {
     @FutureOrPresent
     private final LocalDateTime startTime;
+    // todo : 포맷팅 해결
 
     @FutureOrPresent
     private final LocalDateTime endTime;

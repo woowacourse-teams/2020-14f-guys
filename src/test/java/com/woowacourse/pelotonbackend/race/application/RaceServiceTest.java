@@ -42,7 +42,7 @@ public class RaceServiceTest {
     void create() {
         final Race race = RaceFixture.createWithoutId();
         final Race savedRace = RaceFixture.createMockRequest()
-            .toEntity(RaceFixture.TEST_CERTIFICATION_URL, RaceFixture.TEST_THUMBNAIL_URL);
+            .toRace(RaceFixture.TEST_CERTIFICATION_URL, RaceFixture.TEST_THUMBNAIL_URL);
         given(raceRepository.save(race)).willReturn(savedRace);
         final RaceCategory category = race.getCategory();
         given(randomGenerator.getRandomIntLowerThan(category.getCertifications().size())).willReturn(0);
@@ -81,7 +81,7 @@ public class RaceServiceTest {
         final Race race = RaceFixture.createWithId(1L);
         final RaceUpdateRequest request = RaceFixture.updateRequest();
         given(raceRepository.findById(race.getId())).willReturn(Optional.of(race));
-        given(raceRepository.save(request.toEntity(race))).willReturn(RaceFixture.createUpdatedRace());
+        given(raceRepository.save(request.toRace(race))).willReturn(RaceFixture.createUpdatedRace());
 
         raceService.update(race.getId(), request);
 

@@ -60,11 +60,13 @@ public class Member {
         return this.toBuilder()
             .name(name)
             .build();
+        // todo : 테스트 추가 필요
     }
 
     public Member update(final Cash cash) {
         return this.toBuilder()
             .cash(cash)
             .build();
+        // todo : 테스트 추가 필요
     }
 }

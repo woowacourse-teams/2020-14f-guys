@@ -2,7 +2,6 @@ package com.woowacourse.pelotonbackend.member.presentation.dto;
 
 import java.beans.ConstructorProperties;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.woowacourse.pelotonbackend.member.domain.Member;
