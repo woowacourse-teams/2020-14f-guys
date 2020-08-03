@@ -8,6 +8,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.dao.IncorrectResultSizeDataAccessException;
 
 @SpringBootTest
 class ReportRepositoryTest {
@@ -46,5 +47,20 @@ class ReportRepositoryTest {
         final boolean notExistReport = reportRepository.existsByMemberIdAndCertificationId(10L, 10L);
 
         assertThat(notExistReport).isFalse();
+    }
+
+    @DisplayName("MemberId와 CertificationId가 중복되는 데이터가 있다면 AssertionError")
+    @Test
+    void throwErrorIfMemberIdAndCertificationIdDuplicate() {
+        final Report report = ReportFixture.createWithoutId();
+        final Report anotherReport = ReportFixture.createWithoutId();
+
+        reportRepository.save(report);
+        reportRepository.save(anotherReport);
+
+        assertThatThrownBy(() -> {
+            reportRepository.existsByMemberIdAndCertificationId(MEMBER_ID, CERTIFICATION_ID);
+        })
+        .isInstanceOf(AssertionError.class);
     }
 }
