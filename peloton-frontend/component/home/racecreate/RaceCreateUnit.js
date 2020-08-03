@@ -55,6 +55,10 @@ const RaceCreateUnit = ({
           onCancel={() => setIsShowPicker(false)}
           onConfirm={onPickDate}
           minimumDate={new Date()}
+          locale="ko-KR"
+          confirmTextIOS="확인"
+          cancelTextIOS="취소"
+          headerTextIOS="날짜를 골라주세요"
         />
       )}
     </View>

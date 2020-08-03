@@ -42,12 +42,12 @@ const HomeNavigationRoot = () => {
       <HomeStack.Screen
         name="InputRaceDates"
         component={InputRaceDates}
-        options={{ title: "레이스 정보 입력" }}
+        options={{ title: "레이스 기간 선택" }}
       />
       <HomeStack.Screen
         name="InputRaceFee"
         component={InputRaceFee}
-        options={{ title: "레이스 정보 입력" }}
+        options={{ title: "레이스 입장료 입력" }}
       />
     </HomeStack.Navigator>
   );
