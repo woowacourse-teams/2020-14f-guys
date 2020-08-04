@@ -3,8 +3,6 @@ package com.woowacourse.pelotonbackend.rider.acceptance;
 import static com.woowacourse.pelotonbackend.rider.domain.RiderFixture.*;
 import static org.assertj.core.api.Assertions.*;
 
-import java.util.List;
-
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
@@ -12,8 +10,9 @@ import org.springframework.http.MediaType;
 
 import com.woowacourse.pelotonbackend.member.domain.MemberFixture;
 import com.woowacourse.pelotonbackend.rider.domain.RiderFixture;
-import com.woowacourse.pelotonbackend.rider.presentation.RiderResponse;
+import com.woowacourse.pelotonbackend.rider.presentation.dto.RiderResponse;
 import com.woowacourse.pelotonbackend.rider.presentation.dto.RiderCreateRequest;
+import com.woowacourse.pelotonbackend.rider.presentation.dto.RiderResponses;
 import com.woowacourse.pelotonbackend.support.AcceptanceTest;
 import com.woowacourse.pelotonbackend.support.dto.JwtTokenResponse;
 
@@ -41,21 +40,21 @@ public class RiderAcceptanceTest extends AcceptanceTest {
     void manageRider() {
         final JwtTokenResponse tokenResponse = loginMember(
             MemberFixture.createRequest(MemberFixture.KAKAO_ID, MemberFixture.EMAIL, MemberFixture.NAME));
-        final String resource = fetchCreate(tokenResponse);
-        fetchFind(resource, tokenResponse);
+        final String resource = fetchCreateRider(tokenResponse);
+        fetchFindRider(resource, tokenResponse);
 
-        fetchCreateMembers(tokenResponse);
+        fetchCreateRiders(tokenResponse);
         fetchFindRidersByRaceId(TEST_RACE_ID, tokenResponse);
     }
 
-    private void fetchCreateMembers(final JwtTokenResponse tokenResponse) {
+    private void fetchCreateRiders(final JwtTokenResponse tokenResponse) {
         for (int i = 0; i < RIDER_NUMBER; i++) {
-            fetchCreate(tokenResponse);
+            fetchCreateRider(tokenResponse);
         }
     }
 
     private void fetchFindRidersByRaceId(final Long raceId, final JwtTokenResponse tokenResponse) {
-        final List<RiderResponse> riders = given()
+        final RiderResponses riders = given()
             .header(createTokenHeader(tokenResponse))
             .accept(MediaType.APPLICATION_JSON_VALUE)
             .when()
@@ -63,12 +62,13 @@ public class RiderAcceptanceTest extends AcceptanceTest {
             .then()
             .statusCode(HttpStatus.OK.value())
             .extract()
-            .body().jsonPath().getList("riders", RiderResponse.class);
+            .body()
+            .as(RiderResponses.class);
 
-        assertThat(riders.size()).isEqualTo(RIDER_NUMBER + 1);
+        assertThat(riders.getRiderResponses().size()).isEqualTo(RIDER_NUMBER + 1);
     }
 
-    private RiderResponse fetchFind(final String resource, JwtTokenResponse tokenResponse) {
+    private RiderResponse fetchFindRider(final String resource, JwtTokenResponse tokenResponse) {
         return given()
             .header(createTokenHeader(tokenResponse))
             .accept(MediaType.APPLICATION_JSON_VALUE)
@@ -81,7 +81,7 @@ public class RiderAcceptanceTest extends AcceptanceTest {
             .as(RiderResponse.class);
     }
 
-    private String fetchCreate(JwtTokenResponse tokenResponse) {
+    private String fetchCreateRider(JwtTokenResponse tokenResponse) {
         final RiderCreateRequest riderCreateRequest = RiderFixture.createMockRequest();
 
         return given()

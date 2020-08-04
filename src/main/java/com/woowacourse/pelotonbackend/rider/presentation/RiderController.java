@@ -1,7 +1,6 @@
 package com.woowacourse.pelotonbackend.rider.presentation;
 
 import java.net.URI;
-import java.util.List;
 
 import javax.validation.Valid;
 
@@ -16,6 +15,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.woowacourse.pelotonbackend.member.presentation.dto.MemberResponse;
 import com.woowacourse.pelotonbackend.rider.application.RiderService;
 import com.woowacourse.pelotonbackend.rider.presentation.dto.RiderCreateRequest;
+import com.woowacourse.pelotonbackend.rider.presentation.dto.RiderResponse;
+import com.woowacourse.pelotonbackend.rider.presentation.dto.RiderResponses;
 import com.woowacourse.pelotonbackend.support.annotation.LoginMember;
 import lombok.RequiredArgsConstructor;
 
@@ -42,8 +43,8 @@ public class RiderController {
     }
 
     @GetMapping("/races/{raceId}")
-    public ResponseEntity<List<RiderResponse>> findRidersByRaceId(@PathVariable final Long raceId) {
-        final List<RiderResponse> riders = riderService.retrieveByRaceId(raceId);
+    public ResponseEntity<RiderResponses> findRidersByRaceId(@PathVariable final Long raceId) {
+        final RiderResponses riders = riderService.retrieveByRaceId(raceId);
 
         return ResponseEntity.ok(riders);
     }

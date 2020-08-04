@@ -16,7 +16,7 @@ import com.woowacourse.pelotonbackend.member.domain.MemberFixture;
 import com.woowacourse.pelotonbackend.rider.domain.Rider;
 import com.woowacourse.pelotonbackend.rider.domain.RiderFixture;
 import com.woowacourse.pelotonbackend.rider.domain.RiderRepository;
-import com.woowacourse.pelotonbackend.rider.presentation.RiderResponse;
+import com.woowacourse.pelotonbackend.rider.presentation.dto.RiderResponse;
 
 @ExtendWith(MockitoExtension.class)
 public class RiderServiceTest {

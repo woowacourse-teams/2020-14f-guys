@@ -37,6 +37,8 @@ import com.woowacourse.pelotonbackend.member.presentation.dto.MemberResponse;
 import com.woowacourse.pelotonbackend.rider.application.RiderService;
 import com.woowacourse.pelotonbackend.rider.domain.RiderFixture;
 import com.woowacourse.pelotonbackend.rider.presentation.dto.RiderCreateRequest;
+import com.woowacourse.pelotonbackend.rider.presentation.dto.RiderResponse;
+import com.woowacourse.pelotonbackend.rider.presentation.dto.RiderResponses;
 import com.woowacourse.pelotonbackend.support.BearerAuthInterceptor;
 
 @SpringBootTest
@@ -110,7 +112,7 @@ public class RiderControllerTest {
     @DisplayName("레이스에 참여중인 Rider를 모두 반환한다.")
     @Test
     void findRidersByRaceId() throws Exception {
-        final List<RiderResponse> expectedRiders = RiderFixture.createRidersInSameRace();
+        final RiderResponses expectedRiders = RiderFixture.createRidersInSameRace();
         given(riderService.retrieveByRaceId(anyLong())).willReturn(expectedRiders);
         given(bearerAuthInterceptor.preHandle(any(HttpServletRequest.class), any(HttpServletResponse.class),
             any(HandlerMethod.class))).willReturn(true);
