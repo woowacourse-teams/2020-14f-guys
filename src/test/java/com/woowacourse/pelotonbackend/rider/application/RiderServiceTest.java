@@ -64,4 +64,17 @@ public class RiderServiceTest {
         assertThat(retrieveRider.getRaceId()).isEqualTo(expectedRider.getRaceId().getId());
         assertThat(retrieveRider.getMemberId()).isEqualTo(expectedRider.getMemberId().getId());
     }
+
+    @DisplayName("Rider를 업데이트한다.")
+    @Test
+    void update() {
+        final long riderId = RiderFixture.TEST_RIDER_ID;
+        final Rider expectedRider = RiderFixture.updateRiderWithId(riderId);
+        given(riderRepository.findById(riderId)).willReturn(Optional.of(RiderFixture.createRiderWithId(riderId)));
+        given(riderRepository.save(expectedRider)).willReturn(expectedRider);
+
+        final Long updatedRiderId = riderService.updateById(riderId, RiderFixture.updateMockRequest());
+
+        assertThat(updatedRiderId).isEqualTo(expectedRider.getId());
+    }
 }

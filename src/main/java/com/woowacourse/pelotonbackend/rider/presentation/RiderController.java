@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -17,6 +18,7 @@ import com.woowacourse.pelotonbackend.rider.application.RiderService;
 import com.woowacourse.pelotonbackend.rider.presentation.dto.RiderCreateRequest;
 import com.woowacourse.pelotonbackend.rider.presentation.dto.RiderResponse;
 import com.woowacourse.pelotonbackend.rider.presentation.dto.RiderResponses;
+import com.woowacourse.pelotonbackend.rider.presentation.dto.RiderUpdateRequest;
 import com.woowacourse.pelotonbackend.support.annotation.LoginMember;
 import lombok.RequiredArgsConstructor;
 
@@ -54,5 +56,13 @@ public class RiderController {
         final RiderResponses riders = riderService.retrieveByMemberId(memberId);
 
         return ResponseEntity.ok(riders);
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Void> updateRiderById(@PathVariable final Long id,
+        @RequestBody final RiderUpdateRequest request) {
+        final Long riderId = riderService.updateById(id, request);
+
+        return ResponseEntity.ok().header("Location", String.format("/api/riders/%d", riderId)).build();
     }
 }

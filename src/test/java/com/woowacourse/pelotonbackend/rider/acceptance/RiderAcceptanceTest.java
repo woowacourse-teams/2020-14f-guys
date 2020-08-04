@@ -13,6 +13,7 @@ import com.woowacourse.pelotonbackend.rider.domain.RiderFixture;
 import com.woowacourse.pelotonbackend.rider.presentation.dto.RiderCreateRequest;
 import com.woowacourse.pelotonbackend.rider.presentation.dto.RiderResponse;
 import com.woowacourse.pelotonbackend.rider.presentation.dto.RiderResponses;
+import com.woowacourse.pelotonbackend.rider.presentation.dto.RiderUpdateRequest;
 import com.woowacourse.pelotonbackend.support.AcceptanceTest;
 import com.woowacourse.pelotonbackend.support.dto.JwtTokenResponse;
 
@@ -28,13 +29,17 @@ public class RiderAcceptanceTest extends AcceptanceTest {
      *
      * Given: Rider가 존재한다.
      * When: 라이더를 조회한다.
-     * then: 라이더를 반환한다.
+     * Then: 라이더를 반환한다.
      *
      * Given: Race에 참여중인 멤버들이 존재한다.
      * When: Race에 참여중인 Rider들을 RACE ID 기준으로 조회한다.
-     * then: 참여중인 Rider들이 반환된다.
+     * Then: 참여중인 Rider들이 반환된다.
      * When: Race에 참여중인 Rider들을 MEMBER ID 기준으로 조회한다.
-     * then: 참여중인 Rider들이 반환된다.
+     * Then: 참여중인 Rider들이 반환된다.
+     *
+     * Given: Rider를 업데이트한다.
+     * When: 라이더를 조회한다.
+     * Then: 업데이트된 라이더가 반환된다.
      */
     @DisplayName("Rider 관리 기능")
     @Test
@@ -47,6 +52,8 @@ public class RiderAcceptanceTest extends AcceptanceTest {
         fetchCreateRiders(tokenResponse);
         fetchFindRidersByRaceId(TEST_RACE_ID, tokenResponse);
         fetchFindRidersByMemberId(TEST_MEMBER_ID, tokenResponse);
+
+        fetchUpdateRider(resource, tokenResponse);
     }
 
     private void fetchCreateRiders(final JwtTokenResponse tokenResponse) {
@@ -90,7 +97,6 @@ public class RiderAcceptanceTest extends AcceptanceTest {
             .header(createTokenHeader(tokenResponse))
             .body(riderCreateRequest)
             .contentType(MediaType.APPLICATION_JSON_VALUE)
-            .accept(MediaType.APPLICATION_JSON_VALUE)
             .when()
             .post("/api/riders")
             .then()
@@ -113,5 +119,23 @@ public class RiderAcceptanceTest extends AcceptanceTest {
             .as(RiderResponses.class);
 
         assertThat(riders.getRiderResponses().size()).isEqualTo(RIDER_NUMBER + 1);
+    }
+
+    private void fetchUpdateRider(final String resource, final JwtTokenResponse tokenResponse) {
+        final RiderUpdateRequest riderUpdateRequest = updateMockRequest();
+
+        final String location = given()
+            .header(createTokenHeader(tokenResponse))
+            .body(riderUpdateRequest)
+            .contentType(MediaType.APPLICATION_JSON_VALUE)
+            .when()
+            .put(resource)
+            .then()
+            .log().all()
+            .statusCode(HttpStatus.OK.value())
+            .extract()
+            .header("Location");
+
+        assertThat(resource).isEqualTo(location);
     }
 }
