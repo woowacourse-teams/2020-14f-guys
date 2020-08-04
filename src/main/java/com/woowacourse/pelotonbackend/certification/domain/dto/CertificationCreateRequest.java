@@ -28,7 +28,7 @@ public class CertificationCreateRequest {
     @NotNull
     private final Long missionId;
 
-    public Certification toEntity(final String imageUrl) {
+    public Certification toCertification(final String imageUrl) {
         return Certification.builder()
             .status(this.status)
             .description(this.description)

@@ -19,7 +19,7 @@ public class CertificationService {
 
     public Long create(final MultipartFile file, final CertificationCreateRequest certificationCreateRequest) {
         final String imageUrl = uploadService.upload(file);
-        final Certification certification = certificationCreateRequest.toEntity(imageUrl);
+        final Certification certification = certificationCreateRequest.toCertification(imageUrl);
         final Certification persistCertification = certificationRepository.save(certification);
 
         return persistCertification.getId();
