@@ -1,4 +1,4 @@
-package com.woowacourse.pelotonbackend.certification.infra;
+package com.woowacourse.pelotonbackend.infra.upload;
 
 import static com.woowacourse.pelotonbackend.certification.domain.CertificationFixture.*;
 import static com.woowacourse.pelotonbackend.member.acceptance.MemberAcceptanceTest.*;
@@ -8,8 +8,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.web.multipart.MultipartFile;
-
-import com.woowacourse.pelotonbackend.infra.upload.UploadService;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 class S3UploadServiceTest {

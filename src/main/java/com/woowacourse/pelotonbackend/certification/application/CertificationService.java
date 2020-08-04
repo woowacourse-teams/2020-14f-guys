@@ -12,11 +12,11 @@ import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 @Service
+@Transactional
 public class CertificationService {
     private final CertificationRepository certificationRepository;
     private final UploadService uploadService;
 
-    @Transactional
     public Long create(final MultipartFile file, final CertificationCreateRequest certificationCreateRequest) {
         final String imageUrl = uploadService.upload(file);
         final Certification certification = certificationCreateRequest.toEntity(imageUrl);

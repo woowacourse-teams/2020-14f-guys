@@ -25,8 +25,8 @@ import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 
 @AllArgsConstructor(access = AccessLevel.PACKAGE)
-@Transactional
 @Service
+@Transactional
 public class MemberService {
     private static final String BASIC_URL = "https://market-photos.s3.ap-northeast-2.amazonaws.com/asdasdsadasd.png";
 
