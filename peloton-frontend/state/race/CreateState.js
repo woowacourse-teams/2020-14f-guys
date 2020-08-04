@@ -8,6 +8,6 @@ export const raceCreateInfoState = atom({
     startDate: "",
     endDate: "",
     category: "",
-    entranceFee: "0",
+    entranceFee: "",
   },
 });
