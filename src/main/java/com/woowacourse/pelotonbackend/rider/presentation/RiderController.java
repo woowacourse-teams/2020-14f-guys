@@ -48,4 +48,11 @@ public class RiderController {
 
         return ResponseEntity.ok(riders);
     }
+
+    @GetMapping("/members/{memberId}")
+    public ResponseEntity<RiderResponses> findRidersByMemberId(@PathVariable final Long memberId) {
+        final RiderResponses riders = riderService.retrieveByMemberId(memberId);
+
+        return ResponseEntity.ok(riders);
+    }
 }

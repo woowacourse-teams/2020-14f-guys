@@ -10,8 +10,8 @@ import org.springframework.http.MediaType;
 
 import com.woowacourse.pelotonbackend.member.domain.MemberFixture;
 import com.woowacourse.pelotonbackend.rider.domain.RiderFixture;
-import com.woowacourse.pelotonbackend.rider.presentation.dto.RiderResponse;
 import com.woowacourse.pelotonbackend.rider.presentation.dto.RiderCreateRequest;
+import com.woowacourse.pelotonbackend.rider.presentation.dto.RiderResponse;
 import com.woowacourse.pelotonbackend.rider.presentation.dto.RiderResponses;
 import com.woowacourse.pelotonbackend.support.AcceptanceTest;
 import com.woowacourse.pelotonbackend.support.dto.JwtTokenResponse;
@@ -31,9 +31,10 @@ public class RiderAcceptanceTest extends AcceptanceTest {
      * then: 라이더를 반환한다.
      *
      * Given: Race에 참여중인 멤버들이 존재한다.
-     * When: Race에 참여중인 Rider들을 조회한다.
+     * When: Race에 참여중인 Rider들을 RACE ID 기준으로 조회한다.
      * then: 참여중인 Rider들이 반환된다.
-     *
+     * When: Race에 참여중인 Rider들을 MEMBER ID 기준으로 조회한다.
+     * then: 참여중인 Rider들이 반환된다.
      */
     @DisplayName("Rider 관리 기능")
     @Test
@@ -45,6 +46,7 @@ public class RiderAcceptanceTest extends AcceptanceTest {
 
         fetchCreateRiders(tokenResponse);
         fetchFindRidersByRaceId(TEST_RACE_ID, tokenResponse);
+        fetchFindRidersByMemberId(TEST_MEMBER_ID, tokenResponse);
     }
 
     private void fetchCreateRiders(final JwtTokenResponse tokenResponse) {
@@ -96,5 +98,20 @@ public class RiderAcceptanceTest extends AcceptanceTest {
             .statusCode(HttpStatus.CREATED.value())
             .extract()
             .header("Location");
+    }
+
+    private void fetchFindRidersByMemberId(final Long memberId, final JwtTokenResponse tokenResponse) {
+        final RiderResponses riders = given()
+            .header(createTokenHeader(tokenResponse))
+            .accept(MediaType.APPLICATION_JSON_VALUE)
+            .when()
+            .get("/api/riders/members/" + memberId)
+            .then()
+            .statusCode(HttpStatus.OK.value())
+            .extract()
+            .body()
+            .as(RiderResponses.class);
+
+        assertThat(riders.getRiderResponses().size()).isEqualTo(RIDER_NUMBER + 1);
     }
 }

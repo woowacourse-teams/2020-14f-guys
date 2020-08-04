@@ -40,4 +40,11 @@ public class RiderService {
 
         return RiderResponses.from(riders);
     }
+
+    @Transactional(readOnly = true)
+    public RiderResponses retrieveByMemberId(final Long memberId) {
+        final List<Rider> riders = riderRepository.findRidersByMemberId(memberId);
+
+        return RiderResponses.from(riders);
+    }
 }

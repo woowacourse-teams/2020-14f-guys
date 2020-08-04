@@ -12,8 +12,10 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.jdbc.core.mapping.AggregateReference;
+import org.springframework.test.context.jdbc.Sql;
 
 @SpringBootTest
+@Sql("/truncate.sql")
 public class RiderRepositoryTest {
     @Autowired
     private RiderRepository riderRepository;
@@ -48,6 +50,22 @@ public class RiderRepositoryTest {
         riderRepository.saveAll(expectedRiders);
 
         final List<Rider> riders = riderRepository.findRidersByRaceId(TEST_RACE_ID);
+
+        assertThat(riders.size()).isEqualTo(expectedRiders.size());
+        riders.forEach(rider -> assertThat(rider).isEqualToIgnoringGivenFields(riderWithoutId, "id", "createdAt", "updatedAt"));
+    }
+
+    @DisplayName("멤버가 포함된 모든 라이더를 찾는다.")
+    @Test
+    void findAllByMemberId() {
+        final Rider riderWithoutId = createRiderWithoutId();
+        final List<Rider> expectedRiders = Arrays.asList(
+            riderWithoutId,
+            riderWithoutId,
+            riderWithoutId);
+        riderRepository.saveAll(expectedRiders);
+
+        final List<Rider> riders = riderRepository.findRidersByMemberId(TEST_MEMBER_ID);
 
         assertThat(riders.size()).isEqualTo(expectedRiders.size());
         riders.forEach(rider -> assertThat(rider).isEqualToIgnoringGivenFields(riderWithoutId, "id", "createdAt", "updatedAt"));

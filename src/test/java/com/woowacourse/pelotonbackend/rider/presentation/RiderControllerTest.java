@@ -1,5 +1,6 @@
 package com.woowacourse.pelotonbackend.rider.presentation;
 
+import static com.woowacourse.pelotonbackend.rider.domain.RiderFixture.*;
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.BDDMockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -109,7 +110,7 @@ public class RiderControllerTest {
             .andExpect(jsonPath("code").value(ErrorCode.RIDER_NOT_FOUND.getCode()));
     }
 
-    @DisplayName("레이스에 참여중인 Rider를 모두 반환한다.")
+    @DisplayName("특정 레이스에 참여중인 Rider를 모두 반환한다.")
     @Test
     void findRidersByRaceId() throws Exception {
         final RiderResponses expectedRiders = RiderFixture.createRidersInSameRace();
@@ -118,6 +119,19 @@ public class RiderControllerTest {
             any(HandlerMethod.class))).willReturn(true);
 
         mockMvc.perform(get("/api/riders/races/1")
+            .accept(MediaType.APPLICATION_JSON)
+        )
+            .andExpect(status().isOk());
+    }
+
+    @DisplayName("특정 멤버가 참여하고 있는 Rider를 모두 반환한다.")
+    @Test
+    void findRidersByMemberId() throws Exception {
+        final RiderResponses expectedRiders = RiderFixture.createRidersInSameRace();
+        given(riderService.retrieveByMemberId(anyLong())).willReturn(expectedRiders);
+        given(bearerAuthInterceptor.preHandle(any(HttpServletRequest.class), any(HttpServletResponse.class),
+            any(HandlerMethod.class))).willReturn(true);
+        mockMvc.perform(get("/api/riders/members/" + TEST_MEMBER_ID)
             .accept(MediaType.APPLICATION_JSON)
         )
             .andExpect(status().isOk());
