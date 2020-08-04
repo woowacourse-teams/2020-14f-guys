@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { ActivityIndicator, StyleSheet, View } from "react-native";
 import { useRecoilValue, useResetRecoilState, useSetRecoilState } from "recoil";
-import { CommonActions, useNavigation } from "@react-navigation/native";
+import { useNavigation } from "@react-navigation/native";
 import useAxios from "axios-hooks";
 
 import RaceCreateUnit from "./RaceCreateUnit";

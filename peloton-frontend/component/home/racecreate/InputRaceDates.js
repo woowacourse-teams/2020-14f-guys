@@ -1,14 +1,6 @@
 import React from "react";
-import {
-  Keyboard,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  TouchableWithoutFeedback,
-  View,
-} from "react-native";
+import { StyleSheet } from "react-native";
 import { useRecoilValue } from "recoil";
-import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import { useNavigation } from "@react-navigation/native";
 
 import RaceCreateUnit from "./RaceCreateUnit";

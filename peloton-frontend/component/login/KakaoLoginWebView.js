@@ -1,5 +1,5 @@
 import React from "react";
-import { Image, StyleSheet, TouchableOpacity, View } from "react-native";
+import { StyleSheet, View } from "react-native";
 import WebView from "react-native-webview";
 import { COLOR, SERVER_BASE_URL } from "../../utils/constants";
 import { useSetRecoilState } from "recoil";

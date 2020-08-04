@@ -2,8 +2,6 @@ import React from "react";
 import {
   Keyboard,
   StyleSheet,
-  Text,
-  TouchableOpacity,
   TouchableWithoutFeedback,
   View,
 } from "react-native";
