@@ -5,8 +5,11 @@ import {
   Text,
   TouchableOpacity,
   TouchableWithoutFeedback,
+  View,
 } from "react-native";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
+import SubmitButton from "../../login/SubmitButton";
+import { COLOR } from "../../../utils/constants";
 
 const RaceCreateView = ({ children, onPress }) => {
   return (
@@ -16,9 +19,13 @@ const RaceCreateView = ({ children, onPress }) => {
         contentContainerStyle={styles.container}
       >
         {children}
-        <TouchableOpacity style={styles.button} onPress={onPress}>
-          <Text style={styles.buttonText}>NEXT</Text>
-        </TouchableOpacity>
+        <View style={styles.button}>
+          <SubmitButton
+            onSubmit={onPress}
+            color={COLOR.GRAY3}
+            arrowColor={COLOR.WHITE}
+          />
+        </View>
       </KeyboardAwareScrollView>
     </TouchableWithoutFeedback>
   );
@@ -35,21 +42,7 @@ const styles = StyleSheet.create({
   button: {
     position: "absolute",
     bottom: 50,
-    width: 178,
-    height: 50,
-    borderRadius: 100,
-    backgroundColor: "#ffffff",
-    shadowColor: "rgba(0, 0, 0, 0.3)",
-    shadowOffset: {
-      width: 0,
-      height: 20,
-    },
-    shadowRadius: 50,
-    shadowOpacity: 0.5,
-    marginTop: 100,
     alignSelf: "center",
-    justifyContent: "center",
-    alignItems: "center",
   },
   buttonText: {
     fontSize: 14,

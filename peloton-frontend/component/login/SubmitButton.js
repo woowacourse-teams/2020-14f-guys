@@ -2,11 +2,20 @@ import React from "react";
 import { StyleSheet, TouchableOpacity, View } from "react-native";
 import { MaterialIcons } from "@expo/vector-icons";
 
-const SubmitButton = ({ onSubmit }) => {
+const SubmitButton = ({
+  onSubmit,
+  color = "#284170",
+  arrowColor = "#61779f",
+}) => {
   return (
-    <View style={styles.nextButtonContainer}>
+    <View
+      style={{
+        ...styles.nextButtonContainer,
+        backgroundColor: color,
+      }}
+    >
       <TouchableOpacity onPress={onSubmit}>
-        <MaterialIcons name="navigate-next" size={36} color="#61779f" />
+        <MaterialIcons name="navigate-next" size={36} color={arrowColor} />
       </TouchableOpacity>
     </View>
   );
