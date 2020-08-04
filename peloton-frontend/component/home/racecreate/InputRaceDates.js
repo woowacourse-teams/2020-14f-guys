@@ -1,5 +1,4 @@
 import React from "react";
-import { StyleSheet } from "react-native";
 import { useRecoilValue } from "recoil";
 import { useNavigation } from "@react-navigation/native";
 
@@ -11,7 +10,7 @@ const InputRaceInfo = () => {
   const { startDate, endDate } = useRecoilValue(raceCreateInfoState);
   const navigation = useNavigation();
 
-  const onPress = async () => {
+  const navigateToFeeInput = async () => {
     if (!startDate || !endDate) {
       alert("필드를 모두 채워주세요");
       return;
@@ -24,7 +23,7 @@ const InputRaceInfo = () => {
   };
 
   return (
-    <RaceCreateView onPress={onPress}>
+    <RaceCreateView onPress={navigateToFeeInput}>
       <RaceCreateUnit date fieldName="startDate">
         레이스가 시작되는 날짜를 선택해주세요
       </RaceCreateUnit>
@@ -34,7 +33,5 @@ const InputRaceInfo = () => {
     </RaceCreateView>
   );
 };
-
-const styles = StyleSheet.create({});
 
 export default InputRaceInfo;

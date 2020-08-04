@@ -7,6 +7,7 @@ import { raceCreateInfoState } from "../../../state/race/CreateState";
 import InputBox from "./InputBox";
 import CalendarButton from "./CalendarButton";
 import { DateFormatter } from "../../../utils/DateFormatter";
+import { COLOR } from "../../../utils/constants";
 
 const RaceCreateUnit = ({
   date = false,
@@ -19,7 +20,13 @@ const RaceCreateUnit = ({
   const [isShowPicker, setIsShowPicker] = useState(false);
 
   const onPickDate = (pickedDate) => {
-    const formattedDate = DateFormatter.yyyyMMdd(pickedDate);
+    let formattedDate = DateFormatter.yyyyMMdd(pickedDate);
+    const currentDate = DateFormatter.yyyyMMdd(new Date());
+
+    if (formattedDate < currentDate) {
+      alert("현재보다 이전 날짜를 선택할 수 없습니다!");
+      formattedDate = currentDate;
+    }
 
     setRaceCreateInfo((info) => ({
       ...info,
@@ -29,7 +36,10 @@ const RaceCreateUnit = ({
   };
 
   const onChangeText = (text) => {
-    setRaceCreateInfo((info) => ({ ...info, [fieldName]: text }));
+    setRaceCreateInfo((info) => ({
+      ...info,
+      [fieldName]: text,
+    }));
   };
 
   return (
@@ -78,9 +88,8 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: "normal",
     lineHeight: 25,
-    letterSpacing: 0,
     textAlign: "left",
-    color: "#a0a0a0",
+    color: COLOR.GRAY1,
   },
   inputContainer: {
     flexDirection: "row",

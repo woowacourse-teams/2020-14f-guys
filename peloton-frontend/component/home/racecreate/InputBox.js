@@ -1,5 +1,6 @@
 import React from "react";
 import { StyleSheet, TextInput } from "react-native";
+import { COLOR } from "../../../utils/constants";
 
 const InputBox = ({ value, onChangeText, editable = true, number = false }) => {
   return (
@@ -17,7 +18,7 @@ const InputBox = ({ value, onChangeText, editable = true, number = false }) => {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 6,
+    flex: 1,
     borderStyle: "solid",
     borderBottomWidth: 1,
     borderColor: "#d5d5d5",
@@ -27,7 +28,7 @@ const styles = StyleSheet.create({
     lineHeight: 35,
     letterSpacing: 0,
     textAlign: "left",
-    color: "#c3c3c3",
+    color: COLOR.GRAY1,
     paddingBottom: 6,
   },
 });

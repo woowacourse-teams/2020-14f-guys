@@ -1,8 +1,8 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { ActivityIndicator, StyleSheet, View } from "react-native";
-import { useRecoilValue, useResetRecoilState, useSetRecoilState } from "recoil";
+import { useRecoilState, useRecoilValue, useResetRecoilState } from "recoil";
 import { useNavigation } from "@react-navigation/native";
-import useAxios from "axios-hooks";
+import Axios from "axios";
 
 import RaceCreateUnit from "./RaceCreateUnit";
 import { raceCreateInfoState } from "../../../state/race/CreateState";
@@ -17,8 +17,9 @@ const InputRaceInfo = () => {
   // eslint-disable-next-line prettier/prettier
   const {title, description, startDate, endDate, category, entranceFee} = useRecoilValue(raceCreateInfoState);
   const resetRaceCreateInfo = useResetRecoilState(raceCreateInfoState);
-  const setGlobalLoading = useSetRecoilState(loadingState);
+  const [loading, setGlobalLoading] = useRecoilState(loadingState);
   const token = useRecoilValue(userTokenState);
+  const navigation = useNavigation();
 
   const formatPostRaceBody = () => {
     return {
@@ -33,35 +34,34 @@ const InputRaceInfo = () => {
     };
   };
 
-  const [{ response, loading, error }, createRaceRequest] = useAxios(
-    {
-      method: "post",
-      baseURL: SERVER_BASE_URL,
-      url: "/api/races",
-      data: formatPostRaceBody(),
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    },
-    { manual: true },
-  );
-  const navigation = useNavigation();
+  const createRaceRequest = async () => {
+    setGlobalLoading(true);
+    try {
+      const response = await Axios({
+        method: "post",
+        baseURL: SERVER_BASE_URL,
+        url: "/api/races",
+        data: formatPostRaceBody(),
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
 
-  useEffect(() => {
-    if (response) {
       resetRaceCreateInfo();
       navigateWithHistory(navigation, [
         { name: "Home" },
-        { name: "RaceDetail", params: { location: response.headers.location } },
+        {
+          name: "RaceDetail",
+          params: { location: response.headers.location },
+        },
       ]);
+    } catch (e) {
+      alert(e.toString());
     }
-    if (error) {
-      alert(error.toString());
-    }
-    setGlobalLoading(loading);
-  }, [response, loading, error]);
+    setGlobalLoading(false);
+  };
 
-  const onPress = async () => {
+  const submitRaceRequest = async () => {
     if (!entranceFee) {
       alert("필드를 모두 채워주세요");
       return;
@@ -80,7 +80,7 @@ const InputRaceInfo = () => {
 
   return (
     <LoadingIndicator>
-      <RaceCreateView onPress={onPress}>
+      <RaceCreateView onPress={submitRaceRequest}>
         <RaceCreateUnit fieldName="entranceFee" number>
           Race의 입장료를 결정해주세요
         </RaceCreateUnit>
@@ -97,14 +97,6 @@ const InputRaceInfo = () => {
 const styles = StyleSheet.create({
   subjectContainer: {
     marginBottom: 120,
-  },
-  subject: {
-    fontSize: 35,
-    fontWeight: "bold",
-    lineHeight: 35,
-    letterSpacing: 0,
-    textAlign: "left",
-    color: "#1b1c20",
   },
 });
 
