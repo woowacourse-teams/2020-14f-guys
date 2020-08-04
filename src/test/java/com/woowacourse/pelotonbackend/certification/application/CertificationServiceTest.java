@@ -43,7 +43,7 @@ class CertificationServiceTest {
     @Test
     void create() throws IOException {
         given(certificationRepository.save(createCertificationWithoutId())).willReturn(createCertificationWithId());
-        given(uploadService.upload(multipartFile)).willReturn(TEST_CERTIFICATION_FILE_URL.getBaseImageUrl());
+        given(uploadService.uploadImage(multipartFile, "certification-image/")).willReturn(TEST_CERTIFICATION_FILE_URL.getBaseImageUrl());
 
         assertAll(
             () -> assertThat(

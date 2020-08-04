@@ -159,7 +159,7 @@ class MemberServiceTest {
         final Member updatedMember = MemberFixture.memberProfileUpdated(ID);
         given(memberRepository.findById(ID)).willReturn(Optional.of(originMember));
         given(memberRepository.save(any(Member.class))).willReturn(updatedMember);
-        given(uploadService.upload(any(MultipartFile.class))).willReturn(S3_BASIC_URL);
+        given(uploadService.uploadImage(any(MultipartFile.class), anyString())).willReturn(S3_BASIC_URL);
 
         final MemberProfileResponse response = memberService.updateProfileImage(originMember.getId(),
             mockMultipartFile());

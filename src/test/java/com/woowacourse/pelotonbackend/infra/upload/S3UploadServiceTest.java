@@ -18,7 +18,7 @@ class S3UploadServiceTest {
 
     @Test
     void imageUploadTest() {
-        final String url = uploadService.upload(MOCK_MULTIPART_FILE);
+        final String url = uploadService.uploadImage(MOCK_MULTIPART_FILE, "");
         assertThat(url).contains(S3_BASIC_URL);
     }
 }

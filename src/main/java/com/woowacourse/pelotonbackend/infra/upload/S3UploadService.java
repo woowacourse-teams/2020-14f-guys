@@ -29,11 +29,12 @@ public class S3UploadService implements UploadService {
             .build();
     }
 
-    public String upload(final MultipartFile file) {
+    public String uploadImage(final MultipartFile file, final String path) {
         final String fileName = file.getOriginalFilename();
 
         try {
-            amazonS3.putObject(new PutObjectRequest(bucket, fileName, file.getInputStream(), null)
+            final String key = String.format("%s%s", path, fileName);
+            amazonS3.putObject(new PutObjectRequest(bucket, key, file.getInputStream(), null)
                 .withCannedAcl(CannedAccessControlList.PublicRead));
         } catch (Exception e) {
             throw new UploadFailureException();
