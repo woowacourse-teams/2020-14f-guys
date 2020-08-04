@@ -5,6 +5,7 @@ import java.net.URI;
 import javax.validation.Valid;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -64,5 +65,12 @@ public class RiderController {
         final Long riderId = riderService.updateById(id, request);
 
         return ResponseEntity.ok().header("Location", String.format("/api/riders/%d", riderId)).build();
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteRiderById(@PathVariable final Long id) {
+        riderService.deleteById(id);
+
+        return ResponseEntity.noContent().build();
     }
 }

@@ -5,8 +5,8 @@ import java.util.stream.LongStream;
 
 import org.springframework.data.jdbc.core.mapping.AggregateReference;
 
-import com.woowacourse.pelotonbackend.rider.presentation.dto.RiderResponse;
 import com.woowacourse.pelotonbackend.rider.presentation.dto.RiderCreateRequest;
+import com.woowacourse.pelotonbackend.rider.presentation.dto.RiderResponse;
 import com.woowacourse.pelotonbackend.rider.presentation.dto.RiderResponses;
 import com.woowacourse.pelotonbackend.rider.presentation.dto.RiderUpdateRequest;
 

@@ -77,4 +77,12 @@ public class RiderServiceTest {
 
         assertThat(updatedRiderId).isEqualTo(expectedRider.getId());
     }
+
+    @DisplayName("Rider를 삭제한다.")
+    @Test
+    void delete() {
+        riderService.deleteById(RiderFixture.TEST_RIDER_ID);
+
+        verify(riderRepository).deleteById(RiderFixture.TEST_RIDER_ID);
+    }
 }

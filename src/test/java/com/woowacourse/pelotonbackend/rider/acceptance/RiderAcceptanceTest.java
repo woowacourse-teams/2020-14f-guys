@@ -40,25 +40,41 @@ public class RiderAcceptanceTest extends AcceptanceTest {
      * Given: Rider를 업데이트한다.
      * When: 라이더를 조회한다.
      * Then: 업데이트된 라이더가 반환된다.
+     *
+     * Given: Rider를 삭제한다.
+     * When: 라이더를 조회한다.
+     * Then: 라이더가 조회되지 않는다.
      */
     @DisplayName("Rider 관리 기능")
     @Test
     void manageRider() {
+        final RiderCreateRequest riderCreateRequest = RiderFixture.createMockRequest();
         final JwtTokenResponse tokenResponse = loginMember(
             MemberFixture.createRequest(MemberFixture.KAKAO_ID, MemberFixture.EMAIL, MemberFixture.NAME));
-        final String resource = fetchCreateRider(tokenResponse);
-        fetchFindRider(resource, tokenResponse);
+        final String resource = fetchCreateRider(tokenResponse, riderCreateRequest);
+        final RiderResponse riderResponse = fetchFindRider(resource, tokenResponse);
 
-        fetchCreateRiders(tokenResponse);
+        assertThat(riderResponse.getId()).isNotNull();
+        assertThat(riderResponse.getMemberId()).isEqualTo((TEST_MEMBER_ID));
+        assertThat(riderResponse.getRaceId()).isEqualTo(riderCreateRequest.getRaceId());
+
+        fetchCreateRiders(tokenResponse, riderCreateRequest);
         fetchFindRidersByRaceId(TEST_RACE_ID, tokenResponse);
         fetchFindRidersByMemberId(TEST_MEMBER_ID, tokenResponse);
 
         fetchUpdateRider(resource, tokenResponse);
+        final RiderResponse updatedRiderResponse = fetchFindRider(resource, tokenResponse);
+
+        assertThat(updatedRiderResponse.getMemberId()).isEqualTo((TEST_CHANGED_MEMBER_ID));
+        assertThat(updatedRiderResponse.getRaceId()).isEqualTo(TEST_CHANGED_RACE_ID);
+
+        fetchDeleteRider(resource, tokenResponse);
+        fetchFindRiderFailed(resource, tokenResponse);
     }
 
-    private void fetchCreateRiders(final JwtTokenResponse tokenResponse) {
+    private void fetchCreateRiders(final JwtTokenResponse tokenResponse, final RiderCreateRequest riderCreateRequest) {
         for (int i = 0; i < RIDER_NUMBER; i++) {
-            fetchCreateRider(tokenResponse);
+            fetchCreateRider(tokenResponse, riderCreateRequest);
         }
     }
 
@@ -90,12 +106,10 @@ public class RiderAcceptanceTest extends AcceptanceTest {
             .as(RiderResponse.class);
     }
 
-    private String fetchCreateRider(JwtTokenResponse tokenResponse) {
-        final RiderCreateRequest riderCreateRequest = RiderFixture.createMockRequest();
-
+    private String fetchCreateRider(JwtTokenResponse tokenResponse, RiderCreateRequest request) {
         return given()
             .header(createTokenHeader(tokenResponse))
-            .body(riderCreateRequest)
+            .body(request)
             .contentType(MediaType.APPLICATION_JSON_VALUE)
             .when()
             .post("/api/riders")
@@ -137,5 +151,26 @@ public class RiderAcceptanceTest extends AcceptanceTest {
             .header("Location");
 
         assertThat(resource).isEqualTo(location);
+    }
+
+    private void fetchDeleteRider(final String resource, final JwtTokenResponse tokenResponse) {
+        given()
+            .header(createTokenHeader(tokenResponse))
+            .when()
+            .delete(resource)
+            .then()
+            .log().all()
+            .statusCode(HttpStatus.NO_CONTENT.value());
+    }
+
+    private void fetchFindRiderFailed(final String resource, final JwtTokenResponse tokenResponse) {
+        given()
+            .header(createTokenHeader(tokenResponse))
+            .accept(MediaType.APPLICATION_JSON_VALUE)
+            .when()
+            .get(resource)
+            .then()
+            .log().all()
+            .statusCode(HttpStatus.NOT_FOUND.value());
     }
 }

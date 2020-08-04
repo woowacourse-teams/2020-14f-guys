@@ -3,10 +3,10 @@ package com.woowacourse.pelotonbackend.member.application;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.woowacourse.pelotonbackend.infra.login.LoginAPIService;
-import com.woowacourse.pelotonbackend.member.domain.Role;
 import com.woowacourse.pelotonbackend.infra.login.KakaoTokenResponse;
 import com.woowacourse.pelotonbackend.infra.login.KakaoUserResponse;
+import com.woowacourse.pelotonbackend.infra.login.LoginAPIService;
+import com.woowacourse.pelotonbackend.member.domain.Role;
 import com.woowacourse.pelotonbackend.member.presentation.dto.MemberCreateRequest;
 import com.woowacourse.pelotonbackend.member.presentation.dto.MemberResponse;
 import com.woowacourse.pelotonbackend.support.JwtTokenProvider;

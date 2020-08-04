@@ -9,8 +9,8 @@ import com.woowacourse.pelotonbackend.common.exception.RiderNotFoundException;
 import com.woowacourse.pelotonbackend.member.presentation.dto.MemberResponse;
 import com.woowacourse.pelotonbackend.rider.domain.Rider;
 import com.woowacourse.pelotonbackend.rider.domain.RiderRepository;
-import com.woowacourse.pelotonbackend.rider.presentation.dto.RiderResponse;
 import com.woowacourse.pelotonbackend.rider.presentation.dto.RiderCreateRequest;
+import com.woowacourse.pelotonbackend.rider.presentation.dto.RiderResponse;
 import com.woowacourse.pelotonbackend.rider.presentation.dto.RiderResponses;
 import com.woowacourse.pelotonbackend.rider.presentation.dto.RiderUpdateRequest;
 import lombok.RequiredArgsConstructor;
@@ -57,5 +57,9 @@ public class RiderService {
         final Rider persistedRider = riderRepository.save(updatedRider);
 
         return persistedRider.getId();
+    }
+
+    public void deleteById(final Long riderId) {
+        riderRepository.deleteById(riderId);
     }
 }

@@ -2,8 +2,6 @@ package com.woowacourse.pelotonbackend.rider.presentation.dto;
 
 import java.beans.ConstructorProperties;
 import java.time.LocalDateTime;
-import java.util.List;
-import java.util.stream.Collectors;
 
 import com.woowacourse.pelotonbackend.rider.domain.Rider;
 import lombok.AccessLevel;

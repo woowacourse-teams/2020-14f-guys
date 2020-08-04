@@ -148,5 +148,16 @@ public class RiderControllerTest {
             .andExpect(status().isOk())
             .andExpect(header().exists("Location"));
     }
+
+    @DisplayName("Rider 정보를 삭제한다.")
+    @Test
+    void deleteRider() throws Exception {
+        given(bearerAuthInterceptor.preHandle(any(HttpServletRequest.class), any(HttpServletResponse.class),
+            any(HandlerMethod.class))).willReturn(true);
+        mockMvc.perform(delete("/api/riders/" + TEST_RIDER_ID))
+            .andExpect(status().isNoContent());
+
+        verify(riderService).deleteById(TEST_RIDER_ID);
+    }
 }
 
