@@ -1,19 +1,39 @@
 import React from "react";
-import {
-  Alert,
-  Image,
-  Linking,
-  StyleSheet,
-  TouchableOpacity,
-  View,
-} from "react-native";
+import { Alert, Image, Linking, StyleSheet, TouchableOpacity, View, } from "react-native";
 import * as ImagePicker from "expo-image-picker";
 import { Entypo } from "@expo/vector-icons";
-import { useRecoilState } from "recoil";
-import { userInfoState } from "../atoms";
+import { useRecoilState, useRecoilValue } from "recoil";
+import { userInfoState, userTokenState } from "../atoms";
+import Axios from "axios";
+import { SERVER_BASE_URL } from "../../utils/constants";
 
 const ProfileImage = () => {
   const [userInfo, setUserInfo] = useRecoilState(userInfoState);
+  const token = useRecoilValue(userTokenState);
+
+  const requestChangeImage = (selectedImage) => {
+    const formData = new FormData();
+    formData.append("profile_image", {
+      uri: selectedImage,
+      type: "image/jpeg",
+      name: `${userInfo.name}-${selectedImage.substring(0, 10)}`,
+    });
+    Axios.post(`${SERVER_BASE_URL}/api/members/profile`, formData, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+        Authorization: `Bearer ${token}`,
+      },
+    })
+      .then((response) => {
+        setUserInfo({
+          ...userInfo,
+          profile: {
+            baseImageUrl: selectedImage,
+          },
+        });
+      })
+      .catch((err) => console.log(err));
+  };
 
   const openImagePickerAsync = async () => {
     const permissionResult = await ImagePicker.requestCameraRollPermissionsAsync();
@@ -41,12 +61,8 @@ const ProfileImage = () => {
         console.log("cameraroll picker cancelled");
         return;
       }
-      setUserInfo({
-        ...userInfo,
-        profile: {
-          baseImageUrl: pickerResult.uri,
-        },
-      });
+      const selectedImage = pickerResult.uri;
+      await requestChangeImage(selectedImage);
     }
   };
 
