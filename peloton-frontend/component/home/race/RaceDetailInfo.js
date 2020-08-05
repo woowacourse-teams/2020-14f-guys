@@ -3,16 +3,12 @@ import { StyleSheet, Text, View } from "react-native";
 import { COLOR } from "../../../utils/constants";
 import ReadMore from "../../../utils/ReadMore";
 
-const RaceDetailInfo = () => {
+const RaceDetailInfo = ({ title, description }) => {
   return (
     <View style={styles.container}>
       <View style={styles.raceInfoText}>
-        <Text style={styles.title}>React Native Study</Text>
-        <ReadMore>
-          React Native를 스터디해서 어플을 출시하고, 사업에 성공하고, 돈을 많이
-          벌어서, 집도 사고, 페라리도 사고 행복한 삶을 삽시다. 고양이도 사고,
-          마당 있는 집을 사서 개도 몇 마리 기르고 유튜브도 합시다.
-        </ReadMore>
+        <Text style={styles.title}>{title}</Text>
+        <ReadMore>{description}</ReadMore>
       </View>
     </View>
   );

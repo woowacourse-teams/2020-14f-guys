@@ -3,18 +3,20 @@ import { StyleSheet, Text, View } from "react-native";
 import RaceSpecItem from "./RaceSpecItem";
 import { COLOR } from "../../../utils/constants";
 
-const RaceSpec = () => {
+const RaceSpec = ({ raceDuration, cash }) => {
+  const startDate = raceDuration.startDate;
+  const endDate = raceDuration.endDate;
   return (
     <View style={styles.container}>
       <Text style={styles.title}>레이스 정보 확인하기</Text>
       <RaceSpecItem
         itemKey={"레이스 기간"}
-        value={"2019.02.03 ~ 2020.03.20"}
+        value={`${startDate} ~ ${endDate}`}
         border
       />
       <RaceSpecItem itemKey={"인증 주기"} value={"월, 수, 금"} border />
       <RaceSpecItem itemKey={"인증 시간"} value={"17:00 ~ 23:00"} border />
-      <RaceSpecItem itemKey={"모인 금액"} value={"50000원"} border={false} />
+      <RaceSpecItem itemKey={"모인 금액"} value={cash} border={false} />
     </View>
   );
 };

@@ -1,15 +1,61 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { ScrollView, StyleSheet } from "react-native";
 import RaceDetailInfo from "./RaceDetailInfo";
 import RaceCertificationImage from "./RaceCertificationImage";
 import RaceSpec from "./RaceSpec";
+import { useRecoilValue, useSetRecoilState } from "recoil";
+import { userTokenState } from "../../atoms";
+import { loadingState } from "../../../state/loading/LoadingState";
+import Axios from "axios";
+import { SERVER_BASE_URL } from "../../../utils/constants";
 
-const RaceDetail = () => {
+const calculateTotalCash = (cash) => {
+  return cash * 10;
+};
+
+const RaceDetail = ({ route }) => {
+  const token = useRecoilValue(userTokenState);
+  const setIsLoading = useSetRecoilState(loadingState);
+  const raceId = route.params.location.split("/")[3];
+  const [raceInfo, setRaceInfo] = useState({
+    id: "",
+    title: "",
+    description: "",
+    thumbnail: "",
+    certificationExample: "",
+    raceDuration: "",
+    category: "",
+    entranceFee: "",
+  });
+
+  useEffect(() => {
+    const fetchRace = async () => {
+      setIsLoading(true);
+      const response = await Axios({
+        method: "GET",
+        baseURL: SERVER_BASE_URL,
+        url: `api/races/${raceId}`,
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      setRaceInfo(response.data);
+    };
+    fetchRace();
+    setIsLoading(false);
+  }, []);
+
   return (
     <ScrollView style={styles.container}>
       <RaceCertificationImage />
-      <RaceDetailInfo />
-      <RaceSpec />
+      <RaceDetailInfo
+        title={raceInfo.title}
+        description={raceInfo.description}
+      />
+      <RaceSpec
+        raceDuration={raceInfo.raceDuration}
+        cash={calculateTotalCash(parseInt(raceInfo.entranceFee.cash))}
+      />
     </ScrollView>
   );
 };
