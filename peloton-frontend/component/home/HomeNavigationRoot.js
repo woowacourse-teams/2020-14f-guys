@@ -8,6 +8,8 @@ import ShareButton from "./race/ShareButton";
 import InputRaceInfo from "./racecreate/InputRaceInfo";
 import InputRaceDates from "./racecreate/InputRaceDates";
 import InputRaceFee from "./racecreate/InputRaceFee";
+import * as HeaderStyleInterpolators from "@react-navigation/stack/src/TransitionConfigs/HeaderStyleInterpolators";
+import * as TransitionPresets from "@react-navigation/stack/src/TransitionConfigs/TransitionPresets";
 
 const HomeStack = createStackNavigator();
 
@@ -26,6 +28,9 @@ const HomeNavigationRoot = () => {
         component={RaceDetail}
         options={{
           title: "진행중인 레이스",
+          headerTransparent: true,
+          headerTitle: false,
+          headerLeft: false,
           headerRight: () => <ShareButton />,
         }}
       />

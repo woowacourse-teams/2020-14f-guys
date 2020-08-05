@@ -7,13 +7,13 @@ const RaceSubTitle = ({ children }) => {
 
 const styles = StyleSheet.create({
   subtitle: {
-    paddingTop: 5,
-    paddingBottom: 20,
+    paddingLeft: 21,
+    paddingTop: 23,
     color: "black",
-    fontSize: 17,
-    fontWeight: "900",
+    fontSize: 18,
+    fontWeight: "bold",
     letterSpacing: 2,
-    textAlign: "center",
+    textAlign: "left",
   },
 });
 

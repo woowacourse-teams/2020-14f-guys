@@ -1,11 +1,12 @@
 import React, { useState } from "react";
 import { StyleSheet, Text, View } from "react-native";
+import { COLOR } from "./constants";
 
 const THREE_LINE_HEIGHT = 65;
 const INITIAL_MAXIMUM_LINE_NUMBER = 3;
 const INFINITE_LINE_NUMBER = 10;
 
-const ReadMore = ({ children }) => {
+const ReadMore = ({ style, children }) => {
   const [isFirst, setIsFirst] = useState(true);
   const [firstHeight, setFirstHeight] = useState(0);
   const [isPressedReadMore, setIsPressedReadMore] = useState(false);
@@ -40,7 +41,7 @@ const ReadMore = ({ children }) => {
   };
 
   return (
-    <View>
+    <View style={style}>
       <Text
         style={styles.description}
         numberOfLines={calculatedNumberOfLines()}
@@ -55,8 +56,8 @@ const ReadMore = ({ children }) => {
 
 const styles = StyleSheet.create({
   description: {
-    color: "gray",
-    fontSize: 15,
+    color: COLOR.BLACK,
+    fontSize: 18,
     fontWeight: "300",
     lineHeight: 23,
   },

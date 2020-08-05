@@ -1,32 +1,41 @@
 import React from "react";
 import { StyleSheet, Text, View } from "react-native";
-import RaceSubTitle from "./RaceSubTitle";
+import RaceSpecItem from "./RaceSpecItem";
+import { COLOR } from "../../../utils/constants";
 
 const RaceSpec = () => {
   return (
-    <View style={styles.detailContainer}>
-      <RaceSubTitle>레이스 세부정보</RaceSubTitle>
-      <Text style={styles.detail}>
-        ⭐️ 레이스 기간 : 2019.02.03 ~ 2020.03.20 {"\n"}
-        ⭐️ 인증 주기 : 월, 수, 금 {"\n"}
-        ⭐️ 인증 시간 : 17:00 ~ 23:00 {"\n"}
-        ⭐️ 모인 금액 : 50000원
-      </Text>
+    <View style={styles.container}>
+      <Text style={styles.title}>레이스 정보 확인하기</Text>
+      <RaceSpecItem itemKey={"레이스 기간"} value={"2019.02.03 ~ 2020.03.20"} />
+      <View style={styles.border} />
+      <RaceSpecItem itemKey={"인증 주기"} value={"월, 수, 금"} />
+      <View style={styles.border} />
+      <RaceSpecItem itemKey={"인증 시간"} value={"17:00 ~ 23:00"} />
+      <View style={styles.border} />
+      <RaceSpecItem itemKey={"모인 금액"} value={"50000원"} />
     </View>
   );
 };
 
 const styles = StyleSheet.create({
-  detailContainer: {
-    backgroundColor: "#F2F2F2",
+  container: {
+    flex: 1,
+    paddingTop: 10,
     paddingBottom: 10,
     paddingHorizontal: 20,
+    backgroundColor: COLOR.GRAY7,
   },
-  detail: {
-    fontSize: 15,
-    color: "gray",
-    fontWeight: "300",
-    lineHeight: 23,
+  title: {
+    fontSize: 25,
+    paddingBottom: 30,
+    fontWeight: "400",
+  },
+  border: {
+    borderWidth: 1,
+    borderColor: COLOR.GRAY5,
+    marginTop: 10,
+    marginBottom: 25,
   },
 });
 
