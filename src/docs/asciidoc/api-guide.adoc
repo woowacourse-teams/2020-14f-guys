@@ -363,3 +363,50 @@ operation::race/delete-success[snippets='http-request,http-response,path-paramet
 ==== Success
 operation::report/create-success[snippets='http-request,http-response,request-fields,response-headers']
 
+[[resources-rider]]
+== Rider
+
+
+[[resources-rider-create]]
+=== Create Rider
+
+
+[[resources-rider-create-succcess]]
+==== Success
+operation::rider/create-success[snippets='http-request,http-response,request-headers,request-fields,response-headers']
+
+[[resources-rider-get]]
+=== Get Rider
+
+
+[[resources-rider-get-succcess]]
+==== Success
+operation::rider/get-success[snippets='http-request,http-response,request-headers,response-fields']
+
+[[resources-rider-get-all-in-race]]
+=== Get All Riders in Race
+
+[[resources-rider-get-all-in-race-succcess]]
+==== Success
+operation::rider/get-all-in-race[snippets='http-request,http-response,path-parameters,request-headers,response-fields']
+
+[[resources-rider-get-all-of-member]]
+=== Get All Riders of Member
+
+[[resources-rider-get-all-of-member-succcess]]
+==== Success
+operation::rider/get-all-of-member[snippets='http-request,http-response,path-parameters,request-headers,response-fields']
+
+[[resources-rider-update]]
+=== Update Rider
+
+[[resources-rider-update-succcess]]
+==== Success
+operation::rider/update-success[snippets='http-request,http-response,path-parameters,request-headers,request-fields']
+
+[[resources-rider-delete]]
+=== Delete Rider
+
+[[resources-rider-delete-succcess]]
+==== Success
+operation::rider/delete-success[snippets='http-request,http-response,path-parameters,request-headers']
