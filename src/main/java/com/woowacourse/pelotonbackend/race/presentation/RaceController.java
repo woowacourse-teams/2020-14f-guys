@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.woowacourse.pelotonbackend.member.presentation.dto.MemberCreateRequest;
 import com.woowacourse.pelotonbackend.race.application.RaceService;
 import com.woowacourse.pelotonbackend.race.presentation.dto.RaceCreateRequest;
 import com.woowacourse.pelotonbackend.race.presentation.dto.RaceRetrieveResponse;
