@@ -7,8 +7,14 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.TestExecutionListeners;
+
+import com.woowacourse.pelotonbackend.DataInitializeExecutionListener;
 
 @SpringBootTest
+@TestExecutionListeners(
+    listeners = DataInitializeExecutionListener.class,
+    mergeMode = TestExecutionListeners.MergeMode.MERGE_WITH_DEFAULTS)
 public class RaceRepositoryTest {
     @Autowired
     private RaceRepository raceRepository;

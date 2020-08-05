@@ -12,10 +12,14 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.jdbc.Sql;
+import org.springframework.test.context.TestExecutionListeners;
 
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-@Sql("/truncate.sql")
+import com.woowacourse.pelotonbackend.DataInitializeExecutionListener;
+
+@SpringBootTest
+@TestExecutionListeners(
+    listeners = DataInitializeExecutionListener.class,
+    mergeMode = TestExecutionListeners.MergeMode.MERGE_WITH_DEFAULTS)
 class MemberRepositoryTest {
     @Autowired
     private MemberRepository memberRepository;
