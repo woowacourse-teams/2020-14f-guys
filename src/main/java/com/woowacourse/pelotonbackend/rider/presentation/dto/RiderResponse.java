@@ -1,9 +1,7 @@
-package com.woowacourse.pelotonbackend.rider.presentation;
+package com.woowacourse.pelotonbackend.rider.presentation.dto;
 
 import java.beans.ConstructorProperties;
 import java.time.LocalDateTime;
-import java.util.List;
-import java.util.stream.Collectors;
 
 import com.woowacourse.pelotonbackend.rider.domain.Rider;
 import lombok.AccessLevel;
@@ -28,12 +26,5 @@ public class RiderResponse {
             .raceId(rider.getRaceId().getId())
             .createdAt(rider.getCreatedAt())
             .build();
-    }
-
-    public static List<RiderResponse> listOf(final List<Rider> riders) {
-        // todo : 김카일 포장해라
-        return riders.stream()
-            .map(RiderResponse::of)
-            .collect(Collectors.toList());
     }
 }

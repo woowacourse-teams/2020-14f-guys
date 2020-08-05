@@ -99,4 +99,8 @@ public class LoginFixture {
             .build()
             .toString();
     }
+
+    public static String getTokenHeader() {
+        return TOKEN_TYPE + TOKEN;
+    }
 }

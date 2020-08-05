@@ -1,7 +1,6 @@
 package com.woowacourse.pelotonbackend.member.presentation;
 
 import java.net.URI;
-import java.util.Objects;
 
 import javax.validation.Valid;
 
@@ -17,7 +16,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.woowacourse.pelotonbackend.common.exception.UploadFailureException;
 import com.woowacourse.pelotonbackend.member.application.MemberService;
 import com.woowacourse.pelotonbackend.member.presentation.dto.MemberCashUpdateRequest;
 import com.woowacourse.pelotonbackend.member.presentation.dto.MemberCreateRequest;

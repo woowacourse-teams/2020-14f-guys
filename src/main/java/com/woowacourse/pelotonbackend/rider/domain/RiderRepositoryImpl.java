@@ -32,10 +32,31 @@ public class RiderRepositoryImpl implements RiderCustomRepository {
         return operations.query(findByRiderId(), parameterSource, this.rowMapper);
     }
 
+    @Override
+    public List<Rider> findRidersByMemberId(final Long memberId) {
+        final MapSqlParameterSource parameterSource = new MapSqlParameterSource()
+            .addValue("memberId", memberId);
+
+        return operations.query(findByMemberId(), parameterSource, this.rowMapper);
+    }
+
     private static String findByRiderId() {
         return new StringBuilder()
-            .append("SELECT * FROM RIDER ")
-            .append("WHERE RIDER.RACE_ID = :raceId")
+            .append("SELECT RIDER.ID AS ID")
+            .append(", RIDER.MEMBER_ID AS MEMBER_ID, RIDER.RACE_ID AS RACE_ID")
+            .append(", RIDER.CREATED_AT AS CREATED_AT, RIDER.UPDATED_AT AS UPDATED_AT")
+            .append(" FROM RIDER")
+            .append(" WHERE RACE_ID = :raceId")
+            .toString();
+    }
+
+    private static String findByMemberId() {
+        return new StringBuilder()
+            .append("SELECT RIDER.ID AS ID")
+            .append(", RIDER.MEMBER_ID AS MEMBER_ID, RIDER.RACE_ID AS RACE_ID")
+            .append(", RIDER.CREATED_AT AS CREATED_AT, RIDER.UPDATED_AT AS UPDATED_AT")
+            .append(" FROM RIDER")
+            .append(" WHERE MEMBER_ID = :memberId")
             .toString();
     }
 }
