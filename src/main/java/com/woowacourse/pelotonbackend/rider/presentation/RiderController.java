@@ -64,7 +64,9 @@ public class RiderController {
         @RequestBody final RiderUpdateRequest request) {
         final Long riderId = riderService.updateById(id, request);
 
-        return ResponseEntity.ok().header("Location", String.format("/api/riders/%d", riderId)).build();
+        return ResponseEntity.ok()
+            .header("Location", String.format("/api/riders/%d", riderId))
+            .build();
     }
 
     @DeleteMapping("/{id}")

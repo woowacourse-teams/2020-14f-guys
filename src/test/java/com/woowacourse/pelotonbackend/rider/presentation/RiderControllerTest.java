@@ -14,9 +14,10 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.core.MethodParameter;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
@@ -30,6 +31,7 @@ import org.springframework.web.method.support.ModelAndViewContainer;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.woowacourse.pelotonbackend.common.ErrorCode;
 import com.woowacourse.pelotonbackend.common.exception.RiderNotFoundException;
+import com.woowacourse.pelotonbackend.member.domain.LoginFixture;
 import com.woowacourse.pelotonbackend.member.domain.MemberFixture;
 import com.woowacourse.pelotonbackend.member.presentation.LoginMemberArgumentResolver;
 import com.woowacourse.pelotonbackend.member.presentation.dto.MemberResponse;
@@ -39,7 +41,7 @@ import com.woowacourse.pelotonbackend.rider.presentation.dto.RiderCreateRequest;
 import com.woowacourse.pelotonbackend.rider.presentation.dto.RiderResponses;
 import com.woowacourse.pelotonbackend.support.BearerAuthInterceptor;
 
-@SpringBootTest
+@WebMvcTest(controllers = RiderController.class)
 public class RiderControllerTest {
     private MockMvc mockMvc;
 
@@ -73,6 +75,7 @@ public class RiderControllerTest {
         given(argumentResolver.supportsParameter(any())).willReturn(true);
 
         this.mockMvc.perform(post("/api/riders")
+            .header(HttpHeaders.AUTHORIZATION, LoginFixture.getTokenHeader())
             .content(objectMapper.writeValueAsBytes(RiderFixture.createMockRequest()))
             .contentType(MediaType.APPLICATION_JSON)
         )
@@ -88,7 +91,8 @@ public class RiderControllerTest {
         given(bearerAuthInterceptor.preHandle(any(HttpServletRequest.class), any(HttpServletResponse.class),
             any(HandlerMethod.class))).willReturn(true);
 
-        mockMvc.perform(get("/api/riders/100")
+        mockMvc.perform(get("/api/riders/{riderId}", TEST_RIDER_ID)
+            .header(HttpHeaders.AUTHORIZATION, LoginFixture.getTokenHeader())
             .accept(MediaType.APPLICATION_JSON)
         )
             .andExpect(status().isOk());
@@ -97,11 +101,14 @@ public class RiderControllerTest {
     @DisplayName("존재하지 않는 ID로 조회하는 경우 예외를 반환한다.")
     @Test
     void findNotExistRider() throws Exception {
-        given(riderService.retrieve(anyLong())).willThrow(new RiderNotFoundException(100L));
+        final long notExistId = 100L;
+
+        given(riderService.retrieve(anyLong())).willThrow(new RiderNotFoundException(notExistId));
         given(bearerAuthInterceptor.preHandle(any(HttpServletRequest.class), any(HttpServletResponse.class),
             any(HandlerMethod.class))).willReturn(true);
 
-        mockMvc.perform(get("/api/riders/100")
+        mockMvc.perform(get("/api/riders/{riderId}", notExistId)
+            .header(HttpHeaders.AUTHORIZATION, LoginFixture.getTokenHeader())
             .accept(MediaType.APPLICATION_JSON)
         )
             .andExpect(status().isNotFound())
@@ -116,7 +123,8 @@ public class RiderControllerTest {
         given(bearerAuthInterceptor.preHandle(any(HttpServletRequest.class), any(HttpServletResponse.class),
             any(HandlerMethod.class))).willReturn(true);
 
-        mockMvc.perform(get("/api/riders/races/1")
+        mockMvc.perform(get("/api/riders/races/{raceId}", TEST_RACE_ID)
+            .header(HttpHeaders.AUTHORIZATION, LoginFixture.getTokenHeader())
             .accept(MediaType.APPLICATION_JSON)
         )
             .andExpect(status().isOk());
@@ -129,7 +137,8 @@ public class RiderControllerTest {
         given(riderService.retrieveByMemberId(TEST_MEMBER_ID)).willReturn(expectedRiders);
         given(bearerAuthInterceptor.preHandle(any(HttpServletRequest.class), any(HttpServletResponse.class),
             any(HandlerMethod.class))).willReturn(true);
-        mockMvc.perform(get("/api/riders/members/" + TEST_MEMBER_ID)
+        mockMvc.perform(get("/api/riders/members/{memberId}", TEST_MEMBER_ID)
+            .header(HttpHeaders.AUTHORIZATION, LoginFixture.getTokenHeader())
             .accept(MediaType.APPLICATION_JSON)
         )
             .andExpect(status().isOk());
@@ -141,7 +150,8 @@ public class RiderControllerTest {
         given(riderService.updateById(TEST_RIDER_ID, updateMockRequest())).willReturn(TEST_RIDER_ID);
         given(bearerAuthInterceptor.preHandle(any(HttpServletRequest.class), any(HttpServletResponse.class),
             any(HandlerMethod.class))).willReturn(true);
-        mockMvc.perform(put("/api/riders/" + TEST_RIDER_ID)
+        mockMvc.perform(put("/api/riders/{riderId}", TEST_RIDER_ID)
+            .header(HttpHeaders.AUTHORIZATION, LoginFixture.getTokenHeader())
             .contentType(MediaType.APPLICATION_JSON)
             .content(objectMapper.writeValueAsBytes(updateMockRequest()))
         )
@@ -154,7 +164,9 @@ public class RiderControllerTest {
     void deleteRider() throws Exception {
         given(bearerAuthInterceptor.preHandle(any(HttpServletRequest.class), any(HttpServletResponse.class),
             any(HandlerMethod.class))).willReturn(true);
-        mockMvc.perform(delete("/api/riders/" + TEST_RIDER_ID))
+        mockMvc.perform(delete("/api/riders/{riderId}", TEST_RIDER_ID)
+            .header(HttpHeaders.AUTHORIZATION, LoginFixture.getTokenHeader())
+        )
             .andExpect(status().isNoContent());
 
         verify(riderService).deleteById(TEST_RIDER_ID);

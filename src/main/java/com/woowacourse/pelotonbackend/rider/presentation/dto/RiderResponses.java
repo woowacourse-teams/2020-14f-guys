@@ -6,15 +6,16 @@ import java.beans.ConstructorProperties;
 import java.util.List;
 
 import com.woowacourse.pelotonbackend.rider.domain.Rider;
+import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
-@AllArgsConstructor(onConstructor_ = @ConstructorProperties("riderResponses"))
+@AllArgsConstructor(access = AccessLevel.PRIVATE, onConstructor_ = @ConstructorProperties("riderResponses"))
 @Getter
 public class RiderResponses {
     private final List<RiderResponse> riderResponses;
 
-    public static RiderResponses from(List<Rider> riders){
+    public static RiderResponses of(final List<Rider> riders) {
         final List<RiderResponse> responses = riders.stream()
             .map(RiderResponse::of)
             .collect(toList());

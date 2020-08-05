@@ -62,7 +62,7 @@ public class RiderFixture {
     }
 
     public static RiderResponses createRidersInSameRace() {
-        return RiderResponses.from(LongStream.range(1, 5)
+        return RiderResponses.of(LongStream.range(1, 5)
             .mapToObj(RiderFixture::createRiderWithId)
             .collect(Collectors.toList()));
     }

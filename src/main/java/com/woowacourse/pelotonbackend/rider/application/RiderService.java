@@ -39,14 +39,14 @@ public class RiderService {
     public RiderResponses retrieveByRaceId(final Long raceId) {
         final List<Rider> riders = riderRepository.findRidersByRaceId(raceId);
 
-        return RiderResponses.from(riders);
+        return RiderResponses.of(riders);
     }
 
     @Transactional(readOnly = true)
     public RiderResponses retrieveByMemberId(final Long memberId) {
         final List<Rider> riders = riderRepository.findRidersByMemberId(memberId);
 
-        return RiderResponses.from(riders);
+        return RiderResponses.of(riders);
     }
 
     public Long updateById(final Long riderId, final RiderUpdateRequest request) {
