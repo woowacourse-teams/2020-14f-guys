@@ -92,6 +92,7 @@ jacocoTestCoverageVerification {
                 value = 'COVEREDRATIO'
                 minimum = 0.70
             }
+
             excludes = [
                     '*.config.*',
                     '*.common.*',
