@@ -1,5 +1,5 @@
 import React from "react";
-import { StyleSheet, View } from "react-native";
+import { Dimensions, StyleSheet, View } from "react-native";
 import Carousel, { ParallaxImage } from "react-native-snap-carousel";
 import { MOCK_DATA } from "../../../utils/constants";
 
@@ -42,7 +42,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   item: {
-    width: "100%",
     height: 600,
     justifyContent: "center",
     alignItems: "center",
@@ -56,8 +55,7 @@ const styles = StyleSheet.create({
     },
   },
   imageContainer: {
-    width: "100%",
-    height: "100%",
+    width: Dimensions.get("window").width * 1.069,
     borderRadius: 10,
     overflow: "hidden",
   },

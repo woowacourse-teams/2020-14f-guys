@@ -26,14 +26,12 @@ const styles = StyleSheet.create({
     fontSize: 18,
     lineHeight: 21,
     color: COLOR.BLACK,
-    textAlign: "left",
     flex: 4,
   },
   value: {
     fontSize: 18,
     lineHeight: 21,
     color: COLOR.GRAY1,
-    textAlign: "left",
     flex: 9,
   },
   border: {

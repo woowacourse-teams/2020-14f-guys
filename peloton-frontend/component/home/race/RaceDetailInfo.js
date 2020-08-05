@@ -18,27 +18,15 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     overflow: "hidden",
-    backgroundColor: "white",
+    backgroundColor: COLOR.WHITE,
     borderBottomEndRadius: 15,
     borderBottomStartRadius: 15,
   },
   image: {
     height: 200,
   },
-  achievement: {
-    position: "absolute",
-    left: 30,
-    top: 30,
-  },
-  duration: {
-    position: "absolute",
-    color: COLOR.BLACK,
-    right: 30,
-    top: 30,
-  },
   raceInfoText: {
-    paddingHorizontal: 20,
-    paddingVertical: 20,
+    padding: 20,
     backgroundColor: COLOR.WHITE,
   },
   title: {
