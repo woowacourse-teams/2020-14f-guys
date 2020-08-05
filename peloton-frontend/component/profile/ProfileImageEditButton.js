@@ -52,13 +52,13 @@ const ProfileImageEditButton = ({ children }) => {
         return;
       }
       const selectedImage = pickerResult.uri;
-      await setUserInfo({
+      setUserInfo({
         ...userInfo,
         profile: {
           baseImageUrl: selectedImage,
         },
       });
-      await requestChangeImage(selectedImage);
+      requestChangeImage(selectedImage);
     }
   };
 

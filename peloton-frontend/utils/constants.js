@@ -100,7 +100,7 @@ export const CATEGORY = [
       "https://x86.co.kr/files/attach/images/1951610/342/576/002/0555addbb9bfd672918a2539668f0dac.jpg",
   },
 ];
-export const SERVER_BASE_URL = "http://peloton.ga";
+export const SERVER_BASE_URL = "https://peloton.ga";
 export const TOKEN_STORAGE = "@token_storage";
 
 export const AnimatedImage = animated(Image);
