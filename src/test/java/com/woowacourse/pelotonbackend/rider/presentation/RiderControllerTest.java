@@ -3,7 +3,8 @@ package com.woowacourse.pelotonbackend.rider.presentation;
 import static com.woowacourse.pelotonbackend.rider.domain.RiderFixture.*;
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.BDDMockito.*;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.*;
+import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -13,12 +14,15 @@ import javax.servlet.http.HttpServletResponse;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.core.MethodParameter;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
+import org.springframework.restdocs.RestDocumentationContextProvider;
+import org.springframework.restdocs.RestDocumentationExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.bind.support.WebDataBinderFactory;
@@ -31,6 +35,7 @@ import org.springframework.web.method.support.ModelAndViewContainer;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.woowacourse.pelotonbackend.common.ErrorCode;
 import com.woowacourse.pelotonbackend.common.exception.RiderNotFoundException;
+import com.woowacourse.pelotonbackend.docs.RiderDocumentation;
 import com.woowacourse.pelotonbackend.member.domain.LoginFixture;
 import com.woowacourse.pelotonbackend.member.domain.MemberFixture;
 import com.woowacourse.pelotonbackend.member.presentation.LoginMemberArgumentResolver;
@@ -39,9 +44,11 @@ import com.woowacourse.pelotonbackend.rider.application.RiderService;
 import com.woowacourse.pelotonbackend.rider.domain.RiderFixture;
 import com.woowacourse.pelotonbackend.rider.presentation.dto.RiderCreateRequest;
 import com.woowacourse.pelotonbackend.rider.presentation.dto.RiderResponses;
+import com.woowacourse.pelotonbackend.rider.presentation.dto.RiderUpdateRequest;
 import com.woowacourse.pelotonbackend.support.BearerAuthInterceptor;
 
 @WebMvcTest(controllers = RiderController.class)
+@ExtendWith(RestDocumentationExtension.class)
 public class RiderControllerTest {
     private MockMvc mockMvc;
 
@@ -58,8 +65,10 @@ public class RiderControllerTest {
     private LoginMemberArgumentResolver argumentResolver;
 
     @BeforeEach
-    void setUp(final WebApplicationContext webApplicationContext) {
+    void setUp(final WebApplicationContext webApplicationContext,
+        final RestDocumentationContextProvider restDocumentation) {
         this.mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext)
+            .apply(documentationConfiguration(restDocumentation))
             .addFilters(new CharacterEncodingFilter("UTF-8", true))
             .alwaysDo(print()).build();
     }
@@ -80,7 +89,8 @@ public class RiderControllerTest {
             .contentType(MediaType.APPLICATION_JSON)
         )
             .andExpect(status().isCreated())
-            .andExpect(header().exists("Location"));
+            .andExpect(header().exists("Location"))
+            .andDo(RiderDocumentation.createRider());
     }
 
     @DisplayName("Rider의 아이디로 Rider를 조회한다.")
@@ -95,7 +105,8 @@ public class RiderControllerTest {
             .header(HttpHeaders.AUTHORIZATION, LoginFixture.getTokenHeader())
             .accept(MediaType.APPLICATION_JSON)
         )
-            .andExpect(status().isOk());
+            .andExpect(status().isOk())
+            .andDo(RiderDocumentation.getRider());
     }
 
     @DisplayName("존재하지 않는 ID로 조회하는 경우 예외를 반환한다.")
@@ -112,7 +123,8 @@ public class RiderControllerTest {
             .accept(MediaType.APPLICATION_JSON)
         )
             .andExpect(status().isNotFound())
-            .andExpect(jsonPath("code").value(ErrorCode.RIDER_NOT_FOUND.getCode()));
+            .andExpect(jsonPath("code").value(ErrorCode.RIDER_NOT_FOUND.getCode()))
+            .andDo(RiderDocumentation.getNotExistRider());
     }
 
     @DisplayName("특정 레이스에 참여중인 Rider를 모두 반환한다.")
@@ -127,7 +139,8 @@ public class RiderControllerTest {
             .header(HttpHeaders.AUTHORIZATION, LoginFixture.getTokenHeader())
             .accept(MediaType.APPLICATION_JSON)
         )
-            .andExpect(status().isOk());
+            .andExpect(status().isOk())
+            .andDo(RiderDocumentation.getAllRidersInRace());
     }
 
     @DisplayName("특정 멤버가 참여하고 있는 Rider를 모두 반환한다.")
@@ -141,13 +154,14 @@ public class RiderControllerTest {
             .header(HttpHeaders.AUTHORIZATION, LoginFixture.getTokenHeader())
             .accept(MediaType.APPLICATION_JSON)
         )
-            .andExpect(status().isOk());
+            .andExpect(status().isOk())
+            .andDo(RiderDocumentation.getAllRidersOfMember());
     }
 
     @DisplayName("Rider 정보를 업데이트한다.")
     @Test
     void updateRider() throws Exception {
-        given(riderService.updateById(TEST_RIDER_ID, updateMockRequest())).willReturn(TEST_RIDER_ID);
+        given(riderService.updateById(anyLong(), any())).willReturn(TEST_RIDER_ID);
         given(bearerAuthInterceptor.preHandle(any(HttpServletRequest.class), any(HttpServletResponse.class),
             any(HandlerMethod.class))).willReturn(true);
         mockMvc.perform(put("/api/riders/{riderId}", TEST_RIDER_ID)
@@ -156,7 +170,8 @@ public class RiderControllerTest {
             .content(objectMapper.writeValueAsBytes(updateMockRequest()))
         )
             .andExpect(status().isOk())
-            .andExpect(header().exists("Location"));
+            .andExpect(header().stringValues("Location", String.format("/api/riders/%d", TEST_RIDER_ID)))
+            .andDo(RiderDocumentation.updateRider());
     }
 
     @DisplayName("Rider 정보를 삭제한다.")
@@ -167,7 +182,8 @@ public class RiderControllerTest {
         mockMvc.perform(delete("/api/riders/{riderId}", TEST_RIDER_ID)
             .header(HttpHeaders.AUTHORIZATION, LoginFixture.getTokenHeader())
         )
-            .andExpect(status().isNoContent());
+            .andExpect(status().isNoContent())
+        .andDo(RiderDocumentation.deleteRider());
 
         verify(riderService).deleteById(TEST_RIDER_ID);
     }
