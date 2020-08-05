@@ -12,13 +12,14 @@ import org.springframework.web.multipart.MultipartFile;
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 class S3UploadServiceTest {
     private static final MultipartFile MOCK_MULTIPART_FILE = createMockCertificationMultipartFile();
+    private static final String PROFILE_IMAGE_PATH = "member-profile-image/";
 
     @Autowired
     private UploadService uploadService;
 
     @Test
     void imageUploadTest() {
-        final String url = uploadService.uploadImage(MOCK_MULTIPART_FILE, "");
-        assertThat(url).contains(S3_BASIC_URL);
+        final String url = uploadService.uploadImage(MOCK_MULTIPART_FILE, PROFILE_IMAGE_PATH);
+        assertThat(url).contains(S3_BASIC_URL, PROFILE_IMAGE_PATH);
     }
 }
