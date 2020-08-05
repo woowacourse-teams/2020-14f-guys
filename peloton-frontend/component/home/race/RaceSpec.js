@@ -7,13 +7,14 @@ const RaceSpec = () => {
   return (
     <View style={styles.container}>
       <Text style={styles.title}>레이스 정보 확인하기</Text>
-      <RaceSpecItem itemKey={"레이스 기간"} value={"2019.02.03 ~ 2020.03.20"} />
-      <View style={styles.border} />
-      <RaceSpecItem itemKey={"인증 주기"} value={"월, 수, 금"} />
-      <View style={styles.border} />
-      <RaceSpecItem itemKey={"인증 시간"} value={"17:00 ~ 23:00"} />
-      <View style={styles.border} />
-      <RaceSpecItem itemKey={"모인 금액"} value={"50000원"} />
+      <RaceSpecItem
+        itemKey={"레이스 기간"}
+        value={"2019.02.03 ~ 2020.03.20"}
+        border
+      />
+      <RaceSpecItem itemKey={"인증 주기"} value={"월, 수, 금"} border />
+      <RaceSpecItem itemKey={"인증 시간"} value={"17:00 ~ 23:00"} border />
+      <RaceSpecItem itemKey={"모인 금액"} value={"50000원"} border={false} />
     </View>
   );
 };
@@ -24,7 +25,7 @@ const styles = StyleSheet.create({
     paddingTop: 10,
     paddingBottom: 10,
     paddingHorizontal: 20,
-    backgroundColor: COLOR.GRAY7,
+    backgroundColor: COLOR.GRAY6,
   },
   title: {
     fontSize: 25,

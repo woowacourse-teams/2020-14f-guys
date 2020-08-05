@@ -30,7 +30,7 @@ const styles = StyleSheet.create({
     bottom: 0,
     left: 0,
     right: 0,
-    backgroundColor: COLOR.GRAY6,
+    backgroundColor: COLOR.DARK_GRAY6,
     opacity: 0.9,
     justifyContent: "center",
     alignItems: "center",

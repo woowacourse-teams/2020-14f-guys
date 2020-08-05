@@ -14,8 +14,8 @@ export const COLOR = {
   GRAY3: "rgb(199,199,204)",
   GRAY4: "rgb(209,209,214)",
   GRAY5: "rgb(229,229,234)",
-  GRAY6: "rgb(33,33,34)",
-  GRAY7: "rgb(238,238,243)",
+  GRAY6: "rgb(242,242,247)",
+  DARK_GRAY6: "rgb(28,28,30)",
   LOGIN_BLUE: "#21365d",
   BLACK: "#000",
 };

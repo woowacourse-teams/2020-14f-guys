@@ -12,7 +12,7 @@ const ShareButton = () => {
 
   return (
     <TouchableOpacity style={styles.shareButton} onPress={onShare}>
-      <EvilIcons name="share-apple" size={33} color="black" />
+      <EvilIcons name="share-apple" size={44} color="black" />
     </TouchableOpacity>
   );
 };
