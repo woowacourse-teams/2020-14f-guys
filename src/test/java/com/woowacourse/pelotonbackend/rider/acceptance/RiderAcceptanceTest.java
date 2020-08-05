@@ -9,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 
 import com.woowacourse.pelotonbackend.member.domain.MemberFixture;
+import com.woowacourse.pelotonbackend.member.presentation.dto.MemberResponse;
 import com.woowacourse.pelotonbackend.rider.domain.RiderFixture;
 import com.woowacourse.pelotonbackend.rider.presentation.dto.RiderCreateRequest;
 import com.woowacourse.pelotonbackend.rider.presentation.dto.RiderResponse;
@@ -51,16 +52,17 @@ public class RiderAcceptanceTest extends AcceptanceTest {
         final RiderCreateRequest riderCreateRequest = RiderFixture.createMockRequest();
         final JwtTokenResponse tokenResponse = loginMember(
             MemberFixture.createRequest(MemberFixture.KAKAO_ID, MemberFixture.EMAIL, MemberFixture.NAME));
+        final MemberResponse memberResponse = requestFind(MemberFixture.KAKAO_ID);
         final String resource = fetchCreateRider(tokenResponse, riderCreateRequest);
         final RiderResponse riderResponse = fetchFindRider(resource, tokenResponse);
 
         assertThat(riderResponse.getId()).isNotNull();
-        assertThat(riderResponse.getMemberId()).isEqualTo((TEST_MEMBER_ID));
+        assertThat(riderResponse.getMemberId()).isEqualTo(memberResponse.getId());
         assertThat(riderResponse.getRaceId()).isEqualTo(riderCreateRequest.getRaceId());
 
         fetchCreateRiders(tokenResponse, riderCreateRequest);
         fetchFindRidersByRaceId(TEST_RACE_ID, tokenResponse);
-        fetchFindRidersByMemberId(TEST_MEMBER_ID, tokenResponse);
+        fetchFindRidersByMemberId(memberResponse.getId(), tokenResponse);
 
         fetchUpdateRider(resource, tokenResponse);
         final RiderResponse updatedRiderResponse = fetchFindRider(resource, tokenResponse);
