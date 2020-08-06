@@ -15,6 +15,7 @@ import org.springframework.core.MethodParameter;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.web.context.request.ServletWebRequest;
 
+import com.woowacourse.pelotonbackend.common.exception.MemberNotFoundException;
 import com.woowacourse.pelotonbackend.member.application.MemberService;
 import com.woowacourse.pelotonbackend.member.domain.LoginFixture;
 import com.woowacourse.pelotonbackend.member.domain.Member;
@@ -58,11 +59,36 @@ class LoginMemberArgumentResolverTest {
         assertThat(memberResponse).isEqualToComparingFieldByField(createWithId(ID));
     }
 
+    @DisplayName("해당 kakaoId와 매칭되는 회원정보가 존재하지 않을 경우 MemberNotFoundException으로 예외처리한다.")
+    @Test
+    void resolveArgumentTest2() {
+        final long kakaoId = 1L;
+        servletWebRequest.setAttribute("loginMemberKakaoId", String.valueOf(kakaoId), SCOPE_REQUEST);
+        given(memberService.findByKakaoId(kakaoId))
+            .willThrow(new MemberNotFoundException(String.format("Member(member kakaoId = %d not exist)", kakaoId)));
+
+        assertThatThrownBy(
+            () -> loginMemberArgumentResolver.resolveArgument(methodParameter, null, servletWebRequest, null))
+            .isInstanceOf(MemberNotFoundException.class)
+            .hasMessageContaining("Member(member kakaoId = %d not exist)", kakaoId);
+    }
+
     @DisplayName("kakaoId 정보가 없을 때 AssertionError로 예외처리한다.")
     @Test
     void resolveArgumentTest3() {
-        assertThatThrownBy(() -> loginMemberArgumentResolver.resolveArgument(methodParameter, null,
-            servletWebRequest, null)).isInstanceOf(AssertionError.class)
-            .hasMessageContaining("Can not found 'loginMemberKakaoId");
+        assertThatThrownBy(
+            () -> loginMemberArgumentResolver.resolveArgument(methodParameter, null, servletWebRequest, null))
+            .isInstanceOf(AssertionError.class)
+            .hasMessageContaining("Cannot found 'loginMemberKakaoId");
+    }
+
+    @DisplayName("kakaoId가 Long이 아닐 경우 MemberNotFound로 예외처리한다.")
+    @Test
+    void resolveArgumentTest4() {
+        servletWebRequest.setAttribute("loginMemberKakaoId", "notLongId", SCOPE_REQUEST);
+        assertThatThrownBy(
+            () -> loginMemberArgumentResolver.resolveArgument(methodParameter, null, servletWebRequest, null))
+            .isInstanceOf(MemberNotFoundException.class)
+            .hasMessage("Cannot found Member");
     }
 }
