@@ -20,7 +20,7 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler({MethodArgumentNotValidException.class, MethodArgumentTypeMismatchException.class})
     protected ResponseEntity<ErrorResponse> validException(final MethodArgumentNotValidException exception) {
-        log.error("Validate Exception ! ", exception);
+        log.error("Validate Exception ! : {} ", exception.toString(), exception);
 
         final ErrorCode errorCode = ErrorCode.INVALID_VALIDATE;
         final ErrorResponse errorResponse = ErrorResponse.of(errorCode.getStatus(), errorCode.getCode(),
@@ -31,7 +31,7 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(BindException.class)
     protected ResponseEntity<ErrorResponse> bindException(final BindException exception) {
-        log.error("HandleBind Exception ! ", exception);
+        log.error("HandleBind Exception ! : {} ", exception.toString(), exception);
 
         final ErrorCode errorCode = ErrorCode.INVALID_VALIDATE;
         final ErrorResponse errorResponse = ErrorResponse.of(
@@ -56,7 +56,7 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(BusinessException.class)
     protected ResponseEntity<ErrorResponse> businessException(final BusinessException exception) {
-        log.error("Business Exception ! ", exception);
+        log.error("Business Exception ! : {}", exception.toString(), exception);
 
         final ErrorCode errorCode = exception.getErrorCode();
         final ErrorResponse errorResponse = ErrorResponse.of(
@@ -69,7 +69,7 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(Exception.class)
     protected ResponseEntity<ErrorResponse> UnexpectedException(final Exception exception) {
-        log.error("Unexpected Exception ! ", exception);
+        log.error("Unexpected Exception ! {} ", exception.toString(), exception);
 
         final ErrorResponse errorResponse = ErrorResponse.of(
             ErrorCode.UNEXPECTED.getStatus(),

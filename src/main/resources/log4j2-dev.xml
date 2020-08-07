@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="TRACE">
+    <Properties>
+        <Property name="logNm">peloton-dev-log</Property>
+        <Property name="layoutPattern">%style{%d{yyyy/MM/dd HH:mm:ss,SSS}}{red} %highlight{[%level]}{FATAL=bg_red,
+            ERROR=red,INFO=green, DEBUG=blue} [%c] %style{[%t]}{yellow}- %m%n -
+        </Property>
+    </Properties>
+    <Appenders>
+        <Console name="ConsoleAppender" target="SYSTEM_OUT">
+            <PatternLayout pattern="${layoutPattern}"/>
+        </Console>
+    </Appenders>
+    <Loggers>
+        <Root level="DEBUG" additivity="false">
+            <AppenderRef ref="ConsoleAppender"/>
+        </Root>
+    </Loggers>
+</Configuration>

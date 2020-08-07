@@ -11,14 +11,15 @@ import org.springframework.web.context.request.NativeWebRequest;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.method.support.ModelAndViewContainer;
 
-import com.woowacourse.pelotonbackend.common.exception.MemberNotFoundException;
 import com.woowacourse.pelotonbackend.member.application.MemberService;
 import com.woowacourse.pelotonbackend.member.presentation.dto.MemberResponse;
 import com.woowacourse.pelotonbackend.support.annotation.LoginMember;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 @Component
 @RequiredArgsConstructor
+@Slf4j
 public class LoginMemberArgumentResolver implements HandlerMethodArgumentResolver {
     private final MemberService memberService;
 
@@ -39,10 +40,6 @@ public class LoginMemberArgumentResolver implements HandlerMethodArgumentResolve
 
         final long kakaoId = Long.parseLong(attribute);
         // TODO: 2020/07/30 exception handling 해야함
-        try {
-            return memberService.findByKakaoId(kakaoId);
-        } catch (MemberNotFoundException e) {
-            throw new IllegalArgumentException();
-        }
+        return memberService.findByKakaoId(kakaoId);
     }
 }
