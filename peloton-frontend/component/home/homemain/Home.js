@@ -26,6 +26,7 @@ const Home = () => {
         },
       });
       setUserInfo(response.data);
+      console.log(response.data);
     };
     fetchUser();
     setIsLoading(false);

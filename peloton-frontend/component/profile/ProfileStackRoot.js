@@ -1,7 +1,6 @@
 import React from "react";
 import { createStackNavigator } from "@react-navigation/stack";
 import ProfileDetail from "./profiledetail/ProfileDetail";
-import ShareButton from "../home/race/ShareButton";
 import ProfileEdit from "./profileedit/ProfileEdit";
 import CashUpdate from "./cashupdate/CashUpdate";
 
@@ -15,7 +14,6 @@ const ProfileStackRoot = () => {
         component={ProfileDetail}
         options={{
           title: "Peloton",
-          headerRight: () => <ShareButton />,
         }}
       />
       <Stack.Screen

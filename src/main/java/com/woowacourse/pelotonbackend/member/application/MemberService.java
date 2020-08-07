@@ -25,10 +25,10 @@ import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 
 @AllArgsConstructor(access = AccessLevel.PACKAGE)
-@Transactional
 @Service
+@Transactional
 public class MemberService {
-    private static final String BASIC_URL = "https://market-photos.s3.ap-northeast-2.amazonaws.com/asdasdsadasd.png";
+    private static final String BASIC_URL = "https://14f-guys-image.s3.ap-northeast-2.amazonaws.com/asdasdsadasd.png";
 
     private final MemberRepository memberRepository;
     private final UploadService uploadService;
@@ -102,7 +102,7 @@ public class MemberService {
 
     public MemberProfileResponse updateProfileImage(final Long memberId, final MultipartFile file) {
         final Member member = findMemberById(memberId);
-        String changedProfileUrl = Objects.isNull(file) ? BASIC_URL : uploadService.upload(file);
+        String changedProfileUrl = Objects.isNull(file) ? BASIC_URL : uploadService.uploadImage(file, "member-profile-image/");
         final Member updatedMember = member.changeProfile(new ImageUrl(changedProfileUrl));
 
         memberRepository.save(updatedMember);

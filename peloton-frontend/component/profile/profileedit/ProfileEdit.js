@@ -1,14 +1,14 @@
 import React from "react";
 import { ScrollView, StyleSheet } from "react-native";
-import ProfileEditInfo from "./ProfileEditInfo";
-import ProfileEditImage from "./ProfileEditImage";
+import ProfileEditInfo from "./ProfileInfoEdit";
+import ProfileImageEdit from "./ProfileImageEdit";
 import SignOutButtonContainer from "./SignOutButtonContainer";
 import UnregisterButtonContainer from "./UnregisterButtonContainer";
 
 const ProfileEdit = () => {
   return (
     <ScrollView style={styles.container}>
-      <ProfileEditImage />
+      <ProfileImageEdit />
       <ProfileEditInfo />
       <SignOutButtonContainer />
       <UnregisterButtonContainer />

@@ -39,7 +39,7 @@ const CashUpdate = () => {
             Authorization: `Bearer ${token}`,
           },
         });
-        await setUserInfo(response.data);
+        setUserInfo(response.data);
         navigation.navigate("ProfileEdit");
       })
       .catch((error) => console.log(error));

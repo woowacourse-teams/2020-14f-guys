@@ -1,0 +1,53 @@
+import React from "react";
+import { Image, StyleSheet, View } from "react-native";
+import { Entypo } from "@expo/vector-icons";
+import ProfileImageEditButton from "../profile/ProfileImageEditButton";
+import { useRecoilValue } from "recoil/dist";
+import { userInfoState } from "../atoms";
+
+const ProfileImageSelect = () => {
+  const userInfo = useRecoilValue(userInfoState);
+
+  return (
+    <View style={styles.container}>
+      <ProfileImageEditButton>
+        <Image
+          style={styles.profileImage}
+          source={
+            userInfo.profile.baseImageUrl
+              ? { uri: userInfo.profile.baseImageUrl }
+              : require("../../assets/default-profile.jpg")
+          }
+        />
+        <View style={styles.cameraIcon}>
+          <Entypo name="camera" size={24} color="black" />
+        </View>
+      </ProfileImageEditButton>
+    </View>
+  );
+};
+
+const styles = StyleSheet.create({
+  container: {
+    height: 250,
+  },
+  profileImage: {
+    height: 120,
+    width: 120,
+    borderRadius: 60,
+  },
+  cameraIcon: {
+    opacity: 0.7,
+    alignItems: "center",
+    justifyContent: "center",
+    width: 30,
+    height: 30,
+    borderRadius: 15,
+    backgroundColor: "white",
+    position: "absolute",
+    top: 85,
+    left: 85,
+  },
+});
+
+export default ProfileImageSelect;

@@ -1,6 +1,7 @@
 package com.woowacourse.pelotonbackend.certification.application;
 
 import static com.woowacourse.pelotonbackend.certification.domain.CertificationFixture.*;
+import static com.woowacourse.pelotonbackend.infra.upload.UploadFixture.*;
 import static org.assertj.core.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.BDDMockito.*;
@@ -43,7 +44,7 @@ class CertificationServiceTest {
     @Test
     void create() throws IOException {
         given(certificationRepository.save(createCertificationWithoutId())).willReturn(createCertificationWithId());
-        given(uploadService.upload(multipartFile)).willReturn(TEST_CERTIFICATION_FILE_URL.getBaseImageUrl());
+        given(uploadService.uploadImage(multipartFile, CERTIFICATION_IMAGE_PATH)).willReturn(TEST_CERTIFICATION_FILE_URL.getBaseImageUrl());
 
         assertAll(
             () -> assertThat(

@@ -1,25 +1,25 @@
 import React from "react";
 import ProfileImage from "../ProfileImage";
-import { Image, StyleSheet, TouchableOpacity, View } from "react-native";
-import { useRecoilValue } from "recoil";
+import { Image, StyleSheet, View } from "react-native";
+import ProfileImageEditButton from "../ProfileImageEditButton";
+import { useRecoilValue } from "recoil/dist";
 import { userInfoState } from "../../atoms";
 
-const ProfileEditImage = () => {
+const ProfileImageEdit = () => {
   const userInfo = useRecoilValue(userInfoState);
 
   return (
     <View style={styles.imageContainer}>
       <ProfileImage image={userInfo.profile.baseImageUrl} />
-      <TouchableOpacity>
+      <ProfileImageEditButton>
         <Image
           style={styles.profileEditButton}
           source={require("../../../assets/icn_edit.png")}
         />
-      </TouchableOpacity>
+      </ProfileImageEditButton>
     </View>
   );
 };
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -38,4 +38,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default ProfileEditImage;
+export default ProfileImageEdit;

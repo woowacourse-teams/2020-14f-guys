@@ -14,7 +14,7 @@ import { SERVER_BASE_URL, TOKEN_STORAGE } from "../../utils/constants";
 import AsyncStorage from "@react-native-community/async-storage";
 import Axios from "axios";
 import { useRecoilState, useSetRecoilState } from "recoil/dist";
-import ProfileImage from "./ProfileImage";
+import ProfileImageSelect from "./ProfileImageSelect";
 import SubmitButton from "./SubmitButton";
 import NicknameInput from "./NicknameInput";
 import { navigateWithoutHistory } from "../../utils/util";
@@ -61,7 +61,7 @@ const ChangeProfile = () => {
             <Text style={styles.title}>프로필 설정</Text>
           </View>
           <View style={styles.body}>
-            <ProfileImage />
+            <ProfileImageSelect />
             <NicknameInput
               userInput={userInput}
               setUserInput={setUserInput}

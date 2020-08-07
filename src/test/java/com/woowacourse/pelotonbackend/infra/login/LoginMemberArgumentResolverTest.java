@@ -1,4 +1,4 @@
-package com.woowacourse.pelotonbackend.member.infra;
+package com.woowacourse.pelotonbackend.infra.login;
 
 import static com.woowacourse.pelotonbackend.member.domain.MemberFixture.*;
 import static org.assertj.core.api.AssertionsForClassTypes.*;
