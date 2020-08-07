@@ -1,5 +1,6 @@
 package com.woowacourse.pelotonbackend.member.application;
 
+import static com.woowacourse.pelotonbackend.certification.domain.CertificationFixture.*;
 import static com.woowacourse.pelotonbackend.infra.upload.UploadFixture.*;
 import static com.woowacourse.pelotonbackend.member.acceptance.MemberAcceptanceTest.*;
 import static com.woowacourse.pelotonbackend.member.domain.LoginFixture.*;
@@ -23,6 +24,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.woowacourse.pelotonbackend.common.exception.MemberIdInvalidException;
 import com.woowacourse.pelotonbackend.common.exception.MemberNotFoundException;
+import com.woowacourse.pelotonbackend.common.exception.UploadFailureException;
 import com.woowacourse.pelotonbackend.infra.upload.UploadService;
 import com.woowacourse.pelotonbackend.member.domain.Member;
 import com.woowacourse.pelotonbackend.member.domain.MemberFixture;
@@ -160,7 +162,7 @@ class MemberServiceTest {
         final Member updatedMember = MemberFixture.memberProfileUpdated(ID);
         given(memberRepository.findById(ID)).willReturn(Optional.of(originMember));
         given(memberRepository.save(any(Member.class))).willReturn(updatedMember);
-        given(uploadService.uploadImage(any(MultipartFile.class), PROFILE_IMAGE_PATH)).willReturn(S3_BASIC_URL);
+        given(uploadService.uploadImage(any(MultipartFile.class), eq(PROFILE_IMAGE_PATH))).willReturn(S3_BASIC_URL);
 
         final MemberProfileResponse response = memberService.updateProfileImage(originMember.getId(),
             mockMultipartFile());
@@ -220,5 +222,16 @@ class MemberServiceTest {
         assertThatThrownBy(() -> memberService.findByKakaoId(KAKAO_ID))
             .isInstanceOf(MemberNotFoundException.class)
             .hasMessageContaining("kakaoId");
+    }
+
+    @DisplayName("이미지 업로드 시 발생하는 예외를 처리한다.")
+    @Test
+    public void imageUploadException() {
+        final MultipartFile MOCK_MULTIPART_FILE = createMockCertificationMultipartFile();
+        doThrow(new UploadFailureException()).when(uploadService).uploadImage(any(MultipartFile.class), anyString());
+
+        assertThatThrownBy(() -> uploadService.uploadImage(MOCK_MULTIPART_FILE, PROFILE_IMAGE_PATH))
+            .isInstanceOf(UploadFailureException.class)
+            .hasMessageContaining("파일 업로드");
     }
 }
