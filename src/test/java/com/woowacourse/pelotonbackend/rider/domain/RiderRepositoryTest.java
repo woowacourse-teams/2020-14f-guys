@@ -12,10 +12,14 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.jdbc.core.mapping.AggregateReference;
-import org.springframework.test.context.jdbc.Sql;
+import org.springframework.test.context.TestExecutionListeners;
+
+import com.woowacourse.pelotonbackend.DataInitializeExecutionListener;
 
 @SpringBootTest
-@Sql("/truncate.sql")
+@TestExecutionListeners(
+    listeners = DataInitializeExecutionListener.class,
+    mergeMode = TestExecutionListeners.MergeMode.MERGE_WITH_DEFAULTS)
 public class RiderRepositoryTest {
     @Autowired
     private RiderRepository riderRepository;
@@ -52,7 +56,8 @@ public class RiderRepositoryTest {
         final List<Rider> riders = riderRepository.findRidersByRaceId(TEST_RACE_ID);
 
         assertThat(riders.size()).isEqualTo(expectedRiders.size());
-        riders.forEach(rider -> assertThat(rider).isEqualToIgnoringGivenFields(riderWithoutId, "id", "createdAt", "updatedAt"));
+        riders.forEach(
+            rider -> assertThat(rider).isEqualToIgnoringGivenFields(riderWithoutId, "id", "createdAt", "updatedAt"));
     }
 
     @DisplayName("멤버가 포함된 모든 라이더를 찾는다.")
@@ -68,6 +73,7 @@ public class RiderRepositoryTest {
         final List<Rider> riders = riderRepository.findRidersByMemberId(TEST_MEMBER_ID);
 
         assertThat(riders.size()).isEqualTo(expectedRiders.size());
-        riders.forEach(rider -> assertThat(rider).isEqualToIgnoringGivenFields(riderWithoutId, "id", "createdAt", "updatedAt"));
+        riders.forEach(
+            rider -> assertThat(rider).isEqualToIgnoringGivenFields(riderWithoutId, "id", "createdAt", "updatedAt"));
     }
 }
