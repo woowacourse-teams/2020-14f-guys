@@ -23,7 +23,7 @@ import com.woowacourse.pelotonbackend.member.presentation.dto.MemberResponses;
 import com.woowacourse.pelotonbackend.support.AcceptanceTest;
 
 public class MemberAcceptanceTest extends AcceptanceTest {
-    public static final String S3_BASIC_URL = "https://market-photos.s3.ap-northeast-2.amazonaws.com/";
+    public static final String S3_BASIC_URL = "https://14f-guys-image.s3.ap-northeast-2.amazonaws.com/";
     public static final String FILE_PATH = "src/test/resources";
     public static final String FILE_NAME = "SampleFile.jpeg";
     public static final File FILE = new File(String.format("%s/%s", FILE_PATH, FILE_NAME));
