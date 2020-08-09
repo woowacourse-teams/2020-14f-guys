@@ -25,7 +25,7 @@ public class MemberDocumentation {
               fieldWithPath("role").type(STRING).attributes(getMemberRoleFormat()).description("member role")
             ),
             responseHeaders(
-                headerWithName(HttpHeaders.LOCATION).description("Location 헤더")
+                headerWithName(HttpHeaders.LOCATION).description("Resource의 Location")
             )
         );
     }
@@ -35,7 +35,7 @@ public class MemberDocumentation {
             getDocumentRequest(),
             getDocumentResponse(),
             requestHeaders(
-                headerWithName(HttpHeaders.AUTHORIZATION).description("Authorization 헤더"),
+                headerWithName(HttpHeaders.AUTHORIZATION).description("사용자 인증 Access Token"),
                 headerWithName(HttpHeaders.ACCEPT).description("Accept 헤더")
             ),
             responseHeaders(
@@ -58,7 +58,7 @@ public class MemberDocumentation {
             getDocumentRequest(),
             getDocumentResponse(),
             requestHeaders(
-                headerWithName(HttpHeaders.AUTHORIZATION).description("Authorization 헤더"),
+                headerWithName(HttpHeaders.AUTHORIZATION).description("사용자 인증 Access Token"),
                 headerWithName(HttpHeaders.ACCEPT).description("Accept 헤더")
             ),
             responseHeaders(
@@ -75,14 +75,14 @@ public class MemberDocumentation {
             getDocumentRequest(),
             getDocumentResponse(),
             requestHeaders(
-                headerWithName(HttpHeaders.AUTHORIZATION).description("Authorization 헤더"),
+                headerWithName(HttpHeaders.AUTHORIZATION).description("사용자 인증 Access Token"),
                 headerWithName(HttpHeaders.CONTENT_TYPE).description("Content-Type 헤더")
             ),
             requestFields(
                 fieldWithPath("name").type(STRING).description("변경될 Member 이름")
             ),
             responseHeaders(
-                headerWithName(HttpHeaders.LOCATION).description("Location 헤더")
+                headerWithName(HttpHeaders.LOCATION).description("Resource의 Location")
             )
         );
     }
@@ -92,14 +92,14 @@ public class MemberDocumentation {
             getDocumentRequest(),
             getDocumentResponse(),
             requestHeaders(
-                headerWithName(HttpHeaders.AUTHORIZATION).description("Authorization 헤더"),
+                headerWithName(HttpHeaders.AUTHORIZATION).description("사용자 인증 Access Token"),
                 headerWithName(HttpHeaders.CONTENT_TYPE).description("Content-Type 헤더")
             ),
             requestFields(
                 fieldWithPath("cash").type(STRING).description("변경될 Member 보유 Cash")
             ),
             responseHeaders(
-                headerWithName(HttpHeaders.LOCATION).description("Location 헤더")
+                headerWithName(HttpHeaders.LOCATION).description("Resource의 Location")
             )
         );
     }
@@ -109,7 +109,7 @@ public class MemberDocumentation {
             getDocumentRequest(),
             getDocumentResponse(),
             requestHeaders(
-                headerWithName(HttpHeaders.AUTHORIZATION).description("Authorization 헤더"),
+                headerWithName(HttpHeaders.AUTHORIZATION).description("사용자 인증 Access Token"),
                 headerWithName(HttpHeaders.CONTENT_TYPE).description("Content-Type 헤더")
             ),
             requestParts(
@@ -129,7 +129,7 @@ public class MemberDocumentation {
             getDocumentRequest(),
             getDocumentResponse(),
             requestHeaders(
-                headerWithName(HttpHeaders.AUTHORIZATION).description("Authorization 헤더")
+                headerWithName(HttpHeaders.AUTHORIZATION).description("사용자 인증 Access Token")
             )
         );
     }
@@ -151,7 +151,7 @@ public class MemberDocumentation {
             getDocumentRequest(),
             getDocumentResponse(),
             requestHeaders(
-                headerWithName(HttpHeaders.AUTHORIZATION).description("Authorization 헤더"),
+                headerWithName(HttpHeaders.AUTHORIZATION).description("사용자 인증 Access Token"),
                 headerWithName(HttpHeaders.ACCEPT).description("Accept 헤더")
             ),
             getErrorResponseFields()
@@ -163,7 +163,7 @@ public class MemberDocumentation {
             getDocumentRequest(),
             getDocumentResponse(),
             requestHeaders(
-                headerWithName(HttpHeaders.AUTHORIZATION).description("Authorization 헤더")
+                headerWithName(HttpHeaders.AUTHORIZATION).description("사용자 인증 Access Token")
             ),
             getErrorResponseFields()
         );
