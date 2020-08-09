@@ -2,7 +2,6 @@ package com.woowacourse.pelotonbackend.member.application;
 
 import static com.woowacourse.pelotonbackend.certification.domain.CertificationFixture.*;
 import static com.woowacourse.pelotonbackend.infra.upload.UploadFixture.*;
-import static com.woowacourse.pelotonbackend.member.acceptance.MemberAcceptanceTest.*;
 import static com.woowacourse.pelotonbackend.member.domain.LoginFixture.*;
 import static com.woowacourse.pelotonbackend.member.domain.MemberFixture.*;
 import static org.assertj.core.api.Assertions.*;
@@ -162,12 +161,12 @@ class MemberServiceTest {
         final Member updatedMember = MemberFixture.memberProfileUpdated(ID);
         given(memberRepository.findById(ID)).willReturn(Optional.of(originMember));
         given(memberRepository.save(any(Member.class))).willReturn(updatedMember);
-        given(uploadService.uploadImage(any(MultipartFile.class), eq(PROFILE_IMAGE_PATH))).willReturn(S3_BASIC_URL);
+        given(uploadService.uploadImage(any(MultipartFile.class), eq(PROFILE_IMAGE_PATH))).willReturn(UPLOAD_SERVER_URL);
 
         final MemberProfileResponse response = memberService.updateProfileImage(originMember.getId(),
             mockMultipartFile());
 
-        assertThat(response.getImageUrl()).contains(S3_BASIC_URL);
+        assertThat(response.getImageUrl()).contains(UPLOAD_SERVER_URL);
     }
 
     @DisplayName("프로필의 바디가 null인 경우 기본 이미지를 등록한다.")
@@ -179,7 +178,7 @@ class MemberServiceTest {
         given(memberRepository.save(any(Member.class))).willReturn(updatedMember);
 
         final MemberProfileResponse response = memberService.updateProfileImage(ID, null);
-        assertThat(response.getImageUrl()).isEqualTo(BASIC_PROFILE_URL);
+        assertThat(response.getImageUrl()).isEqualTo(String.format("%s/%s", UPLOAD_SERVER_URL, BASIC_PROFILE_FILE_NAME));
     }
 
     @DisplayName("특정 회원을 삭제한다")

@@ -33,7 +33,8 @@ public class MemberFixture {
     public static final Long KAKAO_ID2 = 2L;
     public static final Long KAKAO_ID3 = 3L;
     public static final String TEST_UPDATED_URL = "DDDDDDDDDDDDDDDDDDDDDDDDD";
-    public static final String BASIC_PROFILE_URL = "https://14f-guys-image.s3.ap-northeast-2.amazonaws.com/asdasdsadasd.png";
+    public static final String UPLOAD_SERVER_URL = "https://14f-guys-image.s3.ap-northeast-2.amazonaws.com";
+    public static final String BASIC_PROFILE_FILE_NAME = "asdasdsadasd.png";
 
     public static MemberCreateRequest createRequest(final Long kakaoId, final String email, final String name) {
         return MemberCreateRequest.builder()
@@ -149,7 +150,7 @@ public class MemberFixture {
         return Member.builder()
             .id(id)
             .kakaoId(KAKAO_ID)
-            .profile(new ImageUrl(BASIC_PROFILE_URL))
+            .profile(new ImageUrl(BASIC_PROFILE_FILE_NAME))
             .email(EMAIL)
             .name(NAME)
             .cash(CASH)
