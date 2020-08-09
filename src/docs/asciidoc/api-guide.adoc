@@ -281,11 +281,6 @@ operation::member/update-profile-image[snippets='http-request,http-response,requ
 operation::member/delete-success[snippets='http-request,http-response,request-headers']
 
 
-[[resources-member-delete-fail]]
-==== Fail
-operation::member/delete-fail[snippets='http-request,http-response,request-headers']
-
-
 [[resources-race]]
 == Race
 

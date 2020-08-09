@@ -24,7 +24,7 @@ public class RiderDocumentation {
                 fieldWithPath("raceId").type(NUMBER).description("해당 Rider가 참여한 Race ID")
             ),
             responseHeaders(
-                headerWithName(HttpHeaders.LOCATION).description("Resource의 Location")
+                headerWithName(HttpHeaders.LOCATION).description("Resource의 Location 헤더")
             )
         );
     }
@@ -93,7 +93,11 @@ public class RiderDocumentation {
                 headerWithName(HttpHeaders.ACCEPT).description("Accept 헤더")
             ),
             responseFields(
-                subsectionWithPath("riderResponses").type(ARRAY).description("RiderResponses")
+                fieldWithPath("riderResponses").type(ARRAY).description("RiderResponses"),
+                fieldWithPath("riderResponses[].id").type(NUMBER).description("Rider ID"),
+                fieldWithPath("riderResponses[].memberId").type(NUMBER).description("Rider의 Member ID"),
+                fieldWithPath("riderResponses[].raceId").type(NUMBER).description("Rider가 참여하는 RaceID"),
+                fieldWithPath("riderResponses[].createdAt").type(STRING).description("Race에 참가한 시간")
             )
         );
     }
@@ -114,7 +118,7 @@ public class RiderDocumentation {
                 fieldWithPath("memberId").type(NUMBER).description("해당 Rider의 Member ID")
             ),
             responseHeaders(
-                headerWithName(HttpHeaders.LOCATION).description("Resource의 Location")
+                headerWithName(HttpHeaders.LOCATION).description("Resource의 Location 헤더")
             )
         );
     }

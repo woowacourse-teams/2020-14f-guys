@@ -133,8 +133,7 @@ public class MemberControllerTest {
     void findAllMember() throws Exception {
         given(bearerAuthInterceptor.preHandle(any(HttpServletRequest.class), any(HttpServletResponse.class),
             any(HandlerMethod.class))).willReturn(true);
-        final List<MemberResponse> source = Arrays.asList(memberResponse(), memberResponse());
-        final MemberResponses expectedResponses = new MemberResponses(source);
+        final MemberResponses expectedResponses = memberResponses();
         given(memberService.findAll()).willReturn(expectedResponses);
 
         final MvcResult mvcResult = mockMvc.perform(get(RESOURCE_URL + "/all")
@@ -148,9 +147,9 @@ public class MemberControllerTest {
         final byte[] contentAsString = mvcResult.getResponse().getContentAsByteArray();
         final MemberResponses memberResponses = objectMapper.readValue(contentAsString, MemberResponses.class);
         assertAll(
-            () -> assertThat(memberResponses.getResponses()).hasSize(source.size()),
-            () -> assertThat(memberResponses.getResponses().get(0)).isEqualToComparingFieldByField(source.get(0)),
-            () -> assertThat(memberResponses.getResponses().get(1)).isEqualToComparingFieldByField(source.get(1))
+            () -> assertThat(memberResponses.getResponses()).hasSize(expectedResponses.getResponses().size()),
+            () -> assertThat(memberResponses.getResponses().get(0)).isEqualToComparingFieldByField(expectedResponses.getResponses().get(0)),
+            () -> assertThat(memberResponses.getResponses().get(1)).isEqualToComparingFieldByField(expectedResponses.getResponses().get(1))
         );
     }
 
@@ -294,25 +293,6 @@ public class MemberControllerTest {
             .andExpect(jsonPath("code").value(ErrorCode.MEMBER_NOT_FOUND.getCode()))
             .andExpect(jsonPath("errors").doesNotExist())
             .andDo(MemberDocumentation.getNotExistMember());
-    }
-
-    @DisplayName("존재하지 않는 멤버를 삭제하려 할 때 예외를 반환한다.")
-    @Test
-    void invalidMemberIdException() throws Exception {
-        given(bearerAuthInterceptor.preHandle(any(HttpServletRequest.class), any(HttpServletResponse.class),
-            any(HandlerMethod.class))).willReturn(true);
-        given(argumentResolver.resolveArgument(any(MethodParameter.class), any(ModelAndViewContainer.class), any(
-            NativeWebRequest.class), any(WebDataBinderFactory.class))).willReturn(MemberResponse.builder().build());
-        given(argumentResolver.supportsParameter(any())).willReturn(true);
-        doThrow(new MemberNotFoundException(NOT_EXIST_ID)).when(memberService).deleteById(any());
-
-        mockMvc.perform(delete(RESOURCE_URL)
-            .header(HttpHeaders.AUTHORIZATION, LoginFixture.getTokenHeader())
-        )
-            .andExpect(status().isNotFound())
-            .andExpect(jsonPath("code").value(ErrorCode.MEMBER_NOT_FOUND.getCode()))
-            .andExpect(jsonPath("errors").doesNotExist())
-            .andDo(MemberDocumentation.deleteNotExistMember());
     }
 
     @DisplayName("Valid하지 않은 멤버를 저장하려 할 때, 400 bad request")

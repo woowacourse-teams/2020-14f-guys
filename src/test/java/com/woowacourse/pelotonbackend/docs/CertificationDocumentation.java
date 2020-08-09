@@ -18,7 +18,7 @@ public class CertificationDocumentation {
             ),
             requestParameters(
                 parameterWithName("status").description("Certification 성공 여부"),
-                parameterWithName("description").description("인증 세부내용"),
+                parameterWithName("description").description("인증 세부내용").optional(),
                 parameterWithName("riderId").description("인증 라이더 ID"),
                 parameterWithName("missionId").description("미션 ID")
             ),
@@ -40,7 +40,7 @@ public class CertificationDocumentation {
             ),
             requestParameters(
                 parameterWithName("status").description("Certification 성공 여부"),
-                parameterWithName("description").description("인증 세부내용"),
+                parameterWithName("description").description("인증 세부내용").optional(),
                 parameterWithName("riderId").description("인증 라이더 ID")
             ),
             responseHeaders(
