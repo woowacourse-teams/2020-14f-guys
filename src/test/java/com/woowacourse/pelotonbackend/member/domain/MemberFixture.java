@@ -2,6 +2,7 @@ package com.woowacourse.pelotonbackend.member.domain;
 
 import java.math.BigDecimal;
 
+import org.assertj.core.util.Lists;
 import org.springframework.mock.web.MockMultipartFile;
 
 import com.woowacourse.pelotonbackend.member.presentation.dto.MemberCashUpdateRequest;
@@ -9,6 +10,7 @@ import com.woowacourse.pelotonbackend.member.presentation.dto.MemberCreateReques
 import com.woowacourse.pelotonbackend.member.presentation.dto.MemberNameUpdateRequest;
 import com.woowacourse.pelotonbackend.member.presentation.dto.MemberProfileResponse;
 import com.woowacourse.pelotonbackend.member.presentation.dto.MemberResponse;
+import com.woowacourse.pelotonbackend.member.presentation.dto.MemberResponses;
 import com.woowacourse.pelotonbackend.vo.Cash;
 import com.woowacourse.pelotonbackend.vo.ImageUrl;
 
@@ -28,6 +30,7 @@ public class MemberFixture {
     public static final Role ROLE = Role.MEMBER;
     public static final Long ID = 1L;
     public static final Long ID2 = 2L;
+    public static final Long ID3 = 3L;
     public static final Long NOT_EXIST_ID = 100L;
     public static final Long KAKAO_ID = 1L;
     public static final Long KAKAO_ID2 = 2L;
@@ -72,6 +75,18 @@ public class MemberFixture {
             .build();
     }
 
+    public static Member createWithInfo(final Long id, final Long kakaoId, final String email, final String name) {
+        return Member.builder()
+            .id(id)
+            .kakaoId(kakaoId)
+            .profile(PROFILE)
+            .email(email)
+            .name(name)
+            .cash(CASH)
+            .role(ROLE)
+            .build();
+    }
+
     public static Member memberCashUpdated(final Long id) {
         return Member.builder()
             .id(id)
@@ -110,6 +125,12 @@ public class MemberFixture {
             .cash(CASH)
             .role(ROLE)
             .build();
+    }
+
+    public static MemberResponses memberResponses() {
+        return MemberResponses.from(
+            Lists.newArrayList(createWithInfo(ID, KAKAO_ID, EMAIL, NAME), createWithInfo(ID2, KAKAO_ID2, EMAIL2, NAME2),
+                createWithInfo(ID3, KAKAO_ID3, EMAIL3, NAME3)));
     }
 
     public static MemberNameUpdateRequest createNameUpdateRequest() {
