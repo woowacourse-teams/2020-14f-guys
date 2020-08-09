@@ -18,7 +18,7 @@ public class RaceDocumentation {
             getDocumentRequest(),
             getDocumentResponse(),
             requestHeaders(
-                headerWithName(HttpHeaders.AUTHORIZATION).description("OAuth2 토큰 헤더"),
+                headerWithName(HttpHeaders.AUTHORIZATION).description("사용자 인증 Access Token 헤더"),
                 headerWithName(HttpHeaders.CONTENT_TYPE).description("Content-Type 헤더")
             ),
             requestFields(
@@ -40,6 +40,10 @@ public class RaceDocumentation {
         return document("race/create-fail",
             getDocumentRequest(),
             getDocumentResponse(),
+            requestHeaders(
+                headerWithName(HttpHeaders.AUTHORIZATION).description("사용자 인증 Access Token 헤더"),
+                headerWithName(HttpHeaders.CONTENT_TYPE).description("Content-Type 헤더")
+            ),
             requestFields(
                 fieldWithPath("title").type(NULL).description("레이스 제목"),
                 fieldWithPath("description").type(NULL).description("레이스 세부내용"),
@@ -58,7 +62,7 @@ public class RaceDocumentation {
             getDocumentRequest(),
             getDocumentResponse(),
             requestHeaders(
-                headerWithName(HttpHeaders.AUTHORIZATION).description("OAuth2 토큰 헤더"),
+                headerWithName(HttpHeaders.AUTHORIZATION).description("사용자 인증 Access Token 헤더"),
                 headerWithName(HttpHeaders.ACCEPT).description("Accept 헤더")
             ),
             pathParameters(
@@ -86,7 +90,7 @@ public class RaceDocumentation {
             getDocumentRequest(),
             getDocumentResponse(),
             requestHeaders(
-                headerWithName(HttpHeaders.AUTHORIZATION).description("OAuth2 토큰 헤더"),
+                headerWithName(HttpHeaders.AUTHORIZATION).description("사용자 인증 Access Token 헤더"),
                 headerWithName(HttpHeaders.ACCEPT).description("Accept 헤더")
             ),
             getErrorResponseFields()
@@ -98,7 +102,7 @@ public class RaceDocumentation {
             getDocumentRequest(),
             getDocumentResponse(),
             requestHeaders(
-                headerWithName(HttpHeaders.AUTHORIZATION).description("OAuth2 토큰 헤더"),
+                headerWithName(HttpHeaders.AUTHORIZATION).description("사용자 인증 Access Token 헤더"),
                 headerWithName(HttpHeaders.CONTENT_TYPE).description("Content-Type 헤더")
             ),
             pathParameters(
@@ -128,7 +132,7 @@ public class RaceDocumentation {
                 parameterWithName("id").description("Race ID")
             ),
             requestHeaders(
-                headerWithName(HttpHeaders.AUTHORIZATION).description("OAuth2 토큰 헤더"),
+                headerWithName(HttpHeaders.AUTHORIZATION).description("사용자 인증 Access Token 헤더"),
                 headerWithName(HttpHeaders.CONTENT_TYPE).description("Content-Type 헤더")
             ),
             requestFields(
@@ -156,7 +160,7 @@ public class RaceDocumentation {
                 parameterWithName("id").description("Race ID")
             ),
             requestHeaders(
-                headerWithName(HttpHeaders.AUTHORIZATION).description("OAuth2 토큰 헤더")
+                headerWithName(HttpHeaders.AUTHORIZATION).description("사용자 인증 Access Token 헤더")
             ),
             getErrorResponseFields()
         );
@@ -170,7 +174,7 @@ public class RaceDocumentation {
                 parameterWithName("id").description("Race ID")
             ),
             requestHeaders(
-                headerWithName(HttpHeaders.AUTHORIZATION).description("OAuth2 토큰 헤더")
+                headerWithName(HttpHeaders.AUTHORIZATION).description("사용자 인증 Access Token 헤더")
             ),
             getErrorResponseFields());
     }
@@ -183,7 +187,7 @@ public class RaceDocumentation {
                 parameterWithName("id").description("Race ID")
             ),
             requestHeaders(
-                headerWithName(HttpHeaders.AUTHORIZATION).description("OAuth2 토큰 헤더")
+                headerWithName(HttpHeaders.AUTHORIZATION).description("사용자 인증 Access Token 헤더")
             ));
     }
 
@@ -193,7 +197,7 @@ public class RaceDocumentation {
             getDocumentResponse(),
             pathParameters(parameterWithName("id").description("Member ID")),
             requestHeaders(
-                headerWithName(HttpHeaders.AUTHORIZATION).description("OAuth2 토큰 헤더")
+                headerWithName(HttpHeaders.AUTHORIZATION).description("사용자 인증 Access Token 헤더")
             ),
             getErrorResponseFields()
         );

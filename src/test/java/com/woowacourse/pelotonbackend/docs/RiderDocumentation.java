@@ -17,7 +17,7 @@ public class RiderDocumentation {
             getDocumentRequest(),
             getDocumentResponse(),
             requestHeaders(
-                headerWithName(HttpHeaders.AUTHORIZATION).description("OAuth2 토큰 헤더"),
+                headerWithName(HttpHeaders.AUTHORIZATION).description("사용자 인증 Access Token 헤더"),
                 headerWithName(HttpHeaders.CONTENT_TYPE).description("Content-Type 헤더")
             ),
             requestFields(
@@ -37,7 +37,7 @@ public class RiderDocumentation {
                 parameterWithName("riderId").description("Rider ID")
             ),
             requestHeaders(
-                headerWithName(HttpHeaders.AUTHORIZATION).description("OAuth2 토큰 헤더"),
+                headerWithName(HttpHeaders.AUTHORIZATION).description("사용자 인증 Access Token 헤더"),
                 headerWithName(HttpHeaders.ACCEPT).description("Accept 헤더")
             ),
             responseFields(
@@ -57,7 +57,7 @@ public class RiderDocumentation {
                 parameterWithName("riderId").description("Rider ID")
             ),
             requestHeaders(
-                headerWithName(HttpHeaders.AUTHORIZATION).description("OAuth2 토큰 헤더"),
+                headerWithName(HttpHeaders.AUTHORIZATION).description("사용자 인증 Access Token 헤더"),
                 headerWithName(HttpHeaders.ACCEPT).description("Accept 헤더")
             ),
             getErrorResponseFields()
@@ -72,7 +72,7 @@ public class RiderDocumentation {
                 parameterWithName("raceId").description("Race ID")
             ),
             requestHeaders(
-                headerWithName(HttpHeaders.AUTHORIZATION).description("OAuth2 토큰 헤더"),
+                headerWithName(HttpHeaders.AUTHORIZATION).description("사용자 인증 Access Token 헤더"),
                 headerWithName(HttpHeaders.ACCEPT).description("Accept 헤더")
             ),
             responseFields(
@@ -89,7 +89,7 @@ public class RiderDocumentation {
                 parameterWithName("memberId").description("Member ID")
             ),
             requestHeaders(
-                headerWithName(HttpHeaders.AUTHORIZATION).description("OAuth2 토큰 헤더"),
+                headerWithName(HttpHeaders.AUTHORIZATION).description("사용자 인증 Access Token 헤더"),
                 headerWithName(HttpHeaders.ACCEPT).description("Accept 헤더")
             ),
             responseFields(
@@ -110,7 +110,7 @@ public class RiderDocumentation {
                 parameterWithName("riderId").description("Rider ID")
             ),
             requestHeaders(
-                headerWithName(HttpHeaders.AUTHORIZATION).description("OAuth2 토큰 헤더"),
+                headerWithName(HttpHeaders.AUTHORIZATION).description("사용자 인증 Access Token 헤더"),
                 headerWithName(HttpHeaders.CONTENT_TYPE).description("Content-Type 헤더")
             ),
             requestFields(
@@ -131,7 +131,7 @@ public class RiderDocumentation {
                 parameterWithName("riderId").description("Rider ID")
             ),
             requestHeaders(
-                headerWithName(HttpHeaders.AUTHORIZATION).description("OAuth2 토큰 헤더")
+                headerWithName(HttpHeaders.AUTHORIZATION).description("사용자 인증 Access Token 헤더")
             )
         );
     }

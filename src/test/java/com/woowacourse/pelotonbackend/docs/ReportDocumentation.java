@@ -16,7 +16,7 @@ public class ReportDocumentation {
             getDocumentRequest(),
             getDocumentResponse(),
             requestHeaders(
-                headerWithName(HttpHeaders.AUTHORIZATION).description("OAuth2 토큰 헤더")
+                headerWithName(HttpHeaders.AUTHORIZATION).description("사용자 인증 Access Token 헤더")
             ),
             requestFields(
                 fieldWithPath("reportType").type(STRING).attributes(getReportTypeFormat()).description("Report 종류"),
