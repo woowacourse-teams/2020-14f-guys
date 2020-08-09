@@ -24,7 +24,7 @@ public class RiderDocumentation {
                 fieldWithPath("raceId").type(NUMBER).description("해당 Rider가 참여한 Race ID")
             ),
             responseHeaders(
-                headerWithName(HttpHeaders.LOCATION).description("Location 헤더")
+                headerWithName(HttpHeaders.LOCATION).description("Resource의 Location")
             )
         );
     }
@@ -114,7 +114,7 @@ public class RiderDocumentation {
                 fieldWithPath("memberId").type(NUMBER).description("해당 Rider의 Member ID")
             ),
             responseHeaders(
-                headerWithName(HttpHeaders.LOCATION).description("Location 헤더")
+                headerWithName(HttpHeaders.LOCATION).description("Resource의 Location")
             )
         );
     }

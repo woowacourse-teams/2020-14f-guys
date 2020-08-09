@@ -46,8 +46,8 @@ class LoginControllerTest {
         mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext)
             .apply(documentationConfiguration(restDocumentation)
                 .uris()
-                .withScheme("http")
-                .withHost("api.peloton.ga"))
+                .withScheme("https")
+                .withHost("peloton.ga/api"))
             .addFilters(new CharacterEncodingFilter("UTF-8", true))
             .alwaysDo(print())
             .build();

@@ -34,7 +34,7 @@ endif::[]
 
 [source,bash]
 ----
-$ curl -i http://peloton.ga/api/members -H Authorization:Bearer SAMPLE_ACCESS_TOKEN
+$ curl -i https://peloton.ga/api/members -H Authorization:Bearer SAMPLE_ACCESS_TOKEN
 HTTP/1.1 200
 Server: nginx/1.19.1
 Date: Wed, 05 Aug 2020 06:27:05 GMT
@@ -113,7 +113,7 @@ Peloton API v1에서의 인증은 OAuth2 Token을 통해서 이루어집니다. 
 ==== Authentication Success
 [source,bash]
 ----
-$ curl -i -H "Authorization: Bearer VALID-TOKEN" https://api.peloton.ga
+$ curl -i -H "Authorization: Bearer VALID-TOKEN" https://peloton.ga/api
 HTTP/1.1 200
 Server: nginx/1.19.1
 Date: Wed, 05 Aug 2020 06:27:05 GMT
@@ -127,7 +127,7 @@ Connection: keep-alive
 
 [source,bash]
 ----
-$ curl -i https://api.peloton.ga
+$ curl -i https://peloton.ga/api
 HTTP/1.1 401
 Server: nginx/1.19.1
 Date: Wed, 05 Aug 2020 06:26:14 GMT

@@ -16,7 +16,7 @@ public class LoginDocumentation {
             getDocumentRequest(),
             getDocumentResponse(),
             responseHeaders(
-                headerWithName(HttpHeaders.LOCATION).description("Location 헤더")
+                headerWithName(HttpHeaders.LOCATION).description("Resource의 Location")
             )
         );
     }
@@ -26,7 +26,7 @@ public class LoginDocumentation {
             getDocumentRequest(),
             getDocumentResponse(),
             responseHeaders(
-                headerWithName(HttpHeaders.LOCATION).description("Location 헤더")
+                headerWithName(HttpHeaders.LOCATION).description("Resource의 Location")
             )
         );
     }

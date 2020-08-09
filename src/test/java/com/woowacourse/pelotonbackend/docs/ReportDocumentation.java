@@ -25,7 +25,7 @@ public class ReportDocumentation {
                 fieldWithPath("certificationId").type(NUMBER).description("신고하는 Certification ID")
             ),
             responseHeaders(
-                headerWithName(HttpHeaders.LOCATION).description("Location 헤더")
+                headerWithName(HttpHeaders.LOCATION).description("Resource의 Location")
             )
         );
     }

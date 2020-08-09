@@ -31,7 +31,7 @@ public class RaceDocumentation {
                 subsectionWithPath("entranceFee").type(STRING).description("레이스 입장료")
             ),
             responseHeaders(
-                headerWithName(HttpHeaders.LOCATION).description("Location 헤더")
+                headerWithName(HttpHeaders.LOCATION).description("Resource의 Location")
             )
         );
     }
