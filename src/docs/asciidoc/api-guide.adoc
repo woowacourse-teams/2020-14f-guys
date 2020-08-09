@@ -52,19 +52,19 @@ Peloton API에서 사용하는 HTTP Verbs는 가능한 범위 내 표준 HTTP와
 | Method | Usage
 
 | `GET`
-| 리소스를 가져올 때 사용
+| 기존의 리소스를 가져오는 경우
 
 | `POST`
-| 새 리소스를 만들 때 사용
+| 새로운 리소스를 만드는 경우
 
 | `PUT`
-| 기존 리소스를 수정할 때 사용
+| 기존의 리소스를 수정하는 경우
 
 | `PATCH`
-| 기존 리소스의 일부를 수정할 때 사용
+| 기존 리소스의 일부를 수정하는 경우
 
 | `DELETE`
-| 기존 리소스를 삭제할 때 사용
+| 기존 리소스를 삭제하는 경
 |===
 
 [[http-status-code]]
@@ -291,12 +291,12 @@ operation::member/delete-success[snippets='http-request,http-response,request-he
 
 [[resources-race-create-succcess]]
 ==== Success
-operation::race/create-success[snippets='http-request,http-response,request-fields,response-headers']
+operation::race/create-success[snippets='http-request,http-response,request-headers,request-fields,response-headers']
 
 
 [[resources-race-create-fail]]
 ==== Fail
-operation::race/create-fail[snippets='http-request,http-response,request-fields,response-fields']
+operation::race/create-fail[snippets='http-request,http-response,request-headers,request-fields,response-fields']
 
 
 [[resources-race-get]]
@@ -356,7 +356,7 @@ operation::race/delete-success[snippets='http-request,http-response,path-paramet
 
 [[resources-report-create-succcess]]
 ==== Success
-operation::report/create-success[snippets='http-request,http-response,request-fields,response-headers']
+operation::report/create-success[snippets='http-request,http-response,request-headers,request-fields,response-headers']
 
 [[resources-rider]]
 == Rider
