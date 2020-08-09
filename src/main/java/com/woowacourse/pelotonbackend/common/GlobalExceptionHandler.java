@@ -29,17 +29,6 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(errorResponse, HttpStatus.valueOf(errorCode.getStatus()));
     }
 
-    @ExceptionHandler(MethodArgumentTypeMismatchException.class)
-    protected ResponseEntity<ErrorResponse> typeMismatchException(final MethodArgumentTypeMismatchException exception) {
-        log.error("Argument Type Mismatch Exception! : {}", exception.toString(), exception);
-
-        final ErrorCode errorCode = ErrorCode.INVALID_VALIDATE;
-        final ErrorResponse errorResponse = ErrorResponse.of(errorCode.getStatus(), errorCode.getCode(),
-            "Argument Type Mismatch");
-
-        return new ResponseEntity<>(errorResponse, HttpStatus.valueOf(errorCode.getStatus()));
-    }
-
     @ExceptionHandler(BindException.class)
     protected ResponseEntity<ErrorResponse> bindException(final BindException exception) {
         log.info("HandleBind Exception ! : {} ", exception.toString(), exception);
@@ -54,7 +43,8 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(errorResponse, HttpStatus.valueOf(errorCode.getStatus()));
     }
 
-    @ExceptionHandler({ConstraintViolationException.class, HttpMessageNotReadableException.class})
+    @ExceptionHandler({ConstraintViolationException.class, HttpMessageNotReadableException.class,
+        MethodArgumentTypeMismatchException.class})
     protected ResponseEntity<ErrorResponse> invalidInputException(final RuntimeException exception) {
         log.info(exception.getClass().getSimpleName() + " Exception !", exception);
 
