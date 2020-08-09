@@ -19,16 +19,31 @@ endif::[]
 
 이 문서는 Peloton API v1을 구성하는 리소스들에 대한 명세입니다. 문제가 있으면 https://github.com/woowacourse-teams/2020-14f-guys[Peloton Github]로 피드백 남겨주시면 감사하겠습니다.
 
+[lowerroman]
+. https://peloton.ga/docs#schema[Schema]
+. https://peloton.ga/docs#http-verbs[Http Verbs]
+. https://peloton.ga/docs#http-status-code[Http Status Code]
+. https://peloton.ga/docs#authentication[Authentication]
+. https://peloton.ga/docs#error[Errors]
+. https://peloton.ga/docs#resources[Resources]
+
 [[schema]]
 == Schema
 
-모든 API는 Https를 사용하고, `https://peloton.ga/api` 주소로 접근 가능합니다. 모든 데이터는 JSON을 통해 교환합니다.
+모든 API는 Https를 사용하고, `https://peloton.ga/api` 주소로 접근 가능합니다. 모든 데이터는 JSON을 통해 통신됩니다.
 
+[source,bash]
 ----
-Http 통신 예시
+$ curl -i http://peloton.ga/api/members -H Authorization:Bearer SAMPLE_ACCESS_TOKEN
+HTTP/1.1 200
+Server: nginx/1.19.1
+Date: Wed, 05 Aug 2020 06:27:05 GMT
+Content-Type: application/json
+Transfer-Encoding: chunked
+Connection: keep-alive
 ----
 
-[[http-verbs]]
+[[http-verb]]
 == HTTP Verbs
 
 Peloton API에서 사용하는 HTTP Verbs는 가능한 범위 내 표준 HTTP와 REST 규약을 따릅니다.
@@ -52,7 +67,7 @@ Peloton API에서 사용하는 HTTP Verbs는 가능한 범위 내 표준 HTTP와
 | 기존 리소스를 삭제할 때 사용
 |===
 
-[[http-status-codes]]
+[[http-status-code]]
 == HTTP Status Code
 
 Peloton API에서 사용하는 HTTP Status Code는 가능한 범위 내 표준 HTTP와 REST 규약을 따릅니다.
@@ -85,44 +100,67 @@ Peloton API에서 사용하는 HTTP Status Code는 가능한 범위 내 표준 H
 | 예상치 못한 내부 서버 에러.
 |===
 
-[[Authentication]]
+[[authentication]]
 == Authentication
 
-Peloton API v1에서의 인증은 OAuth2 Token을 통해서 이루어집니다. Authentication을 요구하는 요청에 대해선 `403 Forbidden` 을 반환합니다.
+Peloton API v1에서의 인증은 OAuth2 Token을 통해서 이루어집니다. Authentication이 없는 경우 `401 UnAuthorized` 를 반환합니다.
+//todo 403 error 내용 추가해야함
 
-[[Authentication-OAuth2-token]]
+[[authentication-oauth2-token]]
 === OAuth2 token (sent in a header)
 
+[[authentication-oauth2-token-success]]
+==== Authentication Success
+[source,bash]
 ----
-curl -H "Authorization: Bearer OAUTH-TOKEN" https://api.peloton.ga
+$ curl -i -H "Authorization: Bearer VALID-TOKEN" https://api.peloton.ga
+HTTP/1.1 200
+Server: nginx/1.19.1
+Date: Wed, 05 Aug 2020 06:27:05 GMT
+Content-Type: application/json
+Transfer-Encoding: chunked
+Connection: keep-alive
 ----
 
-[[overview-errors]]
+[[authentication-oauth2-token-fail]]
+==== Authentication Fail
+
+[source,bash]
+----
+$ curl -i https://api.peloton.ga
+HTTP/1.1 401
+Server: nginx/1.19.1
+Date: Wed, 05 Aug 2020 06:26:14 GMT
+Content-Type: application/json
+Transfer-Encoding: chunked
+Connection: keep-alive
+----
+
+
+
+
+[[error]]
 == 오류
 
-에러 응답이 발생했을 때 (상태 코드 >= 400), Response Body에 에러에 대한 상세 정보가 포함됩니다. 에러 객체의 구조는 다음과 같습니다.
 
-----
-Error Response 예시
-----
+에러 응답이 발생했을 때 (상태 코드 >= 400), Response Body에 에러에 대한 상세 정보가 포함됩니다.
+예를 들어, 잘못된 요청으로 Member를 만들려고 했을 때 다음과 같은 `400 Bad Request` 응답을 받습니다.
 
-예를 들어, 잘못된 요청으로 이벤트를 만들려고 했을 때 다음과 같은 `400 Bad Request` 응답을 받습니다.
+operation::member/create-fail[snippets='http-response']
 
-[[overview-links]]
-== Link
 
-Peloton API는 링크를 사용하며 응답에 담겨있는 리소스는 다른 리소스에 대한 링크를 가지고 있습니다..
-응답은 http://stateless.co/hal_specification.html[Hypertext Application from resource to resource. Language (HAL)] 형식을 따릅니다.
-링크는 `_links` 라는 키로 제공합니다..
 
 [[resources]]
 = Resources
 
+
 [[resources-login]]
 == Login
 
+
 [[resources-login-get-code]]
 === Get code
+
 
 [[resources-login-getcode-success]]
 ==== Success
@@ -131,22 +169,28 @@ operation::login/get-code[snippets='http-request,http-response,response-headers'
 [[resources-login-get-token]]
 === Get token
 
+
 [[resources-login-get-token-success]]
 ==== Success
 operation::login/get-token[snippets='http-request,http-response,response-headers']
+
 
 [[resources-login-check]]
 === Check Login
 
 [[resources-login-check-success]]
-==== Fail
+==== Success
 operation::login/check-success[snippets='http-request,http-response,request-parameters,response-fields']
+
 
 [[resources-login-check-fail]]
 ==== Fail
 operation::login/check-fail[snippets='http-request,http-response,request-parameters']
+
+
 [[resources-certification]]
 == Race Certification
+
 
 [[resources-certification-create]]
 === Register Certification
@@ -155,9 +199,11 @@ operation::login/check-fail[snippets='http-request,http-response,request-paramet
 ==== Success
 operation::certification/create-success[snippets='http-request,http-response,request-parameters,request-parts,response-headers']
 
+
 [[resources-certification-create-fail]]
 ==== Failure
 operation::certification/create-fail[snippets='http-request,http-response,request-parameters,request-parts,response-headers,response-fields']
+
 
 [[resources-member]]
 == Member
@@ -165,84 +211,107 @@ operation::certification/create-fail[snippets='http-request,http-response,reques
 [[resources-member-create]]
 === Create Member
 
+
 [[resources-member-create-succcess]]
 ==== Success
 operation::member/create-success[snippets='http-request,http-response,request-fields,response-headers']
+
 
 [[resources-member-create-fail]]
 ==== Fail
 operation::member/create-fail[snippets='http-request,http-response,request-headers,response-fields']
 
+
 [[resources-member-get]]
 === Get Member
+
 
 [[resources-member-get-succcess]]
 ==== Success
 operation::member/get-success[snippets='http-request,http-response,request-headers,response-fields']
 
+
 [[resources-member-get-fail]]
 ==== Fail
 operation::member/get-fail[snippets='http-request,http-response,request-headers,response-fields']
 
+
 [[resources-member-get-all]]
 === Get All Members
+
 
 [[resources-member-get-all-succcess]]
 ==== Success
 operation::member/get-all-success[snippets='http-request,http-response,request-headers,response-fields']
 
+
 [[resources-member-update-name]]
 === Change name
+
 
 [[resources-member-update-name-succcess]]
 ==== Success
 operation::member/update-name[snippets='http-request,http-response,request-headers,response-headers']
 
+
 [[resources-member-update-cash]]
 === Change cash
+
 
 [[resources-member-update-cash-succcess]]
 ==== Success
 operation::member/update-cash[snippets='http-request,http-response,request-headers,response-headers']
 
+
 [[resources-member-update-profile-image]]
 === Change profile image
+
 
 [[resources-member-update-profile-image-succcess]]
 ==== Success
 operation::member/update-profile-image[snippets='http-request,http-response,request-headers,response-headers,response-fields']
 
+
 [[resources-member-delete]]
 === Delete
+
 
 [[resources-member-delete-succcess]]
 ==== Success
 operation::member/delete-success[snippets='http-request,http-response,request-headers']
 
+
 [[resources-member-delete-fail]]
 ==== Fail
 operation::member/delete-fail[snippets='http-request,http-response,request-headers']
 
+
 [[resources-race]]
 == Race
 
+
 [[resources-race-create]]
 === Create Race
+
 
 [[resources-race-create-succcess]]
 ==== Success
 operation::race/create-success[snippets='http-request,http-response,request-fields,response-headers']
 
+
 [[resources-race-create-fail]]
 ==== Fail
 operation::race/create-fail[snippets='http-request,http-response,request-fields,response-fields']
 
+
 [[resources-race-get]]
 === Get Race
+
 
 [[resources-race-get-succcess]]
 ==== Success
 operation::race/get-success[snippets='http-request,http-response,path-parameters,request-headers,response-fields']
+
 
 [[resources-race-get-bad-path]]
 ==== Bad Path
@@ -252,13 +321,16 @@ operation::race/get-bad-path[snippets='http-request,http-response,request-header
 [[resources-race-update]]
 === Update Race
 
+
 [[resources-race-update-succcess]]
 ==== Success
 operation::race/update-success[snippets='http-request,http-response,path-parameters,request-headers,request-fields']
 
+
 [[resources-race-update-bad-path]]
 ==== Bad Path
 operation::race/update-bad-path[snippets='http-request,http-response,path-parameters,request-headers,request-fields,response-fields']
+
 
 [[resources-race-update-bad-request]]
 ==== Bad Request
@@ -269,10 +341,25 @@ operation::race/update-bad-request[snippets='http-request,http-response,path-par
 ==== Not Exist
 operation::race/update-not-exist[snippets='http-request,http-response,path-parameters,request-headers,response-fields']
 
+
 [[resources-race-delete]]
 === Delete Race
+
 
 [[resources-race-delete-succcess]]
 ==== Success
 operation::race/delete-success[snippets='http-request,http-response,path-parameters,request-headers']
+
+
+[[resources-report]]
+== Report
+
+
+[[resources-report-create]]
+=== Create Report
+
+
+[[resources-report-create-succcess]]
+==== Success
+operation::report/create-success[snippets='http-request,http-response,request-fields,response-headers']
 
