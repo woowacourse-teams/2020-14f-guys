@@ -33,7 +33,6 @@ dependencies {
     implementation 'com.amazonaws:aws-java-sdk-s3:1.11.820'
     implementation 'org.liquibase:liquibase-core'
     implementation 'mysql:mysql-connector-java:8.0.17'
-    implementation 'com.amazonaws:aws-java-sdk-s3:1.11.820'
     implementation 'com.fasterxml.jackson.module:jackson-module-jaxb-annotations:2.9.3'
     implementation 'com.lmax:disruptor:3.4.2'
     compileOnly 'org.projectlombok:lombok'

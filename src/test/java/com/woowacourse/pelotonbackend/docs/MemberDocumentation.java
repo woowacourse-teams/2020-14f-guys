@@ -1,6 +1,7 @@
 package com.woowacourse.pelotonbackend.docs;
 
 import static com.woowacourse.pelotonbackend.docs.ApiDocumentationUtils.*;
+import static com.woowacourse.pelotonbackend.docs.DocumentFormatGenerator.*;
 import static org.springframework.restdocs.headers.HeaderDocumentation.*;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.*;
 import static org.springframework.restdocs.payload.JsonFieldType.*;
@@ -19,9 +20,9 @@ public class MemberDocumentation {
               fieldWithPath("kakaoId").type(NUMBER).description("kakao Id"),
               subsectionWithPath("profile").description("profile Image Url"),
               fieldWithPath("name").type(STRING).description("member name"),
-              fieldWithPath("email").type(STRING).description("member email"),
+              fieldWithPath("email").type(STRING).attributes(getEmailFormat()).description("member email"),
               subsectionWithPath("cash").type(OBJECT).description("member cash"),
-              fieldWithPath("role").type(STRING).description("member role")
+              fieldWithPath("role").type(STRING).attributes(getMemberRoleFormat()).description("member role")
             ),
             responseHeaders(
                 headerWithName(HttpHeaders.LOCATION).description("Location 헤더")
@@ -45,9 +46,9 @@ public class MemberDocumentation {
                 fieldWithPath("kakaoId").type(NUMBER).description("Member kakao id"),
                 subsectionWithPath("profile").type(OBJECT).description("Member profile image url"),
                 fieldWithPath("name").type(STRING).description("Member name"),
-                fieldWithPath("email").type(STRING).description("Member email"),
+                fieldWithPath("email").type(STRING).attributes(getEmailFormat()).description("Member email"),
                 subsectionWithPath("cash").type(STRING).description("Member cash"),
-                fieldWithPath("role").type(STRING).description("Member role")
+                fieldWithPath("role").type(STRING).attributes(getMemberRoleFormat()).description("Member role")
             )
         );
     }
