@@ -29,6 +29,7 @@ import com.woowacourse.pelotonbackend.member.domain.LoginFixture;
 import com.woowacourse.pelotonbackend.member.presentation.LoginMemberArgumentResolver;
 import com.woowacourse.pelotonbackend.report.application.ReportService;
 import com.woowacourse.pelotonbackend.report.domain.ReportFixture;
+import com.woowacourse.pelotonbackend.report.presentation.dto.ReportCreateRequest;
 import com.woowacourse.pelotonbackend.support.BearerAuthInterceptor;
 
 @WebMvcTest(controllers = ReportController.class)

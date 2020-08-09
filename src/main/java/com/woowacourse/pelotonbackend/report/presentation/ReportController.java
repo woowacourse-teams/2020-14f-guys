@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.woowacourse.pelotonbackend.report.application.ReportService;
+import com.woowacourse.pelotonbackend.report.presentation.dto.ReportCreateRequest;
 import lombok.RequiredArgsConstructor;
 
 @RequestMapping("/api/reports")

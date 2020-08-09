@@ -2,7 +2,7 @@ package com.woowacourse.pelotonbackend.report.domain;
 
 import org.springframework.data.jdbc.core.mapping.AggregateReference;
 
-import com.woowacourse.pelotonbackend.report.presentation.ReportCreateRequest;
+import com.woowacourse.pelotonbackend.report.presentation.dto.ReportCreateRequest;
 
 public class ReportFixture {
     public static final Long REPORT_ID = 10L;
