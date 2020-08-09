@@ -63,8 +63,6 @@ const KakaoLoginWebView = ({ toggleModal }) => {
           startInLoadingState={true}
           incognito={true}
           onNavigationStateChange={onNavigationStateChange}
-          onError={() => console.log("에러!!")}
-          onHttpError={() => console.log("http에러!!")}
         />
       </View>
     </>

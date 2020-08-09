@@ -17,7 +17,6 @@ const Home = () => {
   useEffect(() => {
     const fetchUser = async () => {
       setIsLoading(true);
-      console.log(token);
       const response = await Axios({
         method: "GET",
         baseURL: SERVER_BASE_URL,
