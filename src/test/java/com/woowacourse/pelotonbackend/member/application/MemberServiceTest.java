@@ -2,7 +2,6 @@ package com.woowacourse.pelotonbackend.member.application;
 
 import static com.woowacourse.pelotonbackend.certification.domain.CertificationFixture.*;
 import static com.woowacourse.pelotonbackend.infra.upload.UploadFixture.*;
-import static com.woowacourse.pelotonbackend.member.domain.LoginFixture.*;
 import static com.woowacourse.pelotonbackend.member.domain.MemberFixture.*;
 import static org.assertj.core.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.*;
@@ -203,10 +202,12 @@ class MemberServiceTest {
     @DisplayName("Kakao Id로 없는 회원을 조회하는 경우 예외를 반환한다.")
     @Test
     public void retrieveExistMemberTest() {
-        given(memberRepository.findByKakaoId(KAKAO_ID)).willReturn(Optional.of(expectedMember));
+        final Long kakaoId = KAKAO_ID;
+        given(memberRepository.findByKakaoId(kakaoId)).willReturn(Optional.empty());
 
-        assertThat(memberService.findByKakaoId(createMockKakaoUserResponse().getId())).isEqualToComparingFieldByField(
-            expectedMember);
+        assertThatThrownBy(() -> memberService.findByKakaoId(kakaoId))
+            .isInstanceOf(MemberNotFoundException.class)
+            .hasMessage(String.format("Member(member kakaoId = %d) does not exist", kakaoId));
     }
 
     @DisplayName("Kakao User Response를 통해 신규 유저인 경우 생성하고 조회한다.")

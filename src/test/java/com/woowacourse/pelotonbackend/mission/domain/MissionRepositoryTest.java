@@ -59,4 +59,15 @@ class MissionRepositoryTest {
 
         assertThat(results.size()).isEqualTo(count);
     }
+
+    @DisplayName("레이스 id로 미션을 성공적으로 조회한다.")
+    @Test
+    void findByRaceIdAndSucceed() {
+        final Long raceId = 10L;
+        missionRepository.save(MissionFixture.missionWithoutIdAndRaceId(raceId));
+
+        List<Mission> missions = missionRepository.findMissionsByRaceId(raceId);
+
+        assertThat(missions.get(0).getRaceId().getId()).isEqualTo(raceId);
+    }
 }

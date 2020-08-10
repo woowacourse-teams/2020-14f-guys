@@ -75,12 +75,10 @@ public class MissionService {
     }
 
     @Transactional(readOnly = true)
-    public MissionRetrieveResponse retrieveByRaceId(final Long raceId) {
-        Mission mission = missionRepository.findByRaceId(raceId).orElseThrow(() ->
-            new MissionNotFoundException(String.format("Mission(raceId = %d) does not exists", raceId))
-        );
+    public MissionsRetrieveResponse retrieveByRaceId(final Long raceId) {
+        List<Mission> missions = missionRepository.findMissionsByRaceId(raceId);
 
-        return MissionRetrieveResponse.of(mission);
+        return MissionsRetrieveResponse.of(missions);
     }
 
     @Transactional(readOnly = true)

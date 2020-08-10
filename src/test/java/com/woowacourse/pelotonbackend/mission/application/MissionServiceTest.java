@@ -127,22 +127,11 @@ class MissionServiceTest {
     void retrieveByRaceIdAndSucceed() {
         final Long raceId = 10L;
         final Mission mission = MissionFixture.missionWithIdAndRaceId(raceId);
-        given(missionRepository.findByRaceId(anyLong())).willReturn(Optional.of(mission));
+        given(missionRepository.findMissionsByRaceId(anyLong())).willReturn(Arrays.asList(mission));
 
-        MissionRetrieveResponse response = missionService.retrieveByRaceId(raceId);
+        MissionsRetrieveResponse response = missionService.retrieveByRaceId(raceId);
 
-        assertThat(response.getRaceId()).isEqualTo(raceId);
-    }
-
-    @DisplayName("Race id로 미션을 조회 시 존재하지 않을 경우 예외가 발생한다.")
-    @Test
-    void retrieveByRaceIdAndFail() {
-        final Long raceId = 10L;
-        given(missionRepository.findByRaceId(anyLong())).willReturn(Optional.empty());
-
-        assertThatThrownBy(() -> missionService.retrieveByRaceId(raceId))
-            .isInstanceOf(MissionNotFoundException.class)
-            .hasMessage(String.format("Mission(raceId = %d) does not exists", raceId));
+        assertThat(response.getMissionRetrieveResponses().get(0).getRaceId()).isEqualTo(raceId);
     }
 
     @DisplayName("미션을 정상적으로 수정한다.")
