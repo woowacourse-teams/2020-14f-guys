@@ -60,7 +60,7 @@ public class CertificationFixture {
             .build();
     }
 
-    public static MultipartFile createMockCertificationMultipartFile() {
+    public static MockMultipartFile createMockCertificationMultipartFile() {
         return new MockMultipartFile(TEST_CERTIFICATION_MULTIPART_NAME, TEST_CERTIFICATION_FILE_NAME,
             MediaType.IMAGE_JPEG_VALUE, TEST_CERTIFICATION_FILE);
     }
