@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="TRACE">
+    <Properties>
+        <Property name="logNm">peloton-log</Property>
+        <Property name="layoutPattern">%style{%d{yyyy/MM/dd HH:mm:ss,SSS}}{red} %highlight{[%level]}{FATAL=bg_red,
+            ERROR=red,INFO=green, DEBUG=blue} [%c] %style{[%t]}{yellow}- %m%n -
+        </Property>
+    </Properties>
+
+    <Appenders>
+        <RollingFile name="ErrorAppender" fileName="logs/error/${logNm}.log"
+                     filePattern="logs/error/${logNm}_%d{yyyy-MM-dd}_%i.log">
+            <PatternLayout pattern="${layoutPattern}"/>
+            <LevelRangeFilter minLevel="ERROR"/>
+            <Policies>
+                <SizeBasedTriggeringPolicy size="10MB"/>
+                <TimeBasedTriggeringPolicy interval="1"/>
+            </Policies>
+            <DefaultRolloverStrategy max="30" fileIndex="max"/>
+        </RollingFile>
+
+        <RollingFile name="HttpAppender" fileName="logs/http/${logNm}.log"
+                     filePattern="logs/http/${logNm}_%d{yyyy-MM-dd}_%i.log">
+            <PatternLayout pattern="${layoutPattern}"/>
+            <Policies>
+                <SizeBasedTriggeringPolicy size="10MB"/>
+                <TimeBasedTriggeringPolicy interval="1"/>
+            </Policies>
+            <DefaultRolloverStrategy max="30" fileIndex="max"/>
+        </RollingFile>
+
+        <RollingFile name="SqlAppender" fileName="logs/db/${logNm}.log"
+                     filePattern="logs/db/${logNm}_%d{yyyy-MM-dd}_%i.log">
+            <PatternLayout pattern="${layoutPattern}"/>
+            <Policies>
+                <SizeBasedTriggeringPolicy size="10MB"/>
+                <TimeBasedTriggeringPolicy interval="1"/>
+            </Policies>
+            <DefaultRolloverStrategy max="30" fileIndex="max"/>
+        </RollingFile>
+    </Appenders>
+
+    <Loggers>
+        <Root level="ERROR" includeLocation="false" additivity="false">
+            <AppenderRef ref="ErrorAppender"/>
+        </Root>
+
+        <Logger name="com.woowacourse.pelotonbackend.support.log.HttpLoggerFilter" level="INFO" additivity="false" includeLocation="false">
+            <AppenderRef ref="HttpAppender"/>
+        </Logger>
+
+        <Logger name="org.springframework.jdbc" level="DEBUG" additivity="true" includeLocation="false">
+            <AppenderRef ref="SqlAppender"/>
+        </Logger>
+
+        <Logger name="com.zaxxer.hikari.HikariConfig" level="DEBUG" additivity="true" includeLocation="false">
+            <AppenderRef ref="SqlAppender"/>
+        </Logger>
+    </Loggers>
+</Configuration>
