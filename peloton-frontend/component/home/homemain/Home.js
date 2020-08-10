@@ -18,7 +18,7 @@ const Home = () => {
     const fetchUser = async () => {
       setIsLoading(true);
       const response = await Axios({
-        mehtod: "GET",
+        method: "GET",
         baseURL: SERVER_BASE_URL,
         url: "/api/members",
         headers: {
@@ -26,7 +26,6 @@ const Home = () => {
         },
       });
       setUserInfo(response.data);
-      console.log(response.data);
     };
     fetchUser();
     setIsLoading(false);
