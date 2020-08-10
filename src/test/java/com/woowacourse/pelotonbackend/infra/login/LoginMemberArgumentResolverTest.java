@@ -73,22 +73,22 @@ class LoginMemberArgumentResolverTest {
             .hasMessageContaining("Member(member kakaoId = %d not exist)", kakaoId);
     }
 
-    @DisplayName("kakaoId 정보가 없을 때 AssertionError로 예외처리한다.")
+    @DisplayName("servletWebRequest attribute에 kakaoId 정보가 없을 때 AssertionError로 예외처리한다.")
     @Test
     void resolveArgumentTest3() {
         assertThatThrownBy(
             () -> loginMemberArgumentResolver.resolveArgument(methodParameter, null, servletWebRequest, null))
             .isInstanceOf(AssertionError.class)
-            .hasMessageContaining("Cannot found 'loginMemberKakaoId");
+            .hasMessageContaining("Cannot find loginMemberKakaoId");
     }
 
-    @DisplayName("kakaoId가 Long이 아닐 경우 MemberNotFound로 예외처리한다.")
+    @DisplayName("parseLong(kakaoId)에서 NumberFormatException이 발생할 경우 MemberNotFound로 예외처리한다.")
     @Test
     void resolveArgumentTest4() {
         servletWebRequest.setAttribute("loginMemberKakaoId", "notLongId", SCOPE_REQUEST);
         assertThatThrownBy(
             () -> loginMemberArgumentResolver.resolveArgument(methodParameter, null, servletWebRequest, null))
             .isInstanceOf(MemberNotFoundException.class)
-            .hasMessage("Cannot found Member");
+            .hasMessage("Cannot find Member");
     }
 }
