@@ -10,6 +10,7 @@ import javax.validation.constraints.NotNull;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.woowacourse.pelotonbackend.certification.domain.TimeDuration;
 import com.woowacourse.pelotonbackend.race.domain.DateDuration;
 import com.woowacourse.pelotonbackend.race.domain.Race;
 import com.woowacourse.pelotonbackend.race.domain.RaceCategory;
@@ -23,7 +24,8 @@ import lombok.Builder;
 import lombok.Getter;
 
 @AllArgsConstructor(access = AccessLevel.PRIVATE,
-    onConstructor_ = @ConstructorProperties({"title", "description", "raceDuration", "category", "entranceFee"}))
+    onConstructor_ = @ConstructorProperties({"title", "description", "raceDuration", "category", "entranceFee", "days",
+        "certificationAvailableDuration"}))
 @Builder
 @Getter
 public class RaceCreateRequest {
@@ -41,6 +43,9 @@ public class RaceCreateRequest {
 
     @NotNull
     private final List<DayOfWeek> days;
+
+    @Valid
+    private final TimeDuration certificationAvailableDuration;
 
     @Valid
     @JsonSerialize(using = CashSerializer.class)

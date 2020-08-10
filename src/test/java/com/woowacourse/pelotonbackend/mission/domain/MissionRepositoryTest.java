@@ -26,7 +26,7 @@ class MissionRepositoryTest {
     @Test
     void saveMission() {
         final Mission mission = Mission.builder()
-            .missionDuration(new TimeDuration(LocalDateTime.of(2030, 1, 1, 0, 0), LocalDateTime.of(2031, 1, 1, 0, 0)))
+            .missionDuration(new DateTimeDuration(LocalDateTime.of(2030, 1, 1, 0, 0), LocalDateTime.of(2031, 1, 1, 0, 0)))
             .missionInstruction(new MissionInstruction("브이를 하고 사진을 찍으세요"))
             .raceId(AggregateReference.to(1L))
             .build();
@@ -36,7 +36,7 @@ class MissionRepositoryTest {
         assertAll(
             () -> assertThat(persist.getId()).isNotNull(),
             () -> assertThat(persist.getMissionDuration()).isEqualTo(
-                new TimeDuration(LocalDateTime.of(2030, 1, 1, 0, 0), LocalDateTime.of(2031, 1, 1, 0, 0))),
+                new DateTimeDuration(LocalDateTime.of(2030, 1, 1, 0, 0), LocalDateTime.of(2031, 1, 1, 0, 0))),
             () -> assertThat(persist.getMissionInstruction()).isEqualTo(new MissionInstruction("브이를 하고 사진을 찍으세요")),
             () -> assertThat(persist.getRaceId()).isEqualTo(AggregateReference.to(1L)),
             () -> assertThat(persist.getCreatedAt()).isNotNull(),
