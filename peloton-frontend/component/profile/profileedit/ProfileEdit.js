@@ -4,6 +4,7 @@ import ProfileEditInfo from "./ProfileInfoEdit";
 import ProfileImageEdit from "./ProfileImageEdit";
 import SignOutButtonContainer from "./SignOutButtonContainer";
 import UnregisterButtonContainer from "./UnregisterButtonContainer";
+import { COLOR } from "../../../utils/constants";
 
 const ProfileEdit = () => {
   return (
@@ -18,7 +19,7 @@ const ProfileEdit = () => {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: "#eceff0",
+    backgroundColor: COLOR.WHITE,
   },
 });
 

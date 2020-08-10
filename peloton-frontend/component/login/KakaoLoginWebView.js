@@ -74,7 +74,7 @@ const KakaoLoginWebView = ({ toggleModal }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: COLOR.LOGIN_BLUE,
+    backgroundColor: COLOR.BLUE5,
     justifyContent: "center",
     alignItems: "flex-start",
   },

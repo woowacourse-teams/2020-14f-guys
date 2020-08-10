@@ -4,6 +4,7 @@ import { Image, StyleSheet, View } from "react-native";
 import ProfileImageEditButton from "../ProfileImageEditButton";
 import { useRecoilValue } from "recoil/dist";
 import { userInfoState } from "../../atoms";
+import { COLOR } from "../../../utils/constants";
 
 const ProfileImageEdit = () => {
   const userInfo = useRecoilValue(userInfoState);
@@ -23,7 +24,7 @@ const ProfileImageEdit = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#eceff0",
+    backgroundColor: COLOR.WHITE4,
   },
   imageContainer: {
     alignItems: "center",

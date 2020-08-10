@@ -65,7 +65,7 @@ const styles = StyleSheet.create({
     lineHeight: 23,
   },
   readMoreButton: {
-    color: "rgb(0,122,255)",
+    color: COLOR.BLUE1,
     marginTop: 15,
   },
 });

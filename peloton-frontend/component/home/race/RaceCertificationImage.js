@@ -1,7 +1,7 @@
 import React from "react";
 import { Dimensions, StyleSheet, View } from "react-native";
 import Carousel, { ParallaxImage } from "react-native-snap-carousel";
-import { MOCK_DATA } from "../../../utils/constants";
+import { COLOR, MOCK_DATA } from "../../../utils/constants";
 
 const _renderEachImage = ({ item, index }, parallaxProps) => {
   return (
@@ -45,7 +45,7 @@ const styles = StyleSheet.create({
     height: 600,
     justifyContent: "center",
     alignItems: "center",
-    shadowColor: "#000",
+    shadowColor: COLOR.BLACK,
     shadowOpacity: 0.3,
     shadowRadius: 6.68,
     elevation: 11,

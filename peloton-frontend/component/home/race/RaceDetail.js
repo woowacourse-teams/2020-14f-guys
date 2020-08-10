@@ -7,7 +7,7 @@ import { useRecoilValue, useSetRecoilState } from "recoil";
 import { userTokenState } from "../../atoms";
 import { loadingState } from "../../../state/loading/LoadingState";
 import Axios from "axios";
-import { SERVER_BASE_URL } from "../../../utils/constants";
+import { COLOR, SERVER_BASE_URL } from "../../../utils/constants";
 
 const calculateTotalCash = (cash) => {
   return cash * 10;
@@ -63,7 +63,7 @@ const RaceDetail = ({ route }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "white",
+    backgroundColor: COLOR.WHITE,
   },
 });
 

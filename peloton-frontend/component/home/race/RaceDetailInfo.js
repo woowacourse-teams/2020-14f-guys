@@ -18,7 +18,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     overflow: "hidden",
-    backgroundColor: COLOR.WHITE,
     borderBottomEndRadius: 15,
     borderBottomStartRadius: 15,
   },

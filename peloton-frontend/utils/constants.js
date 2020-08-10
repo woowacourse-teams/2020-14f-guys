@@ -2,13 +2,24 @@ import { animated } from "react-spring";
 import { Image, Text, View } from "react-native";
 
 export const COLOR = {
-  GREEN: "#B0D4D9",
-  BLUE: "#B0C0D9",
+  RED: "#ce1313",
+  GREEN1: "#B0D4D9",
+  GREEN2: "#6e8ca0",
+  GREEN3: "#334856",
+  BLUE1: "#B0C0D9",
+  BLUE2: "#0b53e8",
+  BLUE3: "#4f83dd",
+  BLUE4: "#284170",
+  BLUE5: "#21365d",
+  ARROW_BLUE: "#61779f",
   PURPLE: "#B5B0D9",
   LAVENDER: "#CAB0D9",
   PINK: "#D0B0D4",
   INDIAN_PINK: "#D9B0C0",
   WHITE: "#FFFFFF",
+  WHITE2: "#F2F2F2",
+  WHITE3: "#F0F3f4",
+  WHITE4: "#eceff0",
   GRAY1: "rgb(142,142,147)",
   GRAY2: "rgb(174,174,178)",
   GRAY3: "rgb(199,199,204)",
@@ -16,8 +27,8 @@ export const COLOR = {
   GRAY5: "rgb(229,229,234)",
   GRAY6: "rgb(242,242,247)",
   DARK_GRAY6: "rgb(28,28,30)",
-  LOGIN_BLUE: "#21365d",
   BLACK: "#000",
+  BLACK2: "#1b1c20",
 };
 
 export const SAMPLE_IMAGES = [

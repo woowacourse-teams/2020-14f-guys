@@ -21,7 +21,7 @@ const styles = StyleSheet.create({
     flex: 1,
     borderStyle: "solid",
     borderBottomWidth: 1,
-    borderColor: "#d5d5d5",
+    borderColor: COLOR.WHITE3,
     fontSize: 20,
     fontWeight: "300",
     fontStyle: "normal",

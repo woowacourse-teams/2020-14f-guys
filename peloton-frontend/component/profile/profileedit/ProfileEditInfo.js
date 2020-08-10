@@ -11,7 +11,7 @@ import Axios from "axios";
 import { useRecoilValue } from "recoil";
 import { userInfoState, userTokenState } from "../../atoms";
 import { useNavigation } from "@react-navigation/core";
-import { SERVER_BASE_URL } from "../../../utils/constants";
+import { COLOR, SERVER_BASE_URL } from "../../../utils/constants";
 import { useSetRecoilState } from "recoil/dist";
 
 const ProfileEditInfo = () => {
@@ -48,7 +48,6 @@ const ProfileEditInfo = () => {
 
   return (
     <View style={styles.infoContainer}>
-      {/*1번*/}
       <View style={styles.eachInfo}>
         <View style={styles.eachTextBox}>
           <Text style={styles.eachInfoKey}>🚴 ‍️Rider Name</Text>
@@ -66,14 +65,12 @@ const ProfileEditInfo = () => {
           />
         </TouchableOpacity>
       </View>
-      {/*2번*/}
       <View style={styles.eachInfo}>
         <View style={styles.eachTextBox}>
           <Text style={styles.eachInfoKey}>😀 Kakao ID</Text>
           <Text style={styles.eachInfoValue}>{userInfo.kakaoId}</Text>
         </View>
       </View>
-      {/*3번*/}
       <View style={styles.eachInfo}>
         <View style={styles.eachTextBox}>
           <Text style={styles.eachInfoKey}>💰 Cash</Text>
@@ -101,9 +98,9 @@ const styles = StyleSheet.create({
     alignItems: "center",
     marginHorizontal: 18,
     justifyContent: "space-around",
-    backgroundColor: "white",
+    backgroundColor: COLOR.WHITE,
     borderWidth: 0,
-    borderColor: "#F0F3F4",
+    borderColor: COLOR.WHITE3,
     borderRadius: 20,
     shadowColor: "rgba(80,92,98,0.04)",
     shadowOffset: {
@@ -114,14 +111,14 @@ const styles = StyleSheet.create({
     shadowOpacity: 1,
   },
   editIcon: {
-    color: "black",
+    color: COLOR.BLACK,
   },
   eachInfo: {
     flex: 1,
     width: "100%",
     flexDirection: "row",
     borderWidth: 1,
-    borderColor: "#F0F3F4",
+    borderColor: COLOR.WHITE3,
   },
   eachTextBox: {
     flex: 5,
@@ -142,22 +139,22 @@ const styles = StyleSheet.create({
     paddingRight: 25,
   },
   buttonText: {
-    color: "#6e8ca0",
+    color: COLOR.GREEN2,
     paddingRight: 5,
   },
   eachInfoKey: {
     fontSize: 17,
     fontWeight: "800",
-    color: "#334856",
+    color: COLOR.GREEN3,
     lineHeight: 35,
     paddingBottom: 5,
   },
   eachInfoValue: {
-    color: "#6e8ca0",
+    color: COLOR.GREEN2,
     marginLeft: 26,
     marginRight: 60,
     paddingBottom: 7,
-    borderBottomColor: "#eceff0",
+    borderBottomColor: COLOR.WHITE4,
     borderBottomWidth: 1,
   },
   editButtonImage: {

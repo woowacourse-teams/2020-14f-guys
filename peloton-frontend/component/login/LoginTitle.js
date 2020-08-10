@@ -4,6 +4,7 @@ import {
   AnimatedImage,
   AnimatedText,
   AnimatedView,
+  COLOR,
 } from "../../utils/constants";
 import { useSpring } from "react-spring";
 
@@ -72,7 +73,7 @@ const styles = StyleSheet.create({
       Platform.OS === "ios" ? "AppleSDGothicNeo-UltraLight" : "normal",
     lineHeight: 38,
     letterSpacing: 0.9,
-    color: "#ffffff",
+    color: COLOR.WHITE,
   },
 });
 

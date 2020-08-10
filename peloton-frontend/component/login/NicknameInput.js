@@ -1,12 +1,13 @@
 import React from "react";
 import { StyleSheet, TextInput } from "react-native";
+import { COLOR } from "../../utils/constants";
 
 const NicknameInput = ({ userInput, setUserInput, onSubmit }) => {
   return (
     <TextInput
       style={styles.nicknameInput}
       placeholder="닉네임을 입력해주세요"
-      placeholderTextColor="gray"
+      placeholderTextColor={COLOR.GRAY1}
       onChangeText={(text) => setUserInput(text)}
       onSubmitEditing={onSubmit}
       clearTextOnFocus={false}
@@ -24,9 +25,9 @@ const styles = StyleSheet.create({
     width: 300,
     height: 40,
     borderBottomWidth: 1,
-    borderColor: "#4f83dd",
+    borderColor: COLOR.BLUE3,
     fontSize: 17,
-    color: "white",
+    color: COLOR.WHITE,
   },
 });
 

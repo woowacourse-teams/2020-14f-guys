@@ -46,7 +46,7 @@ const HomeBanner = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: COLOR.GREEN,
+    backgroundColor: COLOR.GREEN1,
     justifyContent: "center",
     paddingHorizontal: 35,
   },

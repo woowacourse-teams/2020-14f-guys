@@ -3,7 +3,7 @@ import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import AsyncStorage from "@react-native-community/async-storage";
 import { navigateWithoutHistory } from "../../../utils/util";
 import { useNavigation } from "@react-navigation/core";
-import { TOKEN_STORAGE } from "../../../utils/constants";
+import { COLOR, TOKEN_STORAGE } from "../../../utils/constants";
 
 const SignOutButtonContainer = () => {
   const navigation = useNavigation();
@@ -33,18 +33,18 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     width: 150,
     height: 50,
-    borderColor: "#c8d1d3",
+    borderColor: COLOR.WHITE3,
     borderRadius: 100,
     alignItems: "center",
     justifyContent: "center",
   },
   buttonText: {
-    color: "#334856",
+    color: COLOR.GREEN3,
     fontSize: 14,
   },
   version: {
     paddingTop: 15,
-    color: "#334856",
+    color: COLOR.GREEN3,
     fontSize: 12,
   },
 });

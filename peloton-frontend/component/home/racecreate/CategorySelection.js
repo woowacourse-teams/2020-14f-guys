@@ -4,7 +4,7 @@ import { useNavigation } from "@react-navigation/native";
 import { useSetRecoilState } from "recoil";
 
 import { raceCreateInfoState } from "../../../state/race/CreateState";
-import { CATEGORY } from "../../../utils/constants";
+import { CATEGORY, COLOR } from "../../../utils/constants";
 import CategoryItem from "./CategoryItem";
 
 const CategorySelection = () => {
@@ -37,7 +37,7 @@ const CategorySelection = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#FFFFFF",
+    backgroundColor: COLOR.WHITE,
     paddingHorizontal: Dimensions.get("window").width * 0.075,
   },
   title: {
