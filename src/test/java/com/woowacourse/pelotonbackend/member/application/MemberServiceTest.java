@@ -159,9 +159,11 @@ class MemberServiceTest {
     void updateProfile() {
         final Member originMember = MemberFixture.createWithId(ID);
         final Member updatedMember = MemberFixture.memberProfileUpdated(ID);
+        final String uploadUri = String.format("%s/%s/%s", UPLOAD_SERVER_URL, PROFILE_UPLOAD_PATH, BASIC_PROFILE_FILE_NAME);
         given(memberRepository.findById(ID)).willReturn(Optional.of(originMember));
         given(memberRepository.save(any(Member.class))).willReturn(updatedMember);
-        given(uploadService.uploadImage(any(MultipartFile.class), eq(PROFILE_IMAGE_PATH))).willReturn(UPLOAD_SERVER_URL);
+
+        given(uploadService.uploadImage(any(MultipartFile.class), eq(PROFILE_IMAGE_PATH))).willReturn(uploadUri);
 
         final MemberProfileResponse response = memberService.updateProfileImage(originMember.getId(),
             mockMultipartFile());
