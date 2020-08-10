@@ -1,6 +1,8 @@
 package com.woowacourse.pelotonbackend.race.presentation.dto;
 
 import java.beans.ConstructorProperties;
+import java.time.DayOfWeek;
+import java.util.List;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
@@ -36,6 +38,9 @@ public class RaceCreateRequest {
 
     @NotNull
     private final RaceCategory category;
+
+    @NotNull
+    private final List<DayOfWeek> days;
 
     @Valid
     @JsonSerialize(using = CashSerializer.class)
