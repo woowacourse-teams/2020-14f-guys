@@ -24,8 +24,8 @@ public class HttpLoggerFilter extends OncePerRequestFilter {
         IOException {
 
         long startTime = System.currentTimeMillis();
-        StringBuffer reqInfo = plusRequestInfo(request, startTime);
 
+        StringBuilder reqInfo = plusRequestInfo(request, startTime);
         ContentCachingRequestWrapper wrappedRequest = new ContentCachingRequestWrapper(request);
         ContentCachingResponseWrapper wrappedResponse = new ContentCachingResponseWrapper(response);
 
@@ -33,11 +33,11 @@ public class HttpLoggerFilter extends OncePerRequestFilter {
 
         String requestBody = this.getContentAsString(wrappedRequest.getContentAsByteArray(),
             request.getCharacterEncoding());
-        String responseBody = this.getContentAsString(wrappedResponse.getContentAsByteArray(),
-            response.getCharacterEncoding());
-
         final StringBuilder message = plusRequestHeader(request, reqInfo);
         plusRequestBody(requestBody, message);
+
+        String responseBody = this.getContentAsString(wrappedResponse.getContentAsByteArray(),
+            response.getCharacterEncoding());
         wrappedResponse.copyBodyToResponse();
         plusResponseInfo(response, startTime, message);
         plusResponseHeader(response, message);
@@ -48,16 +48,16 @@ public class HttpLoggerFilter extends OncePerRequestFilter {
 
     private void plusResponseBody(final String responseBody, final StringBuilder message) {
         message.append("}")
-            .append("\n")
+            .append(System.lineSeparator())
             .append("response body")
-            .append("\n")
+            .append(System.lineSeparator())
             .append(responseBody)
-            .append("\n");
+            .append(System.lineSeparator());
     }
 
     private void plusResponseHeader(final HttpServletResponse response, final StringBuilder message) {
         final Collection<String> responseHeaders = response.getHeaderNames();
-        message.append("response headers : {").append("\n");
+        message.append("response headers : {").append(System.lineSeparator());
 
         for (String header : responseHeaders) {
             message.append("  ")
@@ -65,7 +65,7 @@ public class HttpLoggerFilter extends OncePerRequestFilter {
                 .append(" : ")
                 .append(response.getHeader(header))
                 .append(",")
-                .append("\n");
+                .append(System.lineSeparator());
         }
     }
 
@@ -73,29 +73,30 @@ public class HttpLoggerFilter extends OncePerRequestFilter {
         final StringBuilder message) {
         long duration = System.currentTimeMillis() - startTime;
         message.append("=====  response =====")
-            .append(" returned status=" + response.getStatus() + " in " + duration + "ms").append("\n");
+            .append(" returned status=" + response.getStatus() + " in " + duration + "ms")
+            .append(System.lineSeparator());
     }
 
     private void plusRequestBody(final String requestBody, final StringBuilder message) {
         if (requestBody.length() > 0) {
             message.append("request body : ")
                 .append(requestBody)
-                .append("\n");
+                .append(System.lineSeparator());
         }
     }
 
-    private StringBuilder plusRequestHeader(final HttpServletRequest request, final StringBuffer reqInfo) {
+    private StringBuilder plusRequestHeader(final HttpServletRequest request, final StringBuilder reqInfo) {
         return new StringBuilder()
-            .append("\n")
+            .append(System.lineSeparator())
             .append("=======  request  =====")
             .append(reqInfo)
-            .append("\n")
+            .append(System.lineSeparator())
             .append(getRequestHeaderString(request))
-            .append("\n");
+            .append(System.lineSeparator());
     }
 
-    private StringBuffer plusRequestInfo(final HttpServletRequest request, final long startTime) {
-        StringBuffer reqInfo = new StringBuffer()
+    private StringBuilder plusRequestInfo(final HttpServletRequest request, final long startTime) {
+        StringBuilder reqInfo = new StringBuilder()
             .append("[")
             .append(startTime % 10000)
             .append("] ")
@@ -123,15 +124,15 @@ public class HttpLoggerFilter extends OncePerRequestFilter {
         final Enumeration<String> headerNames = request.getHeaderNames();
         StringBuilder headers = new StringBuilder();
 
-        headers.append("request headers : {").append("\n");
+        headers.append("request headers : {").append(System.lineSeparator());
         while (headerNames.hasMoreElements()) {
             final String name = headerNames.nextElement();
             headers.append("  ")
                 .append(name)
                 .append(" : ")
-                .append(request.getHeader(name)).append(",").append("\n");
+                .append(request.getHeader(name)).append(",").append(System.lineSeparator());
         }
-        headers.append("}").append("\n");
+        headers.append("}").append(System.lineSeparator());
         return headers.toString();
     }
 

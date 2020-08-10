@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<Configuration status="info">
+<Configuration status="INFO">
     <Properties>
         <Property name="logNm">peloton-dev-log</Property>
         <Property name="layoutPattern">%style{%d{yyyy/MM/dd HH:mm:ss,SSS}}{red} %highlight{[%level]}{FATAL=bg_red,
