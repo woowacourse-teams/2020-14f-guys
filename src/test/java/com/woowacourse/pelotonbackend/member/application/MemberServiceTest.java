@@ -191,13 +191,6 @@ class MemberServiceTest {
         verify(memberRepository).deleteById(anyLong());
     }
 
-    @DisplayName("삭제하려는 회원의 아이디가 null이면 예외를 반환한다.")
-    @Test
-    void deleteNullMemberIdTest() {
-        assertThatThrownBy(() -> memberService.deleteById(null))
-            .isInstanceOf(MemberIdInvalidException.class);
-    }
-
     @DisplayName("Kakao Id로 회원을 조회한다.")
     @Test
     void findByKakaoIdTest() {
