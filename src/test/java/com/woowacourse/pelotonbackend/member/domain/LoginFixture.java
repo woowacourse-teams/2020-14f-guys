@@ -2,7 +2,6 @@ package com.woowacourse.pelotonbackend.member.domain;
 
 import static com.woowacourse.pelotonbackend.member.domain.MemberFixture.*;
 
-import org.springframework.stereotype.Component;
 import org.springframework.web.util.DefaultUriBuilderFactory;
 
 import com.woowacourse.pelotonbackend.infra.login.KakaoTokenResponse;
@@ -11,12 +10,11 @@ import com.woowacourse.pelotonbackend.member.presentation.dto.MemberResponse;
 import com.woowacourse.pelotonbackend.support.annotation.LoginMember;
 import com.woowacourse.pelotonbackend.vo.Cash;
 
-@Component
 public class LoginFixture {
     public static final String CODE = "code";
     public static final String CODE_VALUE = "CODE";
-    public static final String URL = "https://14floorguys.com";
-    public static final String TOKEN = "SIKAKYLEDDBUMBLEBEEMOONI";
+    public static final String URL = "https://peloton.ga";
+    public static final String TOKEN = "SAMPLE_ACCESS_TOKEN";
     public static final String LOGIN_SUCCESS = "true";
     public static final String LOGIN_FAIL = "false";
     public static final String SERVER_URI = "http://localhost:8080";

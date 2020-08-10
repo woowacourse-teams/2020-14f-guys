@@ -1,7 +1,6 @@
 package com.woowacourse.pelotonbackend.member.presentation;
 
 import java.io.IOException;
-import java.net.URI;
 
 import javax.servlet.http.HttpServletResponse;
 
@@ -13,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.woowacourse.pelotonbackend.member.application.LoginService;
+import com.woowacourse.pelotonbackend.support.dto.JwtTokenResponse;
 import lombok.RequiredArgsConstructor;
 
 @RequestMapping("/api/login")
@@ -25,8 +25,7 @@ public class LoginController {
     public ResponseEntity<Void> redirectLoginPage(final HttpServletResponse response) throws IOException {
         String url = loginService.createCodeUrl();
         response.sendRedirect(url);
-
-        return ResponseEntity.ok().location(URI.create(url)).build();
+        return ResponseEntity.ok().build();
     }
 
     @GetMapping("/token")
@@ -34,15 +33,14 @@ public class LoginController {
         final HttpServletResponse response) throws IOException {
         final String redirectUrl = loginService.createJwtTokenUrl(code);
         response.sendRedirect(redirectUrl);
-
-        return ResponseEntity.ok().location(URI.create(redirectUrl)).build();
+        return ResponseEntity.ok().build();
     }
 
     @GetMapping("/check")
-    public ResponseEntity<String> loginCheck(@RequestParam(value = "access_token", required = false) final String token,
-        @RequestParam final boolean success) {
+    public ResponseEntity<JwtTokenResponse> loginCheck(@RequestParam(value = "access_token", required = false) final String token,
+        @RequestParam final boolean success, @RequestParam(value="is_created") final boolean isCreated) {
         if (success) {
-            return ResponseEntity.ok(token);
+            return ResponseEntity.ok(JwtTokenResponse.of(token, isCreated));
         }
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
     }

@@ -9,7 +9,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.woowacourse.pelotonbackend.common.exception.MemberIdInvalidException;
 import com.woowacourse.pelotonbackend.common.exception.MemberNotFoundException;
 import com.woowacourse.pelotonbackend.infra.upload.UploadService;
 import com.woowacourse.pelotonbackend.member.domain.Member;
@@ -82,9 +81,6 @@ public class MemberService {
     }
 
     public void deleteById(final Long id) {
-        if (Objects.isNull(id)) {
-            throw new MemberIdInvalidException(id);
-        }
         memberRepository.deleteById(id);
     }
 

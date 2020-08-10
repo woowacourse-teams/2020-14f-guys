@@ -5,7 +5,6 @@ import java.util.Base64;
 import org.springframework.data.jdbc.core.mapping.AggregateReference;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockMultipartFile;
-import org.springframework.web.multipart.MultipartFile;
 
 import com.woowacourse.pelotonbackend.certification.domain.dto.CertificationCreateRequest;
 import com.woowacourse.pelotonbackend.vo.ImageUrl;
@@ -60,7 +59,7 @@ public class CertificationFixture {
             .build();
     }
 
-    public static MultipartFile createMockCertificationMultipartFile() {
+    public static MockMultipartFile createMockCertificationMultipartFile() {
         return new MockMultipartFile(TEST_CERTIFICATION_MULTIPART_NAME, TEST_CERTIFICATION_FILE_NAME,
             MediaType.IMAGE_JPEG_VALUE, TEST_CERTIFICATION_FILE);
     }

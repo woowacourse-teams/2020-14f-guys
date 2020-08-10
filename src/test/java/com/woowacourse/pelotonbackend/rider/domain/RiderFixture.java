@@ -1,5 +1,6 @@
 package com.woowacourse.pelotonbackend.rider.domain;
 
+import java.time.LocalDateTime;
 import java.util.stream.Collectors;
 import java.util.stream.LongStream;
 
@@ -43,6 +44,8 @@ public class RiderFixture {
             .id(id)
             .raceId(AggregateReference.to(TEST_RACE_ID))
             .memberId(AggregateReference.to(TEST_MEMBER_ID))
+            .createdAt(LocalDateTime.now())
+            .updatedAt(LocalDateTime.now())
             .build();
     }
 
