@@ -19,6 +19,7 @@ import com.woowacourse.pelotonbackend.race.domain.RaceCategory;
 import com.woowacourse.pelotonbackend.race.presentation.dto.RaceCreateRequest;
 import com.woowacourse.pelotonbackend.support.CustomDateParser;
 import com.woowacourse.pelotonbackend.support.RandomGenerator;
+import com.woowacourse.pelotonbackend.mission.presentation.dto.MissionsRetrieveResponse;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
@@ -64,6 +65,13 @@ public class MissionService {
         );
 
         return MissionRetrieveResponse.of(mission);
+    }
+
+    @Transactional(readOnly = true)
+    public MissionsRetrieveResponse retrieveAllByIds(final List<Long> ids) {
+        List<Mission> missions = missionRepository.findAllById(ids);
+
+        return MissionsRetrieveResponse.of(missions);
     }
 
     public void update(final Long id, final MissionUpdateRequest request) {

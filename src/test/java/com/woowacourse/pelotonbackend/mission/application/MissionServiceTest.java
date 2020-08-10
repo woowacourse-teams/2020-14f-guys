@@ -6,6 +6,7 @@ import static org.mockito.BDDMockito.*;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.Arrays;
 import java.util.Optional;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -27,6 +28,7 @@ import com.woowacourse.pelotonbackend.support.CustomDateParser;
 import com.woowacourse.pelotonbackend.support.RandomGenerator;
 import com.woowacourse.pelotonbackend.mission.presentation.dto.MissionRetrieveResponse;
 import com.woowacourse.pelotonbackend.common.exception.MissionNotFoundException;
+import com.woowacourse.pelotonbackend.mission.presentation.dto.MissionsRetrieveResponse;
 
 @ExtendWith(MockitoExtension.class)
 class MissionServiceTest {
@@ -104,6 +106,20 @@ class MissionServiceTest {
             missionService.retrieve(missionId);
         }).isInstanceOf(MissionNotFoundException.class)
             .hasMessageContaining("Mission(mission id = %d) does not exists", missionId);
+    }
+
+    @DisplayName("여러 개의 아이디로 미션들을 조회한다.")
+    @Test
+    void retrieveAllByIds() {
+        final List<Long> ids = Arrays.asList(1L, 2L, 4L);
+        final List<Mission> missions = MissionFixture.missionsWithId(ids);
+        given(missionRepository.findAllById(anyList())).willReturn(missions);
+
+        MissionsRetrieveResponse response = missionService.retrieveAllByIds(ids);
+
+        assertThat(response.getMissionRetrieveResponses().get(0).getId()).isEqualTo(ids.get(0));
+        assertThat(response.getMissionRetrieveResponses().get(1).getId()).isEqualTo(ids.get(1));
+        assertThat(response.getMissionRetrieveResponses().get(2).getId()).isEqualTo(ids.get(2));
     }
 
     @DisplayName("미션을 정상적으로 수정한다.")
