@@ -168,4 +168,15 @@ class MissionServiceTest {
 
         verify(missionRepository).deleteById(anyLong());
     }
+
+    @DisplayName("id들로 미션들을 삭제한다.")
+    @Test
+    void deleteAllByIds() {
+        final List<Long> ids = Arrays.asList(1L, 2L, 5L);
+        given(missionRepository.findAllById(anyList())).willReturn(MissionFixture.missionsWithId(ids));
+
+        missionService.deleteAllByIds(ids);
+
+        verify(missionRepository).deleteAll(anyList());
+    }
 }

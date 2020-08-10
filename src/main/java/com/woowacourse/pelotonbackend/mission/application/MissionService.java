@@ -69,7 +69,7 @@ public class MissionService {
 
     @Transactional(readOnly = true)
     public MissionsRetrieveResponse retrieveAllByIds(final List<Long> ids) {
-        List<Mission> missions = missionRepository.findAllById(ids);
+        final List<Mission> missions = missionRepository.findAllById(ids);
 
         return MissionsRetrieveResponse.of(missions);
     }
@@ -86,11 +86,16 @@ public class MissionService {
             () -> new MissionNotFoundException(id)
         );
 
-        Mission updatedMission = request.toMission(mission);
+        final Mission updatedMission = request.toMission(mission);
         missionRepository.save(updatedMission);
     }
 
     public void delete(final Long id) {
         missionRepository.deleteById(id);
+    }
+
+    public void deleteAllByIds(final List<Long> ids) {
+        final List<Mission> missions = missionRepository.findAllById(ids);
+        missionRepository.deleteAll(missions);
     }
 }
