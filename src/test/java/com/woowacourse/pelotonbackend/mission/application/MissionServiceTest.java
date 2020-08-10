@@ -6,6 +6,7 @@ import static org.mockito.BDDMockito.*;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.Optional;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -24,6 +25,7 @@ import com.woowacourse.pelotonbackend.race.domain.RaceCategory;
 import com.woowacourse.pelotonbackend.race.domain.RaceFixture;
 import com.woowacourse.pelotonbackend.support.CustomDateParser;
 import com.woowacourse.pelotonbackend.support.RandomGenerator;
+import com.woowacourse.pelotonbackend.mission.presentation.MissionRetrieveResponse;
 
 @ExtendWith(MockitoExtension.class)
 class MissionServiceTest {
@@ -68,7 +70,7 @@ class MissionServiceTest {
         verify(missionRepository).saveAll(expectedToSave);
     }
 
-    @DisplayName("미션을 생성한다.")
+    @DisplayName("미션을 정상적으로 생성한다.")
     @Test
     void create() {
         Mission savedMission = MissionFixture.missionWithId(1L);
@@ -77,5 +79,16 @@ class MissionServiceTest {
         Long missionId = missionService.create(MissionFixture.missionCreateRequest());
 
         assertThat(missionId).isEqualTo(savedMission.getId());
+    }
+
+    @DisplayName("미션을 정상적으로 조회한다.")
+    @Test
+    void retrieve() {
+        final Mission mission = MissionFixture.missionWithId(1L);
+        given(missionRepository.findById(anyLong())).willReturn(Optional.of(mission));
+
+        MissionRetrieveResponse response = missionService.retrieve(1L);
+
+        assertThat(response).isEqualToComparingFieldByField(MissionRetrieveResponse.of(mission));
     }
 }

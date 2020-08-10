@@ -8,9 +8,11 @@ import org.springframework.data.jdbc.core.mapping.AggregateReference;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.woowacourse.pelotonbackend.common.exception.MissionNotFoundException;
 import com.woowacourse.pelotonbackend.mission.domain.DateTimeDuration;
 import com.woowacourse.pelotonbackend.mission.domain.Mission;
 import com.woowacourse.pelotonbackend.mission.domain.MissionRepository;
+import com.woowacourse.pelotonbackend.mission.presentation.MissionRetrieveResponse;
 import com.woowacourse.pelotonbackend.mission.presentation.dto.MissionCreateRequest;
 import com.woowacourse.pelotonbackend.race.domain.RaceCategory;
 import com.woowacourse.pelotonbackend.race.presentation.dto.RaceCreateRequest;
@@ -47,10 +49,19 @@ public class MissionService {
             .collect(Collectors.toList());
     }
 
-    public Long create(MissionCreateRequest request) {
-        Mission mission = request.toMission();
-        Mission persistMission = missionRepository.save(mission);
+    public Long create(final MissionCreateRequest request) {
+        final Mission mission = request.toMission();
+        final Mission persistMission = missionRepository.save(mission);
 
         return persistMission.getId();
+    }
+
+    @Transactional(readOnly = true)
+    public MissionRetrieveResponse retrieve(final Long id) {
+        final Mission mission = missionRepository.findById(id).orElseThrow(
+            () -> new MissionNotFoundException(id)
+        );
+
+        return MissionRetrieveResponse.of(mission);
     }
 }
