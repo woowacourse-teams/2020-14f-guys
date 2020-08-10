@@ -1,7 +1,7 @@
 package com.woowacourse.pelotonbackend.certification.domain;
 
-import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.PagingAndSortingRepository;
 
-public interface CertificationRepository extends PagingAndSortingRepository<Certification, Long> {
+public interface CertificationRepository
+    extends PagingAndSortingRepository<Certification, Long>, CertificationRepositoryCustom {
 }

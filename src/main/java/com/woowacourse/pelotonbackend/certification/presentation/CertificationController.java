@@ -4,6 +4,7 @@ import java.net.URI;
 
 import javax.validation.Valid;
 
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -36,6 +37,11 @@ public class CertificationController {
     @GetMapping("/{id}")
     public ResponseEntity<CertificationResponse> retrieveById(@PathVariable Long id) {
         return ResponseEntity.ok(certificationService.retrieveById(id));
+    }
+
+    @GetMapping("/riders/{riderId}")
+    public ResponseEntity<CertificationResponses> retrieveByRiderId(@PathVariable Long riderId, Pageable pageable) {
+        return ResponseEntity.ok(certificationService.retrieveByRiderId(riderId, pageable));
     }
 }
 

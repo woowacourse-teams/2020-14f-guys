@@ -1,12 +1,19 @@
 package com.woowacourse.pelotonbackend.certification.domain;
 
+import java.util.Arrays;
 import java.util.Base64;
+import java.util.List;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jdbc.core.mapping.AggregateReference;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockMultipartFile;
 
 import com.woowacourse.pelotonbackend.certification.presentation.CertificationResponse;
+import com.woowacourse.pelotonbackend.certification.presentation.CertificationResponses;
 import com.woowacourse.pelotonbackend.certification.presentation.dto.CertificationCreateRequest;
 import com.woowacourse.pelotonbackend.vo.ImageUrl;
 
@@ -74,5 +81,31 @@ public class CertificationFixture {
             .description(TEST_CERTIFICATION_DESCRIPTION)
             .status(TEST_CERTIFICATION_STATUS)
             .build();
+    }
+
+    public static CertificationResponses createMockCertificationResponses() {
+        final List<CertificationResponse> mockResponses = Arrays.asList(
+            createMockCertificationResponse(),
+            createMockCertificationResponse(),
+            createMockCertificationResponse(),
+            createMockCertificationResponse()
+        );
+        final PageRequest pageRequest = PageRequest.of(0, 2, Sort.Direction.DESC, "id");
+
+        return CertificationResponses.builder()
+            .certifications(new PageImpl<>(mockResponses, pageRequest, mockResponses.size()))
+            .build();
+    }
+
+    public static Page<Certification> createPagedCertifications() {
+        final List<Certification> mockCertifications = Arrays.asList(
+            createCertificationWithId(),
+            createCertificationWithId(),
+            createCertificationWithId(),
+            createCertificationWithId()
+        );
+        final PageRequest pageRequest = PageRequest.of(0, 2, Sort.Direction.DESC, "status");
+
+        return new PageImpl<>(mockCertifications, pageRequest, mockCertifications.size());
     }
 }
