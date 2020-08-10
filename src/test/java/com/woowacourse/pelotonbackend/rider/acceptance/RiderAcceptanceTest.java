@@ -19,7 +19,7 @@ import com.woowacourse.pelotonbackend.support.AcceptanceTest;
 import com.woowacourse.pelotonbackend.support.dto.JwtTokenResponse;
 
 public class RiderAcceptanceTest extends AcceptanceTest {
-    /*
+    /**
      * Feature: Rider 관리
      *
      * Scenario: Rider를 관리한다.
