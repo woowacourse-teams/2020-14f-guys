@@ -1,12 +1,13 @@
 package com.woowacourse.pelotonbackend.certification.presentation;
 
-import java.io.IOException;
 import java.net.URI;
 
 import javax.validation.Valid;
 
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestPart;
@@ -25,11 +26,16 @@ public class CertificationController {
 
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<Void> create(@RequestPart(value = "certification_image") final MultipartFile file,
-        @Valid final CertificationCreateRequest certificationCreateRequest) throws IOException {
+        @Valid final CertificationCreateRequest certificationCreateRequest) {
 
         final Long certificationId = certificationService.create(file, certificationCreateRequest);
 
         return ResponseEntity.created(URI.create(String.format("/api/certifications/%d", certificationId))).build();
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<CertificationResponse> retrieveById(@PathVariable Long id) {
+        return ResponseEntity.ok(certificationService.retrieveById(id));
     }
 }
 

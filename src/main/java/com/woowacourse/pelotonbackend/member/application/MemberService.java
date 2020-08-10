@@ -98,7 +98,7 @@ public class MemberService {
 
     public MemberProfileResponse updateProfileImage(final Long memberId, final MultipartFile file) {
         final Member member = findMemberById(memberId);
-        String changedProfileUrl = Objects.isNull(file) ? BASIC_URL : uploadService.uploadImage(file, "member.profile.image/");
+        final String changedProfileUrl = Objects.isNull(file) ? BASIC_URL : uploadService.uploadImage(file, "member.profile.image/");
         final Member updatedMember = member.changeProfile(new ImageUrl(changedProfileUrl));
 
         memberRepository.save(updatedMember);

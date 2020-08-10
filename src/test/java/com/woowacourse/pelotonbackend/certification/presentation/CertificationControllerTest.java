@@ -1,5 +1,6 @@
 package com.woowacourse.pelotonbackend.certification.presentation;
 
+
 import static com.woowacourse.pelotonbackend.certification.domain.CertificationFixture.*;
 import static org.mockito.BDDMockito.*;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.*;
@@ -29,6 +30,8 @@ import org.springframework.web.multipart.MultipartFile;
 import com.woowacourse.pelotonbackend.certification.application.CertificationService;
 import com.woowacourse.pelotonbackend.certification.presentation.dto.CertificationCreateRequest;
 import com.woowacourse.pelotonbackend.common.ErrorCode;
+
+import com.woowacourse.pelotonbackend.common.exception.CertificationNotFoundException;
 import com.woowacourse.pelotonbackend.docs.CertificationDocumentation;
 import com.woowacourse.pelotonbackend.member.application.MemberService;
 import com.woowacourse.pelotonbackend.member.presentation.LoginMemberArgumentResolver;
@@ -107,5 +110,37 @@ class CertificationControllerTest {
             .andExpect(jsonPath("$.errors[0].value").value(""))
             .andExpect(jsonPath("$.errors[0].reason").value("must not be null"))
             .andDo(CertificationDocumentation.createBadCertification());
+    }
+
+    @DisplayName("아이디로 인증정보를 조회한다.")
+    @Test
+    void retrieveById() throws Exception {
+        given(certificationService.retrieveById(anyLong())).willReturn(createMockCertificationResponse());
+        given(authInterceptor.preHandle(any(HttpServletRequest.class), any(HttpServletResponse.class),
+            any(HandlerMethod.class))).willReturn(true);
+
+        mockMvc.perform(
+            get("/api/certifications/" + TEST_CERTIFICATION_ID)
+                .accept(MediaType.APPLICATION_JSON))
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("id").isNotEmpty())
+            .andExpect(jsonPath("imageUrl").isNotEmpty())
+            .andExpect(jsonPath("status").isNotEmpty())
+            .andExpect(jsonPath("missionId").isNotEmpty())
+            .andExpect(jsonPath("riderId").isNotEmpty());
+    }
+
+    @DisplayName("존재하지 않는 아이디로 조회하는 경우 예외를 반환한다.")
+    @Test
+    void retrieveByNotExistId() throws Exception {
+        given(certificationService.retrieveById(anyLong())).willThrow(new CertificationNotFoundException(TEST_CERTIFICATION_ID));
+        given(authInterceptor.preHandle(any(HttpServletRequest.class), any(HttpServletResponse.class),
+            any(HandlerMethod.class))).willReturn(true);
+
+        mockMvc.perform(
+            get("/api/certifications/" + TEST_CERTIFICATION_ID)
+                .accept(MediaType.APPLICATION_JSON))
+            .andExpect(status().isNotFound())
+            .andExpect(jsonPath("code").value(ErrorCode.CERTIFICATION_NOT_FOUND.getCode()));
     }
 }

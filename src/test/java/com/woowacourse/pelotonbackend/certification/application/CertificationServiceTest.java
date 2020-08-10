@@ -6,6 +6,8 @@ import static org.assertj.core.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.BDDMockito.*;
 
+import java.util.Optional;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -14,7 +16,9 @@ import org.mockito.Mock;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.woowacourse.pelotonbackend.certification.domain.Certification;
 import com.woowacourse.pelotonbackend.certification.domain.CertificationRepository;
+import com.woowacourse.pelotonbackend.certification.presentation.CertificationResponse;
 import com.woowacourse.pelotonbackend.certification.presentation.dto.CertificationCreateRequest;
 import com.woowacourse.pelotonbackend.infra.upload.UploadService;
 
@@ -42,12 +46,27 @@ class CertificationServiceTest {
     @Test
     void create() {
         given(certificationRepository.save(createCertificationWithoutId())).willReturn(createCertificationWithId());
-        given(uploadService.uploadImage(multipartFile, CERTIFICATION_IMAGE_PATH)).willReturn(TEST_CERTIFICATION_FILE_URL.getBaseImageUrl());
+        given(uploadService.uploadImage(multipartFile, CERTIFICATION_IMAGE_PATH)).willReturn(
+            TEST_CERTIFICATION_FILE_URL.getBaseImageUrl());
 
         assertAll(
             () -> assertThat(
                 certificationService.create(multipartFile, certificationCreateRequest))
                 .isEqualTo(TEST_CERTIFICATION_ID)
+        );
+    }
+
+    @DisplayName("아이디를 기반으로 인증을 조회한다.")
+    @Test
+    void retrieveById() {
+        final Certification expectedValue = createCertificationWithId();
+        given(certificationRepository.findById(anyLong())).willReturn(Optional.of(expectedValue));
+        final CertificationResponse response = createMockCertificationResponse();
+
+        assertAll(
+            () -> assertThat(response).isEqualToIgnoringGivenFields(expectedValue, "missionId", "riderId"),
+            () -> assertThat(response.getMissionId()).isEqualTo(expectedValue.getMissionId().getId()),
+            () -> assertThat(response.getRiderId()).isEqualTo(expectedValue.getRiderId().getId())
         );
     }
 }

@@ -6,7 +6,9 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.woowacourse.pelotonbackend.certification.domain.Certification;
 import com.woowacourse.pelotonbackend.certification.domain.CertificationRepository;
+import com.woowacourse.pelotonbackend.certification.presentation.CertificationResponse;
 import com.woowacourse.pelotonbackend.certification.presentation.dto.CertificationCreateRequest;
+import com.woowacourse.pelotonbackend.common.exception.CertificationNotFoundException;
 import com.woowacourse.pelotonbackend.infra.upload.UploadService;
 import lombok.RequiredArgsConstructor;
 
@@ -23,5 +25,12 @@ public class CertificationService {
         final Certification persistCertification = certificationRepository.save(certification);
 
         return persistCertification.getId();
+    }
+
+    public CertificationResponse retrieveById(final Long id) {
+        final Certification certification = certificationRepository.findById(id)
+            .orElseThrow(() -> new CertificationNotFoundException(id));
+
+        return CertificationResponse.of(certification);
     }
 }
