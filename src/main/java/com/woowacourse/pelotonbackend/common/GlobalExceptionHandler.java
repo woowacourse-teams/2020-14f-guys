@@ -18,13 +18,24 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class GlobalExceptionHandler {
 
-    @ExceptionHandler({MethodArgumentNotValidException.class, MethodArgumentTypeMismatchException.class})
+    @ExceptionHandler(MethodArgumentNotValidException.class)
     protected ResponseEntity<ErrorResponse> validException(final MethodArgumentNotValidException exception) {
         log.info("Validate Exception ! : {} ", exception.toString(), exception);
 
         final ErrorCode errorCode = ErrorCode.INVALID_VALIDATE;
         final ErrorResponse errorResponse = ErrorResponse.of(errorCode.getStatus(), errorCode.getCode(),
-            "Invalid Validation", exception.getBindingResult());
+            "Argument Invalid", exception.getBindingResult());
+
+        return new ResponseEntity<>(errorResponse, HttpStatus.valueOf(errorCode.getStatus()));
+    }
+
+    @ExceptionHandler(MethodArgumentTypeMismatchException.class)
+    protected ResponseEntity<ErrorResponse> typeMismatchException(final MethodArgumentTypeMismatchException exception) {
+        log.error("Argument Type Mismatch Exception! : {}", exception.toString(), exception);
+
+        final ErrorCode errorCode = ErrorCode.INVALID_VALIDATE;
+        final ErrorResponse errorResponse = ErrorResponse.of(errorCode.getStatus(), errorCode.getCode(),
+            "Argument Type Mismatch");
 
         return new ResponseEntity<>(errorResponse, HttpStatus.valueOf(errorCode.getStatus()));
     }

@@ -22,7 +22,7 @@ endif::[]
 [[schema]]
 == Schema
 
-모든 API는 Https를 사용하고, `https://api.peloton.ga` 주소로 접근 가능합니다. 모든 데이터는 JSON을 통해 교환합니다.
+모든 API는 Https를 사용하고, `https://peloton.ga/api` 주소로 접근 가능합니다. 모든 데이터는 JSON을 통해 교환합니다.
 
 ----
 Http 통신 예시
@@ -169,12 +169,20 @@ operation::certification/create-fail[snippets='http-request,http-response,reques
 ==== Success
 operation::member/create-success[snippets='http-request,http-response,request-fields,response-headers']
 
+[[resources-member-create-fail]]
+==== Fail
+operation::member/create-fail[snippets='http-request,http-response,request-headers,response-fields']
+
 [[resources-member-get]]
 === Get Member
 
 [[resources-member-get-succcess]]
 ==== Success
 operation::member/get-success[snippets='http-request,http-response,request-headers,response-fields']
+
+[[resources-member-get-fail]]
+==== Fail
+operation::member/get-fail[snippets='http-request,http-response,request-headers,response-fields']
 
 [[resources-member-get-all]]
 === Get All Members
@@ -209,4 +217,62 @@ operation::member/update-profile-image[snippets='http-request,http-response,requ
 
 [[resources-member-delete-succcess]]
 ==== Success
-operation::member/delete[snippets='http-request,http-response,request-headers']
+operation::member/delete-success[snippets='http-request,http-response,request-headers']
+
+[[resources-member-delete-fail]]
+==== Fail
+operation::member/delete-fail[snippets='http-request,http-response,request-headers']
+
+[[resources-race]]
+== Race
+
+[[resources-race-create]]
+=== Create Race
+
+[[resources-race-create-succcess]]
+==== Success
+operation::race/create-success[snippets='http-request,http-response,request-fields,response-headers']
+
+[[resources-race-create-fail]]
+==== Fail
+operation::race/create-fail[snippets='http-request,http-response,request-fields,response-fields']
+
+[[resources-race-get]]
+=== Get Race
+
+[[resources-race-get-succcess]]
+==== Success
+operation::race/get-success[snippets='http-request,http-response,path-parameters,request-headers,response-fields']
+
+[[resources-race-get-bad-path]]
+==== Bad Path
+operation::race/get-bad-path[snippets='http-request,http-response,request-headers,response-fields']
+
+
+[[resources-race-update]]
+=== Update Race
+
+[[resources-race-update-succcess]]
+==== Success
+operation::race/update-success[snippets='http-request,http-response,path-parameters,request-headers,request-fields']
+
+[[resources-race-update-bad-path]]
+==== Bad Path
+operation::race/update-bad-path[snippets='http-request,http-response,path-parameters,request-headers,request-fields,response-fields']
+
+[[resources-race-update-bad-request]]
+==== Bad Request
+operation::race/update-bad-request[snippets='http-request,http-response,path-parameters,request-headers,response-fields']
+
+
+[[resources-race-update-not-exist]]
+==== Not Exist
+operation::race/update-not-exist[snippets='http-request,http-response,path-parameters,request-headers,response-fields']
+
+[[resources-race-delete]]
+=== Delete Race
+
+[[resources-race-delete-succcess]]
+==== Success
+operation::race/delete-success[snippets='http-request,http-response,path-parameters,request-headers']
+
