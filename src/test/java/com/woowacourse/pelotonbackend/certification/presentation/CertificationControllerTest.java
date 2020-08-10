@@ -13,8 +13,8 @@ import javax.servlet.http.HttpServletResponse;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
@@ -27,6 +27,7 @@ import org.springframework.web.filter.CharacterEncodingFilter;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.woowacourse.pelotonbackend.certification.application.CertificationService;
 import com.woowacourse.pelotonbackend.certification.presentation.dto.CertificationCreateRequest;
 import com.woowacourse.pelotonbackend.common.ErrorCode;
@@ -39,6 +40,9 @@ import com.woowacourse.pelotonbackend.support.BearerAuthInterceptor;
 @WebMvcTest(controllers = CertificationController.class)
 @ExtendWith(RestDocumentationExtension.class)
 class CertificationControllerTest {
+    @Autowired
+    private ObjectMapper objectMapper;
+
     @MockBean
     private CertificationService certificationService;
 
@@ -157,5 +161,38 @@ class CertificationControllerTest {
                 .accept(MediaType.APPLICATION_JSON)
         )
             .andExpect(status().isOk());
+    }
+
+    @DisplayName("인증정보의 상세 내용을 변경한다.")
+    @Test
+    void updateDescription() throws Exception {
+        given(authInterceptor.preHandle(any(), any(), any())).willReturn(true);
+        given(certificationService.updateDescription(any(), any())).willReturn(
+            createDescriptionUpdatedCertification().getId());
+        final String resource = "/api/certifications/descriptions/" + TEST_RIDER_ID;
+
+        mockMvc.perform(
+            patch(resource)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsBytes(createDescriptionUpdateRequest()))
+        )
+            .andExpect(status().isOk())
+            .andExpect(header().string("Location", resource));
+    }
+
+    @DisplayName("인증정보의 상태를 변경한다.")
+    @Test
+    void updateStatus() throws Exception {
+        given(authInterceptor.preHandle(any(), any(), any())).willReturn(true);
+        given(certificationService.updateStatus(any(), any())).willReturn(createStatusUpdatedCertification().getId());
+        final String resource = "/api/certifications/status/" + TEST_RIDER_ID;
+
+        mockMvc.perform(
+            patch(resource)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsBytes(createStatusUpdatedCertification()))
+        )
+            .andExpect(status().isOk())
+            .andExpect(header().string("Location", resource));
     }
 }

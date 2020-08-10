@@ -12,6 +12,8 @@ import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jdbc.core.mapping.AggregateReference;
 import org.springframework.data.relational.core.mapping.Embedded;
 
+import com.woowacourse.pelotonbackend.certification.presentation.CertificationDescriptionUpdateRequest;
+import com.woowacourse.pelotonbackend.certification.presentation.CertificationStatusUpdateRequest;
 import com.woowacourse.pelotonbackend.mission.domain.Mission;
 import com.woowacourse.pelotonbackend.rider.domain.Rider;
 import com.woowacourse.pelotonbackend.vo.ImageUrl;
@@ -21,7 +23,7 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.With;
 
-@Builder
+@Builder(toBuilder = true)
 @EqualsAndHashCode(of = "id")
 @Getter
 public class Certification {
@@ -47,4 +49,16 @@ public class Certification {
     @LastModifiedDate @PastOrPresent
     @With(AccessLevel.PACKAGE)
     private final LocalDateTime updatedAt;
+
+    public Certification update(final CertificationDescriptionUpdateRequest request) {
+        return this.toBuilder()
+            .description(request.getDescription())
+            .build();
+    }
+
+    public Certification update(final CertificationStatusUpdateRequest request) {
+        return this.toBuilder()
+            .status(request.getStatus())
+            .build();
+    }
 }

@@ -8,8 +8,10 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
@@ -42,6 +44,24 @@ public class CertificationController {
     @GetMapping("/riders/{riderId}")
     public ResponseEntity<CertificationResponses> retrieveByRiderId(@PathVariable Long riderId, Pageable pageable) {
         return ResponseEntity.ok(certificationService.retrieveByRiderId(riderId, pageable));
+    }
+
+    @PatchMapping("/descriptions/{id}")
+    public ResponseEntity<Void> updateDescription(@PathVariable Long id,
+        @RequestBody @Valid CertificationDescriptionUpdateRequest request) {
+
+        return ResponseEntity.ok()
+            .location(URI.create("/api/certifications/descriptions/" + certificationService.updateDescription(id, request)))
+            .build();
+    }
+
+    @PatchMapping("/status/{id}")
+    public ResponseEntity<Void> updateDescription(@PathVariable Long id,
+        @RequestBody @Valid CertificationStatusUpdateRequest request) {
+
+        return ResponseEntity.ok()
+            .location(URI.create("/api/certifications/status/" + certificationService.updateStatus(id, request)))
+            .build();
     }
 }
 

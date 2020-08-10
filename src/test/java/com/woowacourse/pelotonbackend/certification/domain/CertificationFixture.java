@@ -12,14 +12,18 @@ import org.springframework.data.jdbc.core.mapping.AggregateReference;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockMultipartFile;
 
+import com.woowacourse.pelotonbackend.certification.presentation.CertificationDescriptionUpdateRequest;
 import com.woowacourse.pelotonbackend.certification.presentation.CertificationResponse;
 import com.woowacourse.pelotonbackend.certification.presentation.CertificationResponses;
+import com.woowacourse.pelotonbackend.certification.presentation.CertificationStatusUpdateRequest;
 import com.woowacourse.pelotonbackend.certification.presentation.dto.CertificationCreateRequest;
 import com.woowacourse.pelotonbackend.vo.ImageUrl;
 
 public class CertificationFixture {
     public static final CertificationStatus TEST_CERTIFICATION_STATUS = CertificationStatus.SUCCESS;
+    public static final CertificationStatus TEST_UPDATE_CERTIFICATION_STATUS = CertificationStatus.REPORTED;
     public static final String TEST_CERTIFICATION_DESCRIPTION = "좋은 인증이다..";
+    public static final String TEST_UPDATE_CERTIFICATION_DESCRIPTION = "과연.. 좋은 인증..일까아?";
     public static final Long TEST_RIDER_ID = 1L;
     public static final Long TEST_MISSION_ID = 1L;
     public static final Long TEST_CERTIFICATION_ID = 1L;
@@ -47,6 +51,30 @@ public class CertificationFixture {
             .riderId(AggregateReference.to(TEST_RIDER_ID))
             .missionId(AggregateReference.to(TEST_MISSION_ID))
             .image(TEST_CERTIFICATION_FILE_URL)
+            .build();
+    }
+
+    public static Certification createDescriptionUpdatedCertification() {
+        return createCertificationWithId().toBuilder()
+            .description(TEST_UPDATE_CERTIFICATION_DESCRIPTION)
+            .build();
+    }
+
+    public static Certification createStatusUpdatedCertification() {
+        return createCertificationWithId().toBuilder()
+            .status(TEST_UPDATE_CERTIFICATION_STATUS)
+            .build();
+    }
+
+    public static CertificationDescriptionUpdateRequest createDescriptionUpdateRequest() {
+        return CertificationDescriptionUpdateRequest.builder()
+            .description(TEST_UPDATE_CERTIFICATION_DESCRIPTION)
+            .build();
+    }
+
+    public static CertificationStatusUpdateRequest createStatusUpdateRequest() {
+        return CertificationStatusUpdateRequest.builder()
+            .status(TEST_UPDATE_CERTIFICATION_STATUS)
             .build();
     }
 

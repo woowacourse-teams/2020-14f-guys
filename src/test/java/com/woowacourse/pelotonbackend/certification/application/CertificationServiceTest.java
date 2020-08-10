@@ -90,4 +90,28 @@ class CertificationServiceTest {
             () -> assertThat(result.getContent().size()).isEqualTo(1)
         );
     }
+
+    @DisplayName("인증 사진의 상세 설명을 수정한다.")
+    @Test
+    void updateDescription() {
+        final Certification expectedCertification = createCertificationWithId();
+        given(certificationRepository.findById(any())).willReturn(Optional.of(expectedCertification));
+        given(certificationRepository.save(any())).willReturn(createDescriptionUpdatedCertification());
+        final Long updatedCertificationId = certificationService.updateDescription(TEST_CERTIFICATION_ID,
+            createDescriptionUpdateRequest());
+
+        assertThat(updatedCertificationId).isEqualTo(expectedCertification.getId());
+    }
+
+    @DisplayName("인증 사진의 상태를 변경한다.")
+    @Test
+    void updateStatus() {
+        final Certification expectedCertification = createCertificationWithId();
+        given(certificationRepository.findById(any())).willReturn(Optional.of(expectedCertification));
+        given(certificationRepository.save(any())).willReturn(createStatusUpdatedCertification());
+        final Long updatedCertificationId = certificationService.updateStatus(TEST_CERTIFICATION_ID,
+            createStatusUpdateRequest());
+
+        assertThat(updatedCertificationId).isEqualTo(expectedCertification.getId());
+    }
 }
