@@ -97,15 +97,11 @@ public class CertificationFixture {
             .build();
     }
 
-    public static Page<Certification> createPagedCertifications() {
+    public static Page<Certification> createMockPagedCertifications(final PageRequest request) {
         final List<Certification> mockCertifications = Arrays.asList(
-            createCertificationWithId(),
-            createCertificationWithId(),
-            createCertificationWithId(),
             createCertificationWithId()
         );
-        final PageRequest pageRequest = PageRequest.of(0, 2, Sort.Direction.DESC, "status");
 
-        return new PageImpl<>(mockCertifications, pageRequest, mockCertifications.size());
+        return new PageImpl<>(mockCertifications, request, 4);
     }
 }

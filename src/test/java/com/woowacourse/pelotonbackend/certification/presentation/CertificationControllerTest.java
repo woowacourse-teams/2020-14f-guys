@@ -13,6 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -122,7 +123,7 @@ class CertificationControllerTest {
                 .accept(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk())
             .andExpect(jsonPath("id").isNotEmpty())
-            .andExpect(jsonPath("imageUrl").isNotEmpty())
+            .andExpect(jsonPath("image").isNotEmpty())
             .andExpect(jsonPath("status").isNotEmpty())
             .andExpect(jsonPath("missionId").isNotEmpty())
             .andExpect(jsonPath("riderId").isNotEmpty());

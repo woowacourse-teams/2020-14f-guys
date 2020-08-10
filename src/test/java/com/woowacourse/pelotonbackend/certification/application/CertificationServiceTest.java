@@ -21,6 +21,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.woowacourse.pelotonbackend.certification.domain.Certification;
 import com.woowacourse.pelotonbackend.certification.domain.CertificationRepository;
+
 import com.woowacourse.pelotonbackend.certification.presentation.CertificationResponse;
 import com.woowacourse.pelotonbackend.certification.presentation.CertificationResponses;
 import com.woowacourse.pelotonbackend.certification.presentation.dto.CertificationCreateRequest;
@@ -77,16 +78,16 @@ class CertificationServiceTest {
     @DisplayName("자신이 인증한 사진을 불러온다.")
     @Test
     void retrieveByRiderId() {
-        given(certificationRepository.findByRiderId(any(), any())).willReturn(createPagedCertifications());
-
-        final CertificationResponses certificationResponses = certificationService.retrieveByRiderId(TEST_RIDER_ID,
-            PageRequest.of(0, 2, Sort.Direction.DESC, "status"));
+        final PageRequest page = PageRequest.of(0, 1, Sort.Direction.DESC, "status");
+        given(certificationRepository.findByRiderId(any(), any())).willReturn(createMockPagedCertifications(page));
+        final CertificationResponses certificationResponses = certificationService.retrieveByRiderId(TEST_RIDER_ID, page);
 
         final Page<CertificationResponse> result = certificationResponses.getCertifications();
+
         assertAll(
-            () -> assertThat(result.getPageable().getPageSize()).isEqualTo(2),
-            () -> assertThat(result.getContent().size()).isEqualTo(4),
-            () -> assertThat(result.getPageable().getPageNumber()).isEqualTo(0)
+            () -> assertThat(result.getPageable().getPageNumber()).isEqualTo(0),
+            () -> assertThat(result.getTotalPages()).isEqualTo(4),
+            () -> assertThat(result.getContent().size()).isEqualTo(1)
         );
     }
 }
