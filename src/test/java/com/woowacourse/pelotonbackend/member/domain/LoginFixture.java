@@ -15,7 +15,7 @@ import com.woowacourse.pelotonbackend.vo.Cash;
 public class LoginFixture {
     public static final String CODE = "code";
     public static final String CODE_VALUE = "CODE";
-    public static final String URL = "https://14floorguys.com";
+    public static final String URL = "http://peloton.ga";
     public static final String TOKEN = "SIKAKYLEDDBUMBLEBEEMOONI";
     public static final String LOGIN_SUCCESS = "true";
     public static final String LOGIN_FAIL = "false";
