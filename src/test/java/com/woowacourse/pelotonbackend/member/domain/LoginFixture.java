@@ -2,8 +2,6 @@ package com.woowacourse.pelotonbackend.member.domain;
 
 import static com.woowacourse.pelotonbackend.member.domain.MemberFixture.*;
 
-import org.springframework.stereotype.Component;
-import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 import org.springframework.web.util.DefaultUriBuilderFactory;
 
 import com.woowacourse.pelotonbackend.infra.login.KakaoTokenResponse;

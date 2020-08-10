@@ -1,7 +1,6 @@
 package com.woowacourse.pelotonbackend.member.presentation;
 
 import java.io.IOException;
-import java.net.URI;
 
 import javax.servlet.http.HttpServletResponse;
 
@@ -13,7 +12,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.woowacourse.pelotonbackend.member.application.LoginService;
-import com.woowacourse.pelotonbackend.support.JwtTokenProvider;
 import com.woowacourse.pelotonbackend.support.dto.JwtTokenResponse;
 import lombok.RequiredArgsConstructor;
 

@@ -5,7 +5,6 @@ import static org.springframework.restdocs.snippet.Attributes.*;
 import java.util.Arrays;
 import java.util.stream.Collectors;
 
-import org.assertj.core.util.Strings;
 import org.springframework.restdocs.snippet.Attributes;
 
 import com.woowacourse.pelotonbackend.member.domain.Role;
