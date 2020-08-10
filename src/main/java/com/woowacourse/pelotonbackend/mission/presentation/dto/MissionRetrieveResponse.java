@@ -1,4 +1,4 @@
-package com.woowacourse.pelotonbackend.mission.presentation;
+package com.woowacourse.pelotonbackend.mission.presentation.dto;
 
 import com.woowacourse.pelotonbackend.mission.domain.Mission;
 import com.woowacourse.pelotonbackend.mission.domain.MissionInstruction;
