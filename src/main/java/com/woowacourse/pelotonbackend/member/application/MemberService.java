@@ -28,7 +28,7 @@ import lombok.AllArgsConstructor;
 @Service
 @Transactional
 public class MemberService {
-    private static final String BASIC_URL = "https://14f-guys-image.s3.ap-northeast-2.amazonaws.com/asdasdsadasd.png";
+    private static final String BASIC_URL = "https://14f-guys-image.s3.ap-northeast-2.amazonaws.com/basic-profile-image.png";
 
     private final MemberRepository memberRepository;
     private final UploadService uploadService;

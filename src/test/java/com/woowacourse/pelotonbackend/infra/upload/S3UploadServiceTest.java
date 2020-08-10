@@ -2,7 +2,7 @@ package com.woowacourse.pelotonbackend.infra.upload;
 
 import static com.woowacourse.pelotonbackend.certification.domain.CertificationFixture.*;
 import static com.woowacourse.pelotonbackend.infra.upload.UploadFixture.*;
-import static com.woowacourse.pelotonbackend.member.acceptance.MemberAcceptanceTest.*;
+import static com.woowacourse.pelotonbackend.member.domain.MemberFixture.*;
 import static org.assertj.core.api.Assertions.*;
 
 import org.junit.jupiter.api.DisplayName;
@@ -22,13 +22,13 @@ class S3UploadServiceTest {
     @Test
     void profileImageUploadTest() {
         final String url = uploadService.uploadImage(MOCK_MULTIPART_FILE, PROFILE_IMAGE_PATH);
-        assertThat(url).contains(S3_BASIC_URL, PROFILE_IMAGE_PATH);
+        assertThat(url).contains(UPLOAD_SERVER_URL, PROFILE_IMAGE_PATH);
     }
 
     @DisplayName("인증 이미지를 업로드한다.")
     @Test
     void certificationImageUploadTest() {
         final String url = uploadService.uploadImage(MOCK_MULTIPART_FILE, CERTIFICATION_IMAGE_PATH);
-        assertThat(url).contains(S3_BASIC_URL, CERTIFICATION_IMAGE_PATH);
+        assertThat(url).contains(UPLOAD_SERVER_URL, CERTIFICATION_IMAGE_PATH);
     }
 }
