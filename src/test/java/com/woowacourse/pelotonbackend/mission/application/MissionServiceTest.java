@@ -122,6 +122,20 @@ class MissionServiceTest {
         assertThat(response.getMissionRetrieveResponses().get(2).getId()).isEqualTo(ids.get(2));
     }
 
+    @DisplayName("모든 미션들을 조회한다.")
+    @Test
+    void retrieveAll() {
+        final List<Long> ids = Arrays.asList(1L, 2L, 4L);
+        final List<Mission> missions = MissionFixture.missionsWithId(ids);
+        given(missionRepository.findAll()).willReturn(missions);
+
+        MissionsRetrieveResponse response = missionService.retrieveAll();
+
+        assertThat(response.getMissionRetrieveResponses().get(0).getId()).isEqualTo(ids.get(0));
+        assertThat(response.getMissionRetrieveResponses().get(1).getId()).isEqualTo(ids.get(1));
+        assertThat(response.getMissionRetrieveResponses().get(2).getId()).isEqualTo(ids.get(2));
+    }
+
     @DisplayName("미션을 정상적으로 수정한다.")
     @Test
     void updateAndSucceed() {

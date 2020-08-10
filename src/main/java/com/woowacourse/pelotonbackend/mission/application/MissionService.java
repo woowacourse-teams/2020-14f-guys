@@ -74,6 +74,13 @@ public class MissionService {
         return MissionsRetrieveResponse.of(missions);
     }
 
+    @Transactional(readOnly = true)
+    public MissionsRetrieveResponse retrieveAll() {
+        List<Mission> missions = missionRepository.findAll();
+
+        return MissionsRetrieveResponse.of(missions);
+    }
+
     public void update(final Long id, final MissionUpdateRequest request) {
         final Mission mission = missionRepository.findById(id).orElseThrow(
             () -> new MissionNotFoundException(id)

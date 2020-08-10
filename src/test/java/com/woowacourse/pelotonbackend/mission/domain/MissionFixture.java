@@ -2,14 +2,12 @@ package com.woowacourse.pelotonbackend.mission.domain;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-<<<<<<< HEAD
 import java.time.LocalTime;
 import java.util.Arrays;
 import java.util.List;
-=======
-import java.util.List;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.stream.Collectors;
->>>>>>> feat: 여러 개의 id로 미션들을 조회하는 기능 구현
 
 import org.springframework.data.jdbc.core.mapping.AggregateReference;
 
@@ -51,13 +49,17 @@ public class MissionFixture {
         return new TimeDuration(startTime, endTime);
     }
 
-    public static Mission missionWithId(final long id) {
+    public static Mission missionWithId(final Long id) {
         return Mission.builder()
             .id(id)
             .missionDuration(missionDuration)
             .missionInstruction(missionInstruction)
             .raceId(AggregateReference.to(raceId))
             .build();
+    }
+
+    public static Mission missionWithoutId() {
+        return missionWithId(null);
     }
 
     public static MissionCreateRequest missionCreateRequest() {
@@ -80,5 +82,13 @@ public class MissionFixture {
         return ids.stream()
             .map(id -> missionWithId(id))
             .collect(Collectors.toList());
+    }
+
+    public static List<Mission> missionsWithoutId(final int count) {
+        List<Mission> missions = new ArrayList<>();
+        for (int i = 0; i < count; i++) {
+            missions.add(MissionFixture.missionWithoutId());
+        }
+        return Collections.unmodifiableList(missions);
     }
 }
