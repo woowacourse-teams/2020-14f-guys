@@ -130,4 +130,12 @@ class MissionServiceTest {
             .hasMessageContaining("Mission(mission id = %d) does not exists", missionId);
 
     }
+
+    @DisplayName("미션을 정상적으로 삭제한다.")
+    @Test
+    void delete() {
+        missionService.delete(1L);
+
+        verify(missionRepository).deleteById(anyLong());
+    }
 }

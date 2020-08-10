@@ -74,4 +74,8 @@ public class MissionService {
         Mission updatedMission = request.toMission(mission);
         missionRepository.save(updatedMission);
     }
+
+    public void delete(final Long id) {
+        missionRepository.deleteById(id);
+    }
 }
