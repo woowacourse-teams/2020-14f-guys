@@ -9,7 +9,6 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-import java.io.File;
 import java.util.Arrays;
 import java.util.List;
 
@@ -118,7 +117,7 @@ public class MemberControllerTest {
         given(memberService.findMember(ID)).willReturn(expectedResponse);
 
         final MvcResult mvcResult = mockMvc.perform(get(RESOURCE_URL)
-            .header(HttpHeaders.AUTHORIZATION, LoginFixture.TOKEN_TYPE + LoginFixture.TOKEN)
+            .header(HttpHeaders.AUTHORIZATION, LoginFixture.getTokenHeader())
             .accept(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk())
             .andDo(MemberDocumentation.getMember())
@@ -139,7 +138,7 @@ public class MemberControllerTest {
         given(memberService.findAll()).willReturn(expectedResponses);
 
         final MvcResult mvcResult = mockMvc.perform(get(RESOURCE_URL + "/all")
-            .header(HttpHeaders.AUTHORIZATION, LoginFixture.TOKEN_TYPE + LoginFixture.TOKEN)
+            .header(HttpHeaders.AUTHORIZATION, LoginFixture.getTokenHeader())
             .accept(MediaType.APPLICATION_JSON)
         )
             .andExpect(status().isOk())
@@ -167,7 +166,7 @@ public class MemberControllerTest {
         given(memberService.updateName(anyLong(), any(MemberNameUpdateRequest.class))).willReturn(expectedResponse);
 
         mockMvc.perform(patch(RESOURCE_URL + "/name")
-            .header("Authorization", LoginFixture.TOKEN_TYPE+LoginFixture.TOKEN)
+            .header(HttpHeaders.AUTHORIZATION, LoginFixture.getTokenHeader())
             .contentType(MediaType.APPLICATION_JSON)
             .content(objectMapper.writeValueAsBytes(createNameUpdateRequest()))
         )
@@ -190,7 +189,7 @@ public class MemberControllerTest {
             .willReturn(MemberFixture.memberResponse());
 
         mockMvc.perform(patch(RESOURCE_URL + "/cash")
-            .header(HttpHeaders.AUTHORIZATION, LoginFixture.TOKEN_TYPE + LoginFixture.TOKEN)
+            .header(HttpHeaders.AUTHORIZATION, LoginFixture.getTokenHeader())
             .contentType(MediaType.APPLICATION_JSON)
             .content(objectMapper.writeValueAsBytes(createCashUpdateRequest()))
         )
@@ -215,11 +214,11 @@ public class MemberControllerTest {
 
         mockMvc.perform(multipart(RESOURCE_URL + "/profile")
             .file("profile_image", createMockMultiPart().getBytes())
-            .header(HttpHeaders.AUTHORIZATION, LoginFixture.TOKEN_TYPE + LoginFixture.TOKEN)
+            .header(HttpHeaders.AUTHORIZATION, LoginFixture.getTokenHeader())
         )
             .andExpect(status().isOk())
             .andExpect(jsonPath("imageUrl").value(TEST_UPDATED_URL))
-        .andDo(MemberDocumentation.updateProfileImage());
+            .andDo(MemberDocumentation.updateProfileImage());
     }
 
     @DisplayName("요청의 이미지가 Null인 경우에도 OK코드를 반환한다.")
@@ -232,11 +231,12 @@ public class MemberControllerTest {
         given(argumentResolver.resolveArgument(any(MethodParameter.class), any(ModelAndViewContainer.class), any(
             NativeWebRequest.class), any(WebDataBinderFactory.class))).willReturn(expectedResponse);
         given(argumentResolver.supportsParameter(any())).willReturn(true);
-        given(memberService.updateProfileImage(anyLong(), any())).willReturn(new MemberProfileResponse(BASIC_PROFILE_URL));
+        given(memberService.updateProfileImage(anyLong(), any())).willReturn(
+            new MemberProfileResponse(BASIC_PROFILE_URL));
 
         mockMvc.perform(multipart(RESOURCE_URL + "/profile")
             .file("TEST", null)
-            .header(HttpHeaders.AUTHORIZATION, LoginFixture.TOKEN_TYPE + LoginFixture.TOKEN)
+            .header(HttpHeaders.AUTHORIZATION, LoginFixture.getTokenHeader())
         )
             .andExpect(status().isOk())
             .andExpect(jsonPath("imageUrl").value(BASIC_PROFILE_URL));
@@ -253,27 +253,30 @@ public class MemberControllerTest {
         given(argumentResolver.supportsParameter(any())).willReturn(true);
 
         mockMvc.perform(delete(RESOURCE_URL)
-            .header(HttpHeaders.AUTHORIZATION, LoginFixture.TOKEN_TYPE + LoginFixture.TOKEN))
+            .header(HttpHeaders.AUTHORIZATION, LoginFixture.getTokenHeader()))
             .andExpect(status().isNoContent())
-        .andDo(MemberDocumentation.deleteMember())
+            .andDo(MemberDocumentation.deleteMember())
         ;
     }
 
-    @DisplayName("잘못된 요청 객체를 전달하면 예외를 반환한다.")
+    @DisplayName("잘못된 create 요청 객체를 전달하면 예외를 반환한다.")
     @Test
     void validationException() throws Exception {
         given(bearerAuthInterceptor.preHandle(any(HttpServletRequest.class), any(HttpServletResponse.class),
             any(HandlerMethod.class))).willReturn(true);
         mockMvc.perform(post(RESOURCE_URL)
+            .header(HttpHeaders.AUTHORIZATION, LoginFixture.getTokenHeader())
             .contentType(MediaType.APPLICATION_JSON)
             .content(objectMapper.writeValueAsBytes(MemberFixture.createBadRequest()))
         )
             .andExpect(status().isBadRequest())
             .andExpect(jsonPath("code").value(ErrorCode.INVALID_VALIDATE.getCode()))
-            .andExpect(jsonPath("errors").exists());
+            .andExpect(jsonPath("errors").exists())
+            .andDo(MemberDocumentation.createBadMember())
+        ;
     }
 
-    @DisplayName("존재하지 않는 멤버의 요청에 예외를 반환한다.")
+    @DisplayName("존재하지 않는 멤버의 Get 요청에 예외를 반환한다.")
     @Test
     void notFoundMemberException() throws Exception {
         given(bearerAuthInterceptor.preHandle(any(HttpServletRequest.class), any(HttpServletResponse.class),
@@ -285,10 +288,12 @@ public class MemberControllerTest {
 
         mockMvc.perform(get(RESOURCE_URL)
             .accept(MediaType.APPLICATION_JSON)
+            .header(HttpHeaders.AUTHORIZATION, LoginFixture.getTokenHeader())
         )
             .andExpect(status().isNotFound())
             .andExpect(jsonPath("code").value(ErrorCode.MEMBER_NOT_FOUND.getCode()))
-            .andExpect(jsonPath("errors").doesNotExist());
+            .andExpect(jsonPath("errors").doesNotExist())
+            .andDo(MemberDocumentation.getNotExistMember());
     }
 
     @DisplayName("존재하지 않는 멤버를 삭제하려 할 때 예외를 반환한다.")
@@ -302,10 +307,12 @@ public class MemberControllerTest {
         doThrow(new MemberNotFoundException(NOT_EXIST_ID)).when(memberService).deleteById(any());
 
         mockMvc.perform(delete(RESOURCE_URL)
+            .header(HttpHeaders.AUTHORIZATION, LoginFixture.getTokenHeader())
         )
             .andExpect(status().isNotFound())
             .andExpect(jsonPath("code").value(ErrorCode.MEMBER_NOT_FOUND.getCode()))
-            .andExpect(jsonPath("errors").doesNotExist());
+            .andExpect(jsonPath("errors").doesNotExist())
+            .andDo(MemberDocumentation.deleteNotExistMember());
     }
 
     @DisplayName("Valid하지 않은 멤버를 저장하려 할 때, 400 bad request")
@@ -316,12 +323,12 @@ public class MemberControllerTest {
         given(argumentResolver.resolveArgument(any(MethodParameter.class), any(ModelAndViewContainer.class), any(
             NativeWebRequest.class), any(WebDataBinderFactory.class))).willReturn(MemberResponse.builder().build());
         given(argumentResolver.supportsParameter(any())).willReturn(true);
-        doThrow(new ConstraintViolationException("공백일 수 없습니다.", null)).when(memberService)
+        willThrow(new ConstraintViolationException("공백일 수 없습니다.", null)).given(memberService)
             .createMember(any(MemberCreateRequest.class));
 
         mockMvc.perform(post(RESOURCE_URL)
-            .content(requestAsBytes)
             .contentType(MediaType.APPLICATION_JSON)
+            .content(requestAsBytes)
         )
             .andExpect(status().isBadRequest())
             .andExpect(jsonPath("code").value(ErrorCode.INVALID_VALIDATE.getCode()));

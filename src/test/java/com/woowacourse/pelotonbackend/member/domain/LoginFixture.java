@@ -12,7 +12,6 @@ import com.woowacourse.pelotonbackend.member.presentation.dto.MemberResponse;
 import com.woowacourse.pelotonbackend.support.annotation.LoginMember;
 import com.woowacourse.pelotonbackend.vo.Cash;
 
-@Component
 public class LoginFixture {
     public static final String CODE = "code";
     public static final String CODE_VALUE = "CODE";

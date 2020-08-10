@@ -3,7 +3,6 @@ package com.woowacourse.pelotonbackend.docs;
 import static com.woowacourse.pelotonbackend.docs.ApiDocumentationUtils.*;
 import static org.springframework.restdocs.headers.HeaderDocumentation.*;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.*;
-import static org.springframework.restdocs.payload.PayloadDocumentation.*;
 import static org.springframework.restdocs.request.RequestDocumentation.*;
 
 import org.springframework.http.HttpHeaders;
@@ -47,12 +46,7 @@ public class CertificationDocumentation {
             responseHeaders(
                 headerWithName(HttpHeaders.CONTENT_TYPE).description("Content-Type 헤더")
             ),
-            responseFields(
-                fieldWithPath("status").description("status"),
-                fieldWithPath("code").description("code"),
-                fieldWithPath("message").description("message"),
-                subsectionWithPath("errors").description("array")
-            )
+            getErrorResponseFieldsWithFieldErrors()
         );
     }
 

@@ -9,16 +9,6 @@ import static org.springframework.restdocs.request.RequestDocumentation.*;
 
 import org.apache.http.HttpHeaders;
 import org.springframework.restdocs.mockmvc.RestDocumentationResultHandler;
-import org.springframework.restdocs.payload.JsonFieldType;
-import org.springframework.test.web.servlet.ResultHandler;
-
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.woowacourse.pelotonbackend.member.domain.Role;
-import com.woowacourse.pelotonbackend.support.jsonparser.CashDeserializer;
-import com.woowacourse.pelotonbackend.support.jsonparser.CashSerializer;
-import com.woowacourse.pelotonbackend.vo.Cash;
-import com.woowacourse.pelotonbackend.vo.ImageUrl;
 
 public class MemberDocumentation {
     public static RestDocumentationResultHandler createMember() {
@@ -134,12 +124,47 @@ public class MemberDocumentation {
     }
 
     public static RestDocumentationResultHandler deleteMember() {
-        return document("member/delete",
+        return document("member/delete-success",
             getDocumentRequest(),
             getDocumentResponse(),
             requestHeaders(
                 headerWithName(HttpHeaders.AUTHORIZATION).description("Authorization 헤더")
             )
+        );
+    }
+
+    public static RestDocumentationResultHandler createBadMember() {
+        return document("member/create-fail",
+            getDocumentRequest(),
+            getDocumentResponse(),
+            requestHeaders(
+                headerWithName(HttpHeaders.AUTHORIZATION).description("사용자 Access Token"),
+                headerWithName(HttpHeaders.CONTENT_TYPE).description("Content-Type Header")
+            ),
+            getErrorResponseFieldsWithFieldErrors()
+        );
+    }
+
+    public static RestDocumentationResultHandler getNotExistMember() {
+        return document("member/get-fail",
+            getDocumentRequest(),
+            getDocumentResponse(),
+            requestHeaders(
+                headerWithName(HttpHeaders.AUTHORIZATION).description("Authorization 헤더"),
+                headerWithName(HttpHeaders.ACCEPT).description("Accept 헤더")
+            ),
+            getErrorResponseFields()
+        );
+    }
+
+    public static RestDocumentationResultHandler deleteNotExistMember() {
+        return document("member/delete-fail",
+            getDocumentRequest(),
+            getDocumentResponse(),
+            requestHeaders(
+                headerWithName(HttpHeaders.AUTHORIZATION).description("Authorization 헤더")
+            ),
+            getErrorResponseFields()
         );
     }
 }
