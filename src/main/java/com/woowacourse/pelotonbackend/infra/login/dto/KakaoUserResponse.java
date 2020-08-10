@@ -1,17 +1,12 @@
 package com.woowacourse.pelotonbackend.infra.login.dto;
 
-import com.fasterxml.jackson.databind.PropertyNamingStrategy;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.woowacourse.pelotonbackend.support.jsonparser.KakaoUserResponseDeserializer;
 import com.woowacourse.pelotonbackend.support.jsonparser.KakaoUserResponseSerializer;
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 
-@AllArgsConstructor
 @Builder
 @Getter
 @JsonDeserialize(using = KakaoUserResponseDeserializer.class)
