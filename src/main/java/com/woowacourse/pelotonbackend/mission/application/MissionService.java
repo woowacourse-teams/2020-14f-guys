@@ -12,8 +12,9 @@ import com.woowacourse.pelotonbackend.common.exception.MissionNotFoundException;
 import com.woowacourse.pelotonbackend.mission.domain.DateTimeDuration;
 import com.woowacourse.pelotonbackend.mission.domain.Mission;
 import com.woowacourse.pelotonbackend.mission.domain.MissionRepository;
-import com.woowacourse.pelotonbackend.mission.presentation.dto.MissionRetrieveResponse;
 import com.woowacourse.pelotonbackend.mission.presentation.dto.MissionCreateRequest;
+import com.woowacourse.pelotonbackend.mission.presentation.dto.MissionRetrieveResponse;
+import com.woowacourse.pelotonbackend.mission.presentation.dto.MissionUpdateRequest;
 import com.woowacourse.pelotonbackend.race.domain.RaceCategory;
 import com.woowacourse.pelotonbackend.race.presentation.dto.RaceCreateRequest;
 import com.woowacourse.pelotonbackend.support.CustomDateParser;
@@ -63,5 +64,14 @@ public class MissionService {
         );
 
         return MissionRetrieveResponse.of(mission);
+    }
+
+    public void update(final Long id, final MissionUpdateRequest request) {
+        final Mission mission = missionRepository.findById(id).orElseThrow(
+            () -> new MissionNotFoundException(id)
+        );
+
+        Mission updatedMission = request.toMission(mission);
+        missionRepository.save(updatedMission);
     }
 }

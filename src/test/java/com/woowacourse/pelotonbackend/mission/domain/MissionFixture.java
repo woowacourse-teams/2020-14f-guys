@@ -10,13 +10,19 @@ import org.springframework.data.jdbc.core.mapping.AggregateReference;
 
 import com.woowacourse.pelotonbackend.certification.domain.TimeDuration;
 import com.woowacourse.pelotonbackend.mission.presentation.dto.MissionCreateRequest;
+import com.woowacourse.pelotonbackend.mission.presentation.dto.MissionUpdateRequest;
 
 public class MissionFixture {
     private static final LocalDateTime startTime = LocalDateTime.of(2021, 1, 1, 9, 0);
     private static final LocalDateTime endTime = LocalDateTime.of(2021, 1, 31, 12, 0);
     private static final DateTimeDuration missionDuration = new DateTimeDuration(startTime, endTime);
+    private static final LocalDateTime startTimeUpdated = LocalDateTime.of(2023, 9, 1, 9, 0);
+    private static final LocalDateTime endTimeUpdated = LocalDateTime.of(2023, 9, 30, 12, 0);
+    private static final DateTimeDuration missionDurationUpdated = new DateTimeDuration(startTimeUpdated, endTimeUpdated);
     private static final MissionInstruction missionInstruction = new MissionInstruction("다같이 손을 잡고 사진을 찍는다.");
+    private static final MissionInstruction missionInstructionUpdated = new MissionInstruction("다같이 손을 잡고 사진을 찍는다.");
     private static final Long raceId = 7L;
+    private static final Long raceIdUpdated = 9L;
 
     public static List<LocalDate> datesFixture() {
         return Arrays.asList(
@@ -54,6 +60,14 @@ public class MissionFixture {
             .missionDuration(missionDuration)
             .missionInstruction(missionInstruction)
             .raceId(raceId)
+            .build();
+    }
+
+    public static MissionUpdateRequest missionUpdateRequest() {
+        return MissionUpdateRequest.builder()
+            .missionDuration(missionDurationUpdated)
+            .missionInstruction(missionInstructionUpdated)
+            .raceId(raceIdUpdated)
             .build();
     }
 }

@@ -84,24 +84,50 @@ class MissionServiceTest {
 
     @DisplayName("미션을 정상적으로 조회한다.")
     @Test
-    void retrieveAndSucceeded() {
-        final Mission mission = MissionFixture.missionWithId(1L);
+    void retrieveAndSucceed() {
+        final Long missionId = 1L;
+        final Mission mission = MissionFixture.missionWithId(missionId);
         given(missionRepository.findById(anyLong())).willReturn(Optional.of(mission));
 
-        MissionRetrieveResponse response = missionService.retrieve(1L);
+        MissionRetrieveResponse response = missionService.retrieve(missionId);
 
         assertThat(response).isEqualToComparingFieldByField(MissionRetrieveResponse.of(mission));
     }
 
-
     @DisplayName("미션 조회 시 해당 아이디가 존재하지 않을 경우 예외가 발생한다.")
     @Test
-    void retrieveAndFailed() {
+    void retrieveAndFail() {
+        final Long missionId = 1L;
         given(missionRepository.findById(anyLong())).willReturn(Optional.empty());
 
         assertThatThrownBy(() -> {
-            missionService.retrieve(1L);
+            missionService.retrieve(missionId);
         }).isInstanceOf(MissionNotFoundException.class)
-            .hasMessageContaining("Mission(mission id = %d) does not exists", 1L);
+            .hasMessageContaining("Mission(mission id = %d) does not exists", missionId);
+    }
+
+    @DisplayName("미션을 정상적으로 수정한다.")
+    @Test
+    void updateAndSucceed() {
+        final Long missionId = 1L;
+        final Mission mission = MissionFixture.missionWithId(missionId);
+        given(missionRepository.findById(missionId)).willReturn(Optional.of(mission));
+
+        missionService.update(missionId, MissionFixture.missionUpdateRequest());
+
+        verify(missionRepository).save(any(Mission.class));
+    }
+
+    @DisplayName("수정하려는 미션이 존재하지 않을 경우 예외가 발생한다.")
+    @Test
+    void updateAndFail() {
+        final Long missionId = 1L;
+        given(missionRepository.findById(missionId)).willReturn(Optional.empty());
+
+        assertThatThrownBy(() -> {
+            missionService.update(missionId, MissionFixture.missionUpdateRequest());
+        }).isInstanceOf(MissionNotFoundException.class)
+            .hasMessageContaining("Mission(mission id = %d) does not exists", missionId);
+
     }
 }
