@@ -32,10 +32,11 @@ public class MemberFixture {
     public static final Long KAKAO_ID = 1L;
     public static final Long KAKAO_ID2 = 2L;
     public static final Long KAKAO_ID3 = 3L;
-    public static final String TEST_UPDATED_URL = "DDDDDDDDDDDDDDDDDDDDDDDDD";
     public static final String UPLOAD_SERVER_URL = "https://14f-guys-image.s3.ap-northeast-2.amazonaws.com";
     public static final String PROFILE_UPLOAD_PATH = "member-proifle-image";
     public static final String BASIC_PROFILE_FILE_NAME = "basic-profile-image.png";
+    public static final String TEST_UPDATED_URL = "https://lh3.googleusercontent.com/5EfQBHDb47tchiART6U6yk3yYS9qBYr6VUssB5wHE1AgavqV5E2SSuzyiNkc7UgVng";
+    public static final String BASIC_PROFILE_URL = "https://14f-guys-image.s3.ap-northeast-2.amazonaws.com/asdasdsadasd.png";
 
     public static MemberCreateRequest createRequest(final Long kakaoId, final String email, final String name) {
         return MemberCreateRequest.builder()

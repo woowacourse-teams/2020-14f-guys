@@ -23,7 +23,7 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.filter.CharacterEncodingFilter;
 
-import com.woowacourse.pelotonbackend.docs.MemberDocumentation;
+import com.woowacourse.pelotonbackend.docs.LoginDocumentation;
 import com.woowacourse.pelotonbackend.member.application.LoginService;
 import com.woowacourse.pelotonbackend.support.BearerAuthInterceptor;
 
@@ -64,7 +64,7 @@ class LoginControllerTest {
             .andExpect(status().is3xxRedirection())
             .andExpect(redirectedUrl(URL+"?code="+CODE))
             .andExpect(header().string("location", URL+"?code="+CODE))
-            .andDo(MemberDocumentation.getCode());
+            .andDo(LoginDocumentation.getCode());
     }
 
     @DisplayName("토큰 생성 후 토큰이 담긴 화면으로 Redirection 한다.")
@@ -79,7 +79,7 @@ class LoginControllerTest {
             .andExpect(status().is3xxRedirection())
             .andExpect(redirectedUrl(URL+"?access_token="+ACCESS_TOKEN))
             .andExpect(header().string("location", URL+"?access_token="+ACCESS_TOKEN))
-            .andDo(MemberDocumentation.getToken());
+            .andDo(LoginDocumentation.getToken());
     }
 
     @DisplayName("로그인 완료 후 성공 시 토큰을 반환한다.")
@@ -96,7 +96,7 @@ class LoginControllerTest {
             .andExpect(status().isOk())
             .andExpect(jsonPath("accessToken").value(TOKEN))
             .andExpect(jsonPath("created").value(LOGIN_SUCCESS))
-        .andDo(MemberDocumentation.loginCheckSuccess());
+        .andDo(LoginDocumentation.loginCheckSuccess());
     }
 
     @DisplayName("로그인 실패 시 Unauthorize 상태를 반환한다.")
@@ -108,6 +108,6 @@ class LoginControllerTest {
             .param(SUCCESS, LOGIN_FAIL)
             .param(IS_CREATED, LOGIN_SUCCESS))
             .andExpect(status().isUnauthorized())
-        .andDo(MemberDocumentation.loginCheckFail());
+        .andDo(LoginDocumentation.loginCheckFail());
     }
 }

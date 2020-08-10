@@ -3,6 +3,7 @@ package com.woowacourse.pelotonbackend.member.domain;
 import static com.woowacourse.pelotonbackend.member.domain.MemberFixture.*;
 
 import org.springframework.stereotype.Component;
+import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 import org.springframework.web.util.DefaultUriBuilderFactory;
 
 import com.woowacourse.pelotonbackend.infra.login.KakaoTokenResponse;
@@ -16,7 +17,7 @@ public class LoginFixture {
     public static final String CODE = "code";
     public static final String CODE_VALUE = "CODE";
     public static final String URL = "http://peloton.ga";
-    public static final String TOKEN = "SIKAKYLEDDBUMBLEBEEMOONI";
+    public static final String TOKEN = "SAMPLE_ACCESS_TOKEN";
     public static final String LOGIN_SUCCESS = "true";
     public static final String LOGIN_FAIL = "false";
     public static final String SERVER_URI = "http://localhost:8080";
