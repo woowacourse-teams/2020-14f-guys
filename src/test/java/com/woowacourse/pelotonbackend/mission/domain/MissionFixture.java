@@ -3,6 +3,7 @@ package com.woowacourse.pelotonbackend.mission.domain;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 import java.util.List;
 
@@ -26,6 +27,8 @@ public class MissionFixture {
     }
 
     public static TimeDuration timeDurationFixture() {
-        return new TimeDuration(LocalTime.of(6, 50), LocalTime.of(7, 0));
+        final LocalTime startTime = LocalTime.of(6, 50);
+        final LocalTime endTime = LocalTime.of(7, 0);
+        return new TimeDuration(startTime, endTime);
     }
 }

@@ -16,6 +16,14 @@ public interface DocumentFormatGenerator {
         return key("format").value("yyyy-MM-dd");
     }
 
+    static Attributes.Attribute getTimeFormat() {
+        return key("format").value("HH:mm:ss");
+    }
+
+    static Attributes.Attribute getDayFormat() {
+        return key("format").value("MONDAY/TUESDAY/.../SUNDAY");
+    }
+
     static Attributes.Attribute getDateTimeFormat() {
         return key("format").value("yyyy-MM-dd HH:mm:sss");
     }

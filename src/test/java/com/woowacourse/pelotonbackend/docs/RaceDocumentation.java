@@ -27,8 +27,12 @@ public class RaceDocumentation {
                 fieldWithPath("raceDuration.startDate").attributes(getDateFormat()).description("레이스 시작 날짜"),
                 fieldWithPath("raceDuration.endDate").attributes(getDateFormat()).description("레이스 종료 날짜"),
                 fieldWithPath("category").type(STRING).attributes(getRaceCategoryFormat()).description("레이스 종류"),
-                subsectionWithPath("entranceFee").type(STRING).description("레이스 입장료")
-            ),
+                subsectionWithPath("entranceFee").type(STRING).description("레이스 입장료"),
+                fieldWithPath("days").type(ARRAY).attributes(getDayFormat()).description("미션을 진행할 요일"),
+                fieldWithPath("certificationAvailableDuration").description("미션 인증이 가능한 시간"),
+                fieldWithPath("certificationAvailableDuration.startTime").attributes(getTimeFormat()).description("인증 시작 시간"),
+                fieldWithPath("certificationAvailableDuration.endTime").attributes(getTimeFormat()).description("인증 종료 시간")
+                ),
             responseHeaders(
                 headerWithName(HttpHeaders.LOCATION).description("Resource의 Location 헤더")
             )
@@ -50,7 +54,9 @@ public class RaceDocumentation {
                 fieldWithPath("raceDuration.startDate").type(STRING).attributes(getDateFormat()).description("레이스 시작 날짜"),
                 fieldWithPath("raceDuration.endDate").type(STRING).attributes(getDateFormat()).description("레이스 종료 날짜"),
                 fieldWithPath("category").type(NULL).description("레이스 종류"),
-                subsectionWithPath("entranceFee").type(NULL).description("레이스 입장료")
+                subsectionWithPath("entranceFee").type(NULL).description("레이스 입장료"),
+                fieldWithPath("days").type(NULL).description("미션을 진행할 요일 - MONDAY, TUESDAY, ..."),
+                fieldWithPath("certificationAvailableDuration").type(NULL).description("미션 인증이 가능한 시간")
             ),
             getErrorResponseFieldsWithFieldErrors()
         );
