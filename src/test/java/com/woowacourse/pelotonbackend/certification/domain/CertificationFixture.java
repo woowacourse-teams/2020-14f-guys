@@ -5,7 +5,6 @@ import java.util.Base64;
 import org.springframework.data.jdbc.core.mapping.AggregateReference;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockMultipartFile;
-import org.springframework.web.multipart.MultipartFile;
 
 import com.woowacourse.pelotonbackend.certification.domain.dto.CertificationCreateRequest;
 import com.woowacourse.pelotonbackend.vo.ImageUrl;

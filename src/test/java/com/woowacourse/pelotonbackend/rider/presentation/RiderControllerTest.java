@@ -44,7 +44,6 @@ import com.woowacourse.pelotonbackend.rider.application.RiderService;
 import com.woowacourse.pelotonbackend.rider.domain.RiderFixture;
 import com.woowacourse.pelotonbackend.rider.presentation.dto.RiderCreateRequest;
 import com.woowacourse.pelotonbackend.rider.presentation.dto.RiderResponses;
-import com.woowacourse.pelotonbackend.rider.presentation.dto.RiderUpdateRequest;
 import com.woowacourse.pelotonbackend.support.BearerAuthInterceptor;
 
 @WebMvcTest(controllers = RiderController.class)

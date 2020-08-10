@@ -10,7 +10,6 @@ import static org.springframework.restdocs.request.RequestDocumentation.*;
 
 import org.apache.http.HttpHeaders;
 import org.springframework.restdocs.mockmvc.RestDocumentationResultHandler;
-import org.springframework.test.web.servlet.ResultHandler;
 
 public class RaceDocumentation {
     public static RestDocumentationResultHandler createRace() {

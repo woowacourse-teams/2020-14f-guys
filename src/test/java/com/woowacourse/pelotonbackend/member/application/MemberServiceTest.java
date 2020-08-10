@@ -21,7 +21,6 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.woowacourse.pelotonbackend.common.exception.MemberIdInvalidException;
 import com.woowacourse.pelotonbackend.common.exception.MemberNotFoundException;
 import com.woowacourse.pelotonbackend.common.exception.UploadFailureException;
 import com.woowacourse.pelotonbackend.infra.upload.UploadService;
@@ -159,7 +158,8 @@ class MemberServiceTest {
     void updateProfile() {
         final Member originMember = MemberFixture.createWithId(ID);
         final Member updatedMember = MemberFixture.memberProfileUpdated(ID);
-        final String uploadUri = String.format("%s/%s/%s", UPLOAD_SERVER_URL, PROFILE_UPLOAD_PATH, BASIC_PROFILE_FILE_NAME);
+        final String uploadUri = String.format("%s/%s/%s", UPLOAD_SERVER_URL, PROFILE_UPLOAD_PATH,
+            BASIC_PROFILE_FILE_NAME);
         given(memberRepository.findById(ID)).willReturn(Optional.of(originMember));
         given(memberRepository.save(any(Member.class))).willReturn(updatedMember);
 
@@ -180,7 +180,8 @@ class MemberServiceTest {
         given(memberRepository.save(any(Member.class))).willReturn(updatedMember);
 
         final MemberProfileResponse response = memberService.updateProfileImage(ID, null);
-        assertThat(response.getImageUrl()).isEqualTo(String.format("%s/%s", UPLOAD_SERVER_URL, BASIC_PROFILE_FILE_NAME));
+        assertThat(response.getImageUrl()).isEqualTo(
+            String.format("%s/%s", UPLOAD_SERVER_URL, BASIC_PROFILE_FILE_NAME));
     }
 
     @DisplayName("특정 회원을 삭제한다")

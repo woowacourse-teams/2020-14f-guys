@@ -9,7 +9,6 @@ import static org.springframework.restdocs.request.RequestDocumentation.*;
 
 import org.apache.http.HttpHeaders;
 import org.springframework.restdocs.mockmvc.RestDocumentationResultHandler;
-import org.springframework.test.web.servlet.ResultHandler;
 
 public class RiderDocumentation {
     public static RestDocumentationResultHandler createRider() {
