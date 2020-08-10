@@ -66,10 +66,7 @@ class CertificationControllerTest {
     @BeforeEach
     void setUp(WebApplicationContext webApplicationContext, RestDocumentationContextProvider restDocumentation) {
         mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext)
-            .apply(documentationConfiguration(restDocumentation)
-                .uris()
-                .withScheme("http")
-                .withHost("docs.peloton.ga"))
+            .apply(documentationConfiguration(restDocumentation))
             .addFilters(new CharacterEncodingFilter("UTF-8", true))
             .alwaysDo(print())
             .build();

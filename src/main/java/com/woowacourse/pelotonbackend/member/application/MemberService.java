@@ -82,9 +82,6 @@ public class MemberService {
     }
 
     public void deleteById(final Long id) {
-        if (Objects.isNull(id)) {
-            throw new MemberIdInvalidException(id);
-        }
         memberRepository.deleteById(id);
     }
 
