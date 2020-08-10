@@ -4,7 +4,7 @@ import { ScrollView, StyleSheet, View } from "react-native";
 import RaceList from "./RaceList";
 import HomeBanner from "./HomeBanner";
 import Axios from "axios";
-import { SERVER_BASE_URL } from "../../../utils/constants";
+import { COLOR, SERVER_BASE_URL } from "../../../utils/constants";
 import { useRecoilValue, useSetRecoilState } from "recoil/dist";
 import { userInfoState, userTokenState } from "../../atoms";
 import { loadingState } from "../../../state/loading/LoadingState";
@@ -18,7 +18,7 @@ const Home = () => {
     const fetchUser = async () => {
       setIsLoading(true);
       const response = await Axios({
-        mehtod: "GET",
+        method: "GET",
         baseURL: SERVER_BASE_URL,
         url: "/api/members",
         headers: {
@@ -26,7 +26,6 @@ const Home = () => {
         },
       });
       setUserInfo(response.data);
-      console.log(response.data);
     };
     fetchUser();
     setIsLoading(false);
@@ -47,7 +46,7 @@ const Home = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "white",
+    backgroundColor: COLOR.WHITE,
   },
   raceTitle: {
     flex: 1,

@@ -10,7 +10,7 @@ import {
 import { useRecoilValue } from "recoil";
 import { userInfoState, userTokenState } from "../atoms";
 import { useNavigation } from "@react-navigation/core";
-import { SERVER_BASE_URL, TOKEN_STORAGE } from "../../utils/constants";
+import { COLOR, SERVER_BASE_URL, TOKEN_STORAGE } from "../../utils/constants";
 import AsyncStorage from "@react-native-community/async-storage";
 import Axios from "axios";
 import { useRecoilState, useSetRecoilState } from "recoil/dist";
@@ -78,7 +78,7 @@ const ChangeProfile = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#21365d",
+    backgroundColor: COLOR.BLUE5,
   },
   titleContainer: {
     flex: 3,
@@ -94,14 +94,14 @@ const styles = StyleSheet.create({
     lineHeight: 30,
     letterSpacing: 0.9,
     textAlign: "center",
-    color: "#ffffff",
+    color: COLOR.WHITE,
   },
   body: {
     flex: 7,
     alignItems: "center",
     borderStyle: "solid",
     borderBottomWidth: 2,
-    borderColor: "#21365d",
+    borderColor: COLOR.BLUE5,
   },
 });
 

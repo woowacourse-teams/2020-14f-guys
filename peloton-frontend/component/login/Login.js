@@ -12,6 +12,7 @@ import * as AppleAuthentication from "expo-apple-authentication";
 import { animated, useSpring } from "react-spring";
 import {
   AnimatedImage,
+  COLOR,
   SERVER_BASE_URL,
   TOKEN_STORAGE,
 } from "../../utils/constants";
@@ -113,7 +114,7 @@ const Login = () => {
 const styles = StyleSheet.create({
   background: {
     flex: 1,
-    backgroundColor: "#21365d",
+    backgroundColor: COLOR.BLUE5,
   },
   titleContainer: {
     flex: 7,

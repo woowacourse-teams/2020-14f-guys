@@ -1,7 +1,7 @@
 import React from "react";
 import { Alert, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import Axios from "axios";
-import { SERVER_BASE_URL } from "../../../utils/constants";
+import { COLOR, SERVER_BASE_URL } from "../../../utils/constants";
 import { useRecoilValue } from "recoil";
 import { userTokenState } from "../../atoms";
 
@@ -51,13 +51,13 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     width: 150,
     height: 50,
-    borderColor: "#c8d1d3",
+    borderColor: COLOR.WHITE3,
     borderRadius: 100,
     alignItems: "center",
     justifyContent: "center",
   },
   buttonText: {
-    color: "#334856",
+    color: COLOR.GREEN2,
     fontSize: 14,
   },
 });

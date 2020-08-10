@@ -36,7 +36,7 @@ const screenOptions = ({ route }) => ({
 const tabBarOptions = {
   showLabel: false,
   activeTintColor: COLOR.LAVENDER,
-  inactiveTintColor: COLOR.BLUE,
+  inactiveTintColor: COLOR.BLUE1,
 };
 
 const ApplicationNavigationRoot = () => {

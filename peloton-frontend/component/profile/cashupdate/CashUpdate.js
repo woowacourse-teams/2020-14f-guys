@@ -9,7 +9,7 @@ import {
   View,
 } from "react-native";
 import Axios from "axios";
-import { SERVER_BASE_URL } from "../../../utils/constants";
+import { COLOR, SERVER_BASE_URL } from "../../../utils/constants";
 import { useRecoilValue, useSetRecoilState } from "recoil/dist";
 import { userInfoState, userTokenState } from "../../atoms";
 import { useNavigation } from "@react-navigation/core";
@@ -71,7 +71,7 @@ const CashUpdate = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#eceff0",
+    backgroundColor: COLOR.WHITE4,
   },
   chargeContainer: {
     flex: 5,
@@ -80,7 +80,7 @@ const styles = StyleSheet.create({
   },
   chargeText: {
     marginLeft: "14%",
-    color: "#334856",
+    color: COLOR.GREEN3,
     fontWeight: "bold",
     fontSize: 20,
     lineHeight: 21,
@@ -88,10 +88,10 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   chargeInput: {
-    backgroundColor: "white",
+    backgroundColor: COLOR.WHITE,
     fontSize: 16,
     fontWeight: "300",
-    color: "#628ca0",
+    color: COLOR.GREEN2,
     paddingLeft: "10%",
     height: 60,
     width: "90%",
@@ -114,8 +114,8 @@ const styles = StyleSheet.create({
     width: 150,
     height: 50,
     borderRadius: 100,
-    backgroundColor: "white",
-    color: "#1b1c20",
+    backgroundColor: COLOR.WHITE,
+    color: COLOR.BLACK2,
     alignItems: "center",
     justifyContent: "center",
 
@@ -128,7 +128,7 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.5,
   },
   buttonText: {
-    color: "#334856",
+    color: COLOR.GREEN3,
     fontSize: 14,
   },
 });

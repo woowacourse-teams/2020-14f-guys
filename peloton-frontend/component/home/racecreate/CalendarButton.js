@@ -10,14 +10,14 @@ const CalendarButton = ({ showCalendar }) => {
       style={styles.container}
       onPress={showCalendar}
     >
-      <FontAwesome name="calendar" size={24} color="black" />
+      <FontAwesome name="calendar" size={24} color={COLOR.BLACK} />
     </TouchableOpacity>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: COLOR.GREEN,
+    backgroundColor: COLOR.GREEN1,
     borderRadius: 20,
     marginLeft: 10,
     width: 44,

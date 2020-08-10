@@ -1,11 +1,12 @@
 import React from "react";
 import { StyleSheet, TouchableOpacity, View } from "react-native";
 import { MaterialIcons } from "@expo/vector-icons";
+import { COLOR } from "../../utils/constants";
 
 const SubmitButton = ({
   onSubmit,
-  color = "#284170",
-  arrowColor = "#61779f",
+  color = COLOR.BLUE4,
+  arrowColor = COLOR.ARROW_BLUE,
 }) => {
   return (
     <View
@@ -29,7 +30,7 @@ const styles = StyleSheet.create({
     marginTop: 20,
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "#284170",
+    backgroundColor: COLOR.BLUE4,
     borderRadius: 40,
     width: 50,
     height: 50,

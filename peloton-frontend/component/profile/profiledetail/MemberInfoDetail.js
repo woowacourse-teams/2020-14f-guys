@@ -1,5 +1,6 @@
 import React from "react";
 import { StyleSheet, Text, View } from "react-native";
+import { COLOR } from "../../../utils/constants";
 
 const MemberInfoDetail = ({ name, cash }) => {
   return (
@@ -17,13 +18,13 @@ const styles = StyleSheet.create({
     marginBottom: 7,
 
     fontSize: 18,
-    color: "#F2F2F2",
+    color: COLOR.WHITE2,
     fontWeight: "bold",
   },
   cash: {
     flex: 1,
     fontSize: 15,
-    color: "#F2F2F2",
+    color: COLOR.WHITE2,
     fontWeight: "300",
   },
   textContainer: {
