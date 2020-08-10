@@ -62,6 +62,12 @@ public class MissionFixture {
         return missionWithId(null);
     }
 
+    public static Mission missionWithIdAndRaceId(final Long raceId) {
+        return missionWithoutId().toBuilder()
+            .raceId(AggregateReference.to(raceId))
+            .build();
+    }
+
     public static MissionCreateRequest missionCreateRequest() {
         return MissionCreateRequest.builder()
             .missionDuration(missionDuration)

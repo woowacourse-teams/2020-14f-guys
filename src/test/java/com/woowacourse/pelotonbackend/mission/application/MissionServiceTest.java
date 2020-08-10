@@ -122,18 +122,27 @@ class MissionServiceTest {
         assertThat(response.getMissionRetrieveResponses().get(2).getId()).isEqualTo(ids.get(2));
     }
 
-    @DisplayName("모든 미션들을 조회한다.")
+    @DisplayName("Race id로 미션을 성공적으로 조회한다.")
     @Test
-    void retrieveAll() {
-        final List<Long> ids = Arrays.asList(1L, 2L, 4L);
-        final List<Mission> missions = MissionFixture.missionsWithId(ids);
-        given(missionRepository.findAll()).willReturn(missions);
+    void retrieveByRaceIdAndSucceed() {
+        final Long raceId = 10L;
+        final Mission mission = MissionFixture.missionWithIdAndRaceId(raceId);
+        given(missionRepository.findByRaceId(anyLong())).willReturn(Optional.of(mission));
 
-        MissionsRetrieveResponse response = missionService.retrieveAll();
+        MissionRetrieveResponse response = missionService.retrieveByRaceId(raceId);
 
-        assertThat(response.getMissionRetrieveResponses().get(0).getId()).isEqualTo(ids.get(0));
-        assertThat(response.getMissionRetrieveResponses().get(1).getId()).isEqualTo(ids.get(1));
-        assertThat(response.getMissionRetrieveResponses().get(2).getId()).isEqualTo(ids.get(2));
+        assertThat(response.getRaceId()).isEqualTo(raceId);
+    }
+
+    @DisplayName("Race id로 미션을 조회 시 존재하지 않을 경우 예외가 발생한다.")
+    @Test
+    void retrieveByRaceIdAndFail() {
+        final Long raceId = 10L;
+        given(missionRepository.findByRaceId(anyLong())).willReturn(Optional.empty());
+
+        assertThatThrownBy(() -> missionService.retrieveByRaceId(raceId))
+            .isInstanceOf(MissionNotFoundException.class)
+            .hasMessage(String.format("Mission(raceId = %d) does not exists", raceId));
     }
 
     @DisplayName("미션을 정상적으로 수정한다.")
