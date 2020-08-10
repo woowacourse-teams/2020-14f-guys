@@ -25,7 +25,8 @@ import com.woowacourse.pelotonbackend.race.domain.RaceCategory;
 import com.woowacourse.pelotonbackend.race.domain.RaceFixture;
 import com.woowacourse.pelotonbackend.support.CustomDateParser;
 import com.woowacourse.pelotonbackend.support.RandomGenerator;
-import com.woowacourse.pelotonbackend.mission.presentation.MissionRetrieveResponse;
+import com.woowacourse.pelotonbackend.mission.presentation.dto.MissionRetrieveResponse;
+import com.woowacourse.pelotonbackend.common.exception.MissionNotFoundException;
 
 @ExtendWith(MockitoExtension.class)
 class MissionServiceTest {
@@ -83,12 +84,24 @@ class MissionServiceTest {
 
     @DisplayName("미션을 정상적으로 조회한다.")
     @Test
-    void retrieve() {
+    void retrieveAndSucceeded() {
         final Mission mission = MissionFixture.missionWithId(1L);
         given(missionRepository.findById(anyLong())).willReturn(Optional.of(mission));
 
         MissionRetrieveResponse response = missionService.retrieve(1L);
 
         assertThat(response).isEqualToComparingFieldByField(MissionRetrieveResponse.of(mission));
+    }
+
+
+    @DisplayName("미션 조회 시 해당 아이디가 존재하지 않을 경우 예외가 발생한다.")
+    @Test
+    void retrieveAndFailed() {
+        given(missionRepository.findById(anyLong())).willReturn(Optional.empty());
+
+        assertThatThrownBy(() -> {
+            missionService.retrieve(1L);
+        }).isInstanceOf(MissionNotFoundException.class)
+            .hasMessageContaining("Mission(mission id = %d) does not exists", 1L);
     }
 }
