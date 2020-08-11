@@ -12,8 +12,8 @@ import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jdbc.core.mapping.AggregateReference;
 import org.springframework.data.relational.core.mapping.Embedded;
 
-import com.woowacourse.pelotonbackend.certification.presentation.CertificationDescriptionUpdateRequest;
-import com.woowacourse.pelotonbackend.certification.presentation.CertificationStatusUpdateRequest;
+import com.woowacourse.pelotonbackend.certification.presentation.dto.CertificationDescriptionUpdateRequest;
+import com.woowacourse.pelotonbackend.certification.presentation.dto.CertificationStatusUpdateRequest;
 import com.woowacourse.pelotonbackend.mission.domain.Mission;
 import com.woowacourse.pelotonbackend.rider.domain.Rider;
 import com.woowacourse.pelotonbackend.vo.ImageUrl;

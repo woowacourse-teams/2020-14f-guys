@@ -3,6 +3,9 @@ package com.woowacourse.pelotonbackend.certification.presentation;
 import static com.woowacourse.pelotonbackend.certification.domain.CertificationFixture.*;
 import static org.mockito.BDDMockito.*;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.*;
+import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.delete;
+import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
+import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.patch;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -10,6 +13,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.http.HttpHeaders;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -34,6 +38,7 @@ import com.woowacourse.pelotonbackend.common.ErrorCode;
 import com.woowacourse.pelotonbackend.common.exception.CertificationNotFoundException;
 import com.woowacourse.pelotonbackend.docs.CertificationDocumentation;
 import com.woowacourse.pelotonbackend.member.application.MemberService;
+import com.woowacourse.pelotonbackend.member.domain.LoginFixture;
 import com.woowacourse.pelotonbackend.member.presentation.LoginMemberArgumentResolver;
 import com.woowacourse.pelotonbackend.support.BearerAuthInterceptor;
 
@@ -123,14 +128,17 @@ class CertificationControllerTest {
             any(HandlerMethod.class))).willReturn(true);
 
         mockMvc.perform(
-            get("/api/certifications/" + TEST_CERTIFICATION_ID)
-                .accept(MediaType.APPLICATION_JSON))
+            get("/api/certifications/{id}", TEST_CERTIFICATION_ID)
+                .accept(MediaType.APPLICATION_JSON)
+                .header(HttpHeaders.AUTHORIZATION, LoginFixture.getTokenHeader()))
             .andExpect(status().isOk())
             .andExpect(jsonPath("id").isNotEmpty())
             .andExpect(jsonPath("image").isNotEmpty())
             .andExpect(jsonPath("status").isNotEmpty())
             .andExpect(jsonPath("missionId").isNotEmpty())
-            .andExpect(jsonPath("riderId").isNotEmpty());
+            .andExpect(jsonPath("riderId").isNotEmpty())
+            .andExpect(jsonPath("description").isNotEmpty())
+            .andDo(CertificationDocumentation.getCertification());
     }
 
     @DisplayName("존재하지 않는 아이디로 조회하는 경우 예외를 반환한다.")
@@ -142,10 +150,12 @@ class CertificationControllerTest {
             any(HandlerMethod.class))).willReturn(true);
 
         mockMvc.perform(
-            get("/api/certifications/" + TEST_CERTIFICATION_ID)
-                .accept(MediaType.APPLICATION_JSON))
+            get("/api/certifications/{id}", TEST_CERTIFICATION_ID)
+                .accept(MediaType.APPLICATION_JSON)
+                .header(HttpHeaders.AUTHORIZATION, LoginFixture.getTokenHeader()))
             .andExpect(status().isNotFound())
-            .andExpect(jsonPath("code").value(ErrorCode.CERTIFICATION_NOT_FOUND.getCode()));
+            .andExpect(jsonPath("code").value(ErrorCode.CERTIFICATION_NOT_FOUND.getCode()))
+            .andDo(CertificationDocumentation.getBadCertification());
     }
 
     @DisplayName("참여자가 인증한 사진을 불러온다.")
@@ -155,12 +165,14 @@ class CertificationControllerTest {
         given(certificationService.retrieveByRiderId(any(), any())).willReturn(createMockCertificationResponses());
 
         mockMvc.perform(
-            get("/api/certifications/riders/" + TEST_RIDER_ID)
+            get("/api/certifications/riders/{id}",TEST_RIDER_ID)
+                .header(HttpHeaders.AUTHORIZATION, LoginFixture.getTokenHeader())
                 .param("page", "1")
                 .param("size", "2")
                 .accept(MediaType.APPLICATION_JSON)
         )
-            .andExpect(status().isOk());
+            .andExpect(status().isOk())
+            .andDo(CertificationDocumentation.getByRiderId());
     }
 
     @DisplayName("인증정보의 상세 내용을 변경한다.")
@@ -169,15 +181,17 @@ class CertificationControllerTest {
         given(authInterceptor.preHandle(any(), any(), any())).willReturn(true);
         given(certificationService.updateDescription(any(), any())).willReturn(
             createDescriptionUpdatedCertification().getId());
-        final String resource = "/api/certifications/descriptions/" + TEST_RIDER_ID;
+        final String resource = "/api/certifications/descriptions";
 
         mockMvc.perform(
-            patch(resource)
+            patch(resource + "/{id}", TEST_CERTIFICATION_ID)
+                .header(HttpHeaders.AUTHORIZATION, LoginFixture.getTokenHeader())
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsBytes(createDescriptionUpdateRequest()))
         )
             .andExpect(status().isOk())
-            .andExpect(header().string("Location", resource));
+            .andExpect(header().string("Location", resource + "/" + TEST_CERTIFICATION_ID ))
+            .andDo(CertificationDocumentation.updateDescription());
     }
 
     @DisplayName("인증정보의 상태를 변경한다.")
@@ -185,15 +199,17 @@ class CertificationControllerTest {
     void updateStatus() throws Exception {
         given(authInterceptor.preHandle(any(), any(), any())).willReturn(true);
         given(certificationService.updateStatus(any(), any())).willReturn(createStatusUpdatedCertification().getId());
-        final String resource = "/api/certifications/status/" + TEST_RIDER_ID;
+        final String resource = "/api/certifications/status";
 
         mockMvc.perform(
-            patch(resource)
+            patch(resource + "/{id}", TEST_CERTIFICATION_ID)
+                .header(HttpHeaders.AUTHORIZATION, LoginFixture.getTokenHeader())
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsBytes(createStatusUpdatedCertification()))
+                .content(objectMapper.writeValueAsBytes(createStatusUpdateRequest()))
         )
             .andExpect(status().isOk())
-            .andExpect(header().string("Location", resource));
+            .andExpect(header().string("Location", resource + "/" + TEST_CERTIFICATION_ID))
+            .andDo(CertificationDocumentation.updateStatus());
     }
 
     @DisplayName("인증한 내용을 ID로 삭제한다.")
@@ -202,8 +218,10 @@ class CertificationControllerTest {
         given(authInterceptor.preHandle(any(), any(), any())).willReturn(true);
 
         mockMvc.perform(
-            delete("/api/certifications/1")
+            delete("/api/certifications" + "/{id}", TEST_CERTIFICATION_ID)
+                .header(HttpHeaders.AUTHORIZATION, LoginFixture.getTokenHeader())
         )
-            .andExpect(status().isNoContent());
+            .andExpect(status().isNoContent())
+            .andDo(CertificationDocumentation.deleteById());
     }
 }

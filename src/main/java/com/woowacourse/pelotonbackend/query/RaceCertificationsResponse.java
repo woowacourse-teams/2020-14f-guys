@@ -9,7 +9,7 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 
 import com.woowacourse.pelotonbackend.certification.domain.Certification;
-import com.woowacourse.pelotonbackend.certification.presentation.CertificationResponse;
+import com.woowacourse.pelotonbackend.certification.presentation.dto.CertificationResponse;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;

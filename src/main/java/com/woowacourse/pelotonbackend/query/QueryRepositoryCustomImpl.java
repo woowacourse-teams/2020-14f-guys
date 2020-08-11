@@ -35,7 +35,7 @@ public class QueryRepositoryCustomImpl implements QueryRepositoryCustom {
 
     @Override
     public Page<Certification> findCertificationsByRaceId(final Long raceId, final Pageable pageable) {
-        SqlParameterSource parameterSource = new MapSqlParameterSource()
+        final SqlParameterSource parameterSource = new MapSqlParameterSource()
             .addValue("raceId", raceId)
             .addValue("offset", pageable.getOffset())
             .addValue("pageSize", pageable.getPageSize());

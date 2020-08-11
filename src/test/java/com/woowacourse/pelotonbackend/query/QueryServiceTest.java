@@ -17,7 +17,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import com.woowacourse.pelotonbackend.certification.domain.CertificationFixture;
-import com.woowacourse.pelotonbackend.certification.presentation.CertificationResponse;
+import com.woowacourse.pelotonbackend.certification.presentation.dto.CertificationResponse;
 
 @ExtendWith(SpringExtension.class)
 class QueryServiceTest {

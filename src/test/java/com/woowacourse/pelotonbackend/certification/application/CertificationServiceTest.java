@@ -21,10 +21,9 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.woowacourse.pelotonbackend.certification.domain.Certification;
 import com.woowacourse.pelotonbackend.certification.domain.CertificationRepository;
-
-import com.woowacourse.pelotonbackend.certification.presentation.CertificationResponse;
-import com.woowacourse.pelotonbackend.certification.presentation.CertificationResponses;
 import com.woowacourse.pelotonbackend.certification.presentation.dto.CertificationCreateRequest;
+import com.woowacourse.pelotonbackend.certification.presentation.dto.CertificationResponse;
+import com.woowacourse.pelotonbackend.certification.presentation.dto.CertificationResponses;
 import com.woowacourse.pelotonbackend.infra.upload.UploadService;
 
 @ExtendWith(SpringExtension.class)
@@ -80,7 +79,8 @@ class CertificationServiceTest {
     void retrieveByRiderId() {
         final PageRequest page = PageRequest.of(0, 1, Sort.Direction.DESC, "status");
         given(certificationRepository.findByRiderId(any(), any())).willReturn(createMockPagedCertifications(page));
-        final CertificationResponses certificationResponses = certificationService.retrieveByRiderId(TEST_RIDER_ID, page);
+        final CertificationResponses certificationResponses = certificationService.retrieveByRiderId(TEST_RIDER_ID,
+            page);
 
         final Page<CertificationResponse> result = certificationResponses.getCertifications();
 

@@ -1,7 +1,5 @@
 package com.woowacourse.pelotonbackend.certification.domain;
 
-import org.springframework.data.domain.Sort;
-
 public class CertificationSql {
     public static String findByRiderId() {
         return new StringBuilder()

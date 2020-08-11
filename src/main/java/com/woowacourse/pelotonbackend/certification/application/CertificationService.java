@@ -8,11 +8,11 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.woowacourse.pelotonbackend.certification.domain.Certification;
 import com.woowacourse.pelotonbackend.certification.domain.CertificationRepository;
-import com.woowacourse.pelotonbackend.certification.presentation.CertificationDescriptionUpdateRequest;
-import com.woowacourse.pelotonbackend.certification.presentation.CertificationResponse;
-import com.woowacourse.pelotonbackend.certification.presentation.CertificationResponses;
-import com.woowacourse.pelotonbackend.certification.presentation.CertificationStatusUpdateRequest;
 import com.woowacourse.pelotonbackend.certification.presentation.dto.CertificationCreateRequest;
+import com.woowacourse.pelotonbackend.certification.presentation.dto.CertificationDescriptionUpdateRequest;
+import com.woowacourse.pelotonbackend.certification.presentation.dto.CertificationResponse;
+import com.woowacourse.pelotonbackend.certification.presentation.dto.CertificationResponses;
+import com.woowacourse.pelotonbackend.certification.presentation.dto.CertificationStatusUpdateRequest;
 import com.woowacourse.pelotonbackend.common.exception.CertificationNotFoundException;
 import com.woowacourse.pelotonbackend.infra.upload.UploadService;
 import lombok.RequiredArgsConstructor;
@@ -62,12 +62,12 @@ public class CertificationService {
         return updatedCertification.getId();
     }
 
-    public void deleteById(final Long id) {
-        certificationRepository.deleteById(id);
-    }
-
     private Certification findById(final Long id) {
         return certificationRepository.findById(id)
             .orElseThrow(() -> new CertificationNotFoundException(id));
+    }
+
+    public void deleteById(final Long id) {
+        certificationRepository.deleteById(id);
     }
 }

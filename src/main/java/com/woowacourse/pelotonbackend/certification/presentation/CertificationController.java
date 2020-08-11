@@ -20,6 +20,11 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.woowacourse.pelotonbackend.certification.application.CertificationService;
 import com.woowacourse.pelotonbackend.certification.presentation.dto.CertificationCreateRequest;
+import com.woowacourse.pelotonbackend.certification.presentation.dto.CertificationDescriptionUpdateRequest;
+import com.woowacourse.pelotonbackend.certification.presentation.dto.CertificationResponse;
+import com.woowacourse.pelotonbackend.certification.presentation.dto.CertificationResponses;
+import com.woowacourse.pelotonbackend.certification.presentation.dto.CertificationStatusUpdateRequest;
+
 import lombok.RequiredArgsConstructor;
 
 @RestController

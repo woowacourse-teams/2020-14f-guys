@@ -204,6 +204,29 @@ operation::certification/create-success[snippets='http-request,http-response,req
 ==== Failure
 operation::certification/create-fail[snippets='http-request,http-response,request-parameters,request-parts,response-headers,response-fields']
 
+[[resources-certification-get-certification]]
+==== Success
+operation::certification/get-certification[snippets='http-request,http-response,path-parameters,request-headers,response-headers,response-fields']
+
+[[resources-certification-get-not-found]]
+==== Failure
+operation::certification/get-not-found[snippets='http-request,http-response,path-parameters,request-headers,response-headers,response-fields']
+
+[[resources-certification-get-certification-riderId]]
+==== Find certifications by rider id
+operation::certification/get-certification-riderId[snippets='http-request,http-response,path-parameters,request-headers,response-headers,response-fields,request-parameters']
+
+[[resources-certification-update-description]]
+==== Update description
+operation::certification/update-description[snippets='http-request,http-response,path-parameters,request-headers,response-headers,request-fields']
+
+[[resources-certification-update-status]]
+==== Update status
+operation::certification/update-status[snippets='http-request,http-response,path-parameters,request-headers,response-headers,request-fields']
+
+[[resources-certification-delete]]
+==== Delete by certification id
+operation::certification/delete[snippets='http-request,http-response,path-parameters,request-headers']
 
 [[resources-member]]
 == Member
