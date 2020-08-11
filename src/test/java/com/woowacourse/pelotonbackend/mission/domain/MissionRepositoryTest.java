@@ -1,6 +1,7 @@
 package com.woowacourse.pelotonbackend.mission.domain;
 
-import static org.assertj.core.api.AssertionsForClassTypes.*;
+import static org.assertj.core.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.Arrays;
 import java.util.List;
@@ -36,7 +37,7 @@ class MissionRepositoryTest {
     @Test
     void findAllById() {
         final List<Long> ids = Arrays.asList(1L, 3L, 4L);
-        final List<Mission> missions = MissionFixture.missionsWithoutId(5);
+        final List<Mission> missions = MissionFixture.missionsWithoutIdByNumber(5);
         missionRepository.saveAll(missions);
 
         final List<Mission> results = missionRepository.findAllById(ids);
@@ -51,23 +52,31 @@ class MissionRepositoryTest {
     @DisplayName("모든 미션을 조회한 후 리스트로 반환한다.")
     @Test
     void findAll() {
-        final int count = 5;
-        final List<Mission> missions = MissionFixture.missionsWithoutId(count);
+        final int number = 5;
+        final List<Mission> missions = MissionFixture.missionsWithoutIdByNumber(number);
         missionRepository.saveAll(missions);
 
         final List<Mission> results = missionRepository.findAll();
 
-        assertThat(results.size()).isEqualTo(count);
+        assertThat(results).hasSize(number);
     }
 
     @DisplayName("레이스 id로 미션을 성공적으로 조회한다.")
     @Test
     void findByRaceIdAndSucceed() {
         final Long raceId = 10L;
-        missionRepository.save(MissionFixture.missionWithoutIdAndRaceId(raceId));
+        missionRepository.saveAll(Arrays.asList(
+            MissionFixture.missionWithoutIdAndRaceId(raceId),
+            MissionFixture.missionWithoutIdAndRaceId(raceId),
+            MissionFixture.missionWithoutIdAndRaceId(raceId))
+        );
 
         List<Mission> missions = missionRepository.findMissionsByRaceId(raceId);
 
-        assertThat(missions.get(0).getRaceId().getId()).isEqualTo(raceId);
+        assertAll(
+            () -> assertThat(missions.get(0).getRaceId().getId()).isEqualTo(raceId),
+            () -> assertThat(missions.get(1).getRaceId().getId()).isEqualTo(raceId),
+            () -> assertThat(missions.get(2).getRaceId().getId()).isEqualTo(raceId)
+        );
     }
 }

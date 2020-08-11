@@ -10,7 +10,7 @@ import lombok.Getter;
 @AllArgsConstructor
 @Builder
 @Getter
-public class MissionRetrieveResponse {
+public class MissionResponse {
     private final Long id;
 
     private final DateTimeDuration missionDuration;
@@ -19,7 +19,7 @@ public class MissionRetrieveResponse {
 
     private final Long raceId;
 
-    public static MissionRetrieveResponse of(final Mission mission) {
+    public static MissionResponse of(final Mission mission) {
         return builder()
             .id(mission.getId())
             .missionDuration(mission.getMissionDuration())

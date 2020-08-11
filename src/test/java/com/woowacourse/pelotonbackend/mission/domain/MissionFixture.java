@@ -16,16 +16,16 @@ import com.woowacourse.pelotonbackend.mission.presentation.dto.MissionCreateRequ
 import com.woowacourse.pelotonbackend.mission.presentation.dto.MissionUpdateRequest;
 
 public class MissionFixture {
-    private static final LocalDateTime startTime = LocalDateTime.of(2021, 1, 1, 9, 0);
-    private static final LocalDateTime endTime = LocalDateTime.of(2021, 1, 31, 12, 0);
-    private static final DateTimeDuration missionDuration = new DateTimeDuration(startTime, endTime);
-    private static final LocalDateTime startTimeUpdated = LocalDateTime.of(2023, 9, 1, 9, 0);
-    private static final LocalDateTime endTimeUpdated = LocalDateTime.of(2023, 9, 30, 12, 0);
-    private static final DateTimeDuration missionDurationUpdated = new DateTimeDuration(startTimeUpdated, endTimeUpdated);
-    private static final MissionInstruction missionInstruction = new MissionInstruction("다같이 손을 잡고 사진을 찍는다.");
-    private static final MissionInstruction missionInstructionUpdated = new MissionInstruction("다같이 손을 잡고 사진을 찍는다.");
-    private static final Long raceId = 7L;
-    private static final Long raceIdUpdated = 9L;
+    public static final LocalDateTime START_TIME = LocalDateTime.of(2021, 1, 1, 9, 0);
+    public static final LocalDateTime END_TIME = LocalDateTime.of(2021, 1, 31, 12, 0);
+    public static final DateTimeDuration MISSION_DURATION = new DateTimeDuration(START_TIME, END_TIME);
+    public static final LocalDateTime START_TIME_UPDATED = LocalDateTime.of(2023, 9, 1, 9, 0);
+    public static final LocalDateTime END_TIME_UPDATED = LocalDateTime.of(2023, 9, 30, 12, 0);
+    public static final DateTimeDuration MISSION_DURATION_UPDATED = new DateTimeDuration(START_TIME_UPDATED, END_TIME_UPDATED);
+    public static final MissionInstruction MISSION_INSTRUCTION = new MissionInstruction("다같이 손을 잡고 사진을 찍는다.");
+    public static final MissionInstruction MISSION_INSTRUCTION_UPDATED = new MissionInstruction("다같이 손을 잡고 사진을 찍는다.");
+    public static final Long RACE_ID = 7L;
+    public static final Long RACE_ID_UPDATED = 9L;
 
     public static List<LocalDate> datesFixture() {
         return Arrays.asList(
@@ -52,9 +52,9 @@ public class MissionFixture {
     public static Mission missionWithId(final Long id) {
         return Mission.builder()
             .id(id)
-            .missionDuration(missionDuration)
-            .missionInstruction(missionInstruction)
-            .raceId(AggregateReference.to(raceId))
+            .missionDuration(MISSION_DURATION)
+            .missionInstruction(MISSION_INSTRUCTION)
+            .raceId(AggregateReference.to(RACE_ID))
             .build();
     }
 
@@ -76,29 +76,29 @@ public class MissionFixture {
 
     public static MissionCreateRequest missionCreateRequest() {
         return MissionCreateRequest.builder()
-            .missionDuration(missionDuration)
-            .missionInstruction(missionInstruction)
-            .raceId(raceId)
+            .missionDuration(MISSION_DURATION)
+            .missionInstruction(MISSION_INSTRUCTION)
+            .raceId(RACE_ID)
             .build();
     }
 
     public static MissionUpdateRequest missionUpdateRequest() {
         return MissionUpdateRequest.builder()
-            .missionDuration(missionDurationUpdated)
-            .missionInstruction(missionInstructionUpdated)
-            .raceId(raceIdUpdated)
+            .missionDuration(MISSION_DURATION_UPDATED)
+            .missionInstruction(MISSION_INSTRUCTION_UPDATED)
+            .raceId(RACE_ID_UPDATED)
             .build();
     }
 
     public static List<Mission> missionsWithId(final List<Long> ids) {
         return ids.stream()
-            .map(id -> missionWithId(id))
+            .map(MissionFixture::missionWithId)
             .collect(Collectors.toList());
     }
 
-    public static List<Mission> missionsWithoutId(final int count) {
+    public static List<Mission> missionsWithoutIdByNumber(final int number) {
         List<Mission> missions = new ArrayList<>();
-        for (int i = 0; i < count; i++) {
+        for (int i = 0; i < number; i++) {
             missions.add(MissionFixture.missionWithoutId());
         }
         return Collections.unmodifiableList(missions);

@@ -1,6 +1,7 @@
 package com.woowacourse.pelotonbackend.mission.application;
 
 import static org.assertj.core.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.BDDMockito.*;
 
 import java.time.LocalDate;
@@ -26,9 +27,9 @@ import com.woowacourse.pelotonbackend.race.domain.RaceCategory;
 import com.woowacourse.pelotonbackend.race.domain.RaceFixture;
 import com.woowacourse.pelotonbackend.support.CustomDateParser;
 import com.woowacourse.pelotonbackend.support.RandomGenerator;
-import com.woowacourse.pelotonbackend.mission.presentation.dto.MissionRetrieveResponse;
 import com.woowacourse.pelotonbackend.common.exception.MissionNotFoundException;
-import com.woowacourse.pelotonbackend.mission.presentation.dto.MissionsRetrieveResponse;
+import com.woowacourse.pelotonbackend.mission.presentation.dto.MissionResponse;
+import com.woowacourse.pelotonbackend.mission.presentation.dto.MissionResponses;
 
 @ExtendWith(MockitoExtension.class)
 class MissionServiceTest {
@@ -91,9 +92,9 @@ class MissionServiceTest {
         final Mission mission = MissionFixture.missionWithId(missionId);
         given(missionRepository.findById(anyLong())).willReturn(Optional.of(mission));
 
-        MissionRetrieveResponse response = missionService.retrieve(missionId);
+        MissionResponse response = missionService.retrieve(missionId);
 
-        assertThat(response).isEqualToComparingFieldByField(MissionRetrieveResponse.of(mission));
+        assertThat(response).isEqualToComparingFieldByField(MissionResponse.of(mission));
     }
 
     @DisplayName("미션 조회 시 해당 아이디가 존재하지 않을 경우 예외가 발생한다.")
@@ -115,11 +116,12 @@ class MissionServiceTest {
         final List<Mission> missions = MissionFixture.missionsWithId(ids);
         given(missionRepository.findAllById(anyList())).willReturn(missions);
 
-        MissionsRetrieveResponse response = missionService.retrieveAllByIds(ids);
+        MissionResponses response = missionService.retrieveAllByIds(ids);
 
-        assertThat(response.getMissionRetrieveResponses().get(0).getId()).isEqualTo(ids.get(0));
-        assertThat(response.getMissionRetrieveResponses().get(1).getId()).isEqualTo(ids.get(1));
-        assertThat(response.getMissionRetrieveResponses().get(2).getId()).isEqualTo(ids.get(2));
+        assertAll(() -> assertThat(response.getMissionRetrieveResponses().get(0).getId()).isEqualTo(ids.get(0)),
+            () -> assertThat(response.getMissionRetrieveResponses().get(1).getId()).isEqualTo(ids.get(1)),
+            () -> assertThat(response.getMissionRetrieveResponses().get(2).getId()).isEqualTo(ids.get(2))
+        );
     }
 
     @DisplayName("Race id로 미션을 성공적으로 조회한다.")
@@ -129,7 +131,7 @@ class MissionServiceTest {
         final Mission mission = MissionFixture.missionWithIdAndRaceId(raceId);
         given(missionRepository.findMissionsByRaceId(anyLong())).willReturn(Arrays.asList(mission));
 
-        MissionsRetrieveResponse response = missionService.retrieveByRaceId(raceId);
+        MissionResponses response = missionService.retrieveByRaceId(raceId);
 
         assertThat(response.getMissionRetrieveResponses().get(0).getRaceId()).isEqualTo(raceId);
     }

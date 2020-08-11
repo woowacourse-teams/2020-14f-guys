@@ -13,13 +13,13 @@ import com.woowacourse.pelotonbackend.mission.domain.DateTimeDuration;
 import com.woowacourse.pelotonbackend.mission.domain.Mission;
 import com.woowacourse.pelotonbackend.mission.domain.MissionRepository;
 import com.woowacourse.pelotonbackend.mission.presentation.dto.MissionCreateRequest;
-import com.woowacourse.pelotonbackend.mission.presentation.dto.MissionRetrieveResponse;
+import com.woowacourse.pelotonbackend.mission.presentation.dto.MissionResponse;
+import com.woowacourse.pelotonbackend.mission.presentation.dto.MissionResponses;
 import com.woowacourse.pelotonbackend.mission.presentation.dto.MissionUpdateRequest;
 import com.woowacourse.pelotonbackend.race.domain.RaceCategory;
 import com.woowacourse.pelotonbackend.race.presentation.dto.RaceCreateRequest;
 import com.woowacourse.pelotonbackend.support.CustomDateParser;
 import com.woowacourse.pelotonbackend.support.RandomGenerator;
-import com.woowacourse.pelotonbackend.mission.presentation.dto.MissionsRetrieveResponse;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
@@ -59,39 +59,37 @@ public class MissionService {
     }
 
     @Transactional(readOnly = true)
-    public MissionRetrieveResponse retrieve(final Long id) {
-        final Mission mission = missionRepository.findById(id).orElseThrow(
-            () -> new MissionNotFoundException(id)
-        );
+    public MissionResponse retrieve(final Long id) {
+        final Mission mission = missionRepository.findById(id)
+            .orElseThrow(() -> new MissionNotFoundException(id));
 
-        return MissionRetrieveResponse.of(mission);
+        return MissionResponse.of(mission);
     }
 
     @Transactional(readOnly = true)
-    public MissionsRetrieveResponse retrieveAllByIds(final List<Long> ids) {
+    public MissionResponses retrieveAllByIds(final List<Long> ids) {
         final List<Mission> missions = missionRepository.findAllById(ids);
 
-        return MissionsRetrieveResponse.of(missions);
+        return MissionResponses.of(missions);
     }
 
     @Transactional(readOnly = true)
-    public MissionsRetrieveResponse retrieveByRaceId(final Long raceId) {
+    public MissionResponses retrieveByRaceId(final Long raceId) {
         List<Mission> missions = missionRepository.findMissionsByRaceId(raceId);
 
-        return MissionsRetrieveResponse.of(missions);
+        return MissionResponses.of(missions);
     }
 
     @Transactional(readOnly = true)
-    public MissionsRetrieveResponse retrieveAll() {
+    public MissionResponses retrieveAll() {
         List<Mission> missions = missionRepository.findAll();
 
-        return MissionsRetrieveResponse.of(missions);
+        return MissionResponses.of(missions);
     }
 
     public void update(final Long id, final MissionUpdateRequest request) {
-        final Mission mission = missionRepository.findById(id).orElseThrow(
-            () -> new MissionNotFoundException(id)
-        );
+        final Mission mission = missionRepository.findById(id)
+            .orElseThrow(() -> new MissionNotFoundException(id));
 
         final Mission updatedMission = request.toMission(mission);
         missionRepository.save(updatedMission);
