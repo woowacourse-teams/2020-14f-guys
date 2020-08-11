@@ -27,7 +27,7 @@ public class Mission {
     private final Long id;
 
     @Embedded.Empty @Valid
-    private final TimeDuration missionDuration;
+    private final DateTimeDuration missionDuration;
 
     @Embedded.Empty @Valid
     private final MissionInstruction missionInstruction;

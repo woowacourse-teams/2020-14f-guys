@@ -80,8 +80,7 @@ class RaceControllerTest {
         )
             .andExpect(status().isCreated())
             .andExpect(header().exists("Location"))
-            .andDo(RaceDocumentation.createRace())
-        ;
+            .andDo(RaceDocumentation.createRace());
     }
 
     @DisplayName("null인 필드가 있는 body 객체로 생성 요청을 하는 경우 예외를 발생시킨다.")

@@ -7,7 +7,7 @@ import javax.validation.constraints.FutureOrPresent;
 import lombok.Value;
 
 @Value
-public class TimeDuration {
+public class DateTimeDuration {
     @FutureOrPresent
     private final LocalDateTime startTime;
     // todo : 포맷팅 해결

@@ -4,6 +4,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.woowacourse.pelotonbackend.common.exception.RaceNotFoundException;
+import com.woowacourse.pelotonbackend.mission.application.MissionService;
 import com.woowacourse.pelotonbackend.race.domain.Race;
 import com.woowacourse.pelotonbackend.race.domain.RaceCategory;
 import com.woowacourse.pelotonbackend.race.domain.RaceRepository;
@@ -20,6 +21,7 @@ import lombok.RequiredArgsConstructor;
 public class RaceService {
     private final RaceRepository raceRepository;
     private final RandomGenerator randomGenerator;
+    private final MissionService missionService;
 
     public Long create(final RaceCreateRequest request) {
         final RaceCategory category = request.getCategory();
@@ -27,6 +29,7 @@ public class RaceService {
         final ImageUrl randomThumbnail = category.getRandomThumbnail(randomGenerator);
         final Race savedRace = raceRepository.save(request.toRace(randomCertification, randomThumbnail));
 
+        missionService.create(savedRace.getId(), request);
         return savedRace.getId();
     }
 

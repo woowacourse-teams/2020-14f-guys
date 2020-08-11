@@ -1,8 +1,13 @@
 package com.woowacourse.pelotonbackend.race.domain;
 
 import java.math.BigDecimal;
+import java.time.DayOfWeek;
 import java.time.LocalDate;
+import java.time.LocalTime;
+import java.util.Arrays;
 
+import com.woowacourse.pelotonbackend.certification.domain.TimeDuration;
+import com.woowacourse.pelotonbackend.mission.domain.MissionFixture;
 import com.woowacourse.pelotonbackend.race.presentation.dto.RaceCreateRequest;
 import com.woowacourse.pelotonbackend.race.presentation.dto.RaceRetrieveResponse;
 import com.woowacourse.pelotonbackend.race.presentation.dto.RaceUpdateRequest;
@@ -83,6 +88,8 @@ public class RaceFixture {
             .category(TEST_CATEGORY)
             .entranceFee(new Cash(TEST_MONEY_AMOUNT))
             .raceDuration(new DateDuration(TEST_START_TIME, TEST_END_TIME))
+            .days(Arrays.asList(DayOfWeek.MONDAY, DayOfWeek.SUNDAY, DayOfWeek.TUESDAY))
+            .certificationAvailableDuration(MissionFixture.timeDurationFixture())
             .build();
     }
 

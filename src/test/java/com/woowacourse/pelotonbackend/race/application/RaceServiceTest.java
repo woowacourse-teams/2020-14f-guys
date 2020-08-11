@@ -1,6 +1,7 @@
 package com.woowacourse.pelotonbackend.race.application;
 
 import static com.woowacourse.pelotonbackend.race.domain.RaceCategory.*;
+import static com.woowacourse.pelotonbackend.race.domain.RaceFixture.*;
 import static org.assertj.core.api.Assertions.*;
 import static org.mockito.BDDMockito.*;
 
@@ -14,10 +15,12 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import com.woowacourse.pelotonbackend.common.exception.RaceNotFoundException;
+import com.woowacourse.pelotonbackend.mission.application.MissionService;
 import com.woowacourse.pelotonbackend.race.domain.Race;
 import com.woowacourse.pelotonbackend.race.domain.RaceCategory;
 import com.woowacourse.pelotonbackend.race.domain.RaceFixture;
 import com.woowacourse.pelotonbackend.race.domain.RaceRepository;
+import com.woowacourse.pelotonbackend.race.presentation.dto.RaceCreateRequest;
 import com.woowacourse.pelotonbackend.race.presentation.dto.RaceRetrieveResponse;
 import com.woowacourse.pelotonbackend.race.presentation.dto.RaceUpdateRequest;
 import com.woowacourse.pelotonbackend.support.RandomGenerator;
@@ -30,27 +33,30 @@ public class RaceServiceTest {
     @Mock
     private RandomGenerator randomGenerator;
 
+    @Mock
+    private MissionService missionService;
+
     private RaceService raceService;
 
     @BeforeEach
     void setUp() {
-        raceService = new RaceService(raceRepository, randomGenerator);
+        raceService = new RaceService(raceRepository, randomGenerator, missionService);
     }
 
     @DisplayName("Race 생성이 정상적으로 되는지 확인합니다.")
     @Test
     void create() {
         final Race race = RaceFixture.createWithoutId();
-        final Race savedRace = RaceFixture.createMockRequest()
-            .toRace(RaceFixture.TEST_CERTIFICATION_URL, RaceFixture.TEST_THUMBNAIL_URL);
+        final Race savedRace = RaceFixture.createWithId(TEST_RACE_ID);
         given(raceRepository.save(race)).willReturn(savedRace);
         final RaceCategory category = race.getCategory();
         given(randomGenerator.getRandomIntLowerThan(category.getCertifications().size())).willReturn(0);
         given(randomGenerator.getRandomIntLowerThan(category.getThumbnails().size())).willReturn(0);
+        doNothing().when(missionService).create(eq(TEST_RACE_ID), any(RaceCreateRequest.class));
 
         final Long raceId = raceService.create(RaceFixture.createMockRequest());
 
-        assertThat(raceId).isEqualTo(race.getId());
+        assertThat(raceId).isEqualTo(savedRace.getId());
     }
 
     @DisplayName("retrieve 메서드가 race를 리턴하는지 테스트합니다.")
