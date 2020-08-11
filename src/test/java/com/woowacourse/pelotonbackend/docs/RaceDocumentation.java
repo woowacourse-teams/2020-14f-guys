@@ -77,15 +77,13 @@ public class RaceDocumentation {
                 fieldWithPath("id").type(NUMBER).description("Race Id"),
                 fieldWithPath("title").type(STRING).description("레이스 제목"),
                 fieldWithPath("description").type(STRING).description("레이스 상세내용"),
-                fieldWithPath("thumbnail").type(OBJECT).description("썸네일 이미지"),
-                fieldWithPath("thumbnail.baseImageUrl").type(STRING).description("썸네일 이미지 Url"),
-                fieldWithPath("certificationExample").type(OBJECT).description("인증 예시 이미지"),
-                fieldWithPath("certificationExample.baseImageUrl").type(STRING).description("인증 예시 이미지 Url"),
+                fieldWithPath("thumbnail").type(STRING).description("썸네일 이미지"),
+                fieldWithPath("certificationExample").type(STRING).description("인증 예시 이미지"),
                 fieldWithPath("raceDuration").type(OBJECT).description("Race 기간"),
                 fieldWithPath("raceDuration.startDate").type(STRING).attributes(getDateFormat()).description("Race 시작 날짜"),
                 fieldWithPath("raceDuration.endDate").type(STRING).attributes(getDateFormat()).description("Race 종료 날짜"),
                 fieldWithPath("category").type(STRING).attributes(getRaceCategoryFormat()).description("Race 종류"),
-                subsectionWithPath("entranceFee").type(OBJECT).description("레이스 입장료")
+                subsectionWithPath("entranceFee").type(STRING).description("레이스 입장료")
             )
         );
     }
@@ -120,11 +118,9 @@ public class RaceDocumentation {
                 fieldWithPath("raceDuration.startDate").attributes(getDateFormat()).description("레이스 시작 날짜"),
                 fieldWithPath("raceDuration.endDate").attributes(getDateFormat()).description("레이스 종료 날짜"),
                 fieldWithPath("category").type(STRING).attributes(getRaceCategoryFormat()).description("레이스 종류"),
-                fieldWithPath("certification").type(OBJECT).description("레이스 인증 예시"),
-                fieldWithPath("certification.baseImageUrl").type(STRING).description("레이스 인증 예시 이미지 url"),
-                fieldWithPath("thumbnail").type(OBJECT).description("레이스 썸네일 이미지"),
-                fieldWithPath("thumbnail.baseImageUrl").type(STRING).description("레이스 썸네일 이미지 url"),
-                subsectionWithPath("entranceFee").type(OBJECT).description("레이스 입장료")
+                fieldWithPath("certification").type(STRING).description("레이스 인증 예시"),
+                fieldWithPath("thumbnail").type(STRING).description("레이스 썸네일 이미지"),
+                subsectionWithPath("entranceFee").type(STRING).description("레이스 입장료")
             )
         );
     }
@@ -147,11 +143,9 @@ public class RaceDocumentation {
                 fieldWithPath("raceDuration.startDate").attributes(getDateFormat()).description("레이스 시작 날짜"),
                 fieldWithPath("raceDuration.endDate").attributes(getDateFormat()).description("레이스 종료 날짜"),
                 fieldWithPath("category").type(STRING).attributes(getRaceCategoryFormat()).description("레이스 종류"),
-                fieldWithPath("certification").type(OBJECT).description("레이스 인증 예시"),
-                fieldWithPath("certification.baseImageUrl").type(STRING).description("레이스 인증 예시 이미지 url"),
-                fieldWithPath("thumbnail").type(OBJECT).description("레이스 썸네일 이미지"),
-                fieldWithPath("thumbnail.baseImageUrl").type(STRING).description("레이스 썸네일 이미지 url"),
-                subsectionWithPath("entranceFee").type(OBJECT).description("레이스 입장료")
+                fieldWithPath("certification").type(STRING).description("레이스 인증 예시"),
+                fieldWithPath("thumbnail").type(STRING).description("레이스 썸네일 이미지"),
+                subsectionWithPath("entranceFee").type(STRING).description("레이스 입장료")
             ),
             getErrorResponseFields()
         );

@@ -27,7 +27,7 @@ import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.woowacourse.pelotonbackend.certification.application.CertificationService;
-import com.woowacourse.pelotonbackend.certification.domain.dto.CertificationCreateRequest;
+import com.woowacourse.pelotonbackend.certification.presentation.dto.CertificationCreateRequest;
 import com.woowacourse.pelotonbackend.common.ErrorCode;
 import com.woowacourse.pelotonbackend.docs.CertificationDocumentation;
 import com.woowacourse.pelotonbackend.member.application.MemberService;

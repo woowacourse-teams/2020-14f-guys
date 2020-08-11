@@ -2,7 +2,9 @@ package com.woowacourse.pelotonbackend.member.presentation.dto;
 
 import java.beans.ConstructorProperties;
 
+import com.fasterxml.jackson.databind.PropertyNamingStrategy;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.woowacourse.pelotonbackend.member.domain.Member;
 import com.woowacourse.pelotonbackend.member.domain.Role;
@@ -15,10 +17,10 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 
-@AllArgsConstructor(access = AccessLevel.PRIVATE,
-    onConstructor_ = @ConstructorProperties({"id", "kakaoId", "profile", "name", "email", "cash", "role"}))
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
 @Builder
 @Getter
+@JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class)
 public class MemberResponse {
     private final Long id;
     private final Long kakaoId;

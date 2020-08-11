@@ -3,6 +3,7 @@ package com.woowacourse.pelotonbackend.rider.presentation.dto;
 import java.beans.ConstructorProperties;
 import java.time.LocalDateTime;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.woowacourse.pelotonbackend.rider.domain.Rider;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -14,10 +15,13 @@ import lombok.Getter;
 @Getter
 public class RiderResponse {
     private final Long id;
+
     private final Long memberId;
+
     private final Long raceId;
+
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS")
     private final LocalDateTime createdAt;
-    // todo : 포매터 지정해줘야 하는지 확인 후 적용할 것
 
     public static RiderResponse of(final Rider rider) {
         return RiderResponse.builder()

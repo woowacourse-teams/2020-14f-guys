@@ -1,19 +1,22 @@
-package com.woowacourse.pelotonbackend.infra.login;
+package com.woowacourse.pelotonbackend.infra.login.dto;
 
 import static com.woowacourse.pelotonbackend.member.domain.LoginFixture.*;
 import static org.assertj.core.api.AssertionsForClassTypes.*;
 
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.woowacourse.pelotonbackend.infra.login.dto.KakaoUserResponse;
 
-class KakaoUserResponseTest {
+class KakaoDtoTest {
     private final ObjectMapper objectMapper = new ObjectMapper();
 
+    @DisplayName("KakaoUserResponse가 올바르게 Deserialize되는지 확인한다.")
     @Test
     void JsonToResponse() throws JsonProcessingException {
-        String kakaoApiResponseBody = "{\n"
+        final String kakaoUserResponseBody = "{\n"
             + "    \"id\": 1,\n"
             + "    \"properties\": {\n"
             + "        \"nickname\": \"nickname\",\n"
@@ -29,8 +32,8 @@ class KakaoUserResponseTest {
             + "        },\n"
             + "        \"has_email\": true,\n"
             + "        \"email_needs_agreement\": true,\n"
-            + "        \"is_email_valid\": false,\n"
-            + "        \"is_email_verified\": false,\n"
+            + "        \"email_valid\": false,\n"
+            + "        \"email_verified\": false,\n"
             + "        \"email\": \"jj@woowa.com\",\n"
             + "        \"has_age_range\": true,\n"
             + "        \"age_range_needs_agreement\": true,\n"
@@ -43,8 +46,25 @@ class KakaoUserResponseTest {
             + "        \"gender_needs_agreement\": true\n"
             + "    }\n"
             + "}";
-        final KakaoUserResponse kakaoUserResponse = objectMapper.readValue(kakaoApiResponseBody,
+        final KakaoUserResponse kakaoUserResponse = objectMapper.readValue(kakaoUserResponseBody,
             KakaoUserResponse.class);
         assertThat(kakaoUserResponse).isEqualToComparingFieldByField(createMockKakaoUserResponse());
+    }
+
+    @DisplayName("KakaoTokenResponse가 올바르게 Deserialize되는지 확인한다.")
+    @Test
+    void kakaoTokenResponseTest() throws JsonProcessingException {
+        final String kakaoTokenResponseBody = "{\n"
+            + "\"access_token\":\""+TOKEN+"\",\n"
+            + "\"token_type\":\""+TOKEN_TYPE+"\",\n"
+            + "\"refresh_token\":\""+TOKEN+"\",\n"
+            + "\"expires_in\":"+EXPIRE+",\n"
+            + "\"refresh_token_expires_in\":"+EXPIRE+",\n"
+            + "\"scope\":\""+SCOPE+"\"\n"
+            + "}";
+
+        final KakaoTokenResponse kakaoTokenResponse = objectMapper.readValue(kakaoTokenResponseBody,
+            KakaoTokenResponse.class);
+        assertThat(kakaoTokenResponse).isEqualToComparingFieldByField(createMockKakaoTokenResponse());
     }
 }

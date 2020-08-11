@@ -18,8 +18,6 @@ import lombok.Getter;
 @Builder
 @Getter
 public class MemberCashUpdateRequest {
-    @JsonSerialize(using = CashSerializer.class)
-    @JsonDeserialize(using= CashDeserializer.class)
     @NotNull
     private final Cash cash;
 }

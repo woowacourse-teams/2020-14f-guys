@@ -17,11 +17,11 @@ public class MemberDocumentation {
             getDocumentRequest(),
             getDocumentResponse(),
             requestFields(
-              fieldWithPath("kakaoId").type(NUMBER).description("kakao Id"),
-              subsectionWithPath("profile").description("profile Image Url"),
+              fieldWithPath("kakao_id").type(NUMBER).description("kakao Id"),
+              fieldWithPath("profile").type(STRING).description("profile Image Url"),
               fieldWithPath("name").type(STRING).description("member name"),
               fieldWithPath("email").type(STRING).attributes(getEmailFormat()).description("member email"),
-              subsectionWithPath("cash").type(OBJECT).description("member cash"),
+              fieldWithPath("cash").type(STRING).description("member cash"),
               fieldWithPath("role").type(STRING).attributes(getMemberRoleFormat()).description("member role")
             ),
             responseHeaders(
@@ -43,8 +43,8 @@ public class MemberDocumentation {
             ),
             responseFields(
                 fieldWithPath("id").type(NUMBER).description("Member id"),
-                fieldWithPath("kakaoId").type(NUMBER).description("Member kakao id"),
-                subsectionWithPath("profile").type(OBJECT).description("Member profile image url"),
+                fieldWithPath("kakao_id").type(NUMBER).description("Member kakao id"),
+                subsectionWithPath("profile").type(STRING).description("Member profile image url"),
                 fieldWithPath("name").type(STRING).description("Member name"),
                 fieldWithPath("email").type(STRING).attributes(getEmailFormat()).description("Member email"),
                 subsectionWithPath("cash").type(STRING).description("Member cash"),
@@ -119,7 +119,7 @@ public class MemberDocumentation {
                 headerWithName(HttpHeaders.CONTENT_TYPE).description("Response Content Type 헤더")
             ),
             responseFields(
-                fieldWithPath("imageUrl").type(STRING).description("수정된 이미지 url")
+                fieldWithPath("image_url").type(STRING).description("수정된 이미지 url")
             )
         );
     }

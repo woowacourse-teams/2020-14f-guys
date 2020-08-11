@@ -4,8 +4,8 @@ import static com.woowacourse.pelotonbackend.member.domain.MemberFixture.*;
 
 import org.springframework.web.util.DefaultUriBuilderFactory;
 
-import com.woowacourse.pelotonbackend.infra.login.KakaoTokenResponse;
-import com.woowacourse.pelotonbackend.infra.login.KakaoUserResponse;
+import com.woowacourse.pelotonbackend.infra.login.dto.KakaoTokenResponse;
+import com.woowacourse.pelotonbackend.infra.login.dto.KakaoUserResponse;
 import com.woowacourse.pelotonbackend.member.presentation.dto.MemberResponse;
 import com.woowacourse.pelotonbackend.support.annotation.LoginMember;
 import com.woowacourse.pelotonbackend.vo.Cash;
@@ -49,8 +49,8 @@ public class LoginFixture {
 
     public static KakaoTokenResponse createMockKakaoTokenResponse() {
         return KakaoTokenResponse.builder()
-            .accessToken(ACCESS_TOKEN)
-            .refreshToken(ACCESS_TOKEN)
+            .accessToken(TOKEN)
+            .refreshToken(TOKEN)
             .refreshTokenExpiresIn(EXPIRE)
             .expiresIn(EXPIRE)
             .tokenType(TOKEN_TYPE)
@@ -65,8 +65,8 @@ public class LoginFixture {
             .profileImage(URL)
             .thumbnailImage(URL)
             .hasEmail(ADMIT)
-            .isEmailValid(!ADMIT)
-            .isEmailVerified(!ADMIT)
+            .emailValid(!ADMIT)
+            .emailVerified(!ADMIT)
             .email(EMAIL)
             .emailNeedsAgreement(ADMIT)
             .hasBirthday(ADMIT)
