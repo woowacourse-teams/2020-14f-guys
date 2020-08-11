@@ -8,9 +8,8 @@ import org.junit.jupiter.api.Test;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.woowacourse.pelotonbackend.infra.login.dto.KakaoUserResponse;
 
-class KakaoDtoTest {
+class KakaoUserResponseTest {
     private final ObjectMapper objectMapper = new ObjectMapper();
 
     @DisplayName("KakaoUserResponse가 올바르게 Deserialize되는지 확인한다.")

@@ -10,7 +10,7 @@ import org.junit.jupiter.api.Test;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-class CertificationDtoTest {
+class CertificationCreateRequestTest {
     private final ObjectMapper objectMapper = new ObjectMapper();
 
     @DisplayName("CertificationCreateRequest가 올바르게 Deserialize되는 지 확인한다.")
@@ -19,8 +19,8 @@ class CertificationDtoTest {
         final String requestBody = "{\n"
             + "\"status\":\"SUCCESS\",\n"
             + "\"description\":\"좋은 인증이다..\",\n"
-            + "\"riderId\":\"1\",\n"
-            + "\"missionId\":\"1\"\n"
+            + "\"rider_id\":\"1\",\n"
+            + "\"mission_id\":\"1\"\n"
             + "}";
 
         assertThat(

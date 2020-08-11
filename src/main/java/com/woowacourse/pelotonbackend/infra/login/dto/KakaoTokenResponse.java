@@ -12,7 +12,7 @@ import lombok.Getter;
 @AllArgsConstructor(access = AccessLevel.PRIVATE, onConstructor_ = @ConstructorProperties({"accessToken", "tokenType", "refreshToken", "expiresIn", "refreshTokenExpiresIn", "scope"}))
 @Builder
 @Getter
-@JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class)
+@JsonNaming(value=PropertyNamingStrategy.SnakeCaseStrategy.class)
 public class KakaoTokenResponse {
     private final String accessToken;
     private final String tokenType;

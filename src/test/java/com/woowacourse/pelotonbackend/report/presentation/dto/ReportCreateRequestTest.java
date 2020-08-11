@@ -1,6 +1,5 @@
 package com.woowacourse.pelotonbackend.report.presentation.dto;
 
-import static com.woowacourse.pelotonbackend.race.domain.RaceFixture.*;
 import static org.assertj.core.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -9,11 +8,9 @@ import org.junit.jupiter.api.Test;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.woowacourse.pelotonbackend.race.domain.RaceFixture;
-import com.woowacourse.pelotonbackend.race.presentation.dto.RaceCreateRequest;
 import com.woowacourse.pelotonbackend.report.domain.ReportFixture;
 
-class ReportDtoTest {
+class ReportCreateRequestTest {
     private final ObjectMapper objectMapper = new ObjectMapper();
 
     @DisplayName("ReportCreateRequest가 올바르게 Deserialize되는 지 확인한다.")

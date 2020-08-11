@@ -14,8 +14,8 @@ import lombok.Getter;
 @AllArgsConstructor
 @Builder
 @Getter
-@JsonSerialize(using = KakaoUserResponseSerializer.class)
 @JsonDeserialize(using = KakaoUserResponseDeserializer.class)
+@JsonSerialize(using = KakaoUserResponseSerializer.class)
 public class KakaoUserResponse {
     private final long id;
     private final String nickname;

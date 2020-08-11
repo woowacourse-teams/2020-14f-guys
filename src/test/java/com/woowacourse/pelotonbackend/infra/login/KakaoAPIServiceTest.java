@@ -126,41 +126,8 @@ class KakaoAPIServiceTest {
     @DisplayName("카카오 서버에 요청을 해 Mono 유저 정보를 받아온다.")
     @Test
     void fetchUserInfoTest() {
-        final String kakaoUserResponseBody = "{\n"
-            + "    \"id\": 1,\n"
-            + "    \"properties\": {\n"
-            + "        \"nickname\": \"nickname\",\n"
-            + "        \"profile_image\": \"https://14floorguys.com\",\n"
-            + "        \"thumbnail_image\": \"https://14floorguys.com\"\n"
-            + "    },\n"
-            + "    \"kakao_account\": {\n"
-            + "        \"profile_needs_agreement\": true,\n"
-            + "        \"profile\": {\n"
-            + "            \"nickname\": \"nickname\",\n"
-            + "            \"thumbnail_image_url\": \"https://14floorguys.com\",\n"
-            + "            \"profile_image_url\": \"https://14floorguys.com\"\n"
-            + "        },\n"
-            + "        \"has_email\": true,\n"
-            + "        \"email_needs_agreement\": true,\n"
-            + "        \"is_email_valid\": false,\n"
-            + "        \"is_email_verified\": false,\n"
-            + "        \"email\": \"jj@woowa.com\",\n"
-            + "        \"has_age_range\": true,\n"
-            + "        \"age_range_needs_agreement\": true,\n"
-            + "        \"age_range\": \"20~29\",\n"
-            + "        \"has_birthday\": true,\n"
-            + "        \"birthday_needs_agreement\": true,\n"
-            + "        \"birthday\": \"0429\",\n"
-            + "        \"birthday_type\": \"SOLAR\",\n"
-            + "        \"has_gender\": true,\n"
-            + "        \"gender_needs_agreement\": true\n"
-            + "    }\n"
-            + "}";
-
         StepVerifier.create(kakaoAPIService.fetchUserInfo(createMockKakaoTokenResponse()))
-            .consumeNextWith(body -> {
-                assertThat(body).isEqualToComparingFieldByField(createMockKakaoUserResponse());
-            })
+            .consumeNextWith(body -> assertThat(body).isEqualToComparingFieldByField(createMockKakaoUserResponse()))
             .verifyComplete();
     }
 }
