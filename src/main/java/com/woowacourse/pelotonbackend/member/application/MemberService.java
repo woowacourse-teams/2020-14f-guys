@@ -92,7 +92,7 @@ public class MemberService {
     public MemberResponse findByKakaoId(final Long kakaoId) {
         final Member member = memberRepository.findByKakaoId(kakaoId)
             .orElseThrow(
-                () -> new MemberNotFoundException(String.format("Member(member kakaoId = %d not exist)", kakaoId)));
+                () -> new MemberNotFoundException(String.format("Member(member kakaoId = %d) does not exist", kakaoId)));
         return MemberResponse.from(member);
     }
 

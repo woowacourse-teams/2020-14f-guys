@@ -65,12 +65,12 @@ class LoginMemberArgumentResolverTest {
         final long kakaoId = 1L;
         servletWebRequest.setAttribute("loginMemberKakaoId", String.valueOf(kakaoId), SCOPE_REQUEST);
         given(memberService.findByKakaoId(kakaoId))
-            .willThrow(new MemberNotFoundException(String.format("Member(member kakaoId = %d not exist)", kakaoId)));
+            .willThrow(new MemberNotFoundException(String.format("Member(member kakaoId = %d) does not exist", kakaoId)));
 
         assertThatThrownBy(
             () -> loginMemberArgumentResolver.resolveArgument(methodParameter, null, servletWebRequest, null))
             .isInstanceOf(MemberNotFoundException.class)
-            .hasMessageContaining("Member(member kakaoId = %d not exist)", kakaoId);
+            .hasMessageContaining("Member(member kakaoId = %d) does not exist", kakaoId);
     }
 
     @DisplayName("servletWebRequest attribute에 kakaoId 정보가 없을 때 AssertionError로 예외처리한다.")
