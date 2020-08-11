@@ -195,4 +195,15 @@ class CertificationControllerTest {
             .andExpect(status().isOk())
             .andExpect(header().string("Location", resource));
     }
+
+    @DisplayName("인증한 내용을 ID로 삭제한다.")
+    @Test
+    void deleteById() throws Exception {
+        given(authInterceptor.preHandle(any(), any(), any())).willReturn(true);
+
+        mockMvc.perform(
+            delete("/api/certifications/1")
+        )
+            .andExpect(status().isNoContent());
+    }
 }

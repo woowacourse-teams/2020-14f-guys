@@ -2,10 +2,12 @@ package com.woowacourse.pelotonbackend.query;
 
 import static org.assertj.core.api.Assertions.*;
 
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 class QuerySqlTest {
 
+    @DisplayName("인증, 미션, 레이스를 조인해서 가져오는 쿼리문")
     @Test
     void findCertificationByRaceId() {
         String findCertificationsByRaceId = ""
@@ -23,6 +25,7 @@ class QuerySqlTest {
         assertThat(findCertificationsByRaceId).isEqualTo(QuerySql.findCertificationsByRaceId());
     }
 
+    @DisplayName("갯수를 조회하는 쿼리문")
     @Test
     void countCertificationsByRaceId() {
         String countCertificationsByRaceId = ""

@@ -114,4 +114,11 @@ class CertificationServiceTest {
 
         assertThat(updatedCertificationId).isEqualTo(expectedCertification.getId());
     }
+
+    @DisplayName("ID를 기반으로 인증 사진을 삭제할 수 있다.")
+    @Test
+    void deleteById() {
+        certificationService.deleteById(1L);
+        verify(certificationRepository).deleteById(any());
+    }
 }

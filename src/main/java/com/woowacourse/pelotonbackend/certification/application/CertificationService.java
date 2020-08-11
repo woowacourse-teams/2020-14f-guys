@@ -62,6 +62,10 @@ public class CertificationService {
         return updatedCertification.getId();
     }
 
+    public void deleteById(final Long id) {
+        certificationRepository.deleteById(id);
+    }
+
     private Certification findById(final Long id) {
         return certificationRepository.findById(id)
             .orElseThrow(() -> new CertificationNotFoundException(id));
