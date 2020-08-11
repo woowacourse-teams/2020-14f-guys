@@ -80,4 +80,15 @@ class MemberRepositoryTest {
 
         assertThat(persistMember).isEqualToIgnoringGivenFields(member, "createdAt", "updatedAt");
     }
+
+    @DisplayName("Profile image가 null인 회원도 저장되는지 확인한다")
+    @Test
+    void profileNullMemberCanSave() {
+        final Member member = createWithoutId(KAKAO_ID, EMAIL, NAME)
+            .toBuilder()
+            .profile(null)
+            .build();
+
+        assertThat(memberRepository.save(member).getId()).isNotNull();
+    }
 }
