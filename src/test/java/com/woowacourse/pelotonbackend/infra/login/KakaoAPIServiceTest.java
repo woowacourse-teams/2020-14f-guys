@@ -61,8 +61,6 @@ class KakaoAPIServiceTest {
             .setResponseCode(HttpStatus.OK.value())
             .setBody(objectMapper.writeValueAsString(createMockKakaoUserResponse()));
 
-        System.out.println(objectMapper.writeValueAsString(createMockKakaoUserResponse()));
-
         dispatcher = new Dispatcher() {
             @NotNull
             @Override

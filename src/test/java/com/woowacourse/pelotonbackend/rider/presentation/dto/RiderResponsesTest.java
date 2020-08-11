@@ -14,18 +14,32 @@ import com.woowacourse.pelotonbackend.rider.domain.RiderFixture;
 class RiderResponsesTest {
     private final ObjectMapper objectMapper = new ObjectMapper();
 
-    @DisplayName("RiderResponse가 올바르게 Serialize되는 지 확인한다.")
+    @DisplayName("RiderResponses가 올바르게 Serialize되는 지 확인한다.")
     @Test
-    void riderResponseTest() throws JsonProcessingException {
-        final String responseBody = "{\n"
-            + "\"id\":\"1\",\n"
-            + "\"member_id\":\"1\",\n"
-            + "\"race_id\":\"7\",\n"
-            + "\"created_at\":\"" + TEST_CREATED_DATE_TIME + "\"\n"
+    void riderResponsesTest() throws JsonProcessingException {
+        final String responseBody = "{"
+            + "\"rider_responses\":["
+            + "{"
+            + "\"id\":1,"
+            + "\"member_id\":1,"
+            + "\"race_id\":7,"
+            + "\"created_at\":\"" + TEST_CREATED_DATE_TIME + "\""
+            + "},"
+            + "{"
+            + "\"id\":2,"
+            + "\"member_id\":1,"
+            + "\"race_id\":7,"
+            + "\"created_at\":\"" + TEST_CREATED_DATE_TIME + "\""
+            + "},"
+            + "{"
+            + "\"id\":3,"
+            + "\"member_id\":1,"
+            + "\"race_id\":7,"
+            + "\"created_at\":\"" + TEST_CREATED_DATE_TIME + "\""
+            + "}"
+            + "]"
             + "}";
 
-        final RiderResponse response = objectMapper.readValue(responseBody, RiderResponse.class);
-
-        assertThat(response).isEqualToComparingFieldByField(RiderFixture.createRiderResponse(1L));
+        assertThat(objectMapper.writeValueAsString(createRidersInSameRace())).isEqualTo(responseBody);
     }
 }

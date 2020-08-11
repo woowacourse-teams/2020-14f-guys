@@ -13,7 +13,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 class KakaoTokenResponseTest {
     private final ObjectMapper objectMapper = new ObjectMapper();
 
-    @DisplayName("KakaoTokenResponse가 정상적으로 Serialize되는 지 확인한다.")
+    @DisplayName("KakaoTokenResponse가 정상적으로 Deserialize되는 지 확인한다.")
     @Test
     void JsonToResponse() throws JsonProcessingException {
         final String kakaoTokenResponseBody = "{\n"
