@@ -31,7 +31,7 @@ class LoginMemberArgumentResolverIntegrationTest {
 
     public LoginMemberArgumentResolverIntegrationTest(
         @Value("${secrets.jwt.token.secret-key}") final String secretKey,
-        @Value("${secrets.jwt.token.expire-length}") long expireLength) {
+        @Value("${secrets.jwt.token.expire-length}") final long expireLength) {
         this.jwtTokenProvider = new JwtTokenProvider(secretKey, expireLength);
     }
 
