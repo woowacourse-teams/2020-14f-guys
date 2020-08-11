@@ -9,7 +9,7 @@ import java.util.Arrays;
 import com.woowacourse.pelotonbackend.certification.domain.TimeDuration;
 import com.woowacourse.pelotonbackend.mission.domain.MissionFixture;
 import com.woowacourse.pelotonbackend.race.presentation.dto.RaceCreateRequest;
-import com.woowacourse.pelotonbackend.race.presentation.dto.RaceRetrieveResponse;
+import com.woowacourse.pelotonbackend.race.presentation.dto.RaceResponse;
 import com.woowacourse.pelotonbackend.race.presentation.dto.RaceUpdateRequest;
 import com.woowacourse.pelotonbackend.vo.Cash;
 import com.woowacourse.pelotonbackend.vo.ImageUrl;
@@ -99,8 +99,8 @@ public class RaceFixture {
             .build();
     }
 
-    public static RaceRetrieveResponse retrieveResponse() {
-        return RaceRetrieveResponse.of(createWithId(TEST_RACE_ID));
+    public static RaceResponse retrieveResponse() {
+        return RaceResponse.of(createWithId(TEST_RACE_ID));
     }
 
     public static RaceUpdateRequest updateRequest() {
@@ -115,7 +115,7 @@ public class RaceFixture {
             .build();
     }
 
-    public static RaceRetrieveResponse retrieveUpdatedResponse() {
-        return RaceRetrieveResponse.of(createUpdatedRace());
+    public static RaceResponse retrieveUpdatedResponse() {
+        return RaceResponse.of(createUpdatedRace());
     }
 }

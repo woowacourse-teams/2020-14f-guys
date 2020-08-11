@@ -21,7 +21,7 @@ import com.woowacourse.pelotonbackend.race.domain.RaceCategory;
 import com.woowacourse.pelotonbackend.race.domain.RaceFixture;
 import com.woowacourse.pelotonbackend.race.domain.RaceRepository;
 import com.woowacourse.pelotonbackend.race.presentation.dto.RaceCreateRequest;
-import com.woowacourse.pelotonbackend.race.presentation.dto.RaceRetrieveResponse;
+import com.woowacourse.pelotonbackend.race.presentation.dto.RaceResponse;
 import com.woowacourse.pelotonbackend.race.presentation.dto.RaceUpdateRequest;
 import com.woowacourse.pelotonbackend.support.RandomGenerator;
 
@@ -65,9 +65,9 @@ public class RaceServiceTest {
         final Race race = RaceFixture.createWithUrls(TIME.getCertifications().get(0), TIME.getThumbnails().get(0));
         given(raceRepository.findById(race.getId())).willReturn(Optional.of(race));
 
-        final RaceRetrieveResponse responseBody = raceService.retrieve(race.getId());
+        final RaceResponse responseBody = raceService.retrieve(race.getId());
 
-        assertThat(responseBody).isEqualToComparingFieldByField(RaceRetrieveResponse.of(race));
+        assertThat(responseBody).isEqualToComparingFieldByField(RaceResponse.of(race));
     }
 
     @DisplayName("존재하지 않는 Race를 찾을 때, 예외를 던지는지 테스트합니다.")

@@ -2,6 +2,7 @@ package com.woowacourse.pelotonbackend.rider.domain;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.LongStream;
 
@@ -31,6 +32,20 @@ public class RiderFixture {
 
     public static Rider createMockRider() {
         return Rider.builder().build();
+    }
+
+    public static Rider createRiderBy(final Long memberId, final Long raceId) {
+        return Rider.builder()
+            .id(TEST_RIDER_ID)
+            .memberId(AggregateReference.to(memberId))
+            .raceId(AggregateReference.to(raceId))
+            .build();
+    }
+
+    public static List<Rider> createRidersBy(final Long memberId) {
+        return LongStream.range(1, 5)
+            .mapToObj(it -> createRiderBy(memberId, it))
+            .collect(Collectors.toList());
     }
 
     public static RiderResponse createRiderResponse(final Long id) {
@@ -67,8 +82,8 @@ public class RiderFixture {
     }
 
     public static RiderResponses createRidersInSameRace() {
-        return RiderResponses.of(LongStream.range(1, 4)
+        return LongStream.range(1, 4)
             .mapToObj(RiderFixture::createRiderWithId)
-            .collect(Collectors.toList()));
+            .collect(Collectors.collectingAndThen(Collectors.toList(), RiderResponses::of));
     }
 }

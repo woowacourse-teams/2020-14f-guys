@@ -1,9 +1,8 @@
 package com.woowacourse.pelotonbackend.rider.presentation.dto;
 
-import static java.util.stream.Collectors.*;
-
 import java.beans.ConstructorProperties;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import com.fasterxml.jackson.databind.PropertyNamingStrategy;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
@@ -19,10 +18,8 @@ public class RiderResponses {
     private final List<RiderResponse> riderResponses;
 
     public static RiderResponses of(final List<Rider> riders) {
-        final List<RiderResponse> responses = riders.stream()
+        return riders.stream()
             .map(RiderResponse::of)
-            .collect(toList());
-
-        return new RiderResponses(responses);
+            .collect(Collectors.collectingAndThen(Collectors.toList(), RiderResponses::new));
     }
 }

@@ -9,7 +9,7 @@ import com.woowacourse.pelotonbackend.race.domain.Race;
 import com.woowacourse.pelotonbackend.race.domain.RaceCategory;
 import com.woowacourse.pelotonbackend.race.domain.RaceRepository;
 import com.woowacourse.pelotonbackend.race.presentation.dto.RaceCreateRequest;
-import com.woowacourse.pelotonbackend.race.presentation.dto.RaceRetrieveResponse;
+import com.woowacourse.pelotonbackend.race.presentation.dto.RaceResponse;
 import com.woowacourse.pelotonbackend.race.presentation.dto.RaceUpdateRequest;
 import com.woowacourse.pelotonbackend.support.RandomGenerator;
 import com.woowacourse.pelotonbackend.vo.ImageUrl;
@@ -34,11 +34,11 @@ public class RaceService {
     }
 
     @Transactional(readOnly = true)
-    public RaceRetrieveResponse retrieve(final Long raceId) {
+    public RaceResponse retrieve(final Long raceId) {
         final Race race = raceRepository.findById(raceId)
             .orElseThrow(() -> new RaceNotFoundException(raceId));
 
-        return RaceRetrieveResponse.of(race);
+        return RaceResponse.of(race);
     }
 
     public void update(final Long raceId, final RaceUpdateRequest request) {

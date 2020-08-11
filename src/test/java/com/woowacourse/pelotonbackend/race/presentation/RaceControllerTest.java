@@ -36,7 +36,7 @@ import com.woowacourse.pelotonbackend.member.domain.LoginFixture;
 import com.woowacourse.pelotonbackend.member.presentation.LoginMemberArgumentResolver;
 import com.woowacourse.pelotonbackend.race.application.RaceService;
 import com.woowacourse.pelotonbackend.race.domain.RaceFixture;
-import com.woowacourse.pelotonbackend.race.presentation.dto.RaceRetrieveResponse;
+import com.woowacourse.pelotonbackend.race.presentation.dto.RaceResponse;
 import com.woowacourse.pelotonbackend.race.presentation.dto.RaceUpdateRequest;
 import com.woowacourse.pelotonbackend.support.BearerAuthInterceptor;
 
@@ -113,8 +113,8 @@ class RaceControllerTest {
             .andReturn();
 
         final byte[] contentBytes = result.getResponse().getContentAsByteArray();
-        final RaceRetrieveResponse responseBody = objectMapper.readValue(contentBytes,
-            RaceRetrieveResponse.class);
+        final RaceResponse responseBody = objectMapper.readValue(contentBytes,
+            RaceResponse.class);
 
         assertThat(responseBody).isEqualToComparingFieldByField(RaceFixture.retrieveResponse());
     }

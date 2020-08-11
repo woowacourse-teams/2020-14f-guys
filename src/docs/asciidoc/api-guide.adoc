@@ -64,7 +64,7 @@ Peloton API에서 사용하는 HTTP Verbs는 가능한 범위 내 표준 HTTP와
 | 기존 리소스의 일부를 수정하는 경우
 
 | `DELETE`
-| 기존 리소스를 삭제하는 경
+| 기존 리소스를 삭제하는 경우
 |===
 
 [[http-status-code]]
@@ -212,7 +212,7 @@ operation::certification/create-fail[snippets='http-request,http-response,reques
 === Create Member
 
 
-[[resources-member-create-succcess]]
+[[resources-member-create-success]]
 ==== Success
 operation::member/create-success[snippets='http-request,http-response,request-fields,response-headers']
 
@@ -226,7 +226,7 @@ operation::member/create-fail[snippets='http-request,http-response,request-heade
 === Get Member
 
 
-[[resources-member-get-succcess]]
+[[resources-member-get-success]]
 ==== Success
 operation::member/get-success[snippets='http-request,http-response,request-headers,response-fields']
 
@@ -240,7 +240,7 @@ operation::member/get-fail[snippets='http-request,http-response,request-headers,
 === Get All Members
 
 
-[[resources-member-get-all-succcess]]
+[[resources-member-get-all-success]]
 ==== Success
 operation::member/get-all-success[snippets='http-request,http-response,request-headers,response-fields']
 
@@ -249,7 +249,7 @@ operation::member/get-all-success[snippets='http-request,http-response,request-h
 === Change name
 
 
-[[resources-member-update-name-succcess]]
+[[resources-member-update-name-success]]
 ==== Success
 operation::member/update-name[snippets='http-request,http-response,request-headers,response-headers']
 
@@ -258,7 +258,7 @@ operation::member/update-name[snippets='http-request,http-response,request-heade
 === Change cash
 
 
-[[resources-member-update-cash-succcess]]
+[[resources-member-update-cash-success]]
 ==== Success
 operation::member/update-cash[snippets='http-request,http-response,request-headers,response-headers']
 
@@ -267,7 +267,7 @@ operation::member/update-cash[snippets='http-request,http-response,request-heade
 === Change profile image
 
 
-[[resources-member-update-profile-image-succcess]]
+[[resources-member-update-profile-image-success]]
 ==== Success
 operation::member/update-profile-image[snippets='http-request,http-response,request-headers,response-headers,response-fields']
 
@@ -276,7 +276,7 @@ operation::member/update-profile-image[snippets='http-request,http-response,requ
 === Delete
 
 
-[[resources-member-delete-succcess]]
+[[resources-member-delete-success]]
 ==== Success
 operation::member/delete-success[snippets='http-request,http-response,request-headers']
 
@@ -289,7 +289,7 @@ operation::member/delete-success[snippets='http-request,http-response,request-he
 === Create Race
 
 
-[[resources-race-create-succcess]]
+[[resources-race-create-success]]
 ==== Success
 operation::race/create-success[snippets='http-request,http-response,request-headers,request-fields,response-headers']
 
@@ -303,7 +303,7 @@ operation::race/create-fail[snippets='http-request,http-response,request-headers
 === Get Race
 
 
-[[resources-race-get-succcess]]
+[[resources-race-get-success]]
 ==== Success
 operation::race/get-success[snippets='http-request,http-response,path-parameters,request-headers,response-fields']
 
@@ -317,7 +317,7 @@ operation::race/get-bad-path[snippets='http-request,http-response,request-header
 === Update Race
 
 
-[[resources-race-update-succcess]]
+[[resources-race-update-success]]
 ==== Success
 operation::race/update-success[snippets='http-request,http-response,path-parameters,request-headers,request-fields']
 
@@ -341,7 +341,7 @@ operation::race/update-not-exist[snippets='http-request,http-response,path-param
 === Delete Race
 
 
-[[resources-race-delete-succcess]]
+[[resources-race-delete-success]]
 ==== Success
 operation::race/delete-success[snippets='http-request,http-response,path-parameters,request-headers']
 
@@ -354,7 +354,7 @@ operation::race/delete-success[snippets='http-request,http-response,path-paramet
 === Create Report
 
 
-[[resources-report-create-succcess]]
+[[resources-report-create-success]]
 ==== Success
 operation::report/create-success[snippets='http-request,http-response,request-headers,request-fields,response-headers']
 
@@ -366,7 +366,7 @@ operation::report/create-success[snippets='http-request,http-response,request-he
 === Create Rider
 
 
-[[resources-rider-create-succcess]]
+[[resources-rider-create-success]]
 ==== Success
 operation::rider/create-success[snippets='http-request,http-response,request-headers,request-fields,response-headers']
 
@@ -374,34 +374,44 @@ operation::rider/create-success[snippets='http-request,http-response,request-hea
 === Get Rider
 
 
-[[resources-rider-get-succcess]]
+[[resources-rider-get-success]]
 ==== Success
 operation::rider/get-success[snippets='http-request,http-response,request-headers,response-fields']
 
 [[resources-rider-get-all-in-race]]
 === Get All Riders in Race
 
-[[resources-rider-get-all-in-race-succcess]]
+[[resources-rider-get-all-in-race-success]]
 ==== Success
 operation::rider/get-all-in-race[snippets='http-request,http-response,path-parameters,request-headers,response-fields']
 
 [[resources-rider-get-all-of-member]]
 === Get All Riders of Member
 
-[[resources-rider-get-all-of-member-succcess]]
+[[resources-rider-get-all-of-member-success]]
 ==== Success
 operation::rider/get-all-of-member[snippets='http-request,http-response,path-parameters,request-headers,response-fields']
 
 [[resources-rider-update]]
 === Update Rider
 
-[[resources-rider-update-succcess]]
+[[resources-rider-update-success]]
 ==== Success
 operation::rider/update-success[snippets='http-request,http-response,path-parameters,request-headers,request-fields']
 
 [[resources-rider-delete]]
 === Delete Rider
 
-[[resources-rider-delete-succcess]]
+[[resources-rider-delete-success]]
 ==== Success
 operation::rider/delete-success[snippets='http-request,http-response,path-parameters,request-headers']
+
+[[resources-queries]]
+== Query
+
+[[resources-queries]]
+=== Get Races
+
+[[resources-queries-races-get-success]]
+==== Success
+operation::queries/races/get-success[snippets='http-request,http-response,request-headers,response-fields']
