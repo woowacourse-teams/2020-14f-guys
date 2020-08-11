@@ -8,7 +8,9 @@ import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
+import com.fasterxml.jackson.databind.PropertyNamingStrategy;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.woowacourse.pelotonbackend.certification.domain.TimeDuration;
 import com.woowacourse.pelotonbackend.race.domain.DateDuration;
@@ -28,6 +30,7 @@ import lombok.Getter;
         "certificationAvailableDuration"}))
 @Builder
 @Getter
+@JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class)
 public class RaceCreateRequest {
     @NotBlank
     private final String title;
@@ -48,8 +51,6 @@ public class RaceCreateRequest {
     private final TimeDuration certificationAvailableDuration;
 
     @Valid
-    @JsonSerialize(using = CashSerializer.class)
-    @JsonDeserialize(using = CashDeserializer.class)
     private final Cash entranceFee;
 
     public Race toRace(ImageUrl certification, ImageUrl thumbnail) {

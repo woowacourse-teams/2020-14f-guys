@@ -27,8 +27,6 @@ public class MemberResponse {
     private final ImageUrl profile;
     private final String name;
     private final String email;
-    @JsonSerialize(using = CashSerializer.class)
-    @JsonDeserialize(using= CashDeserializer.class)
     private final Cash cash;
     private final Role role;
 

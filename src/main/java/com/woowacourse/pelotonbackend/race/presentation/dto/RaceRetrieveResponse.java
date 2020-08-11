@@ -2,6 +2,8 @@ package com.woowacourse.pelotonbackend.race.presentation.dto;
 
 import java.beans.ConstructorProperties;
 
+import com.fasterxml.jackson.databind.PropertyNamingStrategy;
+import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import com.woowacourse.pelotonbackend.race.domain.DateDuration;
 import com.woowacourse.pelotonbackend.race.domain.Race;
 import com.woowacourse.pelotonbackend.race.domain.RaceCategory;
@@ -18,6 +20,7 @@ import lombok.Getter;
         {"id", "title", "description", "thumbnail", "certificationExample", "raceDuration", "category", "cash"}))
 @Builder
 @Getter
+@JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class)
 public class RaceRetrieveResponse {
     private final Long id;
 
@@ -30,7 +33,7 @@ public class RaceRetrieveResponse {
     private final ImageUrl certificationExample;
 
     private final DateDuration raceDuration;
-
+    // TODO: 2020/08/09 DateDuration 타입에 대해 고민 -> Front로부터 unpack해서 받을 지 packing해서 받을 지
     private final RaceCategory category;
 
     private final Cash entranceFee;

@@ -5,7 +5,9 @@ import java.time.LocalDate;
 
 import javax.validation.constraints.FutureOrPresent;
 
+import com.fasterxml.jackson.databind.PropertyNamingStrategy;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.woowacourse.pelotonbackend.support.jsonparser.LocalDateDeserializer;
 import com.woowacourse.pelotonbackend.support.jsonparser.LocalDateSerializer;
@@ -14,6 +16,7 @@ import lombok.Value;
 
 @RequiredArgsConstructor(onConstructor_ = @ConstructorProperties({"startDate", "endDate"}))
 @Value
+@JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class)
 public class DateDuration {
     @FutureOrPresent
     @JsonSerialize(using = LocalDateSerializer.class)
