@@ -17,6 +17,7 @@ public class RiderFixture {
     public static final Long TEST_MEMBER_ID = 1L;
     public static final Long TEST_CHANGED_RACE_ID = 8L;
     public static final Long TEST_CHANGED_MEMBER_ID = 11L;
+    public static final LocalDateTime TEST_CREATED_DATE_TIME = LocalDateTime.now();
     public static final int RIDER_NUMBER = 4;
 
     public static RiderCreateRequest createMockRequest() {
@@ -36,6 +37,7 @@ public class RiderFixture {
             .id(id)
             .memberId(TEST_MEMBER_ID)
             .raceId(TEST_RACE_ID)
+            .createdAt(TEST_CREATED_DATE_TIME)
             .build();
     }
 
@@ -44,8 +46,7 @@ public class RiderFixture {
             .id(id)
             .raceId(AggregateReference.to(TEST_RACE_ID))
             .memberId(AggregateReference.to(TEST_MEMBER_ID))
-            .createdAt(LocalDateTime.now())
-            .updatedAt(LocalDateTime.now())
+            .createdAt(TEST_CREATED_DATE_TIME)
             .build();
     }
 
@@ -65,7 +66,7 @@ public class RiderFixture {
     }
 
     public static RiderResponses createRidersInSameRace() {
-        return RiderResponses.of(LongStream.range(1, 5)
+        return RiderResponses.of(LongStream.range(1, 4)
             .mapToObj(RiderFixture::createRiderWithId)
             .collect(Collectors.toList()));
     }

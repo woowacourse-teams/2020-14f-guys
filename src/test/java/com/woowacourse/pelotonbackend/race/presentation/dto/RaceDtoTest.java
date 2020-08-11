@@ -21,25 +21,6 @@ import com.woowacourse.pelotonbackend.vo.Cash;
 class RaceDtoTest {
     private final ObjectMapper objectMapper = new ObjectMapper();
 
-    @DisplayName("RaceCreateRequest가 올바르게 Deserialize되는 지 확인한다.")
-    @Test
-    void raceCreateRequestTest() throws JsonProcessingException {
-        final String inputJsonString = "{"
-            + "\"title\":\"14층 녀석들 기상 레이스\","
-            + "\"category\":\"TIME\","
-            + "\"description\":\"아침 6시에 일어나보자!\","
-            + "\"entrance_fee\":\"20000\","
-            + "\"race_duration\":{"
-            + "\"start_date\":\""+TEST_START_TIME+"\","
-            + "\"end_date\":\""+TEST_END_TIME+"\""
-            + "}"
-            + "}";
-
-        final RaceCreateRequest request = objectMapper.readValue(inputJsonString, RaceCreateRequest.class);
-
-        assertThat(request).isEqualToComparingFieldByField(RaceFixture.createMockRequest());
-    }
-
     @DisplayName("RaceRetrieveResponse가 올바르게 Serialize되는 지 확인한다.")
     @Test
     void RaceRetrieveResponseTest() throws JsonProcessingException {

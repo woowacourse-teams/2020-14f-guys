@@ -218,7 +218,7 @@ class RaceControllerTest {
         mockMvc.perform(put(RACE_API_URL + "/{id}", notExistRaceId)
             .header(HttpHeaders.AUTHORIZATION, LoginFixture.getTokenHeader())
             .contentType(MediaType.APPLICATION_JSON)
-            .content(objectMapper.writeValueAsBytes(RaceFixture.createUpdatedRace()))
+            .content(objectMapper.writeValueAsBytes(RaceFixture.updateRequest()))
         )
             .andExpect(status().isNotFound())
         .andDo(RaceDocumentation.updateNotExistRace());

@@ -19,10 +19,10 @@ public class ReportDocumentation {
                 headerWithName(HttpHeaders.AUTHORIZATION).description("사용자 인증 Access Token 헤더")
             ),
             requestFields(
-                fieldWithPath("reportType").type(STRING).attributes(getReportTypeFormat()).description("Report 종류"),
+                fieldWithPath("report_type").type(STRING).attributes(getReportTypeFormat()).description("Report 종류"),
                 fieldWithPath("description").type(STRING).description("Report 상세내용"),
-                fieldWithPath("reportMemberId").type(NUMBER).description("신고하는 Member ID"),
-                fieldWithPath("certificationId").type(NUMBER).description("신고하는 Certification ID")
+                fieldWithPath("report_member_id").type(NUMBER).description("신고하는 Member ID"),
+                fieldWithPath("certification_id").type(NUMBER).description("신고하는 Certification ID")
             ),
             responseHeaders(
                 headerWithName(HttpHeaders.LOCATION).description("Resource의 Location 헤더")
