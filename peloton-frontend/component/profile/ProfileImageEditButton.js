@@ -5,12 +5,13 @@ import { userInfoState, userTokenState } from "../atoms";
 import Axios from "axios";
 import { SERVER_BASE_URL } from "../../utils/constants";
 import * as ImagePicker from "expo-image-picker";
+import { MemberApi } from "../../utils/api/MemberApi";
 
 const ProfileImageEditButton = ({ children }) => {
   const [userInfo, setUserInfo] = useRecoilState(userInfoState);
   const token = useRecoilValue(userTokenState);
 
-  const requestChangeImage = (selectedImage) => {
+  const requestChangeImage = async (selectedImage) => {
     const formData = new FormData();
     formData.append("profile_image", {
       uri: selectedImage,
@@ -22,7 +23,12 @@ const ProfileImageEditButton = ({ children }) => {
         "Content-Type": "multipart/form-data",
         Authorization: `Bearer ${token}`,
       },
-    }).catch((err) => alert(err));
+    })
+      .then(async () => {
+        const newMemberInfo = await MemberApi.get(token);
+        setUserInfo(newMemberInfo);
+      })
+      .catch((err) => alert(err));
   };
 
   const pickAndChangeProfileImage = async () => {
@@ -44,7 +50,7 @@ const ProfileImageEditButton = ({ children }) => {
       const pickerResult = await ImagePicker.launchImageLibraryAsync({
         allowsEditing: true,
         aspect: [4, 3],
-        quality: 0.1,
+        quality: 0.01,
         base64: true,
       });
       if (pickerResult.cancelled === true) {

@@ -12,7 +12,11 @@ const ProfileDetail = () => {
     <View style={styles.container}>
       <View style={styles.memberContainer}>
         <ImageBackground
-          source={{ url: userInfo.profile }}
+          source={
+            userInfo.profile
+              ? { url: userInfo.profile }
+              : require("../../../assets/noru.jpeg")
+          }
           style={styles.background}
           blurRadius={6}
         >
