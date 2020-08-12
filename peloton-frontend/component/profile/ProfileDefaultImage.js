@@ -5,7 +5,7 @@ const ProfileDefaultImage = () => {
   return (
     <Image
       style={styles.profileImage}
-      source={require("../../assets/noru.jpeg")}
+      source={require("../../assets/default-profile.jpg")}
     />
   );
 };

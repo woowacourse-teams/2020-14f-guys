@@ -16,7 +16,7 @@ const ProfileImageSelect = () => {
           source={
             userInfo.profile
               ? { uri: userInfo.profile }
-              : require("../../assets/noru.jpeg")
+              : require("../../assets/default-profile.jpg")
           }
         />
         <View style={styles.cameraIcon}>

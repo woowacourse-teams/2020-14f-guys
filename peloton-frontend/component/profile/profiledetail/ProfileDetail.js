@@ -15,7 +15,7 @@ const ProfileDetail = () => {
           source={
             userInfo.profile
               ? { url: userInfo.profile }
-              : require("../../../assets/noru.jpeg")
+              : require("../../../assets/default-profile.jpg")
           }
           style={styles.background}
           blurRadius={6}
