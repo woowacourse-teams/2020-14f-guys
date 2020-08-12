@@ -15,7 +15,7 @@ import { RaceApi } from "../../../utils/api/RaceApi";
 
 const InputRaceInfo = () => {
   // eslint-disable-next-line prettier/prettier
-  const { title, description, start_date, end_date, category, entrance_fee, days, start_time, end_time } = useRecoilValue(
+  const { title, description, start_date, end_date, category, entrance_fee, mission_start_time, mission_end_time } = useRecoilValue(
     raceCreateInfoState);
   const resetRaceCreateInfo = useResetRecoilState(raceCreateInfoState);
   const [loading, setGlobalLoading] = useRecoilState(loadingState);
@@ -34,8 +34,8 @@ const InputRaceInfo = () => {
       },
       days,
       certification_available_duration: {
-        start_time,
-        end_time,
+        start_time: mission_start_time,
+        end_time: mission_end_time,
       },
     };
   };

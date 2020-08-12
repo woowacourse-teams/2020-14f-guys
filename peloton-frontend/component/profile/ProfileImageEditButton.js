@@ -3,7 +3,10 @@ import { Alert, Linking, TouchableOpacity } from "react-native";
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import * as ImagePicker from "expo-image-picker";
 import { MemberApi } from "../../utils/api/MemberApi";
-import { memberInfoState, memberTokenState } from "../../state/member/MemberState";
+import {
+  memberInfoState,
+  memberTokenState,
+} from "../../state/member/MemberState";
 import { loadingState } from "../../state/loading/LoadingState";
 
 const ProfileImageEditButton = ({ children }) => {
@@ -51,9 +54,9 @@ const ProfileImageEditButton = ({ children }) => {
       const pickerResult = await ImagePicker.launchImageLibraryAsync({
         allowsEditing: true,
         aspect: [4, 3],
-        quality: 0.01,
         base64: true,
       });
+
       if (pickerResult.cancelled === true) {
         console.log("cameraroll picker cancelled");
         setIsLoading(false);

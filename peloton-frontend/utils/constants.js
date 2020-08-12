@@ -121,3 +121,9 @@ export const DEEP_LINK_BASE_URL = Linking.makeUrl("/");
 export const AnimatedImage = animated(Image);
 export const AnimatedView = animated(View);
 export const AnimatedText = animated(Text);
+
+export const RaceCreatUnitType = {
+  TEXT: "text",
+  DATE: "date",
+  TIME: "time",
+};
