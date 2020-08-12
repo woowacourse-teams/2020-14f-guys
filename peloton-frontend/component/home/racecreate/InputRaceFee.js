@@ -5,21 +5,20 @@ import { useNavigation } from "@react-navigation/native";
 import Axios from "axios";
 
 import RaceCreateUnit from "./RaceCreateUnit";
-import { raceCreateInfoState } from "../../../state/race/CreateState";
+import { raceCreateInfoState } from "../../../state/race/RaceState";
 import { COLOR, SERVER_BASE_URL } from "../../../utils/constants";
 import { loadingState } from "../../../state/loading/LoadingState";
 import LoadingIndicator from "../../../utils/LoadingIndicator";
-import { userTokenState } from "../../atoms";
 import RaceCreateView from "./RaceCreateView";
 import { navigateWithHistory } from "../../../utils/util";
+import { memberTokenState } from "../../../state/member/MemberState";
 
 const InputRaceInfo = () => {
   // eslint-disable-next-line prettier/prettier
-  const { title, description, start_date, end_date, category, entrance_fee } = useRecoilValue(
-    raceCreateInfoState);
+  const {title, description, start_date, end_date, category, entrance_fee, days, certification_available_duration} = useRecoilValue(raceCreateInfoState);
   const resetRaceCreateInfo = useResetRecoilState(raceCreateInfoState);
   const [loading, setGlobalLoading] = useRecoilState(loadingState);
-  const token = useRecoilValue(userTokenState);
+  const token = useRecoilValue(memberTokenState);
   const navigation = useNavigation();
 
   const formatPostRaceBody = () => {

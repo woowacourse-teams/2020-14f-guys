@@ -1,15 +1,15 @@
 import React from "react";
 import { Alert, Linking, TouchableOpacity } from "react-native";
 import { useRecoilState, useRecoilValue } from "recoil";
-import { userInfoState, userTokenState } from "../atoms";
 import Axios from "axios";
 import { SERVER_BASE_URL } from "../../utils/constants";
 import * as ImagePicker from "expo-image-picker";
 import { MemberApi } from "../../utils/api/MemberApi";
+import { memberInfoState, memberTokenState } from "../../state/member/MemberState";
 
 const ProfileImageEditButton = ({ children }) => {
-  const [userInfo, setUserInfo] = useRecoilState(userInfoState);
-  const token = useRecoilValue(userTokenState);
+  const [userInfo, setUserInfo] = useRecoilState(memberInfoState);
+  const token = useRecoilValue(memberTokenState);
 
   const requestChangeImage = async (selectedImage) => {
     const formData = new FormData();
@@ -44,7 +44,7 @@ const ProfileImageEditButton = ({ children }) => {
           },
           { text: "OK", onPress: async () => await Linking.openSettings() },
         ],
-        { cancelable: false },
+        { cancelable: false }
       );
     } else {
       const pickerResult = await ImagePicker.launchImageLibraryAsync({

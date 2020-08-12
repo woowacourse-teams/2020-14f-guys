@@ -10,28 +10,29 @@ import {
 } from "react-native";
 import { COLOR } from "../../../utils/constants";
 import { useRecoilValue, useSetRecoilState } from "recoil";
-import { userInfoState, userTokenState } from "../../atoms";
 import { useNavigation } from "@react-navigation/core";
 import { MemberApi } from "../../../utils/api/MemberApi";
+import { memberInfoState, memberTokenState } from "../../../state/member/MemberState";
 
 const CashUpdate = () => {
   const [cash, setCash] = React.useState(5000);
-  const token = useRecoilValue(userTokenState);
+  const token = useRecoilValue(memberTokenState);
   const navigation = useNavigation();
-  const setUserInfo = useSetRecoilState(userInfoState);
-  const userInfo = useRecoilValue(userInfoState);
+  const setUserInfo = useSetRecoilState(memberInfoState);
+  const userInfo = useRecoilValue(memberInfoState);
 
   const requestChangeCash = async () => {
     try {
       await MemberApi.patchCash(
         token,
-        `${Number(userInfo.cash) + Number(cash)}`
+        `${Number(userInfo.cash) + Number(cash)}`,
       );
       const response = await MemberApi.get(token);
       setUserInfo(response);
       navigation.navigate("ProfileEdit");
     } catch (error) {
       alert("에러가 발생했습니다.");
+      console.log(error);
     }
   };
 

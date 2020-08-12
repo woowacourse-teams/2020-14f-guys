@@ -1,29 +1,17 @@
 import React, { useState } from "react";
-import {
-  Modal,
-  SafeAreaView,
-  StyleSheet,
-  TouchableOpacity,
-  View,
-} from "react-native";
+import { Modal, SafeAreaView, StyleSheet, TouchableOpacity, View } from "react-native";
 import KakaoLoginWebView from "./KakaoLoginWebView";
 import LoginTitle from "./LoginTitle";
 import * as AppleAuthentication from "expo-apple-authentication";
 import { animated, useSpring } from "react-spring";
-import {
-  AnimatedImage,
-  COLOR,
-  SERVER_BASE_URL,
-  TOKEN_STORAGE,
-} from "../../utils/constants";
+import { AnimatedImage, COLOR, TOKEN_STORAGE } from "../../utils/constants";
 import AsyncStorage from "@react-native-community/async-storage";
 import { useSetRecoilState } from "recoil";
-import { userInfoState, userTokenState } from "../atoms";
 import { useNavigation } from "@react-navigation/core";
-import Axios from "axios";
 import LoadingIndicator from "../../utils/LoadingIndicator";
 import { loadingState } from "../../state/loading/LoadingState";
-import { navigateWithoutHistory } from "../../utils/util";
+import { MemberApi, navigateWithoutHistory } from "../../utils/util";
+import { memberInfoState, memberTokenState } from "../../state/member/MemberState";
 
 const AnimatedAppleButton = animated(
   AppleAuthentication.AppleAuthenticationButton,
@@ -31,10 +19,10 @@ const AnimatedAppleButton = animated(
 
 const Login = () => {
   const [modalVisible, setModalVisible] = useState(false);
-  const setToken = useSetRecoilState(userTokenState);
-  const setUserInfo = useSetRecoilState(userInfoState);
-  const navigation = useNavigation();
+  const setToken = useSetRecoilState(memberTokenState);
+  const setUserInfo = useSetRecoilState(memberInfoState);
   const setIsLoading = useSetRecoilState(loadingState);
+  const navigation = useNavigation();
 
   const toggleModal = () => {
     setModalVisible(!modalVisible);
@@ -46,15 +34,8 @@ const Login = () => {
     if (token) {
       setToken(token);
       try {
-        const response = await Axios({
-          method: "GET",
-          baseURL: SERVER_BASE_URL,
-          url: "/api/members",
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
-        setUserInfo(response.data);
+        const response = await MemberApi.get(token);
+        setUserInfo(response);
         navigateWithoutHistory(navigation, "ApplicationNavigationRoot");
       } catch (error) {
         toggleModal();

@@ -3,10 +3,10 @@ import { Alert, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import Axios from "axios";
 import { COLOR, SERVER_BASE_URL } from "../../../utils/constants";
 import { useRecoilValue } from "recoil";
-import { userTokenState } from "../../atoms";
+import { memberTokenState } from "../../../state/member/MemberState";
 
 const UnregisterButtonContainer = ({ navigation }) => {
-  const token = useRecoilValue(userTokenState);
+  const token = useRecoilValue(memberTokenState);
 
   const requestUnregister = () => {
     Axios.delete(`${SERVER_BASE_URL}/api/members`, {

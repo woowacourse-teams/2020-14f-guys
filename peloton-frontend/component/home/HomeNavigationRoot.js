@@ -8,8 +8,7 @@ import ShareButton from "./race/ShareButton";
 import InputRaceInfo from "./racecreate/InputRaceInfo";
 import InputRaceDates from "./racecreate/InputRaceDates";
 import InputRaceFee from "./racecreate/InputRaceFee";
-import * as HeaderStyleInterpolators from "@react-navigation/stack/src/TransitionConfigs/HeaderStyleInterpolators";
-import * as TransitionPresets from "@react-navigation/stack/src/TransitionConfigs/TransitionPresets";
+import RaceDeepLinkPage from "./race/RaceDeepLinkPage";
 
 const HomeStack = createStackNavigator();
 
@@ -31,7 +30,7 @@ const HomeNavigationRoot = () => {
           headerTransparent: true,
           headerTitle: false,
           headerLeft: false,
-          headerRight: () => <ShareButton />,
+          headerRight: () => <ShareButton/>,
         }}
       />
       <HomeStack.Screen
@@ -53,6 +52,11 @@ const HomeNavigationRoot = () => {
         name="InputRaceFee"
         component={InputRaceFee}
         options={{ title: "레이스 입장료 입력" }}
+      />
+      <HomeStack.Screen
+        name="RaceDeepLinkPage"
+        component={RaceDeepLinkPage}
+        options={{ title: "레이스 입장", headerShown: false }}
       />
     </HomeStack.Navigator>
   );

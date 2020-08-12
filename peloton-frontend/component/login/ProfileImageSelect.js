@@ -2,11 +2,11 @@ import React from "react";
 import { Image, StyleSheet, View } from "react-native";
 import { Entypo } from "@expo/vector-icons";
 import ProfileImageEditButton from "../profile/ProfileImageEditButton";
-import { useRecoilValue } from "recoil/dist";
-import { userInfoState } from "../atoms";
+import { useRecoilValue } from "recoil";
+import { memberInfoState } from "../../state/member/MemberState";
 
 const ProfileImageSelect = () => {
-  const userInfo = useRecoilValue(userInfoState);
+  const userInfo = useRecoilValue(memberInfoState);
 
   return (
     <View style={styles.container}>
@@ -20,7 +20,7 @@ const ProfileImageSelect = () => {
           }
         />
         <View style={styles.cameraIcon}>
-          <Entypo name="camera" size={24} color="black" />
+          <Entypo name="camera" size={24} color="black"/>
         </View>
       </ProfileImageEditButton>
     </View>

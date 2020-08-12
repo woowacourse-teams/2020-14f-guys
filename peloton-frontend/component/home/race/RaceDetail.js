@@ -1,48 +1,43 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { ScrollView, StyleSheet } from "react-native";
 import RaceDetailInfo from "./RaceDetailInfo";
 import RaceCertificationImage from "./RaceCertificationImage";
 import RaceSpec from "./RaceSpec";
 import { useRecoilValue, useSetRecoilState } from "recoil";
-import { userTokenState } from "../../atoms";
 import { loadingState } from "../../../state/loading/LoadingState";
 import Axios from "axios";
 import { COLOR, SERVER_BASE_URL } from "../../../utils/constants";
+import { useRecoilState } from "recoil/dist";
+import { memberTokenState } from "../../../state/member/MemberState";
+import { raceInfoState } from "../../../state/race/RaceState";
 
 const calculateTotalCash = (cash) => {
   return cash * 10;
 };
 
 const RaceDetail = ({ route }) => {
-  const token = useRecoilValue(userTokenState);
+  const token = useRecoilValue(memberTokenState);
   const setIsLoading = useSetRecoilState(loadingState);
   const raceId = route.params.location.split("/")[3];
-  const [raceInfo, setRaceInfo] = useState({
-    id: "",
-    title: "",
-    description: "",
-    thumbnail: "",
-    certification_example: "",
-    race_duration: "",
-    category: "",
-    entrance_fee: "",
-    time_duration: "",
-  });
+  const [raceInfo, setRaceInfo] = useRecoilState(raceInfoState);
 
   useEffect(() => {
-    const fetchRace = async () => {
-      setIsLoading(true);
-      const response = await Axios({
-        method: "GET",
-        baseURL: SERVER_BASE_URL,
-        url: `api/races/${raceId}`,
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-      setRaceInfo(response.data);
-    };
-    fetchRace();
+    if(!raceInfo) {
+      const fetchRace = async () => {
+        setIsLoading(true);
+        const response = await Axios({
+          method: "GET",
+          baseURL: SERVER_BASE_URL,
+          url: `api/races/${raceId}`,
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        setRaceInfo(response.data);
+      };
+      fetchRace();
+    }
+    console.log(raceInfo);
     setIsLoading(false);
   }, []);
 

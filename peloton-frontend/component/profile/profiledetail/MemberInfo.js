@@ -4,13 +4,13 @@ import ProfileImage from "../ProfileImage";
 import MemberInfoDetail from "./MemberInfoDetail";
 import CustomButton from "../CustomButton";
 import { useNavigation } from "@react-navigation/core";
-import { useRecoilValue } from "recoil/dist";
-import { userInfoState } from "../../atoms";
 import ProfileDefaultImage from "../ProfileDefaultImage";
+import { useRecoilValue } from "recoil";
+import { memberInfoState } from "../../../state/member/MemberState";
 
 const MemberInfo = () => {
   const navigation = useNavigation();
-  const userInfo = useRecoilValue(userInfoState);
+  const userInfo = useRecoilValue(memberInfoState);
 
   return (
     <View style={styles.memberInfo}>

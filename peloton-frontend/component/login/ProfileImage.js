@@ -3,11 +3,11 @@ import { Alert, Image, Linking, StyleSheet, TouchableOpacity, View } from "react
 import * as ImagePicker from "expo-image-picker";
 import { Entypo } from "@expo/vector-icons";
 import { useRecoilState } from "recoil";
-import { userInfoState } from "../atoms";
 import { COLOR } from "../../utils/constants";
+import { memberInfoState } from "../../state/member/MemberState";
 
 const ProfileImage = () => {
-  const [userInfo, setUserInfo] = useRecoilState(userInfoState);
+  const [userInfo, setUserInfo] = useRecoilState(memberInfoState);
 
   const openImagePickerAsync = async () => {
     const permissionResult = await ImagePicker.requestCameraRollPermissionsAsync();

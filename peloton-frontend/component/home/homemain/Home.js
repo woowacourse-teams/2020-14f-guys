@@ -3,29 +3,34 @@ import { ScrollView, StyleSheet, View } from "react-native";
 
 import RaceList from "./RaceList";
 import HomeBanner from "./HomeBanner";
-import Axios from "axios";
-import { COLOR, SERVER_BASE_URL } from "../../../utils/constants";
-import { useRecoilValue, useSetRecoilState } from "recoil/dist";
-import { userInfoState, userTokenState } from "../../atoms";
+import { COLOR, TOKEN_STORAGE } from "../../../utils/constants";
+import { useRecoilValue, useSetRecoilState } from "recoil";
 import { loadingState } from "../../../state/loading/LoadingState";
+import { navigateWithoutHistory } from "../../../utils/util";
+import AsyncStorage from "@react-native-community/async-storage";
+import { useNavigation } from "@react-navigation/core";
+import { MemberApi } from "../../../utils/api/MemberApi";
+import { memberInfoState, memberTokenState } from "../../../state/member/MemberState";
 
-const Home = () => {
-  const setUserInfo = useSetRecoilState(userInfoState);
+const Home = ({ route }) => {
+  const setUserInfo = useSetRecoilState(memberInfoState);
+  const token = useRecoilValue(memberTokenState);
   const setIsLoading = useSetRecoilState(loadingState);
-  const token = useRecoilValue(userTokenState);
+  const navigation = useNavigation();
 
   useEffect(() => {
+    setIsLoading(true);
     const fetchUser = async () => {
-      setIsLoading(true);
-      const response = await Axios({
-        method: "GET",
-        baseURL: SERVER_BASE_URL,
-        url: "/api/members",
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-      setUserInfo(response.data);
+      const storageToken = await AsyncStorage.getItem(TOKEN_STORAGE);
+      if (!storageToken) {
+        await AsyncStorage.setItem(TOKEN_STORAGE, token);
+      }
+      if (!token) {
+        alert("비정상적인 접근입니다.");
+        navigateWithoutHistory(navigation, "Login");
+      }
+      const userInfo = await MemberApi.get(token);
+      setUserInfo(userInfo);
     };
     fetchUser();
     setIsLoading(false);

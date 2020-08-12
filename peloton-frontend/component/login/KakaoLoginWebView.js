@@ -3,14 +3,14 @@ import { StyleSheet, View } from "react-native";
 import WebView from "react-native-webview";
 import { COLOR, SERVER_BASE_URL } from "../../utils/constants";
 import { useSetRecoilState } from "recoil";
-import { userTokenState } from "../atoms";
 import { useNavigation } from "@react-navigation/core";
 import { navigateWithoutHistory } from "../../utils/util";
 import WebViewCloseButton from "./WebViewCloseButton";
+import { memberTokenState } from "../../state/member/MemberState";
 
 const KakaoLoginWebView = ({ toggleModal }) => {
   const navigation = useNavigation();
-  const setToken = useSetRecoilState(userTokenState);
+  const setToken = useSetRecoilState(memberTokenState);
 
   const onNavigationStateChange = (webViewState) => {
     const url = webViewState.url;

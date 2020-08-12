@@ -2,13 +2,13 @@ import React from "react";
 import ProfileImage from "../ProfileImage";
 import { Image, StyleSheet, View } from "react-native";
 import ProfileImageEditButton from "../ProfileImageEditButton";
-import { useRecoilValue } from "recoil/dist";
-import { userInfoState } from "../../atoms";
+import { useRecoilValue } from "recoil";
 import { COLOR } from "../../../utils/constants";
 import ProfileDefaultImage from "../ProfileDefaultImage";
+import { memberInfoState } from "../../../state/member/MemberState";
 
 const ProfileImageEdit = () => {
-  const userInfo = useRecoilValue(userInfoState);
+  const userInfo = useRecoilValue(memberInfoState);
 
   return (
     <View style={styles.imageContainer}>

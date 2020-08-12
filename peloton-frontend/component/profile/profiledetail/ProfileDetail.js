@@ -2,11 +2,11 @@ import React from "react";
 import { ImageBackground, StyleSheet, View } from "react-native";
 import MemberInfo from "./MemberInfo";
 import { useRecoilValue } from "recoil";
-import { userInfoState } from "../../atoms";
 import { COLOR } from "../../../utils/constants";
+import { memberInfoState } from "../../../state/member/MemberState";
 
 const ProfileDetail = () => {
-  const userInfo = useRecoilValue(userInfoState);
+  const userInfo = useRecoilValue(memberInfoState);
 
   return (
     <View style={styles.container}>

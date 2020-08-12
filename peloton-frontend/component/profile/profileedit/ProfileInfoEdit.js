@@ -1,16 +1,15 @@
 import React, { useState } from "react";
 import { Image, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
 import Axios from "axios";
-import { useRecoilValue } from "recoil";
-import { userInfoState, userTokenState } from "../../atoms";
+import { useRecoilValue, useSetRecoilState } from "recoil";
 import { useNavigation } from "@react-navigation/core";
 import { SERVER_BASE_URL } from "../../../utils/constants";
-import { useSetRecoilState } from "recoil/dist";
+import { memberInfoState, memberTokenState } from "../../../state/member/MemberState";
 
 const ProfileEditInfo = () => {
-  const userInfo = useRecoilValue(userInfoState);
-  const setUserInfo = useSetRecoilState(userInfoState);
-  const token = useRecoilValue(userTokenState);
+  const userInfo = useRecoilValue(memberInfoState);
+  const setUserInfo = useSetRecoilState(memberInfoState);
+  const token = useRecoilValue(memberTokenState);
   const navigation = useNavigation();
 
   const [name, setName] = useState(userInfo.name);
