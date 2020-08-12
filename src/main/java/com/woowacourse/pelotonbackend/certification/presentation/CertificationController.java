@@ -42,19 +42,22 @@ public class CertificationController {
         return ResponseEntity.created(URI.create(String.format("/api/certifications/%d", certificationId))).build();
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<CertificationResponse> retrieveById(@PathVariable Long id) {
-        return ResponseEntity.ok(certificationService.retrieveById(id));
-    }
 
     @GetMapping("/riders/{riderId}")
-    public ResponseEntity<CertificationResponses> retrieveByRiderId(@PathVariable Long riderId, Pageable pageable) {
+    public ResponseEntity<CertificationResponses> retrieveByRiderId(@PathVariable final Long riderId, final Pageable pageable) {
         return ResponseEntity.ok(certificationService.retrieveByRiderId(riderId, pageable));
     }
 
+
+    @GetMapping("/{id}")
+    public ResponseEntity<CertificationResponse> retrieveById(@PathVariable final Long id) {
+        return ResponseEntity.ok(certificationService.retrieveById(id));
+    }
+
+
     @PatchMapping("/descriptions/{id}")
-    public ResponseEntity<Void> updateDescription(@PathVariable Long id,
-        @RequestBody @Valid CertificationDescriptionUpdateRequest request) {
+    public ResponseEntity<Void> updateDescription(@PathVariable final Long id,
+        @RequestBody @Valid final CertificationDescriptionUpdateRequest request) {
 
         return ResponseEntity.ok()
             .location(URI.create("/api/certifications/descriptions/" + certificationService.updateDescription(id, request)))
@@ -62,8 +65,8 @@ public class CertificationController {
     }
 
     @PatchMapping("/status/{id}")
-    public ResponseEntity<Void> updateDescription(@PathVariable Long id,
-        @RequestBody @Valid CertificationStatusUpdateRequest request) {
+    public ResponseEntity<Void> updateDescription(@PathVariable final Long id,
+        @RequestBody @Valid final CertificationStatusUpdateRequest request) {
 
         return ResponseEntity.ok()
             .location(URI.create("/api/certifications/status/" + certificationService.updateStatus(id, request)))
@@ -71,7 +74,7 @@ public class CertificationController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteById(@PathVariable Long id) {
+    public ResponseEntity<Void> deleteById(@PathVariable final Long id) {
         certificationService.deleteById(id);
 
         return ResponseEntity.noContent().build();

@@ -21,6 +21,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.MediaType;
 import org.springframework.restdocs.RestDocumentationContextProvider;
 import org.springframework.restdocs.RestDocumentationExtension;
@@ -34,10 +35,10 @@ import org.springframework.web.multipart.MultipartFile;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.woowacourse.pelotonbackend.certification.application.CertificationService;
 import com.woowacourse.pelotonbackend.certification.presentation.dto.CertificationCreateRequest;
+import com.woowacourse.pelotonbackend.certification.presentation.dto.CertificationResponse;
 import com.woowacourse.pelotonbackend.common.ErrorCode;
 import com.woowacourse.pelotonbackend.common.exception.CertificationNotFoundException;
 import com.woowacourse.pelotonbackend.docs.CertificationDocumentation;
-import com.woowacourse.pelotonbackend.member.application.MemberService;
 import com.woowacourse.pelotonbackend.member.domain.LoginFixture;
 import com.woowacourse.pelotonbackend.member.presentation.LoginMemberArgumentResolver;
 import com.woowacourse.pelotonbackend.support.BearerAuthInterceptor;
@@ -56,9 +57,6 @@ class CertificationControllerTest {
 
     @MockBean
     private LoginMemberArgumentResolver argumentResolver;
-
-    @MockBean
-    private MemberService memberService;
 
     private MockMvc mockMvc;
 
@@ -123,7 +121,8 @@ class CertificationControllerTest {
     @DisplayName("아이디로 인증정보를 조회한다.")
     @Test
     void retrieveById() throws Exception {
-        given(certificationService.retrieveById(anyLong())).willReturn(createMockCertificationResponse());
+        final CertificationResponse expected = createMockCertificationResponse();
+        given(certificationService.retrieveById(anyLong())).willReturn(expected);
         given(authInterceptor.preHandle(any(HttpServletRequest.class), any(HttpServletResponse.class),
             any(HandlerMethod.class))).willReturn(true);
 
@@ -132,12 +131,12 @@ class CertificationControllerTest {
                 .accept(MediaType.APPLICATION_JSON)
                 .header(HttpHeaders.AUTHORIZATION, LoginFixture.getTokenHeader()))
             .andExpect(status().isOk())
-            .andExpect(jsonPath("id").isNotEmpty())
-            .andExpect(jsonPath("image").isNotEmpty())
-            .andExpect(jsonPath("status").isNotEmpty())
-            .andExpect(jsonPath("missionId").isNotEmpty())
-            .andExpect(jsonPath("riderId").isNotEmpty())
-            .andExpect(jsonPath("description").isNotEmpty())
+            .andExpect(jsonPath("id").value(expected.getId()))
+            .andExpect(jsonPath("image").value(expected.getImage().getBaseImageUrl()))
+            .andExpect(jsonPath("status").value(expected.getStatus().name()))
+            .andExpect(jsonPath("mission_id").value(expected.getMissionId()))
+            .andExpect(jsonPath("rider_id").value(expected.getRiderId()))
+            .andExpect(jsonPath("description").value(expected.getDescription()))
             .andDo(CertificationDocumentation.getCertification());
     }
 
@@ -161,11 +160,13 @@ class CertificationControllerTest {
     @DisplayName("참여자가 인증한 사진을 불러온다.")
     @Test
     void retrieveByRiderId() throws Exception {
-        given(authInterceptor.preHandle(any(), any(), any())).willReturn(true);
-        given(certificationService.retrieveByRiderId(any(), any())).willReturn(createMockCertificationResponses());
+        given(authInterceptor.preHandle(any(HttpServletRequest.class), any(HttpServletResponse.class),
+            any(HandlerMethod.class))).willReturn(true);
+        given(certificationService.retrieveByRiderId(anyLong(), any(Pageable.class))).willReturn(
+            createMockCertificationResponses());
 
         mockMvc.perform(
-            get("/api/certifications/riders/{id}",TEST_RIDER_ID)
+            get("/api/certifications/riders/{id}", TEST_RIDER_ID)
                 .header(HttpHeaders.AUTHORIZATION, LoginFixture.getTokenHeader())
                 .param("page", "1")
                 .param("size", "2")
@@ -190,7 +191,7 @@ class CertificationControllerTest {
                 .content(objectMapper.writeValueAsBytes(createDescriptionUpdateRequest()))
         )
             .andExpect(status().isOk())
-            .andExpect(header().string("Location", resource + "/" + TEST_CERTIFICATION_ID ))
+            .andExpect(header().string("Location", resource + "/" + TEST_CERTIFICATION_ID))
             .andDo(CertificationDocumentation.updateDescription());
     }
 

@@ -6,6 +6,7 @@ import static org.springframework.restdocs.headers.HeaderDocumentation.*;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.*;
 import static org.springframework.restdocs.payload.JsonFieldType.*;
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
+import static org.springframework.restdocs.request.RequestDocumentation.*;
 
 import org.apache.http.HttpHeaders;
 import org.springframework.restdocs.mockmvc.RestDocumentationResultHandler;
@@ -44,6 +45,25 @@ public class QueryDocumentation {
                 headerWithName(HttpHeaders.ACCEPT).description("Accept 헤더")
             ),
             getErrorResponseFields()
+        );
+    }
+
+    public static RestDocumentationResultHandler findCertificationsByRaceId() {
+        return document("queries/get-certifications-race-id",
+            getDocumentRequest(),
+            getDocumentResponse(),
+            requestHeaders(
+                headerWithName(HttpHeaders.AUTHORIZATION).description("인증 토큰")
+            ),
+            pathParameters(
+                parameterWithName("raceId").description("레이스 아이디")
+            ),
+            responseFields(
+                subsectionWithPath("certifications").type(OBJECT).description("전체 정보"),
+                subsectionWithPath("certifications.content").type(ARRAY).description("해당 페이지의 컨텐츠"),
+                subsectionWithPath("certifications.totalElements").type(NUMBER).description("총 컨텐츠의 양"),
+                subsectionWithPath("certifications.pageable").type(OBJECT).description("페이지 관련 정보")
+            )
         );
     }
 }

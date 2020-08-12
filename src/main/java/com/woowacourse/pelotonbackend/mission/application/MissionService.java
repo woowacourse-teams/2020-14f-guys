@@ -75,7 +75,7 @@ public class MissionService {
 
     @Transactional(readOnly = true)
     public MissionResponses retrieveByRaceId(final Long raceId) {
-        List<Mission> missions = missionRepository.findMissionsByRaceId(raceId);
+        List<Mission> missions = missionRepository.findByRaceId(raceId);
 
         return MissionResponses.of(missions);
     }

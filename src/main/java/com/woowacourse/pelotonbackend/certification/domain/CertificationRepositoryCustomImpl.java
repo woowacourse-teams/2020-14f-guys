@@ -32,15 +32,29 @@ public class CertificationRepositoryCustomImpl implements CertificationRepositor
 
     @Override
     public Page<Certification> findByRiderId(final Long id, final Pageable pageable) {
-        SqlParameterSource parameterSource = new MapSqlParameterSource()
+        final SqlParameterSource parameterSource = new MapSqlParameterSource()
             .addValue("riderId", id)
             .addValue("offset", pageable.getOffset())
             .addValue("pageSize", pageable.getPageSize());
 
-        List<Certification> certifications = this.jdbcOperations.query(
+        final List<Certification> certifications = this.jdbcOperations.query(
             CertificationSql.findByRiderId(), parameterSource, this.rowMapper);
 
         return PageableExecutionUtils.getPage(certifications, pageable, () ->
             this.jdbcOperations.queryForObject(CertificationSql.countByRiderId(), parameterSource, Long.class));
+    }
+
+    @Override
+    public Page<Certification> findByMissionIds(final List<Long> missionIds, final Pageable pageable) {
+        final SqlParameterSource parameterSource = new MapSqlParameterSource()
+            .addValue("missionIds", missionIds)
+            .addValue("offset", pageable.getOffset())
+            .addValue("pageSize", pageable.getPageSize());
+
+        final List<Certification> certifications = this.jdbcOperations.query(
+            CertificationSql.findByMissionIds(), parameterSource, this.rowMapper);
+
+        return PageableExecutionUtils.getPage(certifications, pageable, () ->
+            this.jdbcOperations.queryForObject(CertificationSql.countByMissionIds(), parameterSource, Long.class));
     }
 }

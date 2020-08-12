@@ -15,6 +15,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.web.multipart.MultipartFile;
@@ -74,11 +75,12 @@ class CertificationServiceTest {
         );
     }
 
-    @DisplayName("자신이 인증한 사진을 불러온다.")
+    @DisplayName("자신이 인증한 사진을 불러온다."
+        + "페이지 정보 : 첫번째 페이지, 페이지 당 컨텐츠 1개, 총 컨텐츠 갯수 4개")
     @Test
     void retrieveByRiderId() {
         final PageRequest page = PageRequest.of(0, 1, Sort.Direction.DESC, "status");
-        given(certificationRepository.findByRiderId(any(), any())).willReturn(createMockPagedCertifications(page));
+        given(certificationRepository.findByRiderId(anyLong(), any(Pageable.class))).willReturn(createMockPagedCertifications(page));
         final CertificationResponses certificationResponses = certificationService.retrieveByRiderId(TEST_RIDER_ID,
             page);
 
@@ -95,8 +97,8 @@ class CertificationServiceTest {
     @Test
     void updateDescription() {
         final Certification expectedCertification = createCertificationWithId();
-        given(certificationRepository.findById(any())).willReturn(Optional.of(expectedCertification));
-        given(certificationRepository.save(any())).willReturn(createDescriptionUpdatedCertification());
+        given(certificationRepository.findById(anyLong())).willReturn(Optional.of(expectedCertification));
+        given(certificationRepository.save(any(Certification.class))).willReturn(createDescriptionUpdatedCertification());
         final Long updatedCertificationId = certificationService.updateDescription(TEST_CERTIFICATION_ID,
             createDescriptionUpdateRequest());
 
@@ -107,8 +109,8 @@ class CertificationServiceTest {
     @Test
     void updateStatus() {
         final Certification expectedCertification = createCertificationWithId();
-        given(certificationRepository.findById(any())).willReturn(Optional.of(expectedCertification));
-        given(certificationRepository.save(any())).willReturn(createStatusUpdatedCertification());
+        given(certificationRepository.findById(anyLong())).willReturn(Optional.of(expectedCertification));
+        given(certificationRepository.save(any(Certification.class))).willReturn(createStatusUpdatedCertification());
         final Long updatedCertificationId = certificationService.updateStatus(TEST_CERTIFICATION_ID,
             createStatusUpdateRequest());
 
@@ -119,6 +121,6 @@ class CertificationServiceTest {
     @Test
     void deleteById() {
         certificationService.deleteById(1L);
-        verify(certificationRepository).deleteById(any());
+        verify(certificationRepository).deleteById(anyLong());
     }
 }

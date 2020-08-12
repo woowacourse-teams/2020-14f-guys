@@ -23,7 +23,7 @@ public class CertificationFixture {
     public static final CertificationStatus TEST_CERTIFICATION_STATUS = CertificationStatus.SUCCESS;
     public static final CertificationStatus TEST_UPDATE_CERTIFICATION_STATUS = CertificationStatus.REPORTED;
     public static final String TEST_CERTIFICATION_DESCRIPTION = "좋은 인증이다..";
-    public static final String TEST_UPDATE_CERTIFICATION_DESCRIPTION = "과연.. 좋은 인증..일까아?";
+    public static final String TEST_UPDATED_CERTIFICATION_DESCRIPTION = "과연.. 좋은 인증..일까아?";
     public static final Long TEST_RIDER_ID = 1L;
     public static final Long TEST_MISSION_ID = 1L;
     public static final Long TEST_CERTIFICATION_ID = 1L;
@@ -56,7 +56,7 @@ public class CertificationFixture {
 
     public static Certification createDescriptionUpdatedCertification() {
         return createCertificationWithId().toBuilder()
-            .description(TEST_UPDATE_CERTIFICATION_DESCRIPTION)
+            .description(TEST_UPDATED_CERTIFICATION_DESCRIPTION)
             .build();
     }
 
@@ -68,7 +68,7 @@ public class CertificationFixture {
 
     public static CertificationDescriptionUpdateRequest createDescriptionUpdateRequest() {
         return CertificationDescriptionUpdateRequest.builder()
-            .description(TEST_UPDATE_CERTIFICATION_DESCRIPTION)
+            .description(TEST_UPDATED_CERTIFICATION_DESCRIPTION)
             .build();
     }
 
@@ -125,6 +125,10 @@ public class CertificationFixture {
             .build();
     }
 
+    /*
+    Service 테스트에서는 Repository를 Mocking하기 때문에 컨텐츠는 하나지만 총 4개인 것 처럼 만들었습니다.
+    (Mocking하면 첫 페이지에 1개만 보여달라해도 4개의 컨텐츠를 모두 보여주기 떄문에)
+     */
     public static Page<Certification> createMockPagedCertifications(final PageRequest request) {
         final List<Certification> mockCertifications = Arrays.asList(
             createCertificationWithId()

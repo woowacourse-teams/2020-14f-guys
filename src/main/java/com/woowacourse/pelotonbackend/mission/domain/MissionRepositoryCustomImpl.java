@@ -11,37 +11,39 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcOperations;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 
 public class MissionRepositoryCustomImpl implements MissionRepositoryCustom {
-    private final NamedParameterJdbcOperations operations;
+    private final NamedParameterJdbcOperations jdbcOperations;
     private final EntityRowMapper<Mission> rowMapper;
 
+    @SuppressWarnings("unchecked")
     public MissionRepositoryCustomImpl(
-        final NamedParameterJdbcOperations operations,
+        final NamedParameterJdbcOperations jdbcOperations,
         final RelationalMappingContext mappingContext,
         final JdbcConverter jdbcConverter) {
-        this.operations = operations;
+        this.jdbcOperations = jdbcOperations;
         this.rowMapper = new EntityRowMapper<>(
-            (RelationalPersistentEntity<Mission>)mappingContext.getRequiredPersistentEntity(Mission.class),
-            jdbcConverter
-        );
+            (RelationalPersistentEntity<Mission>)mappingContext.getRequiredPersistentEntity(Mission.class)
+            , jdbcConverter);
     }
 
     @Override
-    public List<Mission> findMissionsByRaceId(final Long raceId) {
+    public List<Mission> findByRaceId(final Long raceId) {
         final SqlParameterSource parameterSource = new MapSqlParameterSource()
             .addValue("raceId", raceId);
 
-        return operations.query(findMissionByRaceId(), parameterSource, this.rowMapper);
+        return this.jdbcOperations.query(this.findByRaceIdSql(), parameterSource, rowMapper);
     }
 
-    private String findMissionByRaceId() {
+    private String findByRaceIdSql() {
         return new StringBuilder()
             .append("SELECT MISSION.ID AS ID")
-            .append(", MISSION.START_TIME AS START_TIME, MISSION.END_TIME AS END_TIME")
-            .append(", MISSION.MISSION_INSTRUCTION AS MISSION_INSTRUCTION")
+            .append(", MISSION.START_TIME AS START_TIME")
+            .append(", MISSION.END_TIME AS END_TIME")
             .append(", MISSION.RACE_ID AS RACE_ID")
-            .append(", MISSION.CREATED_AT AS CREATED_AT, MISSION.UPDATED_AT AS UPDATED_AT")
+            .append(", MISSION.MISSION_INSTRUCTION AS MISSION_INSTRUCTION")
+            .append(", MISSION.CREATED_AT AS CREATED_AT")
+            .append(", MISSION.UPDATED_AT AS UPDATED_AT")
             .append(" FROM MISSION")
-            .append(" WHERE RACE_ID = :raceId")
+            .append(" WHERE RACE_ID =:raceId")
             .toString();
     }
 }

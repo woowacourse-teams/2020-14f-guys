@@ -1,50 +1,60 @@
 package com.woowacourse.pelotonbackend.query;
 
-import static com.woowacourse.pelotonbackend.race.domain.RaceFixture.*;
 import static org.assertj.core.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.*;
-import static org.mockito.BDDMockito.*;
+import static org.mockito.Mockito.*;
+
+import java.util.Arrays;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.springframework.data.domain.Pageable;
 
 import com.woowacourse.pelotonbackend.certification.domain.CertificationFixture;
+import com.woowacourse.pelotonbackend.certification.domain.CertificationRepository;
 import com.woowacourse.pelotonbackend.certification.presentation.dto.CertificationResponse;
+import com.woowacourse.pelotonbackend.mission.domain.MissionFixture;
+import com.woowacourse.pelotonbackend.mission.domain.MissionRepository;
 
-@ExtendWith(SpringExtension.class)
+@ExtendWith(MockitoExtension.class)
 class QueryServiceTest {
+
     private QueryService queryService;
 
     @Mock
-    private QueryRepositoryCustom queryRepositoryCustom;
+    private MissionRepository missionRepository;
+
+    @Mock
+    private CertificationRepository certificationRepository;
 
     @BeforeEach
     void setUp() {
-        queryService = new QueryService(queryRepositoryCustom);
+        queryService = new QueryService(missionRepository, certificationRepository);
     }
 
-    @DisplayName("레이스의 대표적인 사진을 조회할 수 있다.")
+    @DisplayName("레이스 아이디로 인증사진을 조회한다."
+        + "페이지 정보 : 총 게시물 4개, 첫번째 페이지, 페이지당 컨텐츠 1개")
     @Test
-    void findCertificationsByRaceId() {
-        final PageRequest pageRequest = PageRequest.of(0, 1, Sort.Direction.DESC, "id");
-        given(queryRepositoryCustom.findCertificationsByRaceId(any(), any()))
-            .willReturn(CertificationFixture.createMockPagedCertifications(pageRequest));
-        final Page<CertificationResponse> response = queryService.findCertificationsByRaceId(TEST_RACE_ID,
-            pageRequest).getCertifications();
+    void findCertificationByRaceId() {
+        final PageRequest page = PageRequest.of(0, 1);
+        when(missionRepository.findByRaceId(anyLong())).thenReturn(Arrays.asList(MissionFixture.createWithId()));
+        when(certificationRepository.findByMissionIds(any(), any(Pageable.class)))
+            .thenReturn(CertificationFixture.createMockPagedCertifications(page));
+        final Page<CertificationResponse> certifications = queryService.findCertificationsByRaceId(1L, page)
+            .getCertifications();
 
         assertAll(
-            () -> assertThat(response.getContent().size()).isEqualTo(1),
-            () -> assertThat(response.getPageable().getPageNumber()).isEqualTo(0),
-            () -> assertThat(response.getTotalPages()).isEqualTo(4),
-            () -> assertThat(response.getTotalElements()).isEqualTo(4)
+            () -> assertThat(certifications.getContent()).hasSize(1),
+            () -> assertThat(certifications.getTotalPages()).isEqualTo(4),
+            () -> assertThat(certifications.getPageable().getPageNumber()).isEqualTo(0)
         );
+
     }
 }

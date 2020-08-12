@@ -41,14 +41,14 @@ public class CertificationService {
 
     @Transactional(readOnly = true)
     public CertificationResponses retrieveByRiderId(final Long riderId, final Pageable pageable) {
-        Page<Certification> certifications = certificationRepository.findByRiderId(riderId, pageable);
+        final Page<Certification> certifications = certificationRepository.findByRiderId(riderId, pageable);
 
         return CertificationResponses.of(certifications);
     }
 
     public Long updateDescription(final Long id, final CertificationDescriptionUpdateRequest request) {
         final Certification certification = this.findById(id);
-        final Certification updated = certification.update(request);
+        final Certification updated = certification.updateDescription(request);
         final Certification updatedCertification = certificationRepository.save(updated);
 
         return updatedCertification.getId();
@@ -56,7 +56,7 @@ public class CertificationService {
 
     public Long updateStatus(final Long id, final CertificationStatusUpdateRequest request) {
         final Certification certification = this.findById(id);
-        final Certification updated = certification.update(request);
+        final Certification updated = certification.updateStatus(request);
         final Certification updatedCertification = certificationRepository.save(updated);
 
         return updatedCertification.getId();

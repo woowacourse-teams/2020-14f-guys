@@ -149,6 +149,7 @@ public class RiderControllerTest {
         given(riderService.retrieveByMemberId(TEST_MEMBER_ID)).willReturn(expectedRiders);
         given(bearerAuthInterceptor.preHandle(any(HttpServletRequest.class), any(HttpServletResponse.class),
             any(HandlerMethod.class))).willReturn(true);
+
         mockMvc.perform(get("/api/riders/members/{memberId}", TEST_MEMBER_ID)
             .header(HttpHeaders.AUTHORIZATION, LoginFixture.getTokenHeader())
             .accept(MediaType.APPLICATION_JSON)
@@ -163,6 +164,7 @@ public class RiderControllerTest {
         given(riderService.updateById(anyLong(), any())).willReturn(TEST_RIDER_ID);
         given(bearerAuthInterceptor.preHandle(any(HttpServletRequest.class), any(HttpServletResponse.class),
             any(HandlerMethod.class))).willReturn(true);
+
         mockMvc.perform(put("/api/riders/{riderId}", TEST_RIDER_ID)
             .header(HttpHeaders.AUTHORIZATION, LoginFixture.getTokenHeader())
             .contentType(MediaType.APPLICATION_JSON)
@@ -178,6 +180,7 @@ public class RiderControllerTest {
     void deleteRider() throws Exception {
         given(bearerAuthInterceptor.preHandle(any(HttpServletRequest.class), any(HttpServletResponse.class),
             any(HandlerMethod.class))).willReturn(true);
+
         mockMvc.perform(delete("/api/riders/{riderId}", TEST_RIDER_ID)
             .header(HttpHeaders.AUTHORIZATION, LoginFixture.getTokenHeader())
         )

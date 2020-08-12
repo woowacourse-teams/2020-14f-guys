@@ -39,7 +39,12 @@ public class MissionFixture {
     public static final String MISSION_API_URL = "/api/missions";
 
     public static final long TEST_RACE_ID = 1L;
-    public static final String TEST_INSTRUCTION = "TEST_INSTRUCTION";
+
+    public static Mission createWithId() {
+        return createWithoutId().toBuilder()
+            .id(TEST_MISSION_ID)
+            .build();
+    }
 
     public static List<LocalDate> datesFixture() {
         return Arrays.asList(

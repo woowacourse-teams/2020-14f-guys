@@ -50,13 +50,13 @@ public class Certification {
     @With(AccessLevel.PACKAGE)
     private final LocalDateTime updatedAt;
 
-    public Certification update(final CertificationDescriptionUpdateRequest request) {
+    public Certification updateDescription(final CertificationDescriptionUpdateRequest request) {
         return this.toBuilder()
             .description(request.getDescription())
             .build();
     }
 
-    public Certification update(final CertificationStatusUpdateRequest request) {
+    public Certification updateStatus(final CertificationStatusUpdateRequest request) {
         return this.toBuilder()
             .status(request.getStatus())
             .build();

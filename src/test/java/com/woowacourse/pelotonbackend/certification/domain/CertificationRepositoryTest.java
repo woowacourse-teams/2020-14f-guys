@@ -4,6 +4,8 @@ import static com.woowacourse.pelotonbackend.certification.domain.CertificationF
 import static org.assertj.core.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.*;
 
+import java.util.Arrays;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -14,6 +16,8 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.test.context.TestExecutionListeners;
 
 import com.woowacourse.pelotonbackend.DataInitializeExecutionListener;
+import com.woowacourse.pelotonbackend.mission.domain.MissionFixture;
+import com.woowacourse.pelotonbackend.mission.domain.MissionRepository;
 import com.woowacourse.pelotonbackend.rider.domain.Rider;
 import com.woowacourse.pelotonbackend.rider.domain.RiderFixture;
 import com.woowacourse.pelotonbackend.rider.domain.RiderRepository;
@@ -31,6 +35,9 @@ class CertificationRepositoryTest {
     @Autowired
     private RiderRepository riderRepository;
 
+    @Autowired
+    private MissionRepository missionRepository;
+
     @BeforeEach
     void setUp() {
         certification = createCertificationWithoutId();
@@ -45,15 +52,32 @@ class CertificationRepositoryTest {
             "description", "image", "riderId", "missionId");
     }
 
-    @DisplayName("Rider Id로 인증사진을 조회한다.")
+    @DisplayName("Rider Id로 인증사진을 조회한다."
+        + "총 갯수 2개, 페이지 번호 0번, 페이지당 컨텐츠 1개")
     @Test
     void findByRiderId() {
         final Rider rider = riderRepository.save(RiderFixture.createRiderWithoutId());
         certificationRepository.save(CertificationFixture.createCertificationWithoutId());
         certificationRepository.save(CertificationFixture.createCertificationWithoutId());
-
         final Page<Certification> certifications = certificationRepository.findByRiderId(rider.getId(),
             PageRequest.of(0, 1));
+
+        assertAll(
+            () -> assertThat(certifications.getTotalPages()).isEqualTo(2),
+            () -> assertThat(certifications.getContent().size()).isEqualTo(1),
+            () -> assertThat(certifications.getContent().get(0).getId()).isEqualTo(1L)
+        );
+    }
+
+    @DisplayName("Mission Ids로 인증사진을 조회한다."
+        + "총 갯수 2개, 페이지 번호 0번, 페이지당 컨텐츠 1개")
+    @Test
+    void findByMissionId() {
+        missionRepository.save(MissionFixture.createWithoutId());
+        certificationRepository.save(CertificationFixture.createCertificationWithoutId());
+        certificationRepository.save(CertificationFixture.createCertificationWithoutId());
+        final Page<Certification> certifications = certificationRepository.findByMissionIds(
+            Arrays.asList(TEST_MISSION_ID), PageRequest.of(0, 1));
 
         assertAll(
             () -> assertThat(certifications.getTotalPages()).isEqualTo(2),

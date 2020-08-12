@@ -1,11 +1,20 @@
 package com.woowacourse.pelotonbackend.mission.domain;
 
+<<<<<<< HEAD
 import static org.assertj.core.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
+=======
+import static com.woowacourse.pelotonbackend.mission.domain.MissionFixture.*;
+import static org.assertj.core.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.*;
+
+import java.time.LocalDateTime;
+import java.util.List;
+>>>>>>> 7c61981... refactor: 범블비, 시카 리뷰 반영
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -77,6 +86,23 @@ class MissionRepositoryTest {
             () -> assertThat(missions.get(0).getRaceId().getId()).isEqualTo(raceId),
             () -> assertThat(missions.get(1).getRaceId().getId()).isEqualTo(raceId),
             () -> assertThat(missions.get(2).getRaceId().getId()).isEqualTo(raceId)
+        );
+    }
+
+    @DisplayName("레이스 아이디로 미션을 조회한다.")
+    @Test
+    void findByRaceId() {
+        final Mission missionWithoutId = createWithoutId();
+        missionRepository.save(missionWithoutId);
+        missionRepository.save(missionWithoutId);
+        final List<Mission> missions = missionRepository.findByRaceId(TEST_RACE_ID);
+
+        assertAll(
+            () -> assertThat(missions).hasSize(2),
+            () -> assertThat(missions.get(0)).isEqualToIgnoringGivenFields(missionWithoutId,
+                "id", "createdAt", "updatedAt"),
+            () -> assertThat(missions.get(1)).isEqualToIgnoringGivenFields(missionWithoutId,
+                "id", "createdAt", "updatedAt")
         );
     }
 }
