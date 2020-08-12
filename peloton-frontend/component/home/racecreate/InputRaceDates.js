@@ -13,11 +13,11 @@ const InputRaceInfo = () => {
 
   const navigateToMissionInput = async () => {
     if (!start_date || !end_date) {
-      alert("필드를 모두 채워주세요");
+      alert("시작 날짜와 종료 날짜를 모두 선택해주세요");
       return;
     }
     if (start_date > end_date) {
-      alert("레이스 종료 날짜가 시작 날짜보다 빠릅니다.");
+      alert("레이스 종료 날짜가 시작 날짜보다 빠릅니다");
       return;
     }
     navigation.navigate("InputRaceMissionTime");

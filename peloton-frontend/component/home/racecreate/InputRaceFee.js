@@ -60,11 +60,11 @@ const InputRaceInfo = () => {
 
   const submitRaceRequest = async () => {
     if (!entrance_fee) {
-      alert("필드를 모두 채워주세요");
+      alert("입장료를 입력해주세요");
       return;
     }
     if (entrance_fee < 0) {
-      alert("입장료는 음수가 될 수 없습니다.");
+      alert("입장료는 음수가 될 수 없습니다");
       return;
     }
 
