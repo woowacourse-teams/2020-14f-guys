@@ -41,8 +41,10 @@ import com.woowacourse.pelotonbackend.member.domain.LoginFixture;
 import com.woowacourse.pelotonbackend.member.domain.MemberFixture;
 import com.woowacourse.pelotonbackend.member.presentation.LoginMemberArgumentResolver;
 import com.woowacourse.pelotonbackend.member.presentation.dto.MemberResponse;
+import com.woowacourse.pelotonbackend.query.application.QueryService;
 import com.woowacourse.pelotonbackend.race.domain.Race;
 import com.woowacourse.pelotonbackend.race.domain.RaceRepository;
+import com.woowacourse.pelotonbackend.race.presentation.dto.RaceResponses;
 import com.woowacourse.pelotonbackend.rider.domain.Rider;
 import com.woowacourse.pelotonbackend.rider.domain.RiderFixture;
 import com.woowacourse.pelotonbackend.rider.domain.RiderRepository;
@@ -54,10 +56,7 @@ class QueryControllerTest {
     private MockMvc mockMvc;
 
     @MockBean
-    private RiderRepository riderRepository;
-
-    @MockBean
-    private RaceRepository raceRepository;
+    private QueryService queryService;
 
     @MockBean
     private BearerAuthInterceptor bearerAuthInterceptor;
@@ -79,10 +78,6 @@ class QueryControllerTest {
     void retrieveRacesByTest() throws Exception {
         final MemberResponse loginMember = MemberResponse.from(MemberFixture.createWithId(11L));
         final List<Rider> riders = RiderFixture.createRidersBy(loginMember.getId());
-        final List<Long> ridersRaceId = riders.stream()
-            .mapToLong(rider -> rider.getRaceId().getId())
-            .boxed()
-            .collect(Collectors.toList());
         final List<Race> races = riders.stream()
             .map(rider -> createWithId(rider.getRaceId().getId()))
             .collect(Collectors.toList());
@@ -91,8 +86,7 @@ class QueryControllerTest {
         given(argumentResolver.resolveArgument(any(MethodParameter.class), any(ModelAndViewContainer.class),
             any(NativeWebRequest.class), any(WebDataBinderFactory.class))).willReturn(loginMember);
         given(argumentResolver.supportsParameter(any())).willReturn(true);
-        given(riderRepository.findRidersByMemberId(loginMember.getId())).willReturn(riders);
-        given(raceRepository.findAllById(ridersRaceId)).willReturn(races);
+        given(queryService.retrieveByRaces(loginMember)).willReturn(RaceResponses.of(races));
 
         mockMvc.perform(get("/api/queries/races")
             .header(HttpHeaders.AUTHORIZATION, LoginFixture.getTokenHeader())
