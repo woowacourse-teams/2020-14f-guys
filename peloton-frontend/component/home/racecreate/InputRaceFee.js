@@ -15,7 +15,7 @@ import { RaceApi } from "../../../utils/api/RaceApi";
 
 const InputRaceInfo = () => {
   // eslint-disable-next-line prettier/prettier
-  const {title, description, start_date, end_date, category, entrance_fee, days, certification_available_duration} = useRecoilValue(raceCreateInfoState);
+  const {title, description, start_date, end_date, category, entrance_fee, days, start_time, end_time} = useRecoilValue(raceCreateInfoState);
   const resetRaceCreateInfo = useResetRecoilState(raceCreateInfoState);
   const [loading, setGlobalLoading] = useRecoilState(loadingState);
   const token = useRecoilValue(memberTokenState);
@@ -32,13 +32,17 @@ const InputRaceInfo = () => {
         end_date,
       },
       days,
-      certification_available_duration,
+      certification_available_duration:{
+        start_time,
+        end_time,
+      },
     };
   };
 
   const createRaceRequest = async () => {
     setGlobalLoading(true);
     try {
+      console.log(formatPostRaceBody());
       const location = await RaceApi.post(token, formatPostRaceBody());
 
       resetRaceCreateInfo();

@@ -10,10 +10,8 @@ export const raceCreateInfoState = atom({
     category: "",
     entrance_fee: "",
     days: ["MONDAY", "TUESDAY", "FRIDAY"],
-    certification_available_duration: {
-      start_time: "08:00:00",
-      end_time: "10:00:00",
-    },
+    start_time: "08:00:00",
+    end_time: "10:00:00",
   },
 });
 
@@ -22,20 +20,14 @@ export const raceInfoState = atom({
   default: {
     id: null,
     category: null,
-    certificationExample: {
-      baseImageUrl: null,
-    },
+    certification_example: null,
     description: null,
-    entranceFee: {
-      cash: null,
+    entrance_fee: null,
+    race_duration: {
+      start_date: null,
+      end_date: null,
     },
-    raceDuration: {
-      startDate: null,
-      endDate: null,
-    },
-    thumbnail: {
-      baseImageUrl: null,
-    },
+    thumbnail: null,
     title: null,
     days: null,
     certification_available_duration: {

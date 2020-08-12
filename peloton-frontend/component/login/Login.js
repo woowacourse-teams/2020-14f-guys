@@ -10,8 +10,9 @@ import { useSetRecoilState } from "recoil";
 import { useNavigation } from "@react-navigation/core";
 import LoadingIndicator from "../../utils/LoadingIndicator";
 import { loadingState } from "../../state/loading/LoadingState";
-import { MemberApi, navigateWithoutHistory } from "../../utils/util";
+import { navigateWithoutHistory } from "../../utils/util";
 import { memberInfoState, memberTokenState } from "../../state/member/MemberState";
+import { MemberApi } from "../../utils/api/MemberApi";
 
 const AnimatedAppleButton = animated(
   AppleAuthentication.AppleAuthenticationButton,
@@ -34,10 +35,11 @@ const Login = () => {
     if (token) {
       setToken(token);
       try {
-        const response = await MemberApi.get(token);
-        setUserInfo(response);
+        const memberResponse = await MemberApi.get(token);
+        setUserInfo(memberResponse);
         navigateWithoutHistory(navigation, "ApplicationNavigationRoot");
       } catch (error) {
+        console.log(error);
         toggleModal();
       }
     } else {

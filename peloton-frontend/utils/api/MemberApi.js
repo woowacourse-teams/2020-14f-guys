@@ -3,20 +3,15 @@ import { SERVER_BASE_URL } from "../constants";
 
 export const MemberApi = {
   get: async (token) => {
-    try {
-      const response = await Axios({
-        method: "GET",
-        baseURL: SERVER_BASE_URL,
-        url: "/api/members",
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-      return response.data;
-    }
-    catch (error) {
-      console.log(error);
-    }
+    const response = await Axios({
+      method: "GET",
+      baseURL: SERVER_BASE_URL,
+      url: "/api/members",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    return response.data;
   },
   postProfile: async (token, formData) => {
     try {
@@ -33,7 +28,8 @@ export const MemberApi = {
         },
       });
       return response.data;
-    } catch (error) {
+    }
+    catch (error) {
       console.log(error);
     }
   },
@@ -50,8 +46,24 @@ export const MemberApi = {
           cash,
         },
       });
+    } catch (error) {
+      console.log(error);
     }
-    catch (error) {
+  },
+  patchName: async (token, name) => {
+    try {
+      await Axios({
+        method: "PATCH",
+        baseURL: SERVER_BASE_URL,
+        url: "/api/members/name",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+        data: {
+          name,
+        },
+      });
+    } catch (error) {
       console.log(error);
     }
   },

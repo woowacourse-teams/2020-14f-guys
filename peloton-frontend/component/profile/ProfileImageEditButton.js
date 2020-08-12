@@ -1,8 +1,6 @@
 import React from "react";
 import { Alert, Linking, TouchableOpacity } from "react-native";
 import { useRecoilState, useRecoilValue } from "recoil";
-import Axios from "axios";
-import { SERVER_BASE_URL } from "../../utils/constants";
 import * as ImagePicker from "expo-image-picker";
 import { MemberApi } from "../../utils/api/MemberApi";
 import { memberInfoState, memberTokenState } from "../../state/member/MemberState";
@@ -18,17 +16,16 @@ const ProfileImageEditButton = ({ children }) => {
       type: "image/jpeg",
       name: selectedImage.substring(9),
     });
-    Axios.post(`${SERVER_BASE_URL}/api/members/profile`, formData, {
-      headers: {
-        "Content-Type": "multipart/form-data",
-        Authorization: `Bearer ${token}`,
-      },
-    })
-      .then(async () => {
-        const newMemberInfo = await MemberApi.get(token);
-        setUserInfo(newMemberInfo);
-      })
-      .catch((err) => alert(err));
+    try {
+      const uploadedImage = await MemberApi.postProfile(token, formData);
+      setUserInfo({
+        ...userInfo,
+        profile: uploadedImage,
+      });
+    } catch (error) {
+      console.log(error);
+      alert("서버 에러");
+    }
   };
 
   const pickAndChangeProfileImage = async () => {

@@ -20,7 +20,7 @@ const ProfileImageSelect = () => {
           }
         />
         <View style={styles.cameraIcon}>
-          <Entypo name="camera" size={24} color="black"/>
+          <Entypo name="camera" size={24} color="black" />
         </View>
       </ProfileImageEditButton>
     </View>
