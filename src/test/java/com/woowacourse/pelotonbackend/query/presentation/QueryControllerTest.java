@@ -34,6 +34,8 @@ import org.springframework.web.filter.CharacterEncodingFilter;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.method.support.ModelAndViewContainer;
 
+import com.woowacourse.pelotonbackend.common.ErrorCode;
+import com.woowacourse.pelotonbackend.common.exception.TokenInvalidException;
 import com.woowacourse.pelotonbackend.docs.QueryDocumentation;
 import com.woowacourse.pelotonbackend.member.domain.LoginFixture;
 import com.woowacourse.pelotonbackend.member.domain.MemberFixture;
@@ -97,6 +99,20 @@ class QueryControllerTest {
             .accept(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk())
             .andDo(QueryDocumentation.getRaces())
+            .andReturn();
+    }
+
+    @DisplayName("유효하지 않은 token로 race를 조회할 때 예외처리한다.")
+    @Test
+    void retrieveRacesByTest2() throws Exception {
+        given(bearerAuthInterceptor.preHandle(any(HttpServletRequest.class), any(HttpServletResponse.class),
+            any(HandlerMethod.class))).willThrow(new TokenInvalidException(ErrorCode.INVALID_TOKEN, "토큰이 이상합니다~~~~~~~~~~"));
+
+        mockMvc.perform(get("/api/queries/races")
+            .header(HttpHeaders.AUTHORIZATION, "Invalid token")
+            .accept(MediaType.APPLICATION_JSON))
+            .andExpect(status().isUnauthorized())
+            .andDo(QueryDocumentation.getRacesFail())
             .andReturn();
     }
 }

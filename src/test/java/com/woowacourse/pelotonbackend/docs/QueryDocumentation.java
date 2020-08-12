@@ -34,4 +34,20 @@ public class QueryDocumentation {
             )
         );
     }
+
+    public static RestDocumentationResultHandler getRacesFail() {
+        return document("queries/races/get-fail",
+            getDocumentRequest(),
+            getDocumentResponse(),
+            requestHeaders(
+                headerWithName(HttpHeaders.AUTHORIZATION).description("Invalid Access Token"),
+                headerWithName(HttpHeaders.ACCEPT).description("Accept 헤더")
+            ),
+            responseFields(
+                fieldWithPath("status").type(NUMBER).description("Unauthorize status"),
+                fieldWithPath("code").type(STRING).description("Error code"),
+                fieldWithPath("message").type(STRING).description("Error message")
+            )
+        );
+    }
 }
