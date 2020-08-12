@@ -6,7 +6,7 @@ import RaceSpec from "./RaceSpec";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import { loadingState } from "../../../state/loading/LoadingState";
 import Axios from "axios";
-import { COLOR, SERVER_BASE_URL } from "../../../utils/constants";
+import { COLOR, DEEP_LINK_BASE_URL, SERVER_BASE_URL } from "../../../utils/constants";
 import { useRecoilState } from "recoil/dist";
 import { memberTokenState } from "../../../state/member/MemberState";
 import { raceInfoState } from "../../../state/race/RaceState";
@@ -51,6 +51,7 @@ const RaceDetail = ({ route }) => {
       <RaceSpec
         raceDuration={raceInfo.race_duration}
         cash={calculateTotalCash(parseInt(raceInfo.entrance_fee))}
+        url={`${DEEP_LINK_BASE_URL}races/${raceId}`}
       />
     </ScrollView>
   );

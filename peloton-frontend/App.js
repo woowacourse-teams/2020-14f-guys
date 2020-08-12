@@ -3,12 +3,10 @@ import { NavigationContainer } from "@react-navigation/native";
 import { StatusBar } from "expo-status-bar";
 import { RecoilRoot } from "recoil";
 import LoginNavigationRoot from "./component/LoginNavigationRoot";
-import * as Linking from "expo-linking";
-
-const prefix = Linking.makeUrl("/");
+import { DEEP_LINK_BASE_URL } from "./utils/constants";
 
 const linking = {
-  prefixes: [prefix, "https://peloton.ga", "peloton://"],
+  prefixes: [DEEP_LINK_BASE_URL],
   config: {
     screens: {
       ApplicationNavigationRoot: {

@@ -10,7 +10,6 @@
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
-    "scheme": "peloton",
     "updates": {
       "fallbackToCacheTimeout": 0
     },

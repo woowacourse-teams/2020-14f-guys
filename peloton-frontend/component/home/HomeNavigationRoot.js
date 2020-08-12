@@ -4,7 +4,6 @@ import { createStackNavigator } from "@react-navigation/stack";
 import Home from "./homemain/Home";
 import RaceDetail from "./race/RaceDetail";
 import CategorySelection from "./racecreate/CategorySelection";
-import ShareButton from "./race/ShareButton";
 import InputRaceInfo from "./racecreate/InputRaceInfo";
 import InputRaceDates from "./racecreate/InputRaceDates";
 import InputRaceFee from "./racecreate/InputRaceFee";
@@ -27,10 +26,7 @@ const HomeNavigationRoot = () => {
         component={RaceDetail}
         options={{
           title: "진행중인 레이스",
-          headerTransparent: true,
-          headerTitle: false,
-          headerLeft: false,
-          headerRight: () => <ShareButton/>,
+          headerShown: false,
         }}
       />
       <HomeStack.Screen

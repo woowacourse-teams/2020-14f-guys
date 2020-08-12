@@ -3,7 +3,7 @@ import { CommonActions, StackActions, TabActions } from "@react-navigation/nativ
 export const navigateWithHistory = (navigation, routes) => {
   navigation.dispatch({
     ...CommonActions.reset({
-      index: routes.length,
+      index: routes.length - 1,
       routes: routes,
     }),
   });

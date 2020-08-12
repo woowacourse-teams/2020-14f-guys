@@ -1,13 +1,16 @@
 import React from "react";
 import { Share, StyleSheet, TouchableOpacity } from "react-native";
 import { EvilIcons } from "@expo/vector-icons";
-import { COLOR } from "../../../utils/constants";
+import { COLOR, DEEP_LINK_BASE_URL } from "../../../utils/constants";
+import { useRecoilValue } from "recoil/dist";
+import { raceInfoState } from "../../../state/race/RaceState";
 
 const ShareButton = () => {
+  const raceInfo = useRecoilValue(raceInfoState);
+
   const onShare = async () => {
     await Share.share({
-      message:
-        "React Native | A framework for building native apps using React",
+      url: `${DEEP_LINK_BASE_URL}races/${raceInfo.id}`,
     });
   };
 
@@ -20,7 +23,7 @@ const ShareButton = () => {
 
 const styles = StyleSheet.create({
   shareButton: {
-    paddingRight: 15,
+    padding: 5,
   },
 });
 

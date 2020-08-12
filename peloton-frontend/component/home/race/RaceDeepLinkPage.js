@@ -5,8 +5,8 @@ import { loadingState } from "../../../state/loading/LoadingState";
 import { COLOR, TOKEN_STORAGE } from "../../../utils/constants";
 import AsyncStorage from "@react-native-community/async-storage";
 import {
-  navigateStackScreen,
   navigateTabScreen,
+  navigateWithHistory,
   navigateWithoutHistory,
 } from "../../../utils/util";
 import { useNavigation } from "@react-navigation/core";
@@ -36,7 +36,10 @@ const RedirectPage = ({ route }) => {
           },
           {
             text: "OK",
-            onPress: () => navigateTabScreen(navigation, "Profile"),
+            onPress: () => {
+              navigateWithoutHistory(navigation, "Home");
+              navigateTabScreen(navigation, "Profile");
+            },
           },
         ],
         { cancelable: false },
@@ -47,10 +50,18 @@ const RedirectPage = ({ route }) => {
       await MemberApi.patchCash(token, String(userCash - raceEntranceFee));
       const response = await MemberApi.get(token);
       setUserInfo(response);
-      navigateStackScreen(navigation, "RaceDetail", {
-        raceInfo,
-        location: `/api/races/${raceInfo.id}`,
-      });
+      navigateWithHistory(navigation, [
+        {
+          name: "Home",
+        },
+        {
+          name: "RaceDetail",
+          params: {
+            raceInfo,
+            location: `/api/races/${raceInfo.id}`,
+          },
+        },
+      ]);
     } catch (error) {
       console.log(error);
     }

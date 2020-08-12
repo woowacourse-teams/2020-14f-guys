@@ -2,7 +2,10 @@ import React from "react";
 import { Dimensions, StyleSheet, View } from "react-native";
 import Carousel, { ParallaxImage } from "react-native-snap-carousel";
 import { COLOR, MOCK_DATA } from "../../../utils/constants";
+import ShareButton from "./ShareButton";
 
+const deviceWidth = Dimensions.get("window").width;
+const deviceHeight = Dimensions.get("window").height;
 const _renderEachImage = ({ item, index }, parallaxProps) => {
   return (
     <View style={styles.item}>
@@ -27,6 +30,9 @@ const RaceCertificationImage = () => {
         loop={true}
         hasParallaxImages={true}
       />
+      <View style={styles.shareButtonContainer}>
+        <ShareButton />
+      </View>
     </View>
   );
 };
@@ -34,6 +40,11 @@ const RaceCertificationImage = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+  },
+  shareButtonContainer: {
+    position: "absolute",
+    left: deviceWidth - 55,
+    top: 30,
   },
   item: {
     height: 600,
@@ -49,8 +60,8 @@ const styles = StyleSheet.create({
     },
   },
   imageContainer: {
-    width: Dimensions.get("window").width * 1.069,
-    height: Dimensions.get("window").height,
+    width: deviceWidth * 1.069,
+    height: deviceHeight,
     borderRadius: 10,
     overflow: "hidden",
   },
