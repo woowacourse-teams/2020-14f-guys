@@ -1,13 +1,14 @@
 package com.woowacourse.pelotonbackend.mission.application;
 
+import static org.assertj.core.api.Assertions.*;
 import static org.mockito.BDDMockito.*;
 
 import java.time.LocalDate;
-import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
@@ -65,5 +66,16 @@ class MissionServiceTest {
 
         missionService.create(RaceFixture.TEST_RACE_ID, RaceFixture.createMockRequest());
         verify(missionRepository).saveAll(expectedToSave);
+    }
+
+    @DisplayName("미션을 생성한다.")
+    @Test
+    void create() {
+        Mission savedMission = MissionFixture.missionWithId(1L);
+        given(missionRepository.save(any(Mission.class))).willReturn(savedMission);
+
+        Long missionId = missionService.create(MissionFixture.missionCreateRequest());
+
+        assertThat(missionId).isEqualTo(savedMission.getId());
     }
 }

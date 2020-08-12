@@ -11,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.woowacourse.pelotonbackend.mission.domain.DateTimeDuration;
 import com.woowacourse.pelotonbackend.mission.domain.Mission;
 import com.woowacourse.pelotonbackend.mission.domain.MissionRepository;
+import com.woowacourse.pelotonbackend.mission.presentation.dto.MissionCreateRequest;
 import com.woowacourse.pelotonbackend.race.domain.RaceCategory;
 import com.woowacourse.pelotonbackend.race.presentation.dto.RaceCreateRequest;
 import com.woowacourse.pelotonbackend.support.CustomDateParser;
@@ -44,5 +45,12 @@ public class MissionService {
                 .missionInstruction(category.getRandomMissionInstruction(randomGenerator))
                 .build())
             .collect(Collectors.toList());
+    }
+
+    public Long create(MissionCreateRequest request) {
+        Mission mission = request.toMission();
+        Mission persistMission = missionRepository.save(mission);
+
+        return persistMission.getId();
     }
 }
