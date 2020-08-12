@@ -5,16 +5,15 @@ import RaceCreateUnit from "./RaceCreateUnit";
 import RaceCreateView from "./RaceCreateView";
 import { RaceCreatUnitType } from "../../../utils/constants";
 
-const InputRaceMission = () => {
-  // eslint-disable-next-line prettier/prettier
+const InputRaceMissionTime = () => {
   const navigation = useNavigation();
 
-  const navigateToFeeInput = async () => {
-    navigation.navigate("InputRaceFee");
+  const navigateToInputDays = async () => {
+    navigation.navigate("InputRaceMissionDays");
   };
 
   return (
-    <RaceCreateView onPress={navigateToFeeInput}>
+    <RaceCreateView onPress={navigateToInputDays}>
       <RaceCreateUnit
         type={RaceCreatUnitType.TIME}
         fieldName="mission_start_time"
@@ -31,4 +30,4 @@ const InputRaceMission = () => {
   );
 };
 
-export default InputRaceMission;
+export default InputRaceMissionTime;

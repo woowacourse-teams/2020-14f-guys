@@ -15,8 +15,7 @@ import { RaceApi } from "../../../utils/api/RaceApi";
 
 const InputRaceInfo = () => {
   // eslint-disable-next-line prettier/prettier
-  const { title, description, start_date, end_date, category, entrance_fee, mission_start_time, mission_end_time } = useRecoilValue(
-    raceCreateInfoState);
+  const {title, description, start_date, end_date, category, entrance_fee, mission_start_time, mission_end_time, days} = useRecoilValue(raceCreateInfoState);
   const resetRaceCreateInfo = useResetRecoilState(raceCreateInfoState);
   const [loading, setGlobalLoading] = useRecoilState(loadingState);
   const token = useRecoilValue(memberTokenState);

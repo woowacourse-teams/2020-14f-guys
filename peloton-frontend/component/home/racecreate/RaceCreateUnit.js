@@ -8,6 +8,7 @@ import InputBox from "./InputBox";
 import CalendarButton from "./CalendarButton";
 import { DateFormatter } from "../../../utils/DateFormatter";
 import { COLOR, RaceCreatUnitType } from "../../../utils/constants";
+import MissionDaysSelector from "./MissionDaysSelector";
 
 const RaceCreateUnit = ({
   type = RaceCreatUnitType.TEXT,
@@ -82,17 +83,21 @@ const RaceCreateUnit = ({
       <View style={styles.subjectContainer}>
         <Text style={styles.subject}>{children}</Text>
       </View>
-      <View style={styles.inputContainer}>
-        <InputBox
-          value={inputValue()}
-          onChangeText={onChangeText}
-          editable={type === RaceCreatUnitType.TEXT}
-          number={number}
-        />
-        {type !== RaceCreatUnitType.TEXT && (
-          <CalendarButton showCalendar={() => setIsShowPicker(true)} />
-        )}
-      </View>
+      {type === RaceCreatUnitType.DAYS ? (
+        <MissionDaysSelector />
+      ) : (
+        <View style={styles.inputContainer}>
+          <InputBox
+            value={inputValue()}
+            onChangeText={onChangeText}
+            editable={type === RaceCreatUnitType.TEXT}
+            number={number}
+          />
+          {type !== RaceCreatUnitType.TEXT && (
+            <CalendarButton showCalendar={() => setIsShowPicker(true)} />
+          )}
+        </View>
+      )}
       {isShowPicker && (
         <DateTimePickerModal
           isVisible={isShowPicker}

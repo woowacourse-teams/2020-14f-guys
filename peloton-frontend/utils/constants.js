@@ -126,4 +126,15 @@ export const RaceCreatUnitType = {
   TEXT: "text",
   DATE: "date",
   TIME: "time",
+  DAYS: "days",
 };
+
+export const DAYS = [
+  "MONDAY",
+  "TUESDAY",
+  "WEDNESDAY",
+  "THURSDAY",
+  "FRIDAY",
+  "SATURDAY",
+  "SUNDAY",
+];

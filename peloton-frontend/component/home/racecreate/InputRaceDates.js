@@ -20,7 +20,7 @@ const InputRaceInfo = () => {
       alert("레이스 종료 날짜가 시작 날짜보다 빠릅니다.");
       return;
     }
-    navigation.navigate("InputRaceMission");
+    navigation.navigate("InputRaceMissionTime");
   };
 
   return (
