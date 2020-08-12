@@ -1,8 +1,9 @@
-package com.woowacourse.pelotonbackend.infra.login;
+package com.woowacourse.pelotonbackend.infra.login.dto;
 
 import static com.woowacourse.pelotonbackend.member.domain.LoginFixture.*;
 import static org.assertj.core.api.AssertionsForClassTypes.*;
 
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -11,9 +12,10 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 class KakaoUserResponseTest {
     private final ObjectMapper objectMapper = new ObjectMapper();
 
+    @DisplayName("KakaoUserResponse가 올바르게 Deserialize되는지 확인한다.")
     @Test
     void JsonToResponse() throws JsonProcessingException {
-        String kakaoApiResponseBody = "{\n"
+        final String kakaoUserResponseBody = "{\n"
             + "    \"id\": 1,\n"
             + "    \"properties\": {\n"
             + "        \"nickname\": \"nickname\",\n"
@@ -43,8 +45,25 @@ class KakaoUserResponseTest {
             + "        \"gender_needs_agreement\": true\n"
             + "    }\n"
             + "}";
-        final KakaoUserResponse kakaoUserResponse = objectMapper.readValue(kakaoApiResponseBody,
+        final KakaoUserResponse kakaoUserResponse = objectMapper.readValue(kakaoUserResponseBody,
             KakaoUserResponse.class);
         assertThat(kakaoUserResponse).isEqualToComparingFieldByField(createMockKakaoUserResponse());
+    }
+
+    @DisplayName("KakaoTokenResponse가 올바르게 Deserialize되는지 확인한다.")
+    @Test
+    void kakaoTokenResponseTest() throws JsonProcessingException {
+        final String kakaoTokenResponseBody = "{\n"
+            + "\"access_token\":\""+TOKEN+"\",\n"
+            + "\"token_type\":\""+TOKEN_TYPE+"\",\n"
+            + "\"refresh_token\":\""+TOKEN+"\",\n"
+            + "\"expires_in\":"+EXPIRE+",\n"
+            + "\"refresh_token_expires_in\":"+EXPIRE+",\n"
+            + "\"scope\":\""+SCOPE+"\"\n"
+            + "}";
+
+        final KakaoTokenResponse kakaoTokenResponse = objectMapper.readValue(kakaoTokenResponseBody,
+            KakaoTokenResponse.class);
+        assertThat(kakaoTokenResponse).isEqualToComparingFieldByField(createMockKakaoTokenResponse());
     }
 }

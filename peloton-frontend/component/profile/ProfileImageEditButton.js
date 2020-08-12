@@ -54,9 +54,7 @@ const ProfileImageEditButton = ({ children }) => {
       const selectedImage = pickerResult.uri;
       setUserInfo({
         ...userInfo,
-        profile: {
-          baseImageUrl: selectedImage,
-        },
+        profile: selectedImage,
       });
       requestChangeImage(selectedImage);
     }

@@ -22,10 +22,11 @@ const RaceDetail = ({ route }) => {
     title: "",
     description: "",
     thumbnail: "",
-    certificationExample: "",
-    raceDuration: "",
+    certification_example: "",
+    race_duration: "",
     category: "",
-    entranceFee: "",
+    entrance_fee: "",
+    time_duration: "",
   });
 
   useEffect(() => {
@@ -53,8 +54,8 @@ const RaceDetail = ({ route }) => {
         description={raceInfo.description}
       />
       <RaceSpec
-        raceDuration={raceInfo.raceDuration}
-        cash={calculateTotalCash(parseInt(raceInfo.entranceFee.cash))}
+        raceDuration={raceInfo.race_duration}
+        cash={calculateTotalCash(parseInt(raceInfo.entrance_fee))}
       />
     </ScrollView>
   );

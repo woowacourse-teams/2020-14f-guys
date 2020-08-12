@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.woowacourse.pelotonbackend.certification.domain.TimeDuration;
 import com.woowacourse.pelotonbackend.race.domain.DateDuration;
@@ -50,14 +51,14 @@ class RaceCreateRequestTest {
             + "      \"title\": \"제목\",\n"
             + "      \"category\": \"TIME\",\n"
             + "      \"description\": \"설명\",\n"
-            + "      \"entranceFee\": \"1000\",\n"
-            + "      \"raceDuration\": {\n"
-            + "        \"startDate\": \"2020-09-12\",\n"
-            + "        \"endDate\": \"2020-09-14\"\n"
+            + "      \"entrance_fee\": \"1000\",\n"
+            + "      \"race_duration\": {\n"
+            + "        \"start_date\": \"2020-09-12\",\n"
+            + "        \"end_date\": \"2020-09-14\"\n"
             + "      },\n"
-            + "      \"certificationAvailableDuration\": {\n"
-            + "        \"startTime\": \"06:50\",\n"
-            + "        \"endTime\": \"07:00\"\n"
+            + "      \"certification_available_duration\": {\n"
+            + "        \"start_time\": \"06:50\",\n"
+            + "        \"end_time\": \"07:00\"\n"
             + "      },\n"
             + "      \"days\": [\"MONDAY\", \"TUESDAY\", \"WEDNESDAY\"]\n"
             + "    }";

@@ -1,12 +1,14 @@
 package com.woowacourse.pelotonbackend.member.presentation.dto;
 
-import java.beans.ConstructorProperties;
-
+import com.fasterxml.jackson.databind.PropertyNamingStrategy;
+import com.fasterxml.jackson.databind.annotation.JsonNaming;
+import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
-@AllArgsConstructor(onConstructor_ = {@ConstructorProperties("imageUrl")})
+@AllArgsConstructor
 @Getter
+@JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class)
 public class MemberProfileResponse {
     private final String imageUrl;
 }

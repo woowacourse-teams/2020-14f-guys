@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.woowacourse.pelotonbackend.certification.application.CertificationService;
-import com.woowacourse.pelotonbackend.certification.domain.dto.CertificationCreateRequest;
+import com.woowacourse.pelotonbackend.certification.presentation.dto.CertificationCreateRequest;
 import lombok.RequiredArgsConstructor;
 
 @RestController

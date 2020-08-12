@@ -6,7 +6,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.woowacourse.pelotonbackend.common.exception.ReportDuplicateException;
 import com.woowacourse.pelotonbackend.report.domain.Report;
 import com.woowacourse.pelotonbackend.report.domain.ReportRepository;
-import com.woowacourse.pelotonbackend.report.presentation.ReportCreateRequest;
+import com.woowacourse.pelotonbackend.report.presentation.dto.ReportCreateRequest;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor

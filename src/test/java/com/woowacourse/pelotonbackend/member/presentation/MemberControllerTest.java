@@ -213,7 +213,7 @@ public class MemberControllerTest {
             .header(HttpHeaders.AUTHORIZATION, LoginFixture.getTokenHeader())
         )
             .andExpect(status().isOk())
-            .andExpect(jsonPath("imageUrl").value(TEST_UPDATED_URL))
+            .andExpect(jsonPath("image_url").value(TEST_UPDATED_URL))
             .andDo(MemberDocumentation.updateProfileImage());
     }
 
@@ -235,7 +235,7 @@ public class MemberControllerTest {
             .header(HttpHeaders.AUTHORIZATION, LoginFixture.getTokenHeader())
         )
             .andExpect(status().isOk())
-            .andExpect(jsonPath("imageUrl").value(BASIC_PROFILE_URL));
+            .andExpect(jsonPath("image_url").value(BASIC_PROFILE_URL));
     }
 
     @DisplayName("특정 회원을 삭제한다.")

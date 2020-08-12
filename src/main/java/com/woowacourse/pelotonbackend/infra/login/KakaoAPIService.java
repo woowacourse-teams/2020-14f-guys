@@ -7,6 +7,8 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.util.DefaultUriBuilderFactory;
 
+import com.woowacourse.pelotonbackend.infra.login.dto.KakaoTokenResponse;
+import com.woowacourse.pelotonbackend.infra.login.dto.KakaoUserResponse;
 import com.woowacourse.pelotonbackend.support.dto.JwtTokenResponse;
 import reactor.core.publisher.Mono;
 

@@ -5,9 +5,9 @@ export const raceCreateInfoState = atom({
   default: {
     title: "",
     description: "",
-    startDate: "",
-    endDate: "",
+    start_date: "",
+    end_date: "",
     category: "",
-    entranceFee: "",
+    entrance_fee: "",
   },
 });

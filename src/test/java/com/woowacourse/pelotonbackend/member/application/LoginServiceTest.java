@@ -11,8 +11,8 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import com.woowacourse.pelotonbackend.infra.login.KakaoTokenResponse;
-import com.woowacourse.pelotonbackend.infra.login.KakaoUserResponse;
+import com.woowacourse.pelotonbackend.infra.login.dto.KakaoTokenResponse;
+import com.woowacourse.pelotonbackend.infra.login.dto.KakaoUserResponse;
 import com.woowacourse.pelotonbackend.infra.login.LoginAPIService;
 import com.woowacourse.pelotonbackend.member.presentation.dto.MemberCreateRequest;
 import com.woowacourse.pelotonbackend.support.JwtTokenProvider;

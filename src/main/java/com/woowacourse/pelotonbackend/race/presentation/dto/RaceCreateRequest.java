@@ -8,14 +8,12 @@ import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.databind.PropertyNamingStrategy;
+import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import com.woowacourse.pelotonbackend.certification.domain.TimeDuration;
 import com.woowacourse.pelotonbackend.race.domain.DateDuration;
 import com.woowacourse.pelotonbackend.race.domain.Race;
 import com.woowacourse.pelotonbackend.race.domain.RaceCategory;
-import com.woowacourse.pelotonbackend.support.jsonparser.CashDeserializer;
-import com.woowacourse.pelotonbackend.support.jsonparser.CashSerializer;
 import com.woowacourse.pelotonbackend.vo.Cash;
 import com.woowacourse.pelotonbackend.vo.ImageUrl;
 import lombok.AccessLevel;
@@ -28,6 +26,7 @@ import lombok.Getter;
         "certificationAvailableDuration"}))
 @Builder
 @Getter
+@JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class)
 public class RaceCreateRequest {
     @NotBlank
     private final String title;
@@ -48,8 +47,6 @@ public class RaceCreateRequest {
     private final TimeDuration certificationAvailableDuration;
 
     @Valid
-    @JsonSerialize(using = CashSerializer.class)
-    @JsonDeserialize(using = CashDeserializer.class)
     private final Cash entranceFee;
 
     public Race toRace(ImageUrl certification, ImageUrl thumbnail) {

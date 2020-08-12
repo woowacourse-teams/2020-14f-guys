@@ -6,6 +6,8 @@ import javax.validation.constraints.NotNull;
 
 import org.springframework.data.jdbc.core.mapping.AggregateReference;
 
+import com.fasterxml.jackson.databind.PropertyNamingStrategy;
+import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import com.woowacourse.pelotonbackend.member.presentation.dto.MemberResponse;
 import com.woowacourse.pelotonbackend.rider.domain.Rider;
 import lombok.AllArgsConstructor;
@@ -13,6 +15,7 @@ import lombok.Getter;
 
 @AllArgsConstructor(onConstructor_ = {@ConstructorProperties("race_id")})
 @Getter
+@JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class)
 public class RiderCreateRequest {
     @NotNull
     private final Long raceId;
