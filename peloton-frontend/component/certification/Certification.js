@@ -19,11 +19,11 @@ const Certification = () => {
     setUserInfo(response.data);
   };
 
-  return userInfo.profile.baseImageUrl ? (
+  return userInfo.profile ? (
     <View style={styles.container}>
       <Image
         style={{ width: 300 }}
-        source={{ uri: userInfo.profile.baseImageUrl }}
+        source={{ uri: userInfo.profile }}
       />
       <TouchableOpacity onPress={fetchData}>
         <Image source={require("../../assets/kakao_login_button.png")} />

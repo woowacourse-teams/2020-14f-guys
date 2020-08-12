@@ -5,13 +5,14 @@ import ProfileImageEditButton from "../ProfileImageEditButton";
 import { useRecoilValue } from "recoil/dist";
 import { userInfoState } from "../../atoms";
 import { COLOR } from "../../../utils/constants";
+import ProfileDefaultImage from "../ProfileDefaultImage";
 
 const ProfileImageEdit = () => {
   const userInfo = useRecoilValue(userInfoState);
 
   return (
     <View style={styles.imageContainer}>
-      <ProfileImage image={userInfo.profile}/>
+      {userInfo.profile? <ProfileImage image={userInfo.profile}/> : <ProfileDefaultImage/>}
       <ProfileImageEditButton>
         <Image
           style={styles.profileEditButton}

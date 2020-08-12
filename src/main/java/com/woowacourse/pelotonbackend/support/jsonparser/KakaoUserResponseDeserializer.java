@@ -31,18 +31,26 @@ public class KakaoUserResponseDeserializer extends StdDeserializer<KakaoUserResp
         final JsonNode isEmailVerified =
             Objects.nonNull(kakaoAccount.get("is_email_verified")) ? kakaoAccount.get("is_email_valid") :
                 kakaoAccount.get("email_verified");
+        final String profileImage =
+            Objects.nonNull(properties.get("profile_image")) ? properties.get("profile_image").textValue() :
+                null;
+        final String thumbnailImage =
+            Objects.nonNull(properties.get("thumbnail_image")) ? properties.get("thumbnail_image").textValue() :
+                null;
+
         // TODO: 2020/08/12 Test에서 Serialize를 쓰는데, 그 과정에서 Getter 이름과 필드명 충돌로 인해 임시로 추가해놓음.
 
-        return createKakaoUserResponse(jsonNode, properties, kakaoAccount, isEmailValid, isEmailVerified);
+        return createKakaoUserResponse(jsonNode, properties, kakaoAccount, isEmailValid, isEmailVerified, profileImage, thumbnailImage);
     }
 
     private KakaoUserResponse createKakaoUserResponse(final JsonNode jsonNode, final JsonNode properties,
-        final JsonNode kakaoAccount, final JsonNode isEmailValid, final JsonNode isEmailVerified) {
+        final JsonNode kakaoAccount, final JsonNode isEmailValid, final JsonNode isEmailVerified,
+        final String profileImage, final String thumbnailImage) {
         return KakaoUserResponse.builder()
             .id(jsonNode.get("id").longValue())
             .nickname(properties.get("nickname").textValue())
-            .profileImage(properties.get("profile_image").textValue())
-            .thumbnailImage(properties.get("thumbnail_image").textValue())
+            .profileImage(profileImage)
+            .thumbnailImage(thumbnailImage)
             .hasEmail(kakaoAccount.get("has_email").booleanValue())
             .emailValid(isEmailValid.booleanValue())
             .emailVerified(isEmailVerified.booleanValue())

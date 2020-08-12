@@ -1,12 +1,5 @@
 import React from "react";
-import {
-  Alert,
-  Image,
-  Linking,
-  StyleSheet,
-  TouchableOpacity,
-  View,
-} from "react-native";
+import { Alert, Image, Linking, StyleSheet, TouchableOpacity, View } from "react-native";
 import * as ImagePicker from "expo-image-picker";
 import { Entypo } from "@expo/vector-icons";
 import { useRecoilState } from "recoil";
@@ -57,8 +50,8 @@ const ProfileImage = () => {
         <Image
           style={styles.profileImage}
           source={
-            userInfo.profile.baseImageUrl
-              ? { uri: userInfo.profile.baseImageUrl }
+            userInfo.profile
+              ? { uri: userInfo.profile }
               : require("../../assets/default-profile.jpg")
           }
         />

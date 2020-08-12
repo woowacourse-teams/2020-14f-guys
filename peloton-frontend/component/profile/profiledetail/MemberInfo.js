@@ -6,6 +6,7 @@ import CustomButton from "../CustomButton";
 import { useNavigation } from "@react-navigation/core";
 import { useRecoilValue } from "recoil/dist";
 import { userInfoState } from "../../atoms";
+import ProfileDefaultImage from "../ProfileDefaultImage";
 
 const MemberInfo = () => {
   const navigation = useNavigation();
@@ -14,9 +15,9 @@ const MemberInfo = () => {
   return (
     <View style={styles.memberInfo}>
       <View style={styles.imageContainer}>
-        <ProfileImage image={userInfo.profile.baseImageUrl} />
+        {userInfo.profile ? <ProfileImage image={userInfo.profile}/> : <ProfileDefaultImage/>}
       </View>
-      <MemberInfoDetail name={userInfo.name} cash={userInfo.cash} />
+      <MemberInfoDetail name={userInfo.name} cash={userInfo.cash}/>
       <CustomButton
         text="Edit Profile"
         onPress={() => navigation.navigate("ProfileEdit")}
