@@ -3,7 +3,7 @@ import { StyleSheet, Text, View } from "react-native";
 import RaceSpecItem from "./RaceSpecItem";
 import { COLOR } from "../../../utils/constants";
 
-const RaceSpec = ({ raceDuration, cash }) => {
+const RaceSpec = ({ raceDuration, cash, url }) => {
   const startDate = raceDuration.start_date;
   const endDate = raceDuration.end_date;
   return (
@@ -16,7 +16,7 @@ const RaceSpec = ({ raceDuration, cash }) => {
       />
       <RaceSpecItem itemKey={"인증 주기"} value={"월, 수, 금"} border/>
       <RaceSpecItem itemKey={"인증 시간"} value={"17:00 ~ 23:00"} border/>
-      <RaceSpecItem itemKey={"모인 금액"} value={cash} border={false} />
+      <RaceSpecItem itemKey={"모인 금액"} value={cash} border />
     </View>
   );
 };

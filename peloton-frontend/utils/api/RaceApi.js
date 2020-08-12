@@ -13,4 +13,21 @@ export const RaceApi = {
     });
     return response.data;
   },
+  post: async (token, data) => {
+    try {
+      const response = await Axios({
+        method: "POST",
+        baseURL: SERVER_BASE_URL,
+        url: "/api/races",
+        data,
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      return response.headers.location;
+    } catch (error) {
+      console.log(error);
+      throw error;
+    }
+  },
 };
