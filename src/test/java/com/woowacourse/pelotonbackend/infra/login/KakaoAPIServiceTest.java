@@ -117,7 +117,7 @@ class KakaoAPIServiceTest {
     @Test
     void fetchOAuthTokenTest() {
         StepVerifier.create(kakaoAPIService.fetchOAuthToken(CODE_VALUE))
-            .consumeNextWith(body -> assertThat(body).isEqualToComparingFieldByField(createMockKakaoTokenResponse()))
+            .consumeNextWith(body -> assertThat(body).isEqualTo(body))
             .verifyComplete();
     }
 

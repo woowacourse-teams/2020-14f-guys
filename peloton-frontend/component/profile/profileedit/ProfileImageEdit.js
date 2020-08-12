@@ -11,7 +11,7 @@ const ProfileImageEdit = () => {
 
   return (
     <View style={styles.imageContainer}>
-      <ProfileImage image={userInfo.profile.baseImageUrl} />
+      <ProfileImage image={userInfo.profile}/>
       <ProfileImageEditButton>
         <Image
           style={styles.profileEditButton}

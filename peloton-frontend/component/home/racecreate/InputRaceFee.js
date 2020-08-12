@@ -15,7 +15,8 @@ import { navigateWithHistory } from "../../../utils/util";
 
 const InputRaceInfo = () => {
   // eslint-disable-next-line prettier/prettier
-  const {title, description, startDate, endDate, category, entranceFee} = useRecoilValue(raceCreateInfoState);
+  const { title, description, start_date, end_date, category, entrance_fee } = useRecoilValue(
+    raceCreateInfoState);
   const resetRaceCreateInfo = useResetRecoilState(raceCreateInfoState);
   const [loading, setGlobalLoading] = useRecoilState(loadingState);
   const token = useRecoilValue(userTokenState);
@@ -26,10 +27,15 @@ const InputRaceInfo = () => {
       title,
       description,
       category,
-      entranceFee,
-      raceDuration: {
-        startDate,
-        endDate,
+      entrance_fee,
+      race_duration: {
+        start_date,
+        end_date,
+      },
+      days: ["MONDAY", "TUESDAY", "FRIDAY"],
+      certification_available_duration: {
+        start_time: "08:00:00",
+        end_time: "10:00:00",
       },
     };
   };
@@ -62,11 +68,11 @@ const InputRaceInfo = () => {
   };
 
   const submitRaceRequest = async () => {
-    if (!entranceFee) {
+    if (!entrance_fee) {
       alert("필드를 모두 채워주세요");
       return;
     }
-    if (entranceFee < 0) {
+    if (entrance_fee < 0) {
       alert("입장료는 음수가 될 수 없습니다.");
       return;
     }
@@ -81,7 +87,7 @@ const InputRaceInfo = () => {
   return (
     <LoadingIndicator>
       <RaceCreateView onPress={submitRaceRequest}>
-        <RaceCreateUnit fieldName="entranceFee" number>
+        <RaceCreateUnit fieldName="entrance_fee" number>
           Race의 입장료를 결정해주세요
         </RaceCreateUnit>
       </RaceCreateView>

@@ -12,7 +12,7 @@ const ProfileDetail = () => {
     <View style={styles.container}>
       <View style={styles.memberContainer}>
         <ImageBackground
-          source={{ url: userInfo.profile.baseImageUrl }}
+          source={{ url: userInfo.profile }}
           style={styles.background}
           blurRadius={6}
         >

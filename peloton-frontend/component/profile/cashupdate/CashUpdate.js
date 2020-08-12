@@ -8,11 +8,11 @@ import {
   TouchableWithoutFeedback,
   View,
 } from "react-native";
-import Axios from "axios";
-import { COLOR, SERVER_BASE_URL } from "../../../utils/constants";
-import { useRecoilValue, useSetRecoilState } from "recoil/dist";
+import { COLOR } from "../../../utils/constants";
+import { useRecoilValue, useSetRecoilState } from "recoil";
 import { userInfoState, userTokenState } from "../../atoms";
 import { useNavigation } from "@react-navigation/core";
+import { MemberApi } from "../../../utils/api/MemberApi";
 
 const CashUpdate = () => {
   const [cash, setCash] = React.useState(5000);
@@ -21,28 +21,18 @@ const CashUpdate = () => {
   const setUserInfo = useSetRecoilState(userInfoState);
   const userInfo = useRecoilValue(userInfoState);
 
-  const requestChangeCash = () => {
-    Axios.patch(
-      `${SERVER_BASE_URL}/api/members/cash`,
-      {
-        cash: `${Number(userInfo.cash) + Number(cash)}`,
-      },
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      }
-    )
-      .then(async () => {
-        const response = await Axios.get(`${SERVER_BASE_URL}/api/members`, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
-        setUserInfo(response.data);
-        navigation.navigate("ProfileEdit");
-      })
-      .catch((error) => console.log(error));
+  const requestChangeCash = async () => {
+    try {
+      await MemberApi.patchCash(
+        token,
+        `${Number(userInfo.cash) + Number(cash)}`
+      );
+      const response = await MemberApi.get(token);
+      setUserInfo(response);
+      navigation.navigate("ProfileEdit");
+    } catch (error) {
+      alert("에러가 발생했습니다.");
+    }
   };
 
   return (
@@ -54,7 +44,7 @@ const CashUpdate = () => {
             <TextInput
               style={styles.chargeInput}
               onChangeText={(text) => setCash(text)}
-              value={cash}
+              value={String(cash)}
             />
           </View>
         </View>

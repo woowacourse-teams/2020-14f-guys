@@ -9,10 +9,8 @@ export const userInfoState = atom({
   key: "userInfoState",
   default: {
     id: null,
-    kakaoId: null,
-    profile: {
-      baseImageUrl: null,
-    },
+    kakao_id: null,
+    profile: null,
     name: null,
     email: null,
     cash: null,

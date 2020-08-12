@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Image, StyleSheet, Text, TextInput, TouchableOpacity, View, } from "react-native";
+import { Image, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
 import Axios from "axios";
 import { useRecoilValue } from "recoil";
 import { userInfoState, userTokenState } from "../../atoms";
@@ -63,7 +63,7 @@ const ProfileEditInfo = () => {
       <View style={styles.eachInfo}>
         <View style={styles.eachTextBox}>
           <Text style={styles.eachInfoKey}>😀 Kakao ID</Text>
-          <Text style={styles.eachInfoValue}>{userInfo.kakaoId}</Text>
+          <Text style={styles.eachInfoValue}>{userInfo.kakao_id}</Text>
         </View>
       </View>
       {/*3번*/}
