@@ -495,7 +495,6 @@ operation::rider/update-success[snippets='http-request,http-response,path-parame
 ==== Success
 operation::rider/delete-success[snippets='http-request,http-response,path-parameters,request-headers']
 
-<<<<<<< HEAD
 [[resources-queries]]
 == Query
 
@@ -510,6 +509,13 @@ operation::queries/races/get-success[snippets='http-request,http-response,reques
 ==== Fail
 operation::queries/races/get-success[snippets='http-request,http-response,request-headers,response-fields']
 
-[[resource-query-certifications]]
-==== Find certifications by race id
+[[resources-get-certifications]]
+=== Get Certifications
+
+[[resource-query-certifications-sucess]]
+==== Success
 operation::queries/get-certifications-race-id[snippets='http-request,http-response,path-parameters,request-headers,response-fields']
+
+[[resource-query-certifications-fail]]
+==== Not Exist
+operation::queries/get-certifications-race-not-exist[snippets='http-request,http-response,path-parameters,request-headers,response-fields']

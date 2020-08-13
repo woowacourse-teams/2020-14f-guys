@@ -13,6 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.http.HttpHeaders;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -31,6 +32,7 @@ import org.springframework.web.method.HandlerMethod;
 
 import com.woowacourse.pelotonbackend.certification.domain.Certification;
 import com.woowacourse.pelotonbackend.certification.domain.CertificationFixture;
+import com.woowacourse.pelotonbackend.common.exception.RaceNotFoundException;
 import com.woowacourse.pelotonbackend.docs.QueryDocumentation;
 import com.woowacourse.pelotonbackend.member.presentation.LoginMemberArgumentResolver;
 import com.woowacourse.pelotonbackend.support.BearerAuthInterceptor;
@@ -59,6 +61,7 @@ class QueryControllerTest {
             .build();
     }
 
+    @DisplayName("레이스의 아이디로 인증을 조회한다.")
     @Test
     void findCertificationsByRaceId() throws Exception {
         final Page<Certification> pagedCertifications = CertificationFixture.createMockPagedCertifications(
@@ -70,10 +73,25 @@ class QueryControllerTest {
             any(HandlerMethod.class))).thenReturn(true);
 
         mockMvc.perform(get("/api/queries/races/certifications/{raceId}", TEST_RACE_ID)
-            .header(HttpHeaders.AUTHORIZATION, "TEST_TOEKN")
+            .header(HttpHeaders.AUTHORIZATION, "TEST_TOKEN")
             .accept(MediaType.APPLICATION_JSON)
         )
             .andExpect(status().isOk())
             .andDo(QueryDocumentation.findCertificationsByRaceId());
+    }
+
+    @DisplayName("존재하지 않는 race의 아이디로 인증을 조회한다.")
+    @Test
+    void findCertificationByNotExistRaceId() throws Exception {
+        when(queryService.findCertificationsByRaceId(anyLong(), any(Pageable.class))).thenThrow(new RaceNotFoundException(TEST_RACE_ID));
+        when(authInterceptor.preHandle(any(HttpServletRequest.class), any(HttpServletResponse.class),
+            any(HandlerMethod.class))).thenReturn(true);
+
+        mockMvc.perform(get("/api/queries/races/certifications/{raceId}", TEST_RACE_ID)
+            .header(HttpHeaders.AUTHORIZATION, "TEST_TOKEN")
+            .accept(MediaType.APPLICATION_JSON)
+        )
+            .andExpect(status().isNotFound())
+            .andDo(QueryDocumentation.findCertificationsByNotExistRaceId());
     }
 }

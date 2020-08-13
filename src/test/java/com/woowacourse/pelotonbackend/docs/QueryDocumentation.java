@@ -66,4 +66,18 @@ public class QueryDocumentation {
             )
         );
     }
+
+    public static RestDocumentationResultHandler findCertificationsByNotExistRaceId() {
+        return document("queries/get-certifications-race-not-exist",
+            getDocumentRequest(),
+            getDocumentResponse(),
+            requestHeaders(
+                headerWithName(HttpHeaders.AUTHORIZATION).description("인증 토큰")
+            ),
+            pathParameters(
+                parameterWithName("raceId").description("레이스 아이디")
+            ),
+            getErrorResponseFields()
+        );
+    }
 }

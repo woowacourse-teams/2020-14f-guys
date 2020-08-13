@@ -10,6 +10,8 @@ import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcOperations;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 
+import com.woowacourse.pelotonbackend.common.exception.RaceNotFoundException;
+
 public class MissionRepositoryCustomImpl implements MissionRepositoryCustom {
     private final NamedParameterJdbcOperations jdbcOperations;
     private final EntityRowMapper<Mission> rowMapper;
@@ -30,7 +32,11 @@ public class MissionRepositoryCustomImpl implements MissionRepositoryCustom {
         final SqlParameterSource parameterSource = new MapSqlParameterSource()
             .addValue("raceId", raceId);
 
-        return this.jdbcOperations.query(this.findByRaceIdSql(), parameterSource, rowMapper);
+        try {
+            return this.jdbcOperations.query(this.findByRaceIdSql(), parameterSource, rowMapper);
+        } catch (Exception e) {
+            throw new RaceNotFoundException(raceId);
+        }
     }
 
     private String findByRaceIdSql() {

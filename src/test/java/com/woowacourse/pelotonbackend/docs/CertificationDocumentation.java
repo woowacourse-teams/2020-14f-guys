@@ -1,6 +1,7 @@
 package com.woowacourse.pelotonbackend.docs;
 
 import static com.woowacourse.pelotonbackend.docs.ApiDocumentationUtils.*;
+import static com.woowacourse.pelotonbackend.docs.DocumentFormatGenerator.*;
 import static org.springframework.restdocs.headers.HeaderDocumentation.*;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.*;
 import static org.springframework.restdocs.payload.JsonFieldType.*;
@@ -154,7 +155,7 @@ public class CertificationDocumentation {
                 parameterWithName("id").description("라이더 ID")
             ),
             requestFields(
-                fieldWithPath("status").description("변경될 인증 상태값")
+                fieldWithPath("status").description("변경될 인증 상태값").attributes(getCertificationStatus())
             ),
             responseHeaders(
                 headerWithName("Location").description("수정이 완료된 리소스 값")
