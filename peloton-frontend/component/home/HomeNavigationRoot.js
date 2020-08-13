@@ -10,6 +10,8 @@ import InputRaceDates from "./racecreate/InputRaceDates";
 import InputRaceFee from "./racecreate/InputRaceFee";
 import RaceDeepLinkPage from "./race/RaceDeepLinkPage";
 import GoBackButton from "./race/GoBackButton";
+import InputRaceMissionTime from "./racecreate/InputRaceMissionTime";
+import InputRaceMissionDays from "./racecreate/InputRaceMissionDays";
 
 const HomeStack = createStackNavigator();
 
@@ -48,6 +50,16 @@ const HomeNavigationRoot = () => {
         name="InputRaceDates"
         component={InputRaceDates}
         options={{ title: "레이스 기간 선택" }}
+      />
+      <HomeStack.Screen
+        name="InputRaceMissionTime"
+        component={InputRaceMissionTime}
+        options={{ title: "레이스 미션 시간" }}
+      />
+      <HomeStack.Screen
+        name="InputRaceMissionDays"
+        component={InputRaceMissionDays}
+        options={{ title: "레이스 미션 주기" }}
       />
       <HomeStack.Screen
         name="InputRaceFee"
