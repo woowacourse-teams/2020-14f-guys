@@ -42,7 +42,6 @@ const InputRaceInfo = () => {
   const createRaceRequest = async () => {
     setGlobalLoading(true);
     try {
-      console.log(formatPostRaceBody());
       const location = await RaceApi.post(token, formatPostRaceBody());
 
       resetRaceCreateInfo();

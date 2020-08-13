@@ -23,7 +23,7 @@ const ShareButton = () => {
 
 const styles = StyleSheet.create({
   shareButton: {
-    padding: 5,
+    padding: 10,
   },
 });
 

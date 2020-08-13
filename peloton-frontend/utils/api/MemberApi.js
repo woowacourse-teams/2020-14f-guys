@@ -15,21 +15,18 @@ export const MemberApi = {
   },
   postProfile: async (token, formData) => {
     try {
-      const response = await Axios({
-        method: "POST",
-        baseURL: SERVER_BASE_URL,
-        url: "/api/members/profile",
-        headers: {
-          "Content-Type": "multipart/form-data",
-          Authorization: `Bearer ${token}`,
+      const response = await Axios.post(
+        `${SERVER_BASE_URL}/api/members/profile`,
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+            Authorization: `Bearer ${token}`,
+          },
         },
-        data: {
-          formData,
-        },
-      });
-      return response.data;
-    }
-    catch (error) {
+      );
+      return response.data.image_url;
+    } catch (error) {
       console.log(error);
     }
   },

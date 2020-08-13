@@ -3,6 +3,7 @@ import { Dimensions, StyleSheet, View } from "react-native";
 import Carousel, { ParallaxImage } from "react-native-snap-carousel";
 import { COLOR, MOCK_DATA } from "../../../utils/constants";
 import ShareButton from "./ShareButton";
+import GoBackButton from "./GoBackButton";
 
 const deviceWidth = Dimensions.get("window").width;
 const deviceHeight = Dimensions.get("window").height;
@@ -30,6 +31,9 @@ const RaceCertificationImage = () => {
         loop={true}
         hasParallaxImages={true}
       />
+      <View style={styles.goBackButtonContainer}>
+        <GoBackButton/>
+      </View>
       <View style={styles.shareButtonContainer}>
         <ShareButton />
       </View>
@@ -40,6 +44,11 @@ const RaceCertificationImage = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+  },
+  goBackButtonContainer: {
+    position: "absolute",
+    left: 5,
+    top: 30,
   },
   shareButtonContainer: {
     position: "absolute",

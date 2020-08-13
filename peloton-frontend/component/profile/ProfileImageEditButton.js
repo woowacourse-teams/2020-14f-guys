@@ -17,14 +17,13 @@ const ProfileImageEditButton = ({ children }) => {
       name: selectedImage.substring(9),
     });
     try {
-      const uploadedImage = await MemberApi.postProfile(token, formData);
+      const profile = await MemberApi.postProfile(token, formData);
       setUserInfo({
         ...userInfo,
-        profile: uploadedImage,
+        profile,
       });
     } catch (error) {
-      console.log(error);
-      alert("서버 에러");
+      alert("에러가 발생했습니다.");
     }
   };
 
@@ -41,7 +40,7 @@ const ProfileImageEditButton = ({ children }) => {
           },
           { text: "OK", onPress: async () => await Linking.openSettings() },
         ],
-        { cancelable: false }
+        { cancelable: false },
       );
     } else {
       const pickerResult = await ImagePicker.launchImageLibraryAsync({
@@ -59,7 +58,6 @@ const ProfileImageEditButton = ({ children }) => {
         ...userInfo,
         profile: selectedImage,
       });
-      requestChangeImage(selectedImage);
     }
   };
 
