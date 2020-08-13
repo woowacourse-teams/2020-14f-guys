@@ -22,15 +22,6 @@ export const navigateWithoutHistory = (navigation, name) => {
   });
 };
 
-export const navigateStackScreen = (navigation, name, params) => {
-  navigation.dispatch({
-    ...StackActions.replace(name, {
-      ...params,
-    }),
-    target: navigation.dangerouslyGetState().key,
-  });
-};
-
 export const navigateTabScreen = (navigation, name) => {
   navigation.dispatch(TabActions.jumpTo(name));
 };
