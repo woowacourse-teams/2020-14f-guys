@@ -45,7 +45,8 @@ const RaceDetail = ({ route }) => {
       />
       <RaceSpec
         raceDuration={raceInfo.race_duration}
-        cash={parseInt(raceInfo.entrance_fee * ridersInfo.length)}
+        cash={raceInfo.entrance_fee}
+        riderCount={ridersInfo.length}
       />
       <LinkCopyButton raceId={raceId} />
     </ScrollView>

@@ -111,21 +111,20 @@ const RedirectPage = ({ route }) => {
       }
       try {
         const { race_responses: races } = await QueryApi.getRaces(userToken);
-        for (let i = 0; i < races.length; i++) {
-          if (String(races[i].id) === raceId) {
-            navigateWithHistory(navigation, [
-              {
-                name: "Home",
+        const filteredRace = races.filter((race) => String(race.id) === raceId);
+        if (filteredRace.length > 0) {
+          navigateWithHistory(navigation, [
+            {
+              name: "Home",
+            },
+            {
+              name: "RaceDetail",
+              params: {
+                raceInfo,
+                location: `/api/races/${raceId}`,
               },
-              {
-                name: "RaceDetail",
-                params: {
-                  raceInfo,
-                  location: `/api/races/${raceId}`,
-                },
-              },
-            ]);
-          }
+            },
+          ]);
         }
       } catch (error) {
         alert("조회에 실패했습니다.");
