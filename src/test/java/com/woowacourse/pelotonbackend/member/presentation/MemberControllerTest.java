@@ -98,7 +98,7 @@ public class MemberControllerTest {
             .content(requestAsBytes)
         )
             .andExpect(status().isCreated())
-            .andExpect(header().string("location", String.format("%s/%d", RESOURCE_URL, ID)))
+            .andExpect(header().string("location", String.format("%s/%d", RESOURCE_URL, MEMBER_ID)))
             .andDo(MemberDocumentation.createMember());
     }
 
@@ -111,7 +111,7 @@ public class MemberControllerTest {
         given(argumentResolver.resolveArgument(any(MethodParameter.class), any(ModelAndViewContainer.class),
             any(NativeWebRequest.class), any(WebDataBinderFactory.class))).willReturn(expectedResponse);
         given(argumentResolver.supportsParameter(any())).willReturn(true);
-        given(memberService.findMember(ID)).willReturn(expectedResponse);
+        given(memberService.findMember(MEMBER_ID)).willReturn(expectedResponse);
 
         final MvcResult mvcResult = mockMvc.perform(get(RESOURCE_URL)
             .header(HttpHeaders.AUTHORIZATION, LoginFixture.getTokenHeader())
@@ -167,7 +167,7 @@ public class MemberControllerTest {
             .content(objectMapper.writeValueAsBytes(createNameUpdateRequest()))
         )
             .andExpect(status().isOk())
-            .andExpect(header().string("Location", String.format("%s/%d", RESOURCE_URL, ID)))
+            .andExpect(header().string("Location", String.format("%s/%d", RESOURCE_URL, MEMBER_ID)))
             .andDo(MemberDocumentation.updateName());
     }
 
@@ -180,7 +180,7 @@ public class MemberControllerTest {
         given(argumentResolver.resolveArgument(any(MethodParameter.class), any(ModelAndViewContainer.class), any(
             NativeWebRequest.class), any(WebDataBinderFactory.class))).willReturn(expectedResponse);
         given(argumentResolver.supportsParameter(any())).willReturn(true);
-        given(memberService.findMember(ID)).willReturn(expectedResponse);
+        given(memberService.findMember(MEMBER_ID)).willReturn(expectedResponse);
         given(memberService.updateCash(anyLong(), any(MemberCashUpdateRequest.class)))
             .willReturn(MemberFixture.memberResponse());
 
@@ -190,21 +190,21 @@ public class MemberControllerTest {
             .content(objectMapper.writeValueAsBytes(createCashUpdateRequest()))
         )
             .andExpect(status().isOk())
-            .andExpect(header().string("Location", String.format("%s/%d", RESOURCE_URL, ID)))
+            .andExpect(header().string("Location", String.format("%s/%d", RESOURCE_URL, MEMBER_ID)))
             .andDo(MemberDocumentation.updateCash());
     }
 
     @DisplayName("회원의 Profile 사진을 수정한다.")
     @Test
     void updateMemberProfile() throws Exception {
-        final Member expectedMember = createWithId(ID);
+        final Member expectedMember = createWithId(MEMBER_ID);
         final MemberResponse expectedResponse = MemberResponse.from(expectedMember);
         given(bearerAuthInterceptor.preHandle(any(HttpServletRequest.class), any(HttpServletResponse.class),
             any(HandlerMethod.class))).willReturn(true);
         given(argumentResolver.resolveArgument(any(MethodParameter.class), any(ModelAndViewContainer.class), any(
             NativeWebRequest.class), any(WebDataBinderFactory.class))).willReturn(expectedResponse);
         given(argumentResolver.supportsParameter(any())).willReturn(true);
-        given(memberService.findMember(ID)).willReturn(expectedResponse);
+        given(memberService.findMember(MEMBER_ID)).willReturn(expectedResponse);
         given(memberService.updateProfileImage(anyLong(), any(MultipartFile.class)))
             .willReturn(MemberFixture.memberProfileUpdated());
 
@@ -220,7 +220,7 @@ public class MemberControllerTest {
     @DisplayName("요청의 이미지가 Null인 경우에도 OK코드를 반환한다.")
     @Test
     void updateFailWhenNullInput() throws Exception {
-        final Member expectedMember = createWithId(ID);
+        final Member expectedMember = createWithId(MEMBER_ID);
         final MemberResponse expectedResponse = MemberResponse.from(expectedMember);
         given(bearerAuthInterceptor.preHandle(any(HttpServletRequest.class), any(HttpServletResponse.class),
             any(HandlerMethod.class))).willReturn(true);

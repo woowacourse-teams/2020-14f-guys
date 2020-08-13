@@ -18,7 +18,6 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import com.woowacourse.pelotonbackend.common.exception.RiderNotFoundException;
 import com.woowacourse.pelotonbackend.member.domain.MemberFixture;
 import com.woowacourse.pelotonbackend.race.domain.Race;
 import com.woowacourse.pelotonbackend.race.domain.RaceRepository;
@@ -46,7 +45,7 @@ class QueryServiceTest {
     @DisplayName("MemberResponse의 id로 riders와 races를 찾아 RaceResponses로 반환한다.")
     @Test
     void retrieveRacesByTest() {
-        final List<Rider> riders = RiderFixture.createRidersBy(ID);
+        final List<Rider> riders = RiderFixture.createRidersBy(MEMBER_ID);
         final List<Long> ridersRaceId = riders.stream()
             .mapToLong(rider -> rider.getRaceId().getId())
             .boxed()
@@ -54,7 +53,7 @@ class QueryServiceTest {
         final List<Race> races = riders.stream()
             .map(rider -> createWithId(rider.getRaceId().getId()))
             .collect(Collectors.toList());
-        given(riderRepository.findRidersByMemberId(ID)).willReturn(riders);
+        given(riderRepository.findRidersByMemberId(MEMBER_ID)).willReturn(riders);
         given(raceRepository.findAllById(ridersRaceId)).willReturn(races);
 
         assertAll(

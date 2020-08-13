@@ -56,7 +56,7 @@ class LoginMemberArgumentResolverTest {
         final MemberResponse memberResponse = loginMemberArgumentResolver.resolveArgument(methodParameter,
             null, servletWebRequest, null);
 
-        assertThat(memberResponse).isEqualToComparingFieldByField(createWithId(ID));
+        assertThat(memberResponse).isEqualToComparingFieldByField(createWithId(MEMBER_ID));
     }
 
     @DisplayName("해당 kakaoId와 매칭되는 회원정보가 존재하지 않을 경우 MemberNotFoundException으로 예외처리한다.")

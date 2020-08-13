@@ -28,9 +28,9 @@ public class MemberFixture {
     public static final ImageUrl PROFILE = new ImageUrl(
         "https://lh3.googleusercontent.com/5EfQBHDb47tchiART6U6yk3yYS9qBYr6VUssB5wHE1AgavqV5E2SSuzyiNkc7UgVng");
     public static final Role ROLE = Role.MEMBER;
-    public static final Long ID = 1L;
-    public static final Long ID2 = 2L;
-    public static final Long ID3 = 3L;
+    public static final Long MEMBER_ID = 1L;
+    public static final Long MEMBER_ID2 = 2L;
+    public static final Long MEMBER_ID3 = 3L;
     public static final Long NOT_EXIST_ID = 100L;
     public static final Long KAKAO_ID = 1L;
     public static final Long KAKAO_ID2 = 2L;
@@ -101,7 +101,7 @@ public class MemberFixture {
 
     public static Member memberNameUpdated() {
         return Member.builder()
-            .id(ID)
+            .id(MEMBER_ID)
             .kakaoId(KAKAO_ID)
             .profile(PROFILE)
             .email(EMAIL)
@@ -117,7 +117,7 @@ public class MemberFixture {
 
     public static MemberResponse memberResponse() {
         return MemberResponse.builder()
-            .id(ID)
+            .id(MEMBER_ID)
             .kakaoId(KAKAO_ID)
             .profile(PROFILE)
             .email(EMAIL)
@@ -129,8 +129,8 @@ public class MemberFixture {
 
     public static MemberResponses memberResponses() {
         return MemberResponses.from(
-            Lists.newArrayList(createWithInfo(ID, KAKAO_ID, EMAIL, NAME), createWithInfo(ID2, KAKAO_ID2, EMAIL2, NAME2),
-                createWithInfo(ID3, KAKAO_ID3, EMAIL3, NAME3)));
+            Lists.newArrayList(createWithInfo(MEMBER_ID, KAKAO_ID, EMAIL, NAME), createWithInfo(MEMBER_ID2, KAKAO_ID2, EMAIL2, NAME2),
+                createWithInfo(MEMBER_ID3, KAKAO_ID3, EMAIL3, NAME3)));
     }
 
     public static MemberNameUpdateRequest createNameUpdateRequest() {
