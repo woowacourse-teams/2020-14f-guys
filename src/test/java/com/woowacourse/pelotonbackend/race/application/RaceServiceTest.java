@@ -52,7 +52,7 @@ public class RaceServiceTest {
         final RaceCategory category = race.getCategory();
         given(randomGenerator.getRandomIntLowerThan(category.getCertifications().size())).willReturn(0);
         given(randomGenerator.getRandomIntLowerThan(category.getThumbnails().size())).willReturn(0);
-        doNothing().when(missionService).create(eq(TEST_RACE_ID), any(RaceCreateRequest.class));
+        doNothing().when(missionService).createFromRace(eq(TEST_RACE_ID), any(RaceCreateRequest.class));
 
         final Long raceId = raceService.create(RaceFixture.createMockRequest());
 

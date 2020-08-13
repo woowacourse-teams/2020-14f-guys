@@ -3,6 +3,7 @@ package com.woowacourse.pelotonbackend.mission.domain;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -18,11 +19,15 @@ import com.woowacourse.pelotonbackend.mission.presentation.dto.MissionUpdateRequ
 
 public class MissionFixture {
     public static final Long TEST_MISSION_ID = 1L;
-    public static final LocalDateTime START_TIME = LocalDateTime.of(2021, 1, 1, 9, 0);
-    public static final LocalDateTime END_TIME = LocalDateTime.of(2021, 1, 31, 12, 0);
+    public static final LocalDateTime START_TIME = LocalDateTime.parse(LocalDateTime.of(2021, 1, 1, 9, 0).format(
+        DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS")));
+    public static final LocalDateTime END_TIME = LocalDateTime.parse(LocalDateTime.of(2021, 1, 31, 12, 0).format(
+        DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS")));
     public static final DateTimeDuration MISSION_DURATION = new DateTimeDuration(START_TIME, END_TIME);
-    public static final LocalDateTime START_TIME_UPDATED = LocalDateTime.of(2023, 9, 1, 9, 0);
-    public static final LocalDateTime END_TIME_UPDATED = LocalDateTime.of(2023, 9, 30, 12, 0);
+    public static final LocalDateTime START_TIME_UPDATED = LocalDateTime.parse(LocalDateTime.of(2023, 9, 1, 9, 0).format(
+        DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS")));
+    public static final LocalDateTime END_TIME_UPDATED = LocalDateTime.parse(LocalDateTime.of(2023, 9, 30, 12, 0).format(
+        DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS")));
     public static final DateTimeDuration MISSION_DURATION_UPDATED = new DateTimeDuration(START_TIME_UPDATED,
         END_TIME_UPDATED);
     public static final MissionInstruction MISSION_INSTRUCTION = new MissionInstruction("다같이 손을 잡고 사진을 찍는다.");

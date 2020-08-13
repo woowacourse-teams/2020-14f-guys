@@ -71,7 +71,7 @@ class MissionControllerTest {
     @DisplayName("미션 생성 요청에 정상적으로 응답한다.")
     @Test
     void create() throws Exception {
-        given(missionService.create(any())).willReturn(MissionFixture.createWithId(1L).getId());
+        given(missionService.createFromRace(any())).willReturn(MissionFixture.createWithId(1L).getId());
         given(bearerAuthInterceptor.preHandle(any(HttpServletRequest.class), any(HttpServletResponse.class),
             any(HandlerMethod.class))).willReturn(true);
 

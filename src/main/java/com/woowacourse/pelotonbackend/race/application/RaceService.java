@@ -29,7 +29,7 @@ public class RaceService {
         final ImageUrl randomThumbnail = category.getRandomThumbnail(randomGenerator);
         final Race savedRace = raceRepository.save(request.toRace(randomCertification, randomThumbnail));
 
-        missionService.create(savedRace.getId(), request);
+        missionService.createFromRace(savedRace.getId(), request);
         return savedRace.getId();
     }
 

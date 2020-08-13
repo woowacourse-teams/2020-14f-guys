@@ -70,7 +70,7 @@ class MissionServiceTest {
                 .build())
             .collect(Collectors.toList());
 
-        missionService.create(RaceFixture.TEST_RACE_ID, RaceFixture.createMockRequest());
+        missionService.createFromRace(RaceFixture.TEST_RACE_ID, RaceFixture.createMockRequest());
         verify(missionRepository).saveAll(expectedToSave);
     }
 
@@ -80,7 +80,7 @@ class MissionServiceTest {
         Mission savedMission = MissionFixture.createWithId(1L);
         given(missionRepository.save(any(Mission.class))).willReturn(savedMission);
 
-        Long missionId = missionService.create(MissionFixture.mockCreateRequest());
+        Long missionId = missionService.createFromRace(MissionFixture.mockCreateRequest());
 
         assertThat(missionId).isEqualTo(savedMission.getId());
     }

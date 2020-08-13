@@ -28,7 +28,7 @@ public class MissionController {
 
     @PostMapping
     public ResponseEntity<Void> create(@RequestBody @Valid MissionCreateRequest request) {
-        Long id = missionService.create(request);
+        Long id = missionService.createFromRace(request);
 
         return ResponseEntity.created(URI.create(String.format("/api/missions/%d", id))).build();
     }
@@ -46,7 +46,7 @@ public class MissionController {
         Long persistId = missionService.update(id, request);
 
         return ResponseEntity.ok()
-            .header("Location", String.format("/api/missions/%d", persistId))
+            .location(URI.create(String.format("/api/missions/%d", persistId)))
             .build();
     }
 

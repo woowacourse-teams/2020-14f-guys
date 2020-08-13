@@ -41,7 +41,7 @@ public class MissionRepositoryCustomImpl implements MissionRepositoryCustom {
             .append(", MISSION.RACE_ID AS RACE_ID")
             .append(", MISSION.CREATED_AT AS CREATED_AT, MISSION.UPDATED_AT AS UPDATED_AT")
             .append(" FROM MISSION")
-            .append(" WHERE MISSION.RACE_ID = :raceId")
+            .append(" WHERE RACE_ID = :raceId")
             .toString();
     }
 }

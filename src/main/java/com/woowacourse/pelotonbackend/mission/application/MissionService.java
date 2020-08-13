@@ -30,7 +30,7 @@ public class MissionService {
     private final CustomDateParser dateParser;
     private final RandomGenerator randomGenerator;
 
-    public void create(final long raceId, final RaceCreateRequest request) {
+    public void createFromRace(final long raceId, final RaceCreateRequest request) {
         final List<LocalDate> missionDates = dateParser.convertDayToDate(request.getRaceDuration(), request.getDays());
         final List<DateTimeDuration> dateTimeDurations =
             dateParser.convertDateToDuration(missionDates, request.getCertificationAvailableDuration());
@@ -51,7 +51,7 @@ public class MissionService {
             .collect(Collectors.toList());
     }
 
-    public Long create(final MissionCreateRequest request) {
+    public Long createFromRace(final MissionCreateRequest request) {
         final Mission mission = request.toMission();
         final Mission persistMission = missionRepository.save(mission);
 
