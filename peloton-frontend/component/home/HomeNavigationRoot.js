@@ -30,8 +30,8 @@ const HomeNavigationRoot = () => {
           title: "진행중인 레이스",
           headerTransparent: true,
           headerTitle: false,
-          headerLeft: () => <GoBackButton/>,
-          headerRight: () => <RaceShareButton/>,
+          headerLeft: () => <GoBackButton />,
+          headerRight: () => <RaceShareButton />,
         }}
       />
       <HomeStack.Screen
