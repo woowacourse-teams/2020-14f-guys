@@ -14,6 +14,7 @@ import { MemberApi } from "../../../utils/api/MemberApi";
 import { RaceApi } from "../../../utils/api/RaceApi";
 import { memberInfoState, memberTokenState } from "../../../state/member/MemberState";
 import { raceInfoState } from "../../../state/race/RaceState";
+import { QueryApi } from "../../../utils/api/QueryApi";
 
 const RedirectPage = ({ route }) => {
   const setLoadingState = useSetRecoilState(loadingState);
@@ -103,7 +104,28 @@ const RedirectPage = ({ route }) => {
         alert("올바르지 않은 경로입니다.");
         navigateWithoutHistory(navigation, "Home");
       }
-      // todo 멤버가 Race에 포함되어 있는지 확인해야함.
+      try {
+        const races = await QueryApi.getRaces(userToken);
+        for (let i = 0; i < races.length; i++) {
+          if (String(races[i].id) === raceId) {
+            navigateWithHistory(navigation, [
+              {
+                name: "Home",
+              },
+              {
+                name: "RaceDetail",
+                params: {
+                  raceInfo,
+                  location: `/api/races/${raceId}`,
+                },
+              },
+            ]);
+          }
+        }
+      } catch (error) {
+        alert("서버 에러");
+        navigateWithoutHistory(navigation, "Home");
+      }
     };
     fetchRaceInfo();
     setLoadingState(false);
