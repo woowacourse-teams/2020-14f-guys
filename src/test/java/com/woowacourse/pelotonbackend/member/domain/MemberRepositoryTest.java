@@ -72,6 +72,7 @@ class MemberRepositoryTest {
         assertThat(membersIds).isEqualTo(ids);
     }
 
+    @DisplayName("카카오 ID로 회원을 조회한다.")
     @Test
     void findByKakaoId() {
         final Member member = memberRepository.save(createWithoutId(KAKAO_ID, EMAIL, NAME));

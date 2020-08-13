@@ -52,7 +52,7 @@ public class RaceServiceTest {
         final RaceCategory category = race.getCategory();
         given(randomGenerator.getRandomIntLowerThan(category.getCertifications().size())).willReturn(0);
         given(randomGenerator.getRandomIntLowerThan(category.getThumbnails().size())).willReturn(0);
-        doNothing().when(missionService).create(eq(TEST_RACE_ID), any(RaceCreateRequest.class));
+        doNothing().when(missionService).createFromRace(eq(TEST_RACE_ID), any(RaceCreateRequest.class));
 
         final Long raceId = raceService.create(RaceFixture.createMockRequest());
 
@@ -78,7 +78,7 @@ public class RaceServiceTest {
         final long notExistRaceId = 100L;
         assertThatThrownBy(() -> raceService.retrieve(notExistRaceId))
             .isInstanceOf(RaceNotFoundException.class)
-            .hasMessage(String.format("Race(id: %d) is not exists", notExistRaceId));
+            .hasMessage(String.format("Race(race id = %d) does not exists", notExistRaceId));
     }
 
     @DisplayName("Race 수정이 정상적으로 되는지 테스트합니다.")
@@ -102,7 +102,7 @@ public class RaceServiceTest {
         final long notExistRaceId = 100L;
         assertThatThrownBy(() -> raceService.update(notExistRaceId, RaceFixture.updateRequest()))
             .isInstanceOf(RaceNotFoundException.class)
-            .hasMessage(String.format("Race(id: %d) is not exists", notExistRaceId));
+            .hasMessage(String.format("Race(race id = %d) does not exists", notExistRaceId));
     }
 
     @DisplayName("Race를 삭제할 때, 삭제 메서드를 부르는지 테스트합니다.")

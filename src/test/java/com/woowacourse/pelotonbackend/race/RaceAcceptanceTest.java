@@ -20,13 +20,16 @@ import com.woowacourse.pelotonbackend.support.dto.JwtTokenResponse;
 import io.restassured.response.ValidatableResponse;
 
 public class RaceAcceptanceTest extends AcceptanceTest {
-    /*
+    /**
      * Feature: Race 관리
      *
      * Scenario: Race를 관리한다.
+     *
      * Given: 생성할 Race의 title, description, category, total amount, duration이 주어진다.
+     * Given: 생성할 Race에 대한 Mission의 missionDuration, missionInstruction, raceId도 주어진다.
      * When: Race의 생성 요청을 보낸다.
      * Then: 새로운 Race가 생성된다.
+     * Then: 새로운 Mission들이 생성된다.
      *
      * When: 생성한 Race를 찾는 요청을 보낸다.
      * Then: 해당 Race가 조회된다.

@@ -346,6 +346,72 @@ operation::race/update-not-exist[snippets='http-request,http-response,path-param
 operation::race/delete-success[snippets='http-request,http-response,path-parameters,request-headers']
 
 
+
+
+
+
+
+
+
+
+
+
+
+[[resources-mission]]
+== Mission
+
+
+[[resources-mission-create]]
+=== Create Mission
+
+
+[[resources-mission-create-succcess]]
+==== Success
+operation::mission/create-success[snippets='http-request,http-response,request-headers,request-fields,response-headers']
+
+
+[[resources-mission-get]]
+=== Get Mission
+
+
+[[resources-mission-get-succcess]]
+==== Success
+operation::mission/get-success[snippets='http-request,http-response,path-parameters,request-headers,response-fields']
+
+
+[[resources-mission-update]]
+=== Update Mission
+
+
+[[resources-mission-update-succcess]]
+==== Success
+operation::mission/update-success[snippets='http-request,http-response,path-parameters,request-headers,request-fields']
+
+
+[[resources-mission-delete]]
+=== Delete Mission
+
+
+[[resources-mission-delete-succcess]]
+==== Success
+operation::mission/delete-success[snippets='http-request,http-response,path-parameters,request-headers']
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 [[resources-report]]
 == Report
 

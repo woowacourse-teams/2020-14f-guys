@@ -1,4 +1,4 @@
-package com.woowacourse.pelotonbackend.member.acceptance;
+package com.woowacourse.pelotonbackend.member;
 
 import static com.woowacourse.pelotonbackend.member.domain.MemberFixture.*;
 import static org.assertj.core.api.Assertions.*;
@@ -23,24 +23,24 @@ import com.woowacourse.pelotonbackend.member.presentation.dto.MemberResponses;
 import com.woowacourse.pelotonbackend.support.AcceptanceTest;
 
 public class MemberAcceptanceTest extends AcceptanceTest {
-    public static final String S3_BASIC_URL = "https://14f-guys-image.s3.ap-northeast-2.amazonaws.com/";
-    public static final String FILE_PATH = "src/test/resources";
-    public static final String FILE_NAME = "SampleFile.jpeg";
-    public static final File FILE = new File(String.format("%s/%s", FILE_PATH, FILE_NAME));
-    /*
-    Scenario : 회원을 관리한다.
-        when : 회원을 만든다.
-        then : 회원이 생성된다.
-
-        when : 회원 전체 정보를 조회한다.
-        then : 회원 전체 정보가 조회되었다.
-
-        when : 회원을 변경했을 때
-        then : 회원 정보를 읽어온다.
-        then : 회원 정보가 변경 정보와 일치한다.
-
-        when : 회원을 삭제한다.
-        then: 기존 회원이 삭제되었다.
+    /**
+     * Feature: Member 관리
+     *
+     * Scenario: Member를 관리한다.
+     *
+     * Given: 생성할 Member의 kakaoId, profile, name, email, cash, role이 주어진다.
+     * When: Member의 생성 요청을 보낸다.
+     * Then: 새로운 Member가 생성된다.
+     *
+     * When: 생성한 Member를 찾는 요청을 보낸다.
+     * Then: 해당 Member가 조회된다.
+     *
+     * When: 생성한 Member의 업데이트 요청을 보낸다.
+     * Then: 해당 Member를 조회한다.
+     * Then: 해당 Member가 업데이트된다.
+     *
+     * When: 생성한 Member의 삭제 요청을 보낸다.
+     * Then: 해당 Member가 삭제된다.
      */
 
     @DisplayName("회원을 관리하는 기능")

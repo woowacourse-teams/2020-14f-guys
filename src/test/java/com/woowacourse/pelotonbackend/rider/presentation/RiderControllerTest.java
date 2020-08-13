@@ -46,8 +46,8 @@ import com.woowacourse.pelotonbackend.rider.presentation.dto.RiderCreateRequest;
 import com.woowacourse.pelotonbackend.rider.presentation.dto.RiderResponses;
 import com.woowacourse.pelotonbackend.support.BearerAuthInterceptor;
 
-@WebMvcTest(controllers = RiderController.class)
 @ExtendWith(RestDocumentationExtension.class)
+@WebMvcTest(controllers = RiderController.class)
 public class RiderControllerTest {
     private MockMvc mockMvc;
 

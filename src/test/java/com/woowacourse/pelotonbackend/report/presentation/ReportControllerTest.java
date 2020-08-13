@@ -32,8 +32,8 @@ import com.woowacourse.pelotonbackend.report.domain.ReportFixture;
 import com.woowacourse.pelotonbackend.report.presentation.dto.ReportCreateRequest;
 import com.woowacourse.pelotonbackend.support.BearerAuthInterceptor;
 
-@WebMvcTest(controllers = ReportController.class)
 @ExtendWith(RestDocumentationExtension.class)
+@WebMvcTest(controllers = ReportController.class)
 class ReportControllerTest {
     @Autowired
     private ObjectMapper objectMapper;

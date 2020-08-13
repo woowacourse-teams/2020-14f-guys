@@ -110,6 +110,12 @@ jacocoTestCoverageVerification {
                 value = 'TOTALCOUNT'
                 maximum = 20
             }
+
+            excludes = [
+                    '*.config.*',
+                    '*.common.*',
+                    '*.Application'
+            ]
         }
     }
 }

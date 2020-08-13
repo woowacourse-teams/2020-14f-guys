@@ -8,9 +8,14 @@ import org.springframework.data.jdbc.core.mapping.AggregateReference;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.woowacourse.pelotonbackend.common.exception.MissionNotFoundException;
 import com.woowacourse.pelotonbackend.mission.domain.DateTimeDuration;
 import com.woowacourse.pelotonbackend.mission.domain.Mission;
 import com.woowacourse.pelotonbackend.mission.domain.MissionRepository;
+import com.woowacourse.pelotonbackend.mission.presentation.dto.MissionCreateRequest;
+import com.woowacourse.pelotonbackend.mission.presentation.dto.MissionResponse;
+import com.woowacourse.pelotonbackend.mission.presentation.dto.MissionResponses;
+import com.woowacourse.pelotonbackend.mission.presentation.dto.MissionUpdateRequest;
 import com.woowacourse.pelotonbackend.race.domain.RaceCategory;
 import com.woowacourse.pelotonbackend.race.presentation.dto.RaceCreateRequest;
 import com.woowacourse.pelotonbackend.support.CustomDateParser;
@@ -25,7 +30,7 @@ public class MissionService {
     private final CustomDateParser dateParser;
     private final RandomGenerator randomGenerator;
 
-    public void create(final long raceId, final RaceCreateRequest request) {
+    public void createFromRace(final long raceId, final RaceCreateRequest request) {
         final List<LocalDate> missionDates = dateParser.convertDayToDate(request.getRaceDuration(), request.getDays());
         final List<DateTimeDuration> dateTimeDurations =
             dateParser.convertDateToDuration(missionDates, request.getCertificationAvailableDuration());
@@ -44,5 +49,60 @@ public class MissionService {
                 .missionInstruction(category.getRandomMissionInstruction(randomGenerator))
                 .build())
             .collect(Collectors.toList());
+    }
+
+    public Long createFromRace(final MissionCreateRequest request) {
+        final Mission mission = request.toMission();
+        final Mission persistMission = missionRepository.save(mission);
+
+        return persistMission.getId();
+    }
+
+    @Transactional(readOnly = true)
+    public MissionResponse retrieve(final Long id) {
+        final Mission mission = missionRepository.findById(id)
+            .orElseThrow(() -> new MissionNotFoundException(id));
+
+        return MissionResponse.of(mission);
+    }
+
+    @Transactional(readOnly = true)
+    public MissionResponses retrieveAllByIds(final List<Long> ids) {
+        final List<Mission> missions = missionRepository.findAllById(ids);
+
+        return MissionResponses.of(missions);
+    }
+
+    @Transactional(readOnly = true)
+    public MissionResponses retrieveByRaceId(final Long raceId) {
+        List<Mission> missions = missionRepository.findMissionsByRaceId(raceId);
+
+        return MissionResponses.of(missions);
+    }
+
+    @Transactional(readOnly = true)
+    public MissionResponses retrieveAll() {
+        List<Mission> missions = missionRepository.findAll();
+
+        return MissionResponses.of(missions);
+    }
+
+    public Long update(final Long id, final MissionUpdateRequest request) {
+        final Mission mission = missionRepository.findById(id)
+            .orElseThrow(() -> new MissionNotFoundException(id));
+
+        final Mission updatedMission = request.toMission(mission);
+        Mission persist = missionRepository.save(updatedMission);
+
+        return persist.getId();
+    }
+
+    public void delete(final Long id) {
+        missionRepository.deleteById(id);
+    }
+
+    public void deleteAllByIds(final List<Long> ids) {
+        final List<Mission> missions = missionRepository.findAllById(ids);
+        missionRepository.deleteAll(missions);
     }
 }

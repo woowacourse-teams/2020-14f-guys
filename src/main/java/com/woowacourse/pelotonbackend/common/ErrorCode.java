@@ -23,6 +23,10 @@ public enum ErrorCode {
     RACE_DUPLICATE(400, "Race-002"),
     RACE_ID_INVALID(400, "Race-003"),
 
+    MISSION_NOT_FOUND(404, "Mission-001"),
+    MISSION_DUPLICATE(400, "Mission-002"),
+    MISSION_ID_INVALID(400, "Mission-003"),
+
     RIDER_NOT_FOUND(404,"RIDER-001"),
 
     UN_AUTHORIZED(401, "Auth-001"),

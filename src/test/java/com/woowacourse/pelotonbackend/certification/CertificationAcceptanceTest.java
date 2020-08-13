@@ -16,10 +16,11 @@ import com.woowacourse.pelotonbackend.support.AcceptanceTest;
 import com.woowacourse.pelotonbackend.support.dto.JwtTokenResponse;
 
 public class CertificationAcceptanceTest extends AcceptanceTest {
-    /*
+    /**
      * Feature: Certification 관리
      *
      * Scenario: Certification 관리한다.
+     *
      * Given: Rider가 생성이 되어있다.
      *        Mission이 생성이 되어있다.
      * When: Rider가 Mission에 인증을 요청한다.(Certification 생성 요청)
