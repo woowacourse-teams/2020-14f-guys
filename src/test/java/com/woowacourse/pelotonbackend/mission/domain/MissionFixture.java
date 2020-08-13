@@ -37,7 +37,6 @@ public class MissionFixture {
     public static final Long RACE_ID = 7L;
     public static final Long RACE_ID_UPDATED = 9L;
     public static final String MISSION_API_URL = "/api/missions";
-
     public static final long TEST_RACE_ID = 1L;
 
     public static Mission createWithId() {
@@ -73,7 +72,7 @@ public class MissionFixture {
             .id(id)
             .missionDuration(MISSION_DURATION)
             .missionInstruction(MISSION_INSTRUCTION)
-            .raceId(AggregateReference.to(RACE_ID))
+            .raceId(AggregateReference.to(TEST_RACE_ID))
             .build();
     }
 

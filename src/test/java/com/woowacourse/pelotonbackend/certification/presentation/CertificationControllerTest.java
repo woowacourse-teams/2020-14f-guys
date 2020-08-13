@@ -21,15 +21,19 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.core.MethodParameter;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.MediaType;
 import org.springframework.restdocs.RestDocumentationContextProvider;
 import org.springframework.restdocs.RestDocumentationExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.web.bind.support.WebDataBinderFactory;
 import org.springframework.web.context.WebApplicationContext;
+import org.springframework.web.context.request.NativeWebRequest;
 import org.springframework.web.filter.CharacterEncodingFilter;
 import org.springframework.web.method.HandlerMethod;
+import org.springframework.web.method.support.ModelAndViewContainer;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -39,7 +43,9 @@ import com.woowacourse.pelotonbackend.certification.presentation.dto.Certificati
 import com.woowacourse.pelotonbackend.common.ErrorCode;
 import com.woowacourse.pelotonbackend.common.exception.CertificationNotFoundException;
 import com.woowacourse.pelotonbackend.docs.CertificationDocumentation;
+import com.woowacourse.pelotonbackend.member.application.MemberService;
 import com.woowacourse.pelotonbackend.member.domain.LoginFixture;
+import com.woowacourse.pelotonbackend.member.domain.MemberFixture;
 import com.woowacourse.pelotonbackend.member.presentation.LoginMemberArgumentResolver;
 import com.woowacourse.pelotonbackend.support.BearerAuthInterceptor;
 
@@ -57,6 +63,9 @@ class CertificationControllerTest {
 
     @MockBean
     private LoginMemberArgumentResolver argumentResolver;
+
+    @MockBean
+    private MemberService memberService;
 
     private MockMvc mockMvc;
 
@@ -76,10 +85,14 @@ class CertificationControllerTest {
             .willReturn(TEST_CERTIFICATION_ID);
         given(authInterceptor.preHandle(any(HttpServletRequest.class), any(HttpServletResponse.class),
             any(HandlerMethod.class))).willReturn(true);
+        given(argumentResolver.supportsParameter(any())).willCallRealMethod();
+        given(argumentResolver.resolveArgument(any(MethodParameter.class), any(ModelAndViewContainer.class),
+            any(NativeWebRequest.class), any(WebDataBinderFactory.class))).willReturn(MemberFixture.memberResponse());
 
         mockMvc.perform(
             multipart("/api/certifications", TEST_RIDER_ID, TEST_MISSION_ID)
                 .file(createMockCertificationMultipartFile())
+                .header(HttpHeaders.AUTHORIZATION, LoginFixture.getTokenHeader())
                 .contentType(MediaType.MULTIPART_FORM_DATA_VALUE)
                 .param("status", TEST_CERTIFICATION_STATUS.name())
                 .param("description", TEST_CERTIFICATION_DESCRIPTION)
@@ -104,6 +117,7 @@ class CertificationControllerTest {
             multipart("/api/certifications", TEST_RIDER_ID, TEST_MISSION_ID)
                 .file(createMockCertificationMultipartFile())
                 .contentType(MediaType.MULTIPART_FORM_DATA_VALUE)
+                .header(HttpHeaders.AUTHORIZATION, LoginFixture.getTokenHeader())
                 .param("status", badRequest.getStatus().name())
                 .param("description", badRequest.getDescription())
                 .param("riderId", badRequest.getRiderId().toString()))

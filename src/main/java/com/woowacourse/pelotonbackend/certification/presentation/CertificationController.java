@@ -24,7 +24,8 @@ import com.woowacourse.pelotonbackend.certification.presentation.dto.Certificati
 import com.woowacourse.pelotonbackend.certification.presentation.dto.CertificationResponse;
 import com.woowacourse.pelotonbackend.certification.presentation.dto.CertificationResponses;
 import com.woowacourse.pelotonbackend.certification.presentation.dto.CertificationStatusUpdateRequest;
-
+import com.woowacourse.pelotonbackend.member.presentation.dto.MemberResponse;
+import com.woowacourse.pelotonbackend.support.annotation.LoginMember;
 import lombok.RequiredArgsConstructor;
 
 @RestController
@@ -34,8 +35,10 @@ public class CertificationController {
     private final CertificationService certificationService;
 
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<Void> create(@RequestPart(value = "certification_image") final MultipartFile file,
-        @Valid final CertificationCreateRequest certificationCreateRequest) {
+    public ResponseEntity<Void> create(
+        @RequestPart(value = "certification_image") final MultipartFile file,
+        @Valid final CertificationCreateRequest certificationCreateRequest,
+        @LoginMember final MemberResponse memberResponse) {
 
         final Long certificationId = certificationService.create(file, certificationCreateRequest);
 

@@ -129,7 +129,7 @@ class MissionServiceTest {
     void retrieveByRaceIdAndSucceed() {
         final Long raceId = 10L;
         final Mission mission = MissionFixture.createWithIdAndRaceId(raceId);
-        given(missionRepository.findMissionsByRaceId(anyLong())).willReturn(Arrays.asList(mission));
+        given(missionRepository.findByRaceId(anyLong())).willReturn(Arrays.asList(mission));
 
         MissionResponses response = missionService.retrieveByRaceId(raceId);
 

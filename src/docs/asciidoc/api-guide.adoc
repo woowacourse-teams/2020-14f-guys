@@ -498,7 +498,7 @@ operation::rider/delete-success[snippets='http-request,http-response,path-parame
 [[resources-queries]]
 == Query
 
-[[resources-queries]]
+[[resources-queries-races]]
 === Get Races
 
 [[resources-queries-races-get-success]]
@@ -507,12 +507,12 @@ operation::queries/races/get-success[snippets='http-request,http-response,reques
 
 [[resources-queries-races-get-fail]]
 ==== Fail
-operation::queries/races/get-success[snippets='http-request,http-response,request-headers,response-fields']
+operation::queries/races/get-fail[snippets='http-request,http-response,request-headers,response-fields']
 
-[[resources-get-certifications]]
+[[resources-queries-certifications]]
 === Get Certifications
 
-[[resource-query-certifications-sucess]]
+[[resource-query-certifications-success]]
 ==== Success
 operation::queries/get-certifications-race-id[snippets='http-request,http-response,path-parameters,request-headers,response-fields']
 

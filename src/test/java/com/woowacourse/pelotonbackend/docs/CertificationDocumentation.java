@@ -16,6 +16,9 @@ public class CertificationDocumentation {
         return document("certification/create-success",
             getDocumentRequest(),
             getDocumentResponse(),
+            requestHeaders(
+                headerWithName(HttpHeaders.AUTHORIZATION).description("사용자 인증 토큰")
+            ),
             requestParts(
                 partWithName("certification_image").description("인증 사진")
             ),
@@ -36,7 +39,8 @@ public class CertificationDocumentation {
             getDocumentRequest(),
             getDocumentResponse(),
             requestHeaders(
-                headerWithName(HttpHeaders.CONTENT_TYPE).description("Content-Type 헤더")
+                headerWithName(HttpHeaders.CONTENT_TYPE).description("Content-Type 헤더"),
+                headerWithName(HttpHeaders.AUTHORIZATION).description("사용자 인증 토큰")
             ),
             requestParts(
                 partWithName("certification_image").description("인증 사진")

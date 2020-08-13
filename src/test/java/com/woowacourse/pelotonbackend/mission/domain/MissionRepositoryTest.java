@@ -1,20 +1,12 @@
 package com.woowacourse.pelotonbackend.mission.domain;
 
-<<<<<<< HEAD
+import static com.woowacourse.pelotonbackend.mission.domain.MissionFixture.*;
 import static org.assertj.core.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
-=======
-import static com.woowacourse.pelotonbackend.mission.domain.MissionFixture.*;
-import static org.assertj.core.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.*;
-
-import java.time.LocalDateTime;
-import java.util.List;
->>>>>>> 7c61981... refactor: 범블비, 시카 리뷰 반영
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -39,7 +31,7 @@ class MissionRepositoryTest {
 
         final Mission persist = missionRepository.save(mission);
 
-        assertThat(persist).isEqualToIgnoringGivenFields(mission, "id");
+        assertThat(persist).isEqualToIgnoringGivenFields(mission, "id","createdAt","updatedAt");
     }
 
     @DisplayName("id들로 미션을 조회한 후 리스트로 반환한다.")
@@ -80,7 +72,7 @@ class MissionRepositoryTest {
             MissionFixture.createWithoutIdAndRaceId(raceId))
         );
 
-        List<Mission> missions = missionRepository.findMissionsByRaceId(raceId);
+        List<Mission> missions = missionRepository.findByRaceId(raceId);
 
         assertAll(
             () -> assertThat(missions.get(0).getRaceId().getId()).isEqualTo(raceId),
@@ -100,9 +92,9 @@ class MissionRepositoryTest {
         assertAll(
             () -> assertThat(missions).hasSize(2),
             () -> assertThat(missions.get(0)).isEqualToIgnoringGivenFields(missionWithoutId,
-                "id", "createdAt", "updatedAt"),
+                "id", "createdAt", "updatedAt", "missionDuration"),
             () -> assertThat(missions.get(1)).isEqualToIgnoringGivenFields(missionWithoutId,
-                "id", "createdAt", "updatedAt")
+                "id", "createdAt", "updatedAt", "missionDuration")
         );
     }
 }
