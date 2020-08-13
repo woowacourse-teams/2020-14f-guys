@@ -4,24 +4,24 @@ import { useRecoilValue } from "recoil";
 
 import RaceCreateView from "./RaceCreateView";
 import RaceCreateUnit from "./RaceCreateUnit";
-import { RaceCreatUnitType } from "../../../utils/constants";
-import { raceCreateInfoState } from "../../../state/race/CreateState";
+import { RaceCreateUnitType } from "../../../utils/constants";
+import { raceCreateInfoState } from "../../../state/race/RaceState";
 
 const InputRaceMissionDays = () => {
   const { days } = useRecoilValue(raceCreateInfoState);
   const navigation = useNavigation();
 
-  const navigateToFeeInput = async () => {
+  const navigateToMissionTime = async () => {
     if (days.length === 0) {
       alert("요일을 하나 이상 선택해주세요");
       return;
     }
-    navigation.navigate("InputRaceFee");
+    navigation.navigate("InputRaceMissionTime");
   };
 
   return (
-    <RaceCreateView onPress={navigateToFeeInput}>
-      <RaceCreateUnit type={RaceCreatUnitType.DAYS} fieldName="days">
+    <RaceCreateView onPress={navigateToMissionTime}>
+      <RaceCreateUnit type={RaceCreateUnitType.DAYS} fieldName="days">
         미션이 진행될 요일을 선택해주세요
       </RaceCreateUnit>
     </RaceCreateView>

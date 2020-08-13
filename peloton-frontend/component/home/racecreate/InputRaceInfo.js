@@ -12,7 +12,7 @@ const InputRaceInfo = () => {
 
   const navigateToDateInput = async () => {
     if (!title || !description) {
-      alert("제목과 설명을 입력해주세요");
+      alert("이름과 설명을 모두 입력해주세요");
       return;
     }
     navigation.navigate("InputRaceDates");

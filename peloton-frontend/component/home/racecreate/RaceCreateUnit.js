@@ -5,16 +5,16 @@ import DateTimePickerModal from "react-native-modal-datetime-picker";
 
 import { raceCreateInfoState } from "../../../state/race/RaceState";
 import InputBox from "./InputBox";
-import CalendarButton from "./CalendarButton";
 import { DateFormatter } from "../../../utils/DateFormatter";
-import { COLOR, RaceCreatUnitType } from "../../../utils/constants";
+import { COLOR, RaceCreateUnitType } from "../../../utils/constants";
 import MissionDaysSelector from "./MissionDaysSelector";
 
 const RaceCreateUnit = ({
-  type = RaceCreatUnitType.TEXT,
+  type = RaceCreateUnitType.TEXT,
   number = false,
   fieldName,
   children,
+  postfix,
 }) => {
   // eslint-disable-next-line prettier/prettier
   const [raceCreateInfo, setRaceCreateInfo] = useRecoilState(raceCreateInfoState);
@@ -73,7 +73,7 @@ const RaceCreateUnit = ({
   const inputValue = () => {
     const value = raceCreateInfo[fieldName];
 
-    return type === RaceCreatUnitType.TIME
+    return type === RaceCreateUnitType.TIME
       ? value && value.substring(0, 2) + "시 " + value.substring(3, 5) + "분"
       : value;
   };
@@ -83,19 +83,22 @@ const RaceCreateUnit = ({
       <View style={styles.subjectContainer}>
         <Text style={styles.subject}>{children}</Text>
       </View>
-      {type === RaceCreatUnitType.DAYS ? (
+      {type === RaceCreateUnitType.DAYS ? (
         <MissionDaysSelector />
       ) : (
         <View style={styles.inputContainer}>
           <InputBox
             value={inputValue()}
             onChangeText={onChangeText}
-            editable={type === RaceCreatUnitType.TEXT}
+            editable={type === RaceCreateUnitType.TEXT}
             number={number}
+            onClick={
+              type !== RaceCreateUnitType.TEXT
+                ? () => setIsShowPicker(true)
+                : null
+            }
           />
-          {type !== RaceCreatUnitType.TEXT && (
-            <CalendarButton showCalendar={() => setIsShowPicker(true)} />
-          )}
+          {postfix && <Text style={styles.postfix}>{postfix}</Text>}
         </View>
       )}
       {isShowPicker && (
@@ -104,8 +107,8 @@ const RaceCreateUnit = ({
           testID="dateTimePicker"
           mode={type}
           onCancel={() => setIsShowPicker(false)}
-          onConfirm={type === RaceCreatUnitType.DATE ? onPickDate : onPickTime}
-          minimumDate={type === RaceCreatUnitType.DATE ? new Date() : null}
+          onConfirm={type === RaceCreateUnitType.DATE ? onPickDate : onPickTime}
+          minimumDate={type === RaceCreateUnitType.DATE ? new Date() : null}
           locale="ko-KR"
           confirmTextIOS="확인"
           cancelTextIOS="취소"
@@ -134,6 +137,13 @@ const styles = StyleSheet.create({
   },
   inputContainer: {
     flexDirection: "row",
+  },
+  postfix: {
+    fontSize: 20,
+    fontWeight: "300",
+    fontStyle: "normal",
+    lineHeight: 35,
+    color: COLOR.GRAY1,
   },
 });
 

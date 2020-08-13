@@ -9,16 +9,15 @@ const MissionDayButton = ({ day, toggleDay, clicked }) => {
     <TouchableOpacity
       onPress={toggleDay}
       activeOpacity={0.5}
-      style={{ ...styles.container, backgroundColor: color, opacity: 1 }}
+      style={{ ...styles.container, backgroundColor: color }}
     >
-      <Text style={{ color: COLOR.GRAY1 }}>{day.substring(0, 3)}</Text>
+      <Text style={styles.day}>{day.substring(0, 3)}</Text>
     </TouchableOpacity>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: COLOR.GREEN1,
     borderRadius: 40,
     width: 55,
     height: 55,
@@ -27,6 +26,9 @@ const styles = StyleSheet.create({
     overflow: "hidden",
     justifyContent: "center",
     alignItems: "center",
+  },
+  day: {
+    color: COLOR.GRAY1,
   },
 });
 

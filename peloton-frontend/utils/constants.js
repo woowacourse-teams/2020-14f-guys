@@ -122,7 +122,7 @@ export const AnimatedImage = animated(Image);
 export const AnimatedView = animated(View);
 export const AnimatedText = animated(Text);
 
-export const RaceCreatUnitType = {
+export const RaceCreateUnitType = {
   TEXT: "text",
   DATE: "date",
   TIME: "time",

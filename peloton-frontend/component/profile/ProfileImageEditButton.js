@@ -2,6 +2,7 @@ import React from "react";
 import { Alert, Linking, TouchableOpacity } from "react-native";
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import * as ImagePicker from "expo-image-picker";
+
 import { MemberApi } from "../../utils/api/MemberApi";
 import {
   memberInfoState,

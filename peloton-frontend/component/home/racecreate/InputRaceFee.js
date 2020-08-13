@@ -78,7 +78,7 @@ const InputRaceInfo = () => {
   return (
     <LoadingIndicator>
       <RaceCreateView onPress={submitRaceRequest}>
-        <RaceCreateUnit fieldName="entrance_fee" number>
+        <RaceCreateUnit postfix="원" fieldName="entrance_fee" number>
           Race의 입장료를 결정해주세요
         </RaceCreateUnit>
       </RaceCreateView>
