@@ -7,23 +7,22 @@ import {
   TouchableWithoutFeedback,
   View,
 } from "react-native";
-import { useRecoilValue } from "recoil";
-import { userInfoState, userTokenState } from "../atoms";
+import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import { useNavigation } from "@react-navigation/core";
-import { COLOR, SERVER_BASE_URL, TOKEN_STORAGE } from "../../utils/constants";
+import { COLOR, TOKEN_STORAGE } from "../../utils/constants";
 import AsyncStorage from "@react-native-community/async-storage";
-import Axios from "axios";
-import { useRecoilState, useSetRecoilState } from "recoil/dist";
 import ProfileImageSelect from "./ProfileImageSelect";
 import SubmitButton from "./SubmitButton";
 import NicknameInput from "./NicknameInput";
 import { navigateWithoutHistory } from "../../utils/util";
 import LoadingIndicator from "../../utils/LoadingIndicator";
 import { loadingState } from "../../state/loading/LoadingState";
+import { memberInfoState, memberTokenState } from "../../state/member/MemberState";
+import { MemberApi } from "../../utils/api/MemberApi";
 
 const ChangeProfile = () => {
-  const userToken = useRecoilValue(userTokenState);
-  const [userInfo, setUserInfo] = useRecoilState(userInfoState);
+  const token = useRecoilValue(memberTokenState);
+  const [memberInfo, setMemberInfo] = useRecoilState(memberInfoState);
   const navigation = useNavigation();
   const [userInput, setUserInput] = useState("");
   const setIsLoading = useSetRecoilState(loadingState);
@@ -31,25 +30,17 @@ const ChangeProfile = () => {
   const onSubmit = async () => {
     Keyboard.dismiss();
     setIsLoading(true);
-    await AsyncStorage.setItem(TOKEN_STORAGE, userToken);
+    await AsyncStorage.setItem(TOKEN_STORAGE, token);
     try {
-      await Axios({
-        method: "PATCH",
-        baseURL: SERVER_BASE_URL,
-        url: "/api/members/name",
-        headers: {
-          Authorization: `Bearer ${userToken}`,
-        },
-        data: {
-          name: userInput,
-        },
-      });
-      setUserInfo({
-        ...userInfo,
+      await MemberApi.patchName(token, name);
+      setMemberInfo({
+        ...memberInfo,
         name: userInput,
       });
       navigateWithoutHistory(navigation, "ApplicationNavigationRoot");
-    } catch (error) {}
+    } catch (error) {
+      console.log(error);
+    }
     setIsLoading(false);
   };
 

@@ -1,5 +1,6 @@
 import { animated } from "react-spring";
 import { Image, Text, View } from "react-native";
+import * as Linking from "expo-linking";
 
 export const COLOR = {
   RED: "#ce1313",
@@ -115,6 +116,7 @@ export const CATEGORY = [
 ];
 export const SERVER_BASE_URL = "https://peloton.ga";
 export const TOKEN_STORAGE = "@token_storage";
+export const DEEP_LINK_BASE_URL = Linking.makeUrl("/");
 
 export const AnimatedImage = animated(Image);
 export const AnimatedView = animated(View);

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   Keyboard,
   StyleSheet,
@@ -9,48 +9,49 @@ import {
   View,
 } from "react-native";
 import { COLOR } from "../../../utils/constants";
-import { useRecoilValue, useSetRecoilState } from "recoil";
-import { userInfoState, userTokenState } from "../../atoms";
+import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
+import { memberInfoState, memberTokenState } from "../../../state/member/MemberState";
 import { useNavigation } from "@react-navigation/core";
 import { MemberApi } from "../../../utils/api/MemberApi";
+import { loadingState } from "../../../state/loading/LoadingState";
 
-const CashUpdate = () => {
-  const [cash, setCash] = React.useState(5000);
-  const token = useRecoilValue(userTokenState);
+const NameUpdate = () => {
+  const token = useRecoilValue(memberTokenState);
   const navigation = useNavigation();
-  const setUserInfo = useSetRecoilState(userInfoState);
-  const userInfo = useRecoilValue(userInfoState);
+  const [memberInfo, setMemberInfo] = useRecoilState(memberInfoState);
+  const [name, setName] = useState(memberInfo.name);
+  const setIsLoading = useSetRecoilState(loadingState);
 
-  const requestChangeCash = async () => {
+  const requestChangeName = async () => {
+    setIsLoading(true);
     try {
-      await MemberApi.patchCash(
-        token,
-        `${Number(userInfo.cash) + Number(cash)}`
-      );
-      const response = await MemberApi.get(token);
-      setUserInfo(response);
+      await MemberApi.patchName(token, name);
+      const newMemberInfo = await MemberApi.get(token);
+      setMemberInfo(newMemberInfo);
       navigation.navigate("ProfileEdit");
     } catch (error) {
       alert("에러가 발생했습니다.");
+      console.log(error);
     }
+    setIsLoading(false);
   };
 
   return (
     <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
       <View style={styles.container}>
         <View style={styles.chargeContainer}>
-          <View style={{ alignItems: "left", width: "100%" }}>
-            <Text style={styles.chargeText}>충전 금액을 입력해주세요</Text>
+          <View style={{ width: "100%" }}>
+            <Text style={styles.chargeText}>변경할 닉네임을 입력해주세요</Text>
             <TextInput
               style={styles.chargeInput}
-              onChangeText={(text) => setCash(text)}
-              value={String(cash)}
+              onChangeText={(text) => setName(text)}
+              value={name}
             />
           </View>
         </View>
         <View style={styles.buttonContainer}>
-          <TouchableOpacity style={styles.button} onPress={requestChangeCash}>
-            <Text style={styles.buttonText}>충전하기</Text>
+          <TouchableOpacity style={styles.button} onPress={requestChangeName}>
+            <Text style={styles.buttonText}>변경하기</Text>
           </TouchableOpacity>
         </View>
       </View>
@@ -79,7 +80,7 @@ const styles = StyleSheet.create({
   },
   chargeInput: {
     backgroundColor: COLOR.WHITE,
-    fontSize: 16,
+    fontSize: 17,
     fontWeight: "300",
     color: COLOR.GREEN2,
     paddingLeft: "10%",
@@ -123,4 +124,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default CashUpdate;
+export default NameUpdate;

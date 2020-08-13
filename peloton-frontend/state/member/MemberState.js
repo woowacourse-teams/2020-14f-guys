@@ -1,12 +1,12 @@
 import { atom } from "recoil";
 
-export const userTokenState = atom({
-  key: "userTokenState",
+export const memberTokenState = atom({
+  key: "memberTokenState",
   default: null,
 });
 
-export const userInfoState = atom({
-  key: "userInfoState",
+export const memberInfoState = atom({
+  key: "memberInfoState",
   default: {
     id: null,
     kakao_id: null,

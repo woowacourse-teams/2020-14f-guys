@@ -3,11 +3,11 @@ import { Alert, Image, Linking, StyleSheet, TouchableOpacity, View } from "react
 import * as ImagePicker from "expo-image-picker";
 import { Entypo } from "@expo/vector-icons";
 import { useRecoilState } from "recoil";
-import { userInfoState } from "../atoms";
 import { COLOR } from "../../utils/constants";
+import { memberInfoState } from "../../state/member/MemberState";
 
 const ProfileImage = () => {
-  const [userInfo, setUserInfo] = useRecoilState(userInfoState);
+  const [memberInfo, setMemberInfo] = useRecoilState(memberInfoState);
 
   const openImagePickerAsync = async () => {
     const permissionResult = await ImagePicker.requestCameraRollPermissionsAsync();
@@ -35,8 +35,8 @@ const ProfileImage = () => {
         console.log("cameraroll picker cancelled");
         return;
       }
-      setUserInfo({
-        ...userInfo,
+      setMemberInfo({
+        ...memberInfo,
         profile: {
           baseImageUrl: pickerResult.uri,
         },
@@ -50,8 +50,8 @@ const ProfileImage = () => {
         <Image
           style={styles.profileImage}
           source={
-            userInfo.profile
-              ? { uri: userInfo.profile }
+            memberInfo.profile
+              ? { uri: memberInfo.profile }
               : require("../../assets/default-profile.jpg")
           }
         />

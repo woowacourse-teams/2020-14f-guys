@@ -1,9 +1,9 @@
-import { CommonActions } from "@react-navigation/native";
+import { CommonActions, StackActions, TabActions } from "@react-navigation/native";
 
 export const navigateWithHistory = (navigation, routes) => {
   navigation.dispatch({
     ...CommonActions.reset({
-      index: routes.length,
+      index: routes.length - 1,
       routes: routes,
     }),
   });
@@ -20,4 +20,8 @@ export const navigateWithoutHistory = (navigation, name) => {
       ],
     }),
   });
+};
+
+export const navigateTabScreen = (navigation, name) => {
+  navigation.dispatch(TabActions.jumpTo(name));
 };

@@ -3,7 +3,7 @@ import { useNavigation } from "@react-navigation/native";
 
 import RaceCreateUnit from "./RaceCreateUnit";
 import { useRecoilValue } from "recoil";
-import { raceCreateInfoState } from "../../../state/race/CreateState";
+import { raceCreateInfoState } from "../../../state/race/RaceState";
 import RaceCreateView from "./RaceCreateView";
 
 const InputRaceInfo = () => {

@@ -2,7 +2,8 @@ import React from "react";
 import { createStackNavigator } from "@react-navigation/stack";
 import ProfileDetail from "./profiledetail/ProfileDetail";
 import ProfileEdit from "./profileedit/ProfileEdit";
-import CashUpdate from "./cashupdate/CashUpdate";
+import CashUpdate from "./profileedit/CashUpdate";
+import NameUpdate from "./profileedit/NameUpdate";
 
 const Stack = createStackNavigator();
 
@@ -28,6 +29,13 @@ const ProfileStackRoot = () => {
         component={CashUpdate}
         options={{
           title: "충전하기",
+        }}
+      />
+      <Stack.Screen
+        name="NameUpdate"
+        component={NameUpdate}
+        options={{
+          title: "닉네임 변경",
         }}
       />
     </Stack.Navigator>

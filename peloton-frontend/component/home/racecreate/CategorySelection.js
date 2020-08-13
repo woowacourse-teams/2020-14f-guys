@@ -3,7 +3,7 @@ import { Dimensions, FlatList, StyleSheet, Text, View } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { useSetRecoilState } from "recoil";
 
-import { raceCreateInfoState } from "../../../state/race/CreateState";
+import { raceCreateInfoState } from "../../../state/race/RaceState";
 import { CATEGORY, COLOR } from "../../../utils/constants";
 import CategoryItem from "./CategoryItem";
 

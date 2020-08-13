@@ -9,16 +9,16 @@ const SubmitButton = ({
   arrowColor = COLOR.ARROW_BLUE,
 }) => {
   return (
-    <View
-      style={{
-        ...styles.nextButtonContainer,
-        backgroundColor: color,
-      }}
-    >
-      <TouchableOpacity onPress={onSubmit}>
+    <TouchableOpacity onPress={onSubmit}>
+      <View
+        style={{
+          ...styles.nextButtonContainer,
+          backgroundColor: color,
+        }}
+      >
         <MaterialIcons name="navigate-next" size={36} color={arrowColor} />
-      </TouchableOpacity>
-    </View>
+      </View>
+    </TouchableOpacity>
   );
 };
 

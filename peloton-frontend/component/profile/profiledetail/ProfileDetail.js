@@ -2,21 +2,18 @@ import React from "react";
 import { ImageBackground, StyleSheet, View } from "react-native";
 import MemberInfo from "./MemberInfo";
 import { useRecoilValue } from "recoil";
-import { userInfoState } from "../../atoms";
 import { COLOR } from "../../../utils/constants";
+import { memberInfoState } from "../../../state/member/MemberState";
 
 const ProfileDetail = () => {
-  const userInfo = useRecoilValue(userInfoState);
+  const memberInfo = useRecoilValue(memberInfoState);
 
   return (
     <View style={styles.container}>
       <View style={styles.memberContainer}>
         <ImageBackground
-          source={
-            userInfo.profile
-              ? { url: userInfo.profile }
-              : require("../../../assets/default-profile.jpg")
-          }
+          source={{ url: memberInfo.profile }}
+          defaultSource={require("../../../assets/default-image-background.png")}
           style={styles.background}
           blurRadius={6}
         >

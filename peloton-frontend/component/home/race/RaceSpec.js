@@ -14,8 +14,8 @@ const RaceSpec = ({ raceDuration, cash }) => {
         value={`${startDate} ~ ${endDate}`}
         border
       />
-      <RaceSpecItem itemKey={"인증 주기"} value={"월, 수, 금"} border/>
-      <RaceSpecItem itemKey={"인증 시간"} value={"17:00 ~ 23:00"} border/>
+      <RaceSpecItem itemKey={"인증 주기"} value={"월, 수, 금"} border />
+      <RaceSpecItem itemKey={"인증 시간"} value={"17:00 ~ 23:00"} border />
       <RaceSpecItem itemKey={"모인 금액"} value={cash} border={false} />
     </View>
   );

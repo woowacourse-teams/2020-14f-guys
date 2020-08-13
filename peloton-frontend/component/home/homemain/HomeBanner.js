@@ -4,12 +4,12 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 
 import { COLOR, SAMPLE_SUBTITLE } from "../../../utils/constants";
-import { useRecoilValue } from "recoil/dist";
-import { userInfoState } from "../../atoms";
+import { useRecoilValue } from "recoil";
+import { memberInfoState } from "../../../state/member/MemberState";
 
 const HomeBanner = () => {
   const navigation = useNavigation();
-  const userInfo = useRecoilValue(userInfoState);
+  const memberInfo = useRecoilValue(memberInfoState);
 
   const goToCategorySelection = () => {
     navigation.navigate("CategorySelection");
@@ -21,7 +21,7 @@ const HomeBanner = () => {
   return (
     <View style={styles.container}>
       <View style={styles.bannerTop}>
-        <Text style={styles.title}>{userInfo.name}님,</Text>
+        <Text style={styles.title}>{memberInfo.name}님,</Text>
         <Text style={styles.subtitle}>{subtitle}</Text>
         <View style={styles.bannerSeparator} />
       </View>

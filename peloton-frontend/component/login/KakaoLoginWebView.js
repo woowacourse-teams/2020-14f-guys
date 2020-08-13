@@ -3,14 +3,14 @@ import { StyleSheet, View } from "react-native";
 import WebView from "react-native-webview";
 import { COLOR, SERVER_BASE_URL } from "../../utils/constants";
 import { useSetRecoilState } from "recoil";
-import { userTokenState } from "../atoms";
 import { useNavigation } from "@react-navigation/core";
 import { navigateWithoutHistory } from "../../utils/util";
 import WebViewCloseButton from "./WebViewCloseButton";
+import { memberTokenState } from "../../state/member/MemberState";
 
 const KakaoLoginWebView = ({ toggleModal }) => {
   const navigation = useNavigation();
-  const setToken = useSetRecoilState(userTokenState);
+  const setToken = useSetRecoilState(memberTokenState);
 
   const onNavigationStateChange = (webViewState) => {
     const url = webViewState.url;
@@ -22,18 +22,18 @@ const KakaoLoginWebView = ({ toggleModal }) => {
       return;
     }
     url
-      .split("?")[1]
-      .split("&")
-      .forEach((param) => {
-        const key = param.split("=")[0];
-        if (key === "access_token") {
-          accessToken = param.split("=")[1];
-        } else if (key === "is_created") {
-          isCreated = param.split("=")[1];
-        } else if (key === "success") {
-          success = param.split("=")[1];
-        }
-      });
+    .split("?")[1]
+    .split("&")
+    .forEach((param) => {
+      const key = param.split("=")[0];
+      if (key === "access_token") {
+        accessToken = param.split("=")[1];
+      } else if (key === "is_created") {
+        isCreated = param.split("=")[1];
+      } else if (key === "success") {
+        success = param.split("=")[1];
+      }
+    });
     if (!success) {
       console.log("login Fail");
       toggleModal();

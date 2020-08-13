@@ -3,7 +3,7 @@ import { StyleSheet, Text, View } from "react-native";
 import { useRecoilState } from "recoil";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 
-import { raceCreateInfoState } from "../../../state/race/CreateState";
+import { raceCreateInfoState } from "../../../state/race/RaceState";
 import InputBox from "./InputBox";
 import CalendarButton from "./CalendarButton";
 import { DateFormatter } from "../../../utils/DateFormatter";

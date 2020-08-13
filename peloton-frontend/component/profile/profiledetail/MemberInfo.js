@@ -2,23 +2,27 @@ import React from "react";
 import { StyleSheet, View } from "react-native";
 import ProfileImage from "../ProfileImage";
 import MemberInfoDetail from "./MemberInfoDetail";
-import CustomButton from "../CustomButton";
+import ProfileEditButton from "../ProfileEditButton";
 import { useNavigation } from "@react-navigation/core";
-import { useRecoilValue } from "recoil/dist";
-import { userInfoState } from "../../atoms";
 import ProfileDefaultImage from "../ProfileDefaultImage";
+import { useRecoilValue } from "recoil";
+import { memberInfoState } from "../../../state/member/MemberState";
 
 const MemberInfo = () => {
   const navigation = useNavigation();
-  const userInfo = useRecoilValue(userInfoState);
+  const memberInfo = useRecoilValue(memberInfoState);
 
   return (
     <View style={styles.memberInfo}>
       <View style={styles.imageContainer}>
-        {userInfo.profile ? <ProfileImage image={userInfo.profile}/> : <ProfileDefaultImage/>}
+        {memberInfo.profile ? (
+          <ProfileImage image={memberInfo.profile} />
+        ) : (
+          <ProfileDefaultImage />
+        )}
       </View>
-      <MemberInfoDetail name={userInfo.name} cash={userInfo.cash}/>
-      <CustomButton
+      <MemberInfoDetail name={memberInfo.name} cash={memberInfo.cash} />
+      <ProfileEditButton
         text="Edit Profile"
         onPress={() => navigation.navigate("ProfileEdit")}
       />
