@@ -21,7 +21,7 @@ import lombok.Getter;
 @Builder
 @Getter
 @JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class)
-public class RaceRetrieveResponse {
+public class RaceResponse {
     private final Long id;
 
     private final String title;
@@ -38,8 +38,8 @@ public class RaceRetrieveResponse {
 
     private final Cash entranceFee;
 
-    public static RaceRetrieveResponse of(Race race) {
-        return RaceRetrieveResponse.builder()
+    public static RaceResponse of(final Race race) {
+        return RaceResponse.builder()
             .id(race.getId())
             .category(race.getCategory())
             .certificationExample(race.getCertificationExample())

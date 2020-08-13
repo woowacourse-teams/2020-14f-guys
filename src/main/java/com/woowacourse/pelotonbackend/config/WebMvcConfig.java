@@ -22,7 +22,7 @@ public class WebMvcConfig implements WebMvcConfigurer {
     public void addInterceptors(final InterceptorRegistry registry) {
         final List<String> pathPatterns = Arrays.asList(
             "/api/certifications/**", "/api/members/**", "/api/missions/**",
-            "/api/races/**", "/api/reports/**", "/api/riders/**");
+            "/api/races/**", "/api/reports/**", "/api/riders/**", "/api/queries/**");
         registry.addInterceptor(bearerAuthInterceptor).addPathPatterns(pathPatterns);
     }
 

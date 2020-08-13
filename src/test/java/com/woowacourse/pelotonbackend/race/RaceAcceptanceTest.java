@@ -13,7 +13,7 @@ import org.springframework.http.MediaType;
 import com.woowacourse.pelotonbackend.member.domain.MemberFixture;
 import com.woowacourse.pelotonbackend.race.domain.RaceFixture;
 import com.woowacourse.pelotonbackend.race.presentation.dto.RaceCreateRequest;
-import com.woowacourse.pelotonbackend.race.presentation.dto.RaceRetrieveResponse;
+import com.woowacourse.pelotonbackend.race.presentation.dto.RaceResponse;
 import com.woowacourse.pelotonbackend.race.presentation.dto.RaceUpdateRequest;
 import com.woowacourse.pelotonbackend.support.AcceptanceTest;
 import com.woowacourse.pelotonbackend.support.dto.JwtTokenResponse;
@@ -72,13 +72,13 @@ public class RaceAcceptanceTest extends AcceptanceTest {
         return location;
     }
 
-    void retrieveRaceAndCompareTo(final String resourceLocation, final RaceRetrieveResponse expected,
+    void retrieveRaceAndCompareTo(final String resourceLocation, final RaceResponse expected,
         final JwtTokenResponse tokenResponse) {
-        final RaceRetrieveResponse responseBody = retrieveRaceWithStatusCode(resourceLocation, tokenResponse,
+        final RaceResponse responseBody = retrieveRaceWithStatusCode(resourceLocation, tokenResponse,
             HttpStatus.OK.value())
             .extract()
             .body()
-            .as(RaceRetrieveResponse.class);
+            .as(RaceResponse.class);
 
         assertThat(responseBody).isEqualToIgnoringGivenFields(expected, "thumbnail", "certificationExample");
     }

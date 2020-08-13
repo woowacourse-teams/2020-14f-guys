@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.woowacourse.pelotonbackend.race.application.RaceService;
 import com.woowacourse.pelotonbackend.race.presentation.dto.RaceCreateRequest;
-import com.woowacourse.pelotonbackend.race.presentation.dto.RaceRetrieveResponse;
+import com.woowacourse.pelotonbackend.race.presentation.dto.RaceResponse;
 import com.woowacourse.pelotonbackend.race.presentation.dto.RaceUpdateRequest;
 import lombok.RequiredArgsConstructor;
 
@@ -34,8 +34,8 @@ public class RaceController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<RaceRetrieveResponse> retrieve(@PathVariable final Long id) {
-        final RaceRetrieveResponse response = raceService.retrieve(id);
+    public ResponseEntity<RaceResponse> retrieve(@PathVariable final Long id) {
+        final RaceResponse response = raceService.retrieve(id);
 
         return ResponseEntity.ok(response);
     }

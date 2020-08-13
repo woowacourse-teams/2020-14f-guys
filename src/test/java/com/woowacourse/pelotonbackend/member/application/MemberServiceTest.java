@@ -47,7 +47,7 @@ class MemberServiceTest {
     @BeforeEach
     void setUp() {
         memberService = new MemberService(memberRepository, uploadService);
-        expectedMember = createWithId(ID);
+        expectedMember = createWithId(MEMBER_ID);
     }
 
     @DisplayName("회원을 생성한다")
@@ -64,10 +64,10 @@ class MemberServiceTest {
     @DisplayName("회원을 조회한다.")
     @Test
     void findMemberTest() {
-        final Member persistMember = createWithId(ID);
+        final Member persistMember = createWithId(MEMBER_ID);
         given(memberRepository.findById(anyLong())).willReturn(Optional.of(persistMember));
 
-        final MemberResponse response = memberService.findMember(ID);
+        final MemberResponse response = memberService.findMember(MEMBER_ID);
 
         assertThat(response).isEqualToIgnoringGivenFields(persistMember, "createdAt", "updatedAt");
     }
@@ -77,15 +77,15 @@ class MemberServiceTest {
     void notFoundMember() {
         given(memberRepository.findById(anyLong())).willReturn(Optional.empty());
 
-        assertThatThrownBy(() -> memberService.findMember(ID))
+        assertThatThrownBy(() -> memberService.findMember(MEMBER_ID))
             .isInstanceOf(MemberNotFoundException.class);
     }
 
     @DisplayName("모든 회원을 조회한다.")
     @Test
     void findAllMemberTest() {
-        final List<Member> persistMembers = Arrays.asList(MemberFixture.createWithId(ID),
-            MemberFixture.createWithId(ID2));
+        final List<Member> persistMembers = Arrays.asList(MemberFixture.createWithId(MEMBER_ID),
+            MemberFixture.createWithId(MEMBER_ID2));
         given(memberRepository.findAll()).willReturn(persistMembers);
 
         final MemberResponses response = memberService.findAll();
@@ -120,7 +120,7 @@ class MemberServiceTest {
     @DisplayName("회원 이름을 수정한다.")
     @Test
     void updateNameTest() {
-        final Member originMember = MemberFixture.createWithId(ID);
+        final Member originMember = MemberFixture.createWithId(MEMBER_ID);
         final Member updatedMember = MemberFixture.memberNameUpdated();
         given(memberRepository.findById(anyLong())).willReturn(Optional.of(originMember));
         given(memberRepository.save(any(Member.class))).willReturn(updatedMember);
@@ -138,8 +138,8 @@ class MemberServiceTest {
     @DisplayName("회원의 캐시를 수정한다")
     @Test
     void updateCashTest() {
-        final Member originMember = MemberFixture.createWithId(ID);
-        final Member updatedMember = MemberFixture.memberCashUpdated(ID);
+        final Member originMember = MemberFixture.createWithId(MEMBER_ID);
+        final Member updatedMember = MemberFixture.memberCashUpdated(MEMBER_ID);
         given(memberRepository.findById(anyLong())).willReturn(Optional.of(originMember));
         given(memberRepository.save(any(Member.class))).willReturn(updatedMember);
 
@@ -156,11 +156,11 @@ class MemberServiceTest {
     @DisplayName("회원의 프로필을 수정한다.")
     @Test
     void updateProfile() {
-        final Member originMember = MemberFixture.createWithId(ID);
-        final Member updatedMember = MemberFixture.memberProfileUpdated(ID);
+        final Member originMember = MemberFixture.createWithId(MEMBER_ID);
+        final Member updatedMember = MemberFixture.memberProfileUpdated(MEMBER_ID);
         final String uploadUri = String.format("%s/%s/%s", UPLOAD_SERVER_URL, PROFILE_UPLOAD_PATH,
             BASIC_PROFILE_FILE_NAME);
-        given(memberRepository.findById(ID)).willReturn(Optional.of(originMember));
+        given(memberRepository.findById(MEMBER_ID)).willReturn(Optional.of(originMember));
         given(memberRepository.save(any(Member.class))).willReturn(updatedMember);
 
         given(uploadService.uploadImage(any(MultipartFile.class), eq(PROFILE_IMAGE_PATH))).willReturn(uploadUri);
@@ -174,12 +174,12 @@ class MemberServiceTest {
     @DisplayName("프로필의 바디가 null인 경우 기본 이미지를 등록한다.")
     @Test
     void updateProfileBasic() {
-        final Member originMember = MemberFixture.createWithId(ID);
-        final Member updatedMember = MemberFixture.memberUpdatedBasicProfile(ID);
-        given(memberRepository.findById(ID)).willReturn(Optional.of(originMember));
+        final Member originMember = MemberFixture.createWithId(MEMBER_ID);
+        final Member updatedMember = MemberFixture.memberUpdatedBasicProfile(MEMBER_ID);
+        given(memberRepository.findById(MEMBER_ID)).willReturn(Optional.of(originMember));
         given(memberRepository.save(any(Member.class))).willReturn(updatedMember);
 
-        final MemberProfileResponse response = memberService.updateProfileImage(ID, null);
+        final MemberProfileResponse response = memberService.updateProfileImage(MEMBER_ID, null);
         assertThat(response.getImageUrl()).isEqualTo(
             String.format("%s/%s", UPLOAD_SERVER_URL, BASIC_PROFILE_FILE_NAME));
     }
@@ -187,7 +187,7 @@ class MemberServiceTest {
     @DisplayName("특정 회원을 삭제한다")
     @Test
     void deleteMemberTest() {
-        memberService.deleteById(ID);
+        memberService.deleteById(MEMBER_ID);
 
         verify(memberRepository).deleteById(anyLong());
     }
