@@ -94,27 +94,6 @@ export const SAMPLE_SUBTITLE = [
   "오늘 날씨가 \n참 좋네요! 😝",
 ];
 
-export const CATEGORY = [
-  {
-    title: "모임",
-    subtitle: "Ice Breaking",
-    category: "TIME",
-    src: "https://img.sbs.co.kr/newimg/news/20181019/201240131_1280.jpg",
-  },
-  {
-    title: "학습",
-    subtitle: "Learning",
-    category: "STUDY",
-    src: "https://vitahani.com/assets/20190625085334.jpg",
-  },
-  {
-    title: "제목",
-    subtitle: "subtitle",
-    category: "RACE_CATEGORY_VALUE",
-    src:
-      "https://x86.co.kr/files/attach/images/1951610/342/576/002/0555addbb9bfd672918a2539668f0dac.jpg",
-  },
-];
 export const SERVER_BASE_URL = "https://peloton.ga";
 export const TOKEN_STORAGE = "@token_storage";
 export const DEEP_LINK_BASE_URL = Linking.makeUrl("/");
