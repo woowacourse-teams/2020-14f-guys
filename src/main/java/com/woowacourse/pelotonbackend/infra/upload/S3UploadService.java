@@ -1,9 +1,13 @@
 package com.woowacourse.pelotonbackend.infra.upload;
 
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 
 import javax.annotation.PostConstruct;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
@@ -15,9 +19,13 @@ import com.amazonaws.services.s3.model.CannedAccessControlList;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.PutObjectRequest;
 import com.woowacourse.pelotonbackend.common.exception.UploadFailureException;
+import com.woowacourse.pelotonbackend.support.RandomGenerator;
+import liquibase.util.file.FilenameUtils;
 
 @Component
 public class S3UploadService implements UploadService {
+    @Autowired
+    private RandomGenerator randomGenerator;
     private AmazonS3 amazonS3;
 
     @Value("${cloud.aws.region.static}")
@@ -34,7 +42,8 @@ public class S3UploadService implements UploadService {
     }
 
     public String uploadImage(final MultipartFile file, final String path) {
-        final String key = String.format("%s%s", path, file.getOriginalFilename());
+        String fileName = randomGenerator.getRandomSHA256(file.getOriginalFilename());
+        final String key = String.format("%s%s.%s", path, fileName, FilenameUtils.getExtension(file.getOriginalFilename()));
 
         try {
             requestToUpload(file, key);
