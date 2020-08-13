@@ -19,6 +19,6 @@ public class QueryController {
 
     @GetMapping("/races")
     public ResponseEntity<RaceResponses> retrieveRacesBy(@LoginMember MemberResponse loginMember) {
-        return ResponseEntity.ok(queryService.retrieveByRaces(loginMember));
+        return ResponseEntity.ok(queryService.retrieveRacesBy(loginMember));
     }
 }

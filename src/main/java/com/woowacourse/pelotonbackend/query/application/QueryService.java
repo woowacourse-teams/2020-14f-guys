@@ -21,7 +21,7 @@ public class QueryService {
     private final RiderRepository riderRepository;
     private final RaceRepository raceRepository;
 
-    public RaceResponses retrieveByRaces(final MemberResponse member) {
+    public RaceResponses retrieveRacesBy(final MemberResponse member) {
         final List<Rider> riders = riderRepository.findRidersByMemberId(member.getId());
         final List<Race> races = riders.stream()
             .map(rider -> rider.getRaceId().getId())

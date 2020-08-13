@@ -34,9 +34,9 @@ public class RiderFixture {
         return Rider.builder().build();
     }
 
-    public static Rider createRiderBy(final Long memberId, final Long raceId) {
+    public static Rider createRiderBy(final Long memberId, final Long raceId, final Long riderId) {
         return Rider.builder()
-            .id(TEST_RIDER_ID)
+            .id(riderId)
             .memberId(AggregateReference.to(memberId))
             .raceId(AggregateReference.to(raceId))
             .build();
@@ -44,7 +44,7 @@ public class RiderFixture {
 
     public static List<Rider> createRidersBy(final Long memberId) {
         return LongStream.range(1, 5)
-            .mapToObj(it -> createRiderBy(memberId, it))
+            .mapToObj(it -> createRiderBy(memberId, it, it))
             .collect(Collectors.toList());
     }
 

@@ -38,7 +38,7 @@ public class RaceResponse {
 
     private final Cash entranceFee;
 
-    public static RaceResponse of(Race race) {
+    public static RaceResponse of(final Race race) {
         return RaceResponse.builder()
             .id(race.getId())
             .category(race.getCategory())

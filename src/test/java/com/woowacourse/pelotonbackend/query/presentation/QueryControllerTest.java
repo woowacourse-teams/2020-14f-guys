@@ -1,6 +1,7 @@
 package com.woowacourse.pelotonbackend.query.presentation;
 
 import static com.woowacourse.pelotonbackend.race.domain.RaceFixture.*;
+import static org.assertj.core.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.BDDMockito.*;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.*;
@@ -19,6 +20,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.core.MethodParameter;
@@ -26,6 +28,7 @@ import org.springframework.http.MediaType;
 import org.springframework.restdocs.RestDocumentationContextProvider;
 import org.springframework.restdocs.RestDocumentationExtension;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.bind.support.WebDataBinderFactory;
 import org.springframework.web.context.WebApplicationContext;
@@ -34,6 +37,7 @@ import org.springframework.web.filter.CharacterEncodingFilter;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.method.support.ModelAndViewContainer;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.woowacourse.pelotonbackend.common.ErrorCode;
 import com.woowacourse.pelotonbackend.common.exception.TokenInvalidException;
 import com.woowacourse.pelotonbackend.docs.QueryDocumentation;
@@ -43,17 +47,20 @@ import com.woowacourse.pelotonbackend.member.presentation.LoginMemberArgumentRes
 import com.woowacourse.pelotonbackend.member.presentation.dto.MemberResponse;
 import com.woowacourse.pelotonbackend.query.application.QueryService;
 import com.woowacourse.pelotonbackend.race.domain.Race;
-import com.woowacourse.pelotonbackend.race.domain.RaceRepository;
+import com.woowacourse.pelotonbackend.race.domain.RaceFixture;
+import com.woowacourse.pelotonbackend.race.presentation.dto.RaceResponse;
 import com.woowacourse.pelotonbackend.race.presentation.dto.RaceResponses;
 import com.woowacourse.pelotonbackend.rider.domain.Rider;
 import com.woowacourse.pelotonbackend.rider.domain.RiderFixture;
-import com.woowacourse.pelotonbackend.rider.domain.RiderRepository;
 import com.woowacourse.pelotonbackend.support.BearerAuthInterceptor;
 
 @WebMvcTest(QueryController.class)
 @ExtendWith(RestDocumentationExtension.class)
 class QueryControllerTest {
     private MockMvc mockMvc;
+
+    @Autowired
+    private ObjectMapper objectMapper;
 
     @MockBean
     private QueryService queryService;
@@ -86,14 +93,21 @@ class QueryControllerTest {
         given(argumentResolver.resolveArgument(any(MethodParameter.class), any(ModelAndViewContainer.class),
             any(NativeWebRequest.class), any(WebDataBinderFactory.class))).willReturn(loginMember);
         given(argumentResolver.supportsParameter(any())).willReturn(true);
-        given(queryService.retrieveByRaces(loginMember)).willReturn(RaceResponses.of(races));
+        given(queryService.retrieveRacesBy(loginMember)).willReturn(RaceResponses.of(races));
 
-        mockMvc.perform(get("/api/queries/races")
+        final MvcResult result = mockMvc.perform(get("/api/queries/races")
             .header(HttpHeaders.AUTHORIZATION, LoginFixture.getTokenHeader())
             .accept(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk())
             .andDo(QueryDocumentation.getRaces())
             .andReturn();
+
+        final byte[] contentBytes = result.getResponse().getContentAsByteArray();
+        final RaceResponses responseBody = objectMapper.readValue(contentBytes,
+            RaceResponses.class);
+
+        assertThat(responseBody.getRaceResponses().get(0))
+            .isEqualToComparingFieldByField(RaceFixture.retrieveResponse());
     }
 
     @DisplayName("유효하지 않은 token로 race를 조회할 때 예외처리한다.")
@@ -106,7 +120,6 @@ class QueryControllerTest {
             .header(HttpHeaders.AUTHORIZATION, "Invalid token")
             .accept(MediaType.APPLICATION_JSON))
             .andExpect(status().isUnauthorized())
-            .andDo(QueryDocumentation.getRacesFail())
-            .andReturn();
+            .andDo(QueryDocumentation.getRacesFail());
     }
 }
