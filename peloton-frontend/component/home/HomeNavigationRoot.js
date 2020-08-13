@@ -69,7 +69,7 @@ const HomeNavigationRoot = () => {
       <HomeStack.Screen
         name="RaceDeepLinkPage"
         component={RaceDeepLinkPage}
-        options={{ title: "레이스 입장" }}
+        options={{ title: "레이스 참여" }}
       />
     </HomeStack.Navigator>
   );

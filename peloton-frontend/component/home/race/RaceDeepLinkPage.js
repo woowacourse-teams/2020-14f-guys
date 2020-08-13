@@ -1,5 +1,13 @@
 import React, { useEffect } from "react";
-import { Alert, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import {
+  Alert,
+  Dimensions,
+  Image,
+  ScrollView,
+  StyleSheet,
+  Text,
+  View,
+} from "react-native";
 import { useRecoilState, useSetRecoilState } from "recoil";
 import { loadingState } from "../../../state/loading/LoadingState";
 import { COLOR, TOKEN_STORAGE } from "../../../utils/constants";
@@ -19,6 +27,9 @@ import {
 import { raceInfoState } from "../../../state/race/RaceState";
 import { QueryApi } from "../../../utils/api/QueryApi";
 import { RiderApi } from "../../../utils/api/RiderApi";
+import RaceSpecItem from "./RaceSpecItem";
+import ReadMore from "../../../utils/ReadMore";
+import PaymentButton from "./PaymentButton";
 
 const RedirectPage = ({ route }) => {
   const setLoadingState = useSetRecoilState(loadingState);
@@ -48,7 +59,7 @@ const RedirectPage = ({ route }) => {
             },
           },
         ],
-        { cancelable: false },
+        { cancelable: false }
       );
       setLoadingState(false);
       return;
@@ -132,6 +143,7 @@ const RedirectPage = ({ route }) => {
         navigateWithoutHistory(navigation, "Home");
       }
     };
+    console.log(raceInfo);
     fetchRaceInfo();
     setLoadingState(false);
   }, []);
@@ -139,22 +151,41 @@ const RedirectPage = ({ route }) => {
   return (
     <View style={styles.container}>
       <View style={styles.raceTitleContainer}>
-        <Text style={styles.raceTitle}>레이스 제목 : {raceInfo.title}</Text>
+        <Image
+          source={{ url: raceInfo.thumbnail }}
+          defaultSource={require("../../../assets/default-race-join.png")}
+          style={styles.background}
+          blurRadius={1}
+          resizeMode={"stretch"}
+        />
+        <Text style={styles.raceTitle}>{raceInfo.title}</Text>
       </View>
-      <View style={styles.raceBody}>
-        <Text style={styles.raceDescription}>
-          레이스 설명 : {raceInfo.description}
-        </Text>
-        <Text style={styles.raceDescription}>잔액 : {memberInfo.cash}</Text>
-        <Text style={styles.entranceFee}>
-          {raceInfo.entrance_fee}원이 차감됩니다
-        </Text>
-      </View>
-      <TouchableOpacity onPress={joinRace}>
-        <View style={styles.paymentButton}>
-          <Text style={styles.paymentText}>결제하기</Text>
-        </View>
-      </TouchableOpacity>
+      <ScrollView style={styles.raceBody}>
+        <ReadMore fontStyle={styles.raceDescription}>
+          {raceInfo.description}
+        </ReadMore>
+        <View style={styles.border} />
+        <RaceSpecItem
+          valueStyle={{ textAlign: "right" }}
+          itemKey={"현재 캐시"}
+          value={`${memberInfo.cash}원`}
+          border={false}
+        />
+        <RaceSpecItem
+          valueStyle={{ textAlign: "right" }}
+          itemKey={"입장료"}
+          value={`${raceInfo.entrance_fee}원`}
+          border={false}
+        />
+        <View style={styles.calculateBorder} />
+        <RaceSpecItem
+          valueStyle={{ textAlign: "right" }}
+          itemKey={"참여 후 금액"}
+          value={`${memberInfo.cash - raceInfo.entrance_fee}원`}
+          border={false}
+        />
+      </ScrollView>
+      <PaymentButton onPress={joinRace} />
     </View>
   );
 };
@@ -164,38 +195,46 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   raceTitleContainer: {
-    flex: 1,
+    width: 500,
     justifyContent: "center",
     alignItems: "center",
     backgroundColor: COLOR.BLUE1,
   },
   raceTitle: {
-    fontSize: 36,
-    color: COLOR.WHITE,
-    fontWeight: "200",
+    position: "absolute",
+    fontSize: 20,
+    color: COLOR.BLACK2,
+    fontWeight: "600",
+    lineHeight: 35,
+    paddingBottom: 60,
+    paddingRight: 130,
+  },
+  border: {
+    marginTop: 10,
+    marginBottom: 25,
+  },
+  calculateBorder: {
+    borderWidth: 1,
+    borderColor: COLOR.GRAY5,
+    marginTop: 10,
+    marginBottom: 25,
+    width: Dimensions.get("window").width * 0.85,
   },
   raceBody: {
+    paddingTop: 30,
+    paddingLeft: 30,
+    paddingRight: 30,
     flex: 5,
+    backgroundColor: COLOR.WHITE,
   },
   raceDescription: {
     fontSize: 20,
+    fontWeight: "500",
+    color: COLOR.BLACK,
   },
-  entranceFee: {
-    fontSize: 28,
-    color: COLOR.LAVENDER,
-  },
-  paymentButton: {
-    width: 150,
-    height: 50,
-    justifyContent: "center",
-    alignItems: "center",
-    borderRadius: 10,
-    backgroundColor: COLOR.BLUE6,
-  },
-  paymentText: {
-    color: COLOR.WHITE,
-    fontSize: 15,
-    fontWeight: "600",
+  background: {
+    width: 600,
+    height: 200,
   },
 });
 
