@@ -32,6 +32,10 @@ public interface DocumentFormatGenerator {
         return key("format").value("peloton@email.abc");
     }
 
+    static Attributes.Attribute getCertificationStatus() {
+        return key("format").value("SUCCESS, FAIL, REPORTED");
+    }
+
     static Attributes.Attribute getMemberRoleFormat() {
         return key("format").value(Arrays.stream(Role.values()).map(Role::name).collect(
             Collectors.joining("/")));

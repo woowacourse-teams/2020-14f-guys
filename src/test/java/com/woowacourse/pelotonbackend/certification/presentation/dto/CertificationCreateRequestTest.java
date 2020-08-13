@@ -1,30 +1,42 @@
 package com.woowacourse.pelotonbackend.certification.presentation.dto;
 
-import static com.woowacourse.pelotonbackend.certification.domain.CertificationFixture.*;
 import static org.assertj.core.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.woowacourse.pelotonbackend.certification.domain.CertificationFixture;
 
 class CertificationCreateRequestTest {
     private final ObjectMapper objectMapper = new ObjectMapper();
 
-    @DisplayName("CertificationCreateRequest가 올바르게 Deserialize되는 지 확인한다.")
+    @DisplayName("인증 생성 Dto가 정상적으로 Serialize된다.")
     @Test
-    void certificationCreateRequest() throws JsonProcessingException {
-        final String requestBody = "{\n"
-            + "\"status\":\"SUCCESS\",\n"
-            + "\"description\":\"좋은 인증이다..\",\n"
-            + "\"rider_id\":\"1\",\n"
-            + "\"mission_id\":\"1\"\n"
+    void certificationCreateRequestSerialize() throws JsonProcessingException {
+        final String requestBody = "{"
+            + "\"status\":\"SUCCESS\","
+            + "\"description\":\"좋은 인증이다..\","
+            + "\"riderId\":1,"
+            + "\"missionId\":1"
             + "}";
 
-        assertThat(
-            objectMapper.readValue(requestBody, CertificationCreateRequest.class)).isEqualToComparingFieldByField(
-            createMockCertificationRequest());
+        final CertificationCreateRequest request = CertificationFixture.createMockCertificationRequest();
+        assertThat(objectMapper.writeValueAsString(request)).isEqualTo(requestBody);
+    }
+
+    @DisplayName("인증 생성 Dto가 정상적으로 Deserialize된다.")
+    @Test
+    void certificationCreateRequestDeserialize() throws JsonProcessingException {
+        final String requestBody = "{"
+            + "\"status\":\"SUCCESS\","
+            + "\"description\":\"좋은 인증이다..\","
+            + "\"riderId\":1,"
+            + "\"missionId\":1"
+            + "}";
+
+        final CertificationCreateRequest request = CertificationFixture.createMockCertificationRequest();
+        assertThat(objectMapper.readValue(requestBody, CertificationCreateRequest.class)).isEqualToComparingFieldByField(request);
     }
 }

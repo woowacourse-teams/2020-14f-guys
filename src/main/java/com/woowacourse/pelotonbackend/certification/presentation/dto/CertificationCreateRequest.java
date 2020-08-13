@@ -17,11 +17,9 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 
-@AllArgsConstructor(onConstructor_ = @ConstructorProperties({"status", "description",
-    "riderId", "missionId"}))
+@AllArgsConstructor(onConstructor_ = @ConstructorProperties({"status","description","riderId","missionId"}))
 @Builder
 @Getter
-@JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class)
 public class CertificationCreateRequest {
     @NotNull
     private final CertificationStatus status;

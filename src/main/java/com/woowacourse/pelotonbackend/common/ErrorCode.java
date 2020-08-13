@@ -33,7 +33,9 @@ public enum ErrorCode {
     TOKEN_EXPIRED(401, "Auth-002"),
     INVALID_TOKEN(401, "Auth-003"),
 
-    FILE_UPLOAD(400, "FILE-004");
+    FILE_UPLOAD(400, "FILE-004"),
+
+    CERTIFICATION_NOT_FOUND(404, "CERTIFICATION-001");
 
     private final int status;
     private final String code;

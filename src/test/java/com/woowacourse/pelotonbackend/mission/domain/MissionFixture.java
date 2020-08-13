@@ -24,10 +24,12 @@ public class MissionFixture {
     public static final LocalDateTime END_TIME = LocalDateTime.parse(LocalDateTime.of(2021, 1, 31, 12, 0).format(
         DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS")));
     public static final DateTimeDuration MISSION_DURATION = new DateTimeDuration(START_TIME, END_TIME);
-    public static final LocalDateTime START_TIME_UPDATED = LocalDateTime.parse(LocalDateTime.of(2023, 9, 1, 9, 0).format(
-        DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS")));
-    public static final LocalDateTime END_TIME_UPDATED = LocalDateTime.parse(LocalDateTime.of(2023, 9, 30, 12, 0).format(
-        DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS")));
+    public static final LocalDateTime START_TIME_UPDATED = LocalDateTime.parse(
+        LocalDateTime.of(2023, 9, 1, 9, 0).format(
+            DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS")));
+    public static final LocalDateTime END_TIME_UPDATED = LocalDateTime.parse(
+        LocalDateTime.of(2023, 9, 30, 12, 0).format(
+            DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS")));
     public static final DateTimeDuration MISSION_DURATION_UPDATED = new DateTimeDuration(START_TIME_UPDATED,
         END_TIME_UPDATED);
     public static final MissionInstruction MISSION_INSTRUCTION = new MissionInstruction("다같이 손을 잡고 사진을 찍는다.");
@@ -35,6 +37,13 @@ public class MissionFixture {
     public static final Long RACE_ID = 7L;
     public static final Long RACE_ID_UPDATED = 9L;
     public static final String MISSION_API_URL = "/api/missions";
+    public static final long TEST_RACE_ID = 1L;
+
+    public static Mission createWithId() {
+        return createWithoutId().toBuilder()
+            .id(TEST_MISSION_ID)
+            .build();
+    }
 
     public static List<LocalDate> datesFixture() {
         return Arrays.asList(
@@ -63,7 +72,7 @@ public class MissionFixture {
             .id(id)
             .missionDuration(MISSION_DURATION)
             .missionInstruction(MISSION_INSTRUCTION)
-            .raceId(AggregateReference.to(RACE_ID))
+            .raceId(AggregateReference.to(TEST_RACE_ID))
             .build();
     }
 
@@ -82,7 +91,6 @@ public class MissionFixture {
             .raceId(AggregateReference.to(raceId))
             .build();
     }
-
 
     public static List<Mission> createMissionsWithId(final List<Long> ids) {
         return ids.stream()

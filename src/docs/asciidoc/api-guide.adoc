@@ -204,6 +204,29 @@ operation::certification/create-success[snippets='http-request,http-response,req
 ==== Failure
 operation::certification/create-fail[snippets='http-request,http-response,request-parameters,request-parts,response-headers,response-fields']
 
+[[resources-certification-get-certification]]
+==== Success
+operation::certification/get-certification[snippets='http-request,http-response,path-parameters,request-headers,response-headers,response-fields']
+
+[[resources-certification-get-not-found]]
+==== Failure
+operation::certification/get-not-found[snippets='http-request,http-response,path-parameters,request-headers,response-headers,response-fields']
+
+[[resources-certification-get-certification-riderId]]
+==== Find certifications by rider id
+operation::certification/get-certification-riderId[snippets='http-request,http-response,path-parameters,request-headers,response-headers,response-fields,request-parameters']
+
+[[resources-certification-update-description]]
+==== Update description
+operation::certification/update-description[snippets='http-request,http-response,path-parameters,request-headers,response-headers,request-fields']
+
+[[resources-certification-update-status]]
+==== Update status
+operation::certification/update-status[snippets='http-request,http-response,path-parameters,request-headers,response-headers,request-fields']
+
+[[resources-certification-delete]]
+==== Delete by certification id
+operation::certification/delete[snippets='http-request,http-response,path-parameters,request-headers']
 
 [[resources-member]]
 == Member
@@ -475,7 +498,7 @@ operation::rider/delete-success[snippets='http-request,http-response,path-parame
 [[resources-queries]]
 == Query
 
-[[resources-queries]]
+[[resources-queries-races]]
 === Get Races
 
 [[resources-queries-races-get-success]]
@@ -484,4 +507,15 @@ operation::queries/races/get-success[snippets='http-request,http-response,reques
 
 [[resources-queries-races-get-fail]]
 ==== Fail
-operation::queries/races/get-success[snippets='http-request,http-response,request-headers,response-fields']
+operation::queries/races/get-fail[snippets='http-request,http-response,request-headers,response-fields']
+
+[[resources-queries-certifications]]
+=== Get Certifications
+
+[[resource-query-certifications-success]]
+==== Success
+operation::queries/get-certifications-race-id[snippets='http-request,http-response,path-parameters,request-headers,response-fields']
+
+[[resource-query-certifications-fail]]
+==== Not Exist
+operation::queries/get-certifications-race-not-exist[snippets='http-request,http-response,path-parameters,request-headers,response-fields']
