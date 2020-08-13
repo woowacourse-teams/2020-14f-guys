@@ -32,7 +32,7 @@ const CertificationItem = ({ item, currentTime }) => {
 
   const timeForm = () => {
     // eslint-disable-next-line prettier/prettier
-    return `${Math.floor(leftTime / 1000 / 3600)}시간 ${Math.floor(leftTime / 1000 / 60)}분 ${Math.floor(leftTime / 1000 % 60)}초`;
+    return `${Math.floor(leftTime / 1000 / 3600 % 60)}시간 ${Math.floor(leftTime / 1000 / 60 % 60)}분 ${Math.floor(leftTime / 1000 % 60)}초`;
   };
 
   const onSelect = () => {
@@ -61,7 +61,12 @@ const CertificationItem = ({ item, currentTime }) => {
         source={{ uri: item.race.thumbnail }}
         blurRadius={certificationType.blurRadius}
       />
-      <View style={styles.certificationInfo} />
+      <View
+        style={{
+          ...styles.certificationInfo,
+          backgroundColor: certificationType.color,
+        }}
+      />
       <Text style={styles.itemTitle}>{item.race.title}</Text>
       <Text style={styles.itemSubtitle}>{timeForm()}</Text>
       <View
@@ -112,7 +117,7 @@ const styles = StyleSheet.create({
     left: 7,
     width: 120,
     height: 60,
-    opacity: 0.15,
+    opacity: 0.3,
     borderRadius: 10,
     padding: 10,
   },

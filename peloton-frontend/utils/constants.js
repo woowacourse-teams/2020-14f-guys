@@ -136,7 +136,7 @@ export const CERTIFICATION_TYPE = {
   WAIT: {
     activeOpacity: 1,
     blurRadius: 10,
-    color: COLOR.PINK,
+    color: COLOR.GRAY1,
     message: "인증 대기",
   },
 };
