@@ -13,8 +13,12 @@ import { useNavigation } from "@react-navigation/native";
 import { useSetRecoilState } from "recoil";
 
 import { raceCreateInfoState } from "../../../state/race/RaceState";
-import { CATEGORY, COLOR } from "../../../utils/constants";
-import CategoryItem from "./CategoryItem";
+import {
+  COLOR,
+  RACE_CATEGORY_PLAY,
+  RACE_CATEGORY_STUDY,
+  RACE_CATEGORY_TIME,
+} from "../../../utils/constants";
 
 const CategorySelection = () => {
   const navigation = useNavigation();
@@ -34,7 +38,7 @@ const CategorySelection = () => {
       <TouchableOpacity
         activeOpacity={0.7}
         style={styles.item}
-        onPress={() => onSelectCategory("TIME")}
+        onPress={() => onSelectCategory(RACE_CATEGORY_TIME)}
       >
         <Image
           style={styles.itemImage}
@@ -46,7 +50,7 @@ const CategorySelection = () => {
       <TouchableOpacity
         activeOpacity={0.7}
         style={styles.item}
-        onPress={() => onSelectCategory("STUDY")}
+        onPress={() => onSelectCategory(RACE_CATEGORY_STUDY)}
       >
         <Image
           style={styles.itemImage}
@@ -58,7 +62,7 @@ const CategorySelection = () => {
       <TouchableOpacity
         activeOpacity={0.7}
         style={styles.item}
-        onPress={() => onSelectCategory("PLAY")}
+        onPress={() => onSelectCategory(RACE_CATEGORY_PLAY)}
       >
         <Image
           style={styles.itemImage}

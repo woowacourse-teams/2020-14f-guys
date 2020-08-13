@@ -94,6 +94,10 @@ export const SAMPLE_SUBTITLE = [
   "오늘 날씨가 \n참 좋네요! 😝",
 ];
 
+export const RACE_CATEGORY_TIME = "TIME";
+export const RACE_CATEGORY_STUDY = "STUDY";
+export const RACE_CATEGORY_PLAY = "PLAY";
+
 export const SERVER_BASE_URL = "https://peloton.ga";
 export const TOKEN_STORAGE = "@token_storage";
 export const DEEP_LINK_BASE_URL = Linking.makeUrl("/");
