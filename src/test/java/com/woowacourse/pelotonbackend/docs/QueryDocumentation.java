@@ -20,17 +20,17 @@ public class QueryDocumentation {
                 headerWithName(HttpHeaders.ACCEPT).description("Accept 헤더")
             ),
             responseFields(
-                fieldWithPath("raceResponses").type(ARRAY).description("참가하고 있는 모든 RaceResponse 리스트"),
-                fieldWithPath("raceResponses[].id").type(NUMBER).description("Race Id"),
-                fieldWithPath("raceResponses[].title").type(STRING).description("레이스 제목"),
-                fieldWithPath("raceResponses[].description").type(STRING).description("레이스 상세내용"),
-                fieldWithPath("raceResponses[].thumbnail").type(STRING).description("썸네일 이미지 URL"),
-                fieldWithPath("raceResponses[].certification_example").type(STRING).description("인증 예시 이미지 URL"),
-                fieldWithPath("raceResponses[].race_duration").type(OBJECT).description("Race 기간"),
-                fieldWithPath("raceResponses[].race_duration.start_date").type(STRING).attributes(getDateFormat()).description("Race 시작 날짜"),
-                fieldWithPath("raceResponses[].race_duration.end_date").type(STRING).attributes(getDateFormat()).description("Race 종료 날짜"),
-                fieldWithPath("raceResponses[].category").type(STRING).attributes(getRaceCategoryFormat()).description("Race 종류"),
-                subsectionWithPath("raceResponses[].entrance_fee").type(STRING).description("레이스 입장료")
+                fieldWithPath("race_responses").type(ARRAY).description("참가하고 있는 모든 RaceResponse 리스트"),
+                fieldWithPath("race_responses[].id").type(NUMBER).description("Race Id"),
+                fieldWithPath("race_responses[].title").type(STRING).description("레이스 제목"),
+                fieldWithPath("race_responses[].description").type(STRING).description("레이스 상세내용"),
+                fieldWithPath("race_responses[].thumbnail").type(STRING).description("썸네일 이미지 URL"),
+                fieldWithPath("race_responses[].certification_example").type(STRING).description("인증 예시 이미지 URL"),
+                fieldWithPath("race_responses[].race_duration").type(OBJECT).description("Race 기간"),
+                fieldWithPath("race_responses[].race_duration.start_date").type(STRING).attributes(getDateFormat()).description("Race 시작 날짜"),
+                fieldWithPath("race_responses[].race_duration.end_date").type(STRING).attributes(getDateFormat()).description("Race 종료 날짜"),
+                fieldWithPath("race_responses[].category").type(STRING).attributes(getRaceCategoryFormat()).description("Race 종류"),
+                subsectionWithPath("race_responses[].entrance_fee").type(STRING).description("레이스 입장료")
             )
         );
     }
