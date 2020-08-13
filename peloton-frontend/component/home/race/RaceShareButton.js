@@ -5,7 +5,7 @@ import { COLOR, DEEP_LINK_BASE_URL } from "../../../utils/constants";
 import { useRecoilValue } from "recoil/dist";
 import { raceInfoState } from "../../../state/race/RaceState";
 
-const ShareButton = () => {
+const RaceShareButton = () => {
   const raceInfo = useRecoilValue(raceInfoState);
 
   const onShare = async () => {
@@ -23,8 +23,8 @@ const ShareButton = () => {
 
 const styles = StyleSheet.create({
   shareButton: {
-    padding: 10,
+    padding: 5,
   },
 });
 
-export default ShareButton;
+export default RaceShareButton;

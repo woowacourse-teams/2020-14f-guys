@@ -23,6 +23,7 @@ const RedirectPage = ({ route }) => {
   const navigation = useNavigation();
 
   const joinRace = async () => {
+    setLoadingState(true);
     const userCash = Number(userInfo.cash);
     const raceEntranceFee = Number(raceInfo.entrance_fee);
     if (userCash < raceEntranceFee) {
@@ -44,6 +45,7 @@ const RedirectPage = ({ route }) => {
         ],
         { cancelable: false },
       );
+      setLoadingState(false);
       return;
     }
     try {
@@ -65,6 +67,7 @@ const RedirectPage = ({ route }) => {
     } catch (error) {
       console.log(error);
     }
+    setLoadingState(false);
   };
 
   useEffect(() => {
@@ -81,23 +84,32 @@ const RedirectPage = ({ route }) => {
       }
       const raceId = route.params.id;
       if (!userToken) {
-        // 로그인 후 원하는 Screen으로 이동해야함.
+        // todo 로그인 후 원하는 Screen으로 이동해야함.
         alert("로그인 먼저 해주세요.");
         navigateWithoutHistory(navigation, "Login");
         return;
       }
-      const newUserInfo = await MemberApi.get(userToken);
-      const newRaceInfo = await RaceApi.get(raceId, userToken);
+      try {
+        const newUserInfo = await MemberApi.get(userToken);
+        setUserInfo(newUserInfo);
+      } catch (error) {
+        alert("사용자 정보를 찾을 수 없습니다. 다시 로그인 해주세요.");
+        navigateWithoutHistory(navigation, "Login");
+      }
+      try {
+        const newRaceInfo = await RaceApi.get(raceId, userToken);
+        setRaceInfo(newRaceInfo);
+      } catch (error) {
+        alert("올바르지 않은 경로입니다.");
+        navigateWithoutHistory(navigation, "Home");
+      }
       // todo 멤버가 Race에 포함되어 있는지 확인해야함.
-
-      setUserInfo(newUserInfo);
-      setRaceInfo(newRaceInfo);
     };
     fetchRaceInfo();
     setLoadingState(false);
   }, []);
 
-  return raceInfo ? (
+  return (
     <View style={styles.container}>
       <View style={styles.raceTitleContainer}>
         <Text style={styles.raceTitle}>레이스 제목 : {raceInfo.title}</Text>
@@ -117,7 +129,7 @@ const RedirectPage = ({ route }) => {
         </View>
       </TouchableOpacity>
     </View>
-  ) : null;
+  );
 };
 
 const styles = StyleSheet.create({

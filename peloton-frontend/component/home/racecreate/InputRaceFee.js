@@ -32,7 +32,7 @@ const InputRaceInfo = () => {
         end_date,
       },
       days,
-      certification_available_duration:{
+      certification_available_duration: {
         start_time,
         end_time,
       },
