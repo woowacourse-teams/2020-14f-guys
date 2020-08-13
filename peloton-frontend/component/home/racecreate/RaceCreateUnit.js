@@ -10,11 +10,11 @@ import { DateFormatter } from "../../../utils/DateFormatter";
 import { COLOR } from "../../../utils/constants";
 
 const RaceCreateUnit = ({
-                          date = false,
-                          number = false,
-                          fieldName,
-                          children,
-                        }) => {
+  date = false,
+  number = false,
+  fieldName,
+  children,
+}) => {
   // eslint-disable-next-line prettier/prettier
   const [raceCreateInfo, setRaceCreateInfo] = useRecoilState(raceCreateInfoState);
   const [isShowPicker, setIsShowPicker] = useState(false);

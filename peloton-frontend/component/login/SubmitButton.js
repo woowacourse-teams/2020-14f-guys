@@ -4,10 +4,10 @@ import { MaterialIcons } from "@expo/vector-icons";
 import { COLOR } from "../../utils/constants";
 
 const SubmitButton = ({
-                        onSubmit,
-                        color = COLOR.BLUE4,
-                        arrowColor = COLOR.ARROW_BLUE,
-                      }) => {
+  onSubmit,
+  color = COLOR.BLUE4,
+  arrowColor = COLOR.ARROW_BLUE,
+}) => {
   return (
     <TouchableOpacity onPress={onSubmit}>
       <View
