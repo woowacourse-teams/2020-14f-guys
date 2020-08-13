@@ -12,6 +12,7 @@ export const COLOR = {
   BLUE3: "#4f83dd",
   BLUE4: "#284170",
   BLUE5: "#21365d",
+  BLUE6: "#4261FD",
   ARROW_BLUE: "#61779f",
   PURPLE: "#B5B0D9",
   LAVENDER: "#CAB0D9",

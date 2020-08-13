@@ -50,8 +50,8 @@ const RedirectPage = ({ route }) => {
     }
     try {
       await MemberApi.patchCash(token, String(userCash - raceEntranceFee));
-      const response = await MemberApi.get(token);
-      setMemberInfo(response);
+      const newMemberInfo = await MemberApi.get(token);
+      setMemberInfo(newMemberInfo);
       navigateWithHistory(navigation, [
         {
           name: "Home",
@@ -163,7 +163,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     borderRadius: 10,
-    backgroundColor: "#4261FD",
+    backgroundColor: COLOR.BLUE6,
   },
   paymentText: {
     color: COLOR.WHITE,

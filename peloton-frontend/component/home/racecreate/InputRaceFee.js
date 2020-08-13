@@ -1,5 +1,5 @@
 import React from "react";
-import { ActivityIndicator, StyleSheet, View } from "react-native";
+import { ActivityIndicator, Alert, StyleSheet, View } from "react-native";
 import { useRecoilState, useRecoilValue, useResetRecoilState } from "recoil";
 import { useNavigation } from "@react-navigation/native";
 
@@ -9,17 +9,20 @@ import { COLOR } from "../../../utils/constants";
 import { loadingState } from "../../../state/loading/LoadingState";
 import LoadingIndicator from "../../../utils/LoadingIndicator";
 import RaceCreateView from "./RaceCreateView";
-import { navigateWithHistory } from "../../../utils/util";
-import { memberTokenState } from "../../../state/member/MemberState";
+import { navigateTabScreen, navigateWithHistory } from "../../../utils/util";
+import { memberInfoState, memberTokenState } from "../../../state/member/MemberState";
 import { RaceApi } from "../../../utils/api/RaceApi";
+import { MemberApi } from "../../../utils/api/MemberApi";
+import { RiderApi } from "../../../utils/api/RiderApi";
 
-const InputRaceInfo = () => {
+const InputRaceFee = () => {
   // eslint-disable-next-line prettier/prettier
   const { title, description, start_date, end_date, category, entrance_fee, days, start_time, end_time } = useRecoilValue(
     raceCreateInfoState);
   const resetRaceCreateInfo = useResetRecoilState(raceCreateInfoState);
   const [loading, setGlobalLoading] = useRecoilState(loadingState);
   const token = useRecoilValue(memberTokenState);
+  const [memberInfo, setMemberInfo] = useRecoilState(memberInfoState);
   const navigation = useNavigation();
 
   const formatPostRaceBody = () => {
@@ -44,7 +47,8 @@ const InputRaceInfo = () => {
     setGlobalLoading(true);
     try {
       const location = await RaceApi.post(token, formatPostRaceBody());
-
+      const race_id = location.split("/")[3];
+      await RiderApi.post(token, race_id);
       resetRaceCreateInfo();
       navigateWithHistory(navigation, [
         { name: "Home" },
@@ -60,6 +64,8 @@ const InputRaceInfo = () => {
   };
 
   const submitRaceRequest = async () => {
+    const userCash = Number(memberInfo.cash);
+
     if (!entrance_fee) {
       alert("필드를 모두 채워주세요");
       return;
@@ -69,7 +75,31 @@ const InputRaceInfo = () => {
       return;
     }
 
+    if (userCash < entrance_fee) {
+      Alert.alert(
+        "잔액이 부족합니다.",
+        "캐시 충전 페이지로 이동하시겠습니까?",
+        [
+          {
+            text: "Cancel",
+            style: "cancel",
+          },
+          {
+            text: "OK",
+            onPress: () => {
+              navigateTabScreen(navigation, "Profile");
+            },
+          },
+        ],
+        { cancelable: false },
+      );
+      setGlobalLoading(false);
+      return;
+    }
     try {
+      await MemberApi.patchCash(token, String(userCash - entrance_fee));
+      const newMemberInfo = await MemberApi.get(token);
+      setMemberInfo(newMemberInfo);
       await createRaceRequest();
     } catch (e) {
       console.log(e);
@@ -98,4 +128,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default InputRaceInfo;
+export default InputRaceFee;
