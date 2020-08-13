@@ -100,7 +100,7 @@ const RedirectPage = ({ route }) => {
         setMemberInfo(newMemberInfo);
       } catch (error) {
         alert("사용자 정보를 찾을 수 없습니다. 다시 로그인 해주세요.");
-        navigateWithoutHistory(navigation, "Logqin");
+        navigateWithoutHistory(navigation, "Login");
       }
       try {
         const newRaceInfo = await RaceApi.get(userToken, raceId);
