@@ -16,7 +16,7 @@ class MemberProfileResponseTest {
     @DisplayName("MemberProfileResponse Dto가 올바르게 Serialize되는지 확인한다.")
     @Test
     void memberProfileResponseTest() throws JsonProcessingException {
-        final String expectedResponse = "{\"image_url\":\"https://14f-guys-image.s3.ap-northeast-2.amazonaws.com/ddddddddd.png\"}";
+        final String expectedResponse = "{\"image_url\":\"https://14f-guys-image.s3.ap-northeast-2.amazonaws.com/test.updated.png\"}";
 
         assertThat(objectMapper.writeValueAsString(memberProfileUpdated())).isEqualTo(expectedResponse);
     }
