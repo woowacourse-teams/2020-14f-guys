@@ -4,17 +4,28 @@ import Carousel from "react-native-snap-carousel";
 import RaceItem from "./RaceItem";
 import { SAMPLE_IMAGES } from "../../../utils/constants";
 
-const RaceItems = () => {
+const RaceItems = ({ races, hasRace }) => {
   const _renderItems = ({ item }, parallaxProps) => {
-    return <RaceItem item={item} parallaxProps={parallaxProps} />;
+    return (
+      <RaceItem item={item} parallaxProps={parallaxProps} hasRace={hasRace} />
+    );
   };
 
   const width = Math.round(Dimensions.get("window").width);
 
+  const raceData = races.map((race) => {
+    return {
+      id: race.id,
+      title: race.title,
+      src: race.thumbnail,
+      text: race.description,
+    };
+  });
+
   return (
     <View style={styles.container}>
       <Carousel
-        data={SAMPLE_IMAGES}
+        data={hasRace ? raceData : SAMPLE_IMAGES}
         sliderWidth={width}
         sliderHeight={180}
         itemWidth={250}
