@@ -26,7 +26,7 @@ class MissionRepositoryTest {
     @DisplayName("Mission 객체가 DB에 잘 저장되는지 확인한다.")
     @Test
     void saveMission() {
-        final Mission mission = MissionFixture.missionWithoutId();
+        final Mission mission = MissionFixture.createWithoutId();
 
         final Mission persist = missionRepository.save(mission);
 
@@ -66,9 +66,9 @@ class MissionRepositoryTest {
     void findByRaceIdAndSucceed() {
         final Long raceId = 10L;
         missionRepository.saveAll(Arrays.asList(
-            MissionFixture.missionWithoutIdAndRaceId(raceId),
-            MissionFixture.missionWithoutIdAndRaceId(raceId),
-            MissionFixture.missionWithoutIdAndRaceId(raceId))
+            MissionFixture.createWithoutIdAndRaceId(raceId),
+            MissionFixture.createWithoutIdAndRaceId(raceId),
+            MissionFixture.createWithoutIdAndRaceId(raceId))
         );
 
         List<Mission> missions = missionRepository.findMissionsByRaceId(raceId);

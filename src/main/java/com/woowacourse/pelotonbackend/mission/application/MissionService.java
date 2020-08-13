@@ -87,12 +87,14 @@ public class MissionService {
         return MissionResponses.of(missions);
     }
 
-    public void update(final Long id, final MissionUpdateRequest request) {
+    public Long update(final Long id, final MissionUpdateRequest request) {
         final Mission mission = missionRepository.findById(id)
             .orElseThrow(() -> new MissionNotFoundException(id));
 
         final Mission updatedMission = request.toMission(mission);
-        missionRepository.save(updatedMission);
+        Mission persist = missionRepository.save(updatedMission);
+
+        return persist.getId();
     }
 
     public void delete(final Long id) {

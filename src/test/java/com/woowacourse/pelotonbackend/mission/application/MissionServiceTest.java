@@ -5,10 +5,10 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.BDDMockito.*;
 
 import java.time.LocalDate;
-import java.util.List;
-import java.util.stream.Collectors;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -18,18 +18,18 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.data.jdbc.core.mapping.AggregateReference;
 
+import com.woowacourse.pelotonbackend.common.exception.MissionNotFoundException;
 import com.woowacourse.pelotonbackend.mission.domain.DateTimeDuration;
 import com.woowacourse.pelotonbackend.mission.domain.Mission;
 import com.woowacourse.pelotonbackend.mission.domain.MissionFixture;
 import com.woowacourse.pelotonbackend.mission.domain.MissionRepository;
+import com.woowacourse.pelotonbackend.mission.presentation.dto.MissionResponse;
+import com.woowacourse.pelotonbackend.mission.presentation.dto.MissionResponses;
 import com.woowacourse.pelotonbackend.race.domain.DateDuration;
 import com.woowacourse.pelotonbackend.race.domain.RaceCategory;
 import com.woowacourse.pelotonbackend.race.domain.RaceFixture;
 import com.woowacourse.pelotonbackend.support.CustomDateParser;
 import com.woowacourse.pelotonbackend.support.RandomGenerator;
-import com.woowacourse.pelotonbackend.common.exception.MissionNotFoundException;
-import com.woowacourse.pelotonbackend.mission.presentation.dto.MissionResponse;
-import com.woowacourse.pelotonbackend.mission.presentation.dto.MissionResponses;
 
 @ExtendWith(MockitoExtension.class)
 class MissionServiceTest {
@@ -77,10 +77,10 @@ class MissionServiceTest {
     @DisplayName("미션을 정상적으로 생성한다.")
     @Test
     void create() {
-        Mission savedMission = MissionFixture.missionWithId(1L);
+        Mission savedMission = MissionFixture.createWithId(1L);
         given(missionRepository.save(any(Mission.class))).willReturn(savedMission);
 
-        Long missionId = missionService.create(MissionFixture.missionCreateRequest());
+        Long missionId = missionService.create(MissionFixture.mockCreateRequest());
 
         assertThat(missionId).isEqualTo(savedMission.getId());
     }
@@ -89,7 +89,7 @@ class MissionServiceTest {
     @Test
     void retrieveAndSucceed() {
         final Long missionId = 1L;
-        final Mission mission = MissionFixture.missionWithId(missionId);
+        final Mission mission = MissionFixture.createWithId(missionId);
         given(missionRepository.findById(anyLong())).willReturn(Optional.of(mission));
 
         MissionResponse response = missionService.retrieve(missionId);
@@ -113,7 +113,7 @@ class MissionServiceTest {
     @Test
     void retrieveAllByIds() {
         final List<Long> ids = Arrays.asList(1L, 2L, 4L);
-        final List<Mission> missions = MissionFixture.missionsWithId(ids);
+        final List<Mission> missions = MissionFixture.createMissionsWithId(ids);
         given(missionRepository.findAllById(anyList())).willReturn(missions);
 
         MissionResponses response = missionService.retrieveAllByIds(ids);
@@ -128,7 +128,7 @@ class MissionServiceTest {
     @Test
     void retrieveByRaceIdAndSucceed() {
         final Long raceId = 10L;
-        final Mission mission = MissionFixture.missionWithIdAndRaceId(raceId);
+        final Mission mission = MissionFixture.createWithIdAndRaceId(raceId);
         given(missionRepository.findMissionsByRaceId(anyLong())).willReturn(Arrays.asList(mission));
 
         MissionResponses response = missionService.retrieveByRaceId(raceId);
@@ -140,10 +140,12 @@ class MissionServiceTest {
     @Test
     void updateAndSucceed() {
         final Long missionId = 1L;
-        final Mission mission = MissionFixture.missionWithId(missionId);
+        final Mission mission = MissionFixture.createWithId(missionId);
         given(missionRepository.findById(missionId)).willReturn(Optional.of(mission));
+        final Mission updatedMission = MissionFixture.createMissionUpdated(missionId);
+        given(missionRepository.save(updatedMission)).willReturn(updatedMission);
 
-        missionService.update(missionId, MissionFixture.missionUpdateRequest());
+        missionService.update(missionId, MissionFixture.mockUpdateRequest());
 
         verify(missionRepository).save(any(Mission.class));
     }
@@ -155,7 +157,7 @@ class MissionServiceTest {
         given(missionRepository.findById(missionId)).willReturn(Optional.empty());
 
         assertThatThrownBy(() -> {
-            missionService.update(missionId, MissionFixture.missionUpdateRequest());
+            missionService.update(missionId, MissionFixture.mockUpdateRequest());
         }).isInstanceOf(MissionNotFoundException.class)
             .hasMessageContaining("Mission(mission id = %d) does not exists", missionId);
 
@@ -173,7 +175,7 @@ class MissionServiceTest {
     @Test
     void deleteAllByIds() {
         final List<Long> ids = Arrays.asList(1L, 2L, 5L);
-        given(missionRepository.findAllById(anyList())).willReturn(MissionFixture.missionsWithId(ids));
+        given(missionRepository.findAllById(anyList())).willReturn(MissionFixture.createMissionsWithId(ids));
 
         missionService.deleteAllByIds(ids);
 

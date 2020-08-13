@@ -1,8 +1,10 @@
 package com.woowacourse.pelotonbackend.mission.presentation.dto;
 
+import com.fasterxml.jackson.databind.PropertyNamingStrategy;
+import com.fasterxml.jackson.databind.annotation.JsonNaming;
+import com.woowacourse.pelotonbackend.mission.domain.DateTimeDuration;
 import com.woowacourse.pelotonbackend.mission.domain.Mission;
 import com.woowacourse.pelotonbackend.mission.domain.MissionInstruction;
-import com.woowacourse.pelotonbackend.mission.domain.DateTimeDuration;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -10,6 +12,7 @@ import lombok.Getter;
 @AllArgsConstructor
 @Builder
 @Getter
+@JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class)
 public class MissionResponse {
     private final Long id;
 
