@@ -71,7 +71,7 @@ class QueryServiceTest {
     @DisplayName("Member가 참여하고 있는 Race가 없는 경우 빈 리스트를 가진 RaceResponses를 반환한다.")
     @Test
     void retrieveRacesByTest2() {
-        assertThat(queryService.retrieveRacesBy(MemberFixture.memberResponse()).getRaceResponses().size())
-            .isEqualTo(RaceResponses.of(new ArrayList<>()).getRaceResponses().size());
+        assertThat(queryService.retrieveRacesBy(MemberFixture.memberResponse()))
+            .isEqualToComparingFieldByField(RaceResponses.of(new ArrayList<>()));
     }
 }

@@ -2,6 +2,7 @@ package com.woowacourse.pelotonbackend.query.presentation;
 
 import static com.woowacourse.pelotonbackend.race.domain.RaceFixture.*;
 import static org.assertj.core.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.BDDMockito.*;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.*;
@@ -48,7 +49,6 @@ import com.woowacourse.pelotonbackend.member.presentation.dto.MemberResponse;
 import com.woowacourse.pelotonbackend.query.application.QueryService;
 import com.woowacourse.pelotonbackend.race.domain.Race;
 import com.woowacourse.pelotonbackend.race.domain.RaceFixture;
-import com.woowacourse.pelotonbackend.race.presentation.dto.RaceResponse;
 import com.woowacourse.pelotonbackend.race.presentation.dto.RaceResponses;
 import com.woowacourse.pelotonbackend.rider.domain.Rider;
 import com.woowacourse.pelotonbackend.rider.domain.RiderFixture;
@@ -106,15 +106,19 @@ class QueryControllerTest {
         final RaceResponses responseBody = objectMapper.readValue(contentBytes,
             RaceResponses.class);
 
-        assertThat(responseBody.getRaceResponses().get(0))
-            .isEqualToComparingFieldByField(RaceFixture.retrieveResponse());
+        assertAll(
+            () -> assertThat(responseBody.getRaceResponses().get(0))
+                .isEqualToComparingFieldByField(RaceFixture.retrieveResponse()),
+            () -> assertThat(responseBody.getRaceResponses()).hasSize(4)
+        );
     }
 
     @DisplayName("유효하지 않은 token로 race를 조회할 때 예외처리한다.")
     @Test
     void retrieveRacesByTest2() throws Exception {
         given(bearerAuthInterceptor.preHandle(any(HttpServletRequest.class), any(HttpServletResponse.class),
-            any(HandlerMethod.class))).willThrow(new TokenInvalidException(ErrorCode.INVALID_TOKEN, "토큰이 이상합니다~~~~~~~~~~"));
+            any(HandlerMethod.class))).willThrow(
+            new TokenInvalidException(ErrorCode.INVALID_TOKEN, "토큰이 이상합니다~~~~~~~~~~"));
 
         mockMvc.perform(get("/api/queries/races")
             .header(HttpHeaders.AUTHORIZATION, "Invalid token")
