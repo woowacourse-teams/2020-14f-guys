@@ -91,7 +91,6 @@ const RedirectPage = ({ route }) => {
       }
       const raceId = route.params.id;
       if (!userToken) {
-        // todo 로그인 후 원하는 Screen으로 이동해야함.
         alert("로그인 먼저 해주세요.");
         navigateWithoutHistory(navigation, "Login");
         return;

@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { ScrollView, StyleSheet } from "react-native";
+import { ScrollView, StyleSheet, Text, View } from "react-native";
 import RaceDetailInfo from "./RaceDetailInfo";
 import RaceCertificationImage from "./RaceCertificationImage";
 import RaceSpec from "./RaceSpec";
