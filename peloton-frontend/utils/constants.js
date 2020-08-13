@@ -65,9 +65,6 @@ export const SAMPLE_IMAGES = [
   },
 ];
 
-export const IMAGE_URL =
-  "https://t1.daumcdn.net/cfile/tistory/2657B9505809B4B634";
-
 export const MOCK_DATA = [
   {
     url:

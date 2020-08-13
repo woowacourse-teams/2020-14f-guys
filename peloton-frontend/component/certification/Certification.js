@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState } from "react";
-import { FlatList, StyleSheet, View } from "react-native";
+import { FlatList, StyleSheet, Text, View } from "react-native";
 import { useRecoilState } from "recoil";
 import { useFocusEffect } from "@react-navigation/core";
 
@@ -8,6 +8,7 @@ import {
   raceCertificationState,
 } from "../../state/certification/RaceCertificationState";
 import CertificationItem from "./CertificationItem";
+import { COLOR } from "../../utils/constants";
 
 const Certification = () => {
   const [certifications, setCertifications] = useRecoilState(
@@ -16,6 +17,7 @@ const Certification = () => {
   const [currentTime, setCurrentTime] = useState(new Date());
 
   useEffect(() => {
+    // TODO: 미션 정보 받아오는 부분이 여기 들어가야함
     setCertifications(raceCertificationFixture);
   }, []);
 
@@ -30,14 +32,21 @@ const Certification = () => {
 
   return (
     <View style={styles.container}>
-      <FlatList
-        data={certifications}
-        renderItem={({ item }) => (
-          <CertificationItem item={item} currentTime={currentTime} />
-        )}
-        keyExtractor={(item) => String.valueOf()(item.mission.id)}
-        showsVerticalScrollIndicator={false}
-      />
+      {certifications.length > 0 ? (
+        <FlatList
+          data={certifications}
+          renderItem={({ item }) => (
+            <CertificationItem item={item} currentTime={currentTime} />
+          )}
+          keyExtractor={(item) => String.valueOf()(item.mission.id)}
+          showsVerticalScrollIndicator={false}
+        />
+      ) : (
+        <View style={styles.messageContainer}>
+          <Text style={styles.message}>아직 참여중인 레이스가 없네요 😀</Text>
+          <Text style={styles.message}>새로운 레이스에 참여해보세요</Text>
+        </View>
+      )}
     </View>
   );
 };
@@ -45,6 +54,16 @@ const Certification = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+  },
+  messageContainer: {
+    alignItems: "center",
+  },
+  message: {
+    fontSize: 20,
+    fontWeight: "300",
+    fontStyle: "normal",
+    lineHeight: 35,
+    color: COLOR.GRAY1,
   },
 });
 
