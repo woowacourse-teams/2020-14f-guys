@@ -23,6 +23,7 @@ class RiderResponseTest {
             + "\"created_at\":\"" + TEST_CREATED_DATE_TIME + "Z\""
             + "}";
 
+        System.out.println(TEST_CREATED_DATE_TIME);
         assertThat(objectMapper.writeValueAsString(RiderFixture.createRiderResponse(1L))).isEqualTo(responseBody);
     }
 }

@@ -1,37 +1,79 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
-import { COLOR } from "../../utils/constants";
+import { CERTIFICATION_TYPE, COLOR } from "../../utils/constants";
 
 const CertificationItem = ({ item, currentTime }) => {
+  const [leftTime, setLeftTime] = useState(
+    new Date(item.mission.mission_duration.start_time - currentTime),
+  );
+  const [certificationType, setCertificationType] = useState(
+    leftTime > 0 ? CERTIFICATION_TYPE.WAIT : CERTIFICATION_TYPE.AVAILABLE,
+  );
+
+  useEffect(() => {
+    const startLeftTime =
+      item.mission.mission_duration.start_time - currentTime;
+    // TODO: 타임존 해결
+    // new Date("2020-08-13T19:46:54.725+09:00") - currentTime) / 1000 / 3600
+    // new Date("2020-08-13T19:46:54.725") - currentTime) / 1000 / 3600
+    if (startLeftTime > 0) {
+      setLeftTime(startLeftTime);
+      setCertificationType(CERTIFICATION_TYPE.WAIT);
+    } else {
+      setLeftTime(item.mission.mission_duration.end_time - currentTime);
+      setCertificationType(CERTIFICATION_TYPE.AVAILABLE);
+    }
+  }, [currentTime]);
+
   const navigateToCertificate = (mission, certificationExample) => {
     console.log("이동");
   };
 
-  const calculateLeftTime = () => {
-    return new Date(item.mission.mission_duration.start_time - currentTime);
+  const timeForm = () => {
+    // eslint-disable-next-line prettier/prettier
+    return `${Math.floor(leftTime / 1000 / 3600)}시간 ${Math.floor(leftTime / 1000 / 60)}분 ${Math.floor(leftTime / 1000 % 60)}초`;
   };
 
-  const timeForm = () => {
-    const date = calculateLeftTime();
-    return `${date.getHours()}시간 ${date.getMinutes()}분 ${date.getSeconds()}초`;
+  const onSelect = () => {
+    if (certificationType === CERTIFICATION_TYPE.AVAILABLE) {
+      return navigateToCertificate(
+        item.mission,
+        item.race.certification_example,
+      );
+    } else if (certificationType === CERTIFICATION_TYPE.WAIT) {
+      return () => {};
+    }
   };
+
+  if (leftTime < 0) {
+    return null;
+  }
 
   return (
     <TouchableOpacity
-      activeOpacity={0.7}
+      activeOpacity={certificationType.activeOpacity}
       style={styles.item}
-      onPress={() =>
-        navigateToCertificate(item.mission, item.race.certification_example)
-      }
+      onPress={onSelect}
     >
       <Image
         style={styles.itemImage}
         source={{ uri: item.race.thumbnail }}
-        blurRadius={calculateLeftTime() < 0 ? 1 : 0}
+        blurRadius={certificationType.blurRadius}
       />
+      <View style={styles.certificationInfo} />
       <Text style={styles.itemTitle}>{item.race.title}</Text>
       <Text style={styles.itemSubtitle}>{timeForm()}</Text>
+      <View
+        style={{
+          ...styles.certificationTypeView,
+          backgroundColor: certificationType.color,
+        }}
+      >
+        <Text style={styles.certificationTypeMessage}>
+          {certificationType.message}
+        </Text>
+      </View>
     </TouchableOpacity>
   );
 };
@@ -42,9 +84,7 @@ const styles = StyleSheet.create({
     minWidth: 320,
     width: "100%",
     aspectRatio: 32 / 21,
-    borderRadius: 10,
     overflow: "hidden",
-    marginBottom: 20,
     backgroundColor: "black",
   },
   itemImage: {
@@ -64,6 +104,32 @@ const styles = StyleSheet.create({
     bottom: 30,
     color: COLOR.WHITE,
     fontSize: 15,
+  },
+  certificationInfo: {
+    backgroundColor: COLOR.DARK_GRAY6,
+    position: "absolute",
+    bottom: 25,
+    left: 7,
+    width: 120,
+    height: 60,
+    opacity: 0.15,
+    borderRadius: 10,
+    padding: 10,
+  },
+  certificationTypeView: {
+    position: "absolute",
+    bottom: 30,
+    right: 19.5,
+    width: 100,
+    height: 30,
+    borderRadius: 15,
+    justifyContent: "center",
+    alignItems: "center",
+    opacity: 0.9,
+  },
+  certificationTypeMessage: {
+    color: COLOR.WHITE,
+    fontWeight: "bold",
   },
 });
 

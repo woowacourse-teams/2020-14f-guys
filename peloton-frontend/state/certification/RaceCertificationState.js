@@ -29,7 +29,8 @@ const todayOneHourBefore = (() => {
 })();
 const todayOneHourAfter = (() => {
   const date = new Date();
-  date.setHours(today.getHours() + 1);
+  // date.setHours(today.getHours() + 1);
+  date.setSeconds(today.getSeconds() + 600);
   return date;
 })();
 const todayTwoHourAfter = (() => {
@@ -42,11 +43,11 @@ export const raceCertificationFixture = [
   {
     race: {
       id: 1,
-      title: "레이스1",
+      title: "운동",
       certification_example:
         "https://lh3.googleusercontent.com/W-z2puouUJ_ZDRiZxZ4NJl1Mi-TDJ9NVTz6XBbtO17po8Ave86MTPin_9NVm6_QF-V8",
       thumbnail:
-        "https://opgg-com-image.akamaized.net/attach/images/20191215131450.859400.jpg",
+        "https://post-phinf.pstatic.net/MjAxOTEyMTFfMjgy/MDAxNTc2MDUwODAxODQ3.qV7kcYtxZZr7ycnGUsmKyj2-eYBThcJbaAf7Xr4uLzAg.T0x40qYIWBL2pXFG51QhCt6N5xSFZVKOZaicP3XGx5Yg.JPEG/image_8240955871576050766062.jpg?type=w1200",
     },
     mission: {
       id: 1,
@@ -61,11 +62,11 @@ export const raceCertificationFixture = [
   {
     race: {
       id: 2,
-      title: "레이스2",
+      title: "기상",
       certification_example:
         "https://lh3.googleusercontent.com/5EfQBHDb47tchiART6U6yk3yYS9qBYr6VUssB5wHE1AgavqV5E2SSuzyiNkc7UgVng",
       thumbnail:
-        "https://opgg-com-image.akamaized.net/attach/images/20191215131450.859400.jpg",
+        "https://t1.daumcdn.net/thumb/R720x0/?fname=http://t1.daumcdn.net/brunch/service/user/Jp6/image/92CQBbgioOWYSe-SFIUkkjJEGpQ.jpg",
     },
     mission: {
       id: 2,

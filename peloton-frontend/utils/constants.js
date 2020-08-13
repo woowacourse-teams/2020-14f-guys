@@ -7,6 +7,7 @@ export const COLOR = {
   GREEN1: "#B0D4D9",
   GREEN2: "#6e8ca0",
   GREEN3: "#334856",
+  GREEN4: "rgb(52,199,89)",
   BLUE1: "#B0C0D9",
   BLUE2: "#0b53e8",
   BLUE3: "#4f83dd",
@@ -16,7 +17,7 @@ export const COLOR = {
   ARROW_BLUE: "#61779f",
   PURPLE: "#B5B0D9",
   LAVENDER: "#CAB0D9",
-  PINK: "#D0B0D4",
+  PINK: "rgb(255,45,85)",
   INDIAN_PINK: "#D9B0C0",
   WHITE: "#FFFFFF",
   WHITE2: "#F2F2F2",
@@ -127,3 +128,18 @@ export const DAYS = [
   "SATURDAY",
   "SUNDAY",
 ];
+
+export const CERTIFICATION_TYPE = {
+  AVAILABLE: {
+    activeOpacity: 0.7,
+    blurRadius: 0,
+    color: COLOR.GREEN4,
+    message: "인증 가능",
+  },
+  WAIT: {
+    activeOpacity: 1,
+    blurRadius: 10,
+    color: COLOR.PINK,
+    message: "인증 대기",
+  },
+};
