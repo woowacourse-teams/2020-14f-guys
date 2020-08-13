@@ -11,8 +11,9 @@ import AsyncStorage from "@react-native-community/async-storage";
 import { useNavigation } from "@react-navigation/core";
 import { MemberApi } from "../../../utils/api/MemberApi";
 import { memberInfoState, memberTokenState } from "../../../state/member/MemberState";
+import LoadingIndicator from "../../../utils/LoadingIndicator";
 
-const Home = ({ route }) => {
+const Home = () => {
   const setUserInfo = useSetRecoilState(memberInfoState);
   const token = useRecoilValue(memberTokenState);
   const setIsLoading = useSetRecoilState(loadingState);
@@ -37,14 +38,16 @@ const Home = ({ route }) => {
   }, []);
 
   return (
-    <ScrollView>
-      <View style={styles.raceTitle}>
-        <HomeBanner />
-      </View>
-      <View style={styles.raceList}>
-        <RaceList />
-      </View>
-    </ScrollView>
+    <LoadingIndicator>
+      <ScrollView>
+        <View style={styles.raceTitle}>
+          <HomeBanner/>
+        </View>
+        <View style={styles.raceList}>
+          <RaceList/>
+        </View>
+      </ScrollView>
+    </LoadingIndicator>
   );
 };
 

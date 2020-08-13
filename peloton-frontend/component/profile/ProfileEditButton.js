@@ -2,7 +2,7 @@ import React from "react";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { COLOR } from "../../utils/constants";
 
-const CustomButton = ({ text, onPress }) => {
+const ProfileEditButton = ({ text, onPress }) => {
   return (
     <View style={styles.buttonContainer}>
       <TouchableOpacity style={styles.button} onPress={onPress}>
@@ -33,4 +33,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default CustomButton;
+export default ProfileEditButton;

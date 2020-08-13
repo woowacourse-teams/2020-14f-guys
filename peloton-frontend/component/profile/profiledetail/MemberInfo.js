@@ -2,7 +2,7 @@ import React from "react";
 import { StyleSheet, View } from "react-native";
 import ProfileImage from "../ProfileImage";
 import MemberInfoDetail from "./MemberInfoDetail";
-import CustomButton from "../CustomButton";
+import ProfileEditButton from "../ProfileEditButton";
 import { useNavigation } from "@react-navigation/core";
 import ProfileDefaultImage from "../ProfileDefaultImage";
 import { useRecoilValue } from "recoil";
@@ -15,10 +15,14 @@ const MemberInfo = () => {
   return (
     <View style={styles.memberInfo}>
       <View style={styles.imageContainer}>
-        {userInfo.profile ? <ProfileImage image={userInfo.profile}/> : <ProfileDefaultImage/>}
+        {userInfo.profile ? (
+          <ProfileImage image={userInfo.profile} />
+        ) : (
+          <ProfileDefaultImage />
+        )}
       </View>
       <MemberInfoDetail name={userInfo.name} cash={userInfo.cash}/>
-      <CustomButton
+      <ProfileEditButton
         text="Edit Profile"
         onPress={() => navigation.navigate("ProfileEdit")}
       />

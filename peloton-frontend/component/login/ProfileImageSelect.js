@@ -1,9 +1,9 @@
 import React from "react";
 import { Image, StyleSheet, View } from "react-native";
-import { Entypo } from "@expo/vector-icons";
 import ProfileImageEditButton from "../profile/ProfileImageEditButton";
 import { useRecoilValue } from "recoil";
 import { memberInfoState } from "../../state/member/MemberState";
+import ProfileImageEditIcon from "../profile/profileedit/ProfileImageEditIcon";
 
 const ProfileImageSelect = () => {
   const userInfo = useRecoilValue(memberInfoState);
@@ -18,10 +18,9 @@ const ProfileImageSelect = () => {
               ? { uri: userInfo.profile }
               : require("../../assets/default-profile.jpg")
           }
+          defaultSource={require("../../assets/default-profile.jpg")}
         />
-        <View style={styles.cameraIcon}>
-          <Entypo name="camera" size={24} color="black" />
-        </View>
+        <ProfileImageEditIcon />
       </ProfileImageEditButton>
     </View>
   );

@@ -5,15 +5,18 @@ import ProfileImageEdit from "./ProfileImageEdit";
 import SignOutButtonContainer from "./SignOutButtonContainer";
 import UnregisterButtonContainer from "./UnregisterButtonContainer";
 import { COLOR } from "../../../utils/constants";
+import LoadingIndicator from "../../../utils/LoadingIndicator";
 
 const ProfileEdit = () => {
   return (
-    <ScrollView style={styles.container}>
-      <ProfileImageEdit />
-      <ProfileEditInfo />
-      <SignOutButtonContainer />
-      <UnregisterButtonContainer />
-    </ScrollView>
+    <LoadingIndicator>
+      <ScrollView style={styles.container}>
+        <ProfileImageEdit />
+        <ProfileEditInfo />
+        <SignOutButtonContainer />
+        <UnregisterButtonContainer />
+      </ScrollView>
+    </LoadingIndicator>
   );
 };
 

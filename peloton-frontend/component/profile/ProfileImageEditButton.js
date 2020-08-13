@@ -1,12 +1,14 @@
 import React from "react";
 import { Alert, Linking, TouchableOpacity } from "react-native";
-import { useRecoilState, useRecoilValue } from "recoil";
+import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import * as ImagePicker from "expo-image-picker";
 import { MemberApi } from "../../utils/api/MemberApi";
 import { memberInfoState, memberTokenState } from "../../state/member/MemberState";
+import { loadingState } from "../../state/loading/LoadingState";
 
 const ProfileImageEditButton = ({ children }) => {
   const [userInfo, setUserInfo] = useRecoilState(memberInfoState);
+  const setIsLoading = useSetRecoilState(loadingState);
   const token = useRecoilValue(memberTokenState);
 
   const requestChangeImage = async (selectedImage) => {
@@ -25,9 +27,11 @@ const ProfileImageEditButton = ({ children }) => {
     } catch (error) {
       alert("에러가 발생했습니다.");
     }
+    setIsLoading(false);
   };
 
   const pickAndChangeProfileImage = async () => {
+    setIsLoading(true);
     const permissionResult = await ImagePicker.requestCameraRollPermissionsAsync();
     if (permissionResult.granted === false) {
       Alert.alert(
@@ -42,6 +46,7 @@ const ProfileImageEditButton = ({ children }) => {
         ],
         { cancelable: false },
       );
+      setIsLoading(false);
     } else {
       const pickerResult = await ImagePicker.launchImageLibraryAsync({
         allowsEditing: true,
@@ -51,13 +56,11 @@ const ProfileImageEditButton = ({ children }) => {
       });
       if (pickerResult.cancelled === true) {
         console.log("cameraroll picker cancelled");
+        setIsLoading(false);
         return;
       }
       const selectedImage = pickerResult.uri;
-      setUserInfo({
-        ...userInfo,
-        profile: selectedImage,
-      });
+      requestChangeImage(selectedImage);
     }
   };
 

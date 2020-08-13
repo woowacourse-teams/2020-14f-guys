@@ -1,85 +1,62 @@
 import React, { useState } from "react";
-import { Image, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
-import Axios from "axios";
-import { useRecoilValue, useSetRecoilState } from "recoil";
+import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import { useNavigation } from "@react-navigation/core";
-import { SERVER_BASE_URL } from "../../../utils/constants";
 import { memberInfoState, memberTokenState } from "../../../state/member/MemberState";
+import { MemberApi } from "../../../utils/api/MemberApi";
+import { loadingState } from "../../../state/loading/LoadingState";
+import { AntDesign } from "@expo/vector-icons";
+import { COLOR } from "../../../utils/constants";
 
 const ProfileEditInfo = () => {
-  const userInfo = useRecoilValue(memberInfoState);
-  const setUserInfo = useSetRecoilState(memberInfoState);
+  const [memberInfo, setMemberInfo] = useRecoilState(memberInfoState);
+  const setIsLoading = useSetRecoilState(loadingState);
   const token = useRecoilValue(memberTokenState);
   const navigation = useNavigation();
 
-  const [name, setName] = useState(userInfo.name);
+  const [name, setName] = useState(memberInfo.name);
 
-  const requestChangeName = () => {
-    Axios.patch(
-      `${SERVER_BASE_URL}/api/members/name`,
-      {
-        name: name,
-      },
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      }
-    )
-      .then(async () => {
-        const response = await Axios.get(`${SERVER_BASE_URL}/api/members`, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
-        setUserInfo(response.data);
-        navigation.navigate("ProfileDetail");
-      })
-      .catch((error) => console.log(error));
+  const requestChangeName = async () => {
+    setIsLoading(true);
+    try {
+      await MemberApi.patchName(token, name);
+      const newMemberInfo = await MemberApi.get(token);
+      setMemberInfo(newMemberInfo);
+    } catch (error) {
+      console.log(error);
+    }
+    setIsLoading(false);
   };
 
   return (
     <View style={styles.infoContainer}>
-      {/*1번*/}
       <View style={styles.eachInfo}>
         <View style={styles.eachTextBox}>
           <Text style={styles.eachInfoKey}>🚴 ‍️Rider Name</Text>
-          <TextInput
-            style={styles.eachInfoValue}
-            onChangeText={(text) => setName(text)}
-            value={name}
-          />
+          <Text style={styles.eachInfoValue}>{memberInfo.name}</Text>
         </View>
-        <TouchableOpacity style={styles.button} onPress={requestChangeName}>
+        <TouchableOpacity style={styles.button} onPress={() => navigation.navigate("NameUpdate")}>
           <Text style={styles.buttonText}>수정하기</Text>
-          <Image
-            style={styles.buttonImage}
-            source={require("../../../assets/icn_back_dark.png")}
-          />
+          <AntDesign name="right" size={18} color={COLOR.GREEN2} />
         </TouchableOpacity>
       </View>
-      {/*2번*/}
       <View style={styles.eachInfo}>
         <View style={styles.eachTextBox}>
           <Text style={styles.eachInfoKey}>😀 Kakao ID</Text>
-          <Text style={styles.eachInfoValue}>{userInfo.kakao_id}</Text>
+          <Text style={styles.eachInfoValue}>{memberInfo.kakao_id}</Text>
         </View>
       </View>
-      {/*3번*/}
       <View style={styles.eachInfo}>
         <View style={styles.eachTextBox}>
           <Text style={styles.eachInfoKey}>💰 Cash</Text>
-          <Text style={styles.eachInfoValue}>{userInfo.cash}</Text>
+          <Text style={styles.eachInfoValue}>{memberInfo.cash}</Text>
         </View>
         <TouchableOpacity
           style={styles.button}
           onPress={() => navigation.navigate("CashUpdate")}
         >
           <Text style={styles.buttonText}>충전하기</Text>
-          <Image
-            style={styles.buttonImage}
-            source={require("../../../assets/icn_back_dark.png")}
-          />
+          <AntDesign name="right" size={18} color={COLOR.GREEN2} />
         </TouchableOpacity>
       </View>
     </View>
@@ -105,15 +82,12 @@ const styles = StyleSheet.create({
     shadowRadius: 10,
     shadowOpacity: 1,
   },
-  editIcon: {
-    color: "black",
-  },
   eachInfo: {
     flex: 1,
     width: "100%",
     flexDirection: "row",
     borderWidth: 1,
-    borderColor: "#F0F3F4",
+    borderColor: COLOR.WHITE3,
   },
   eachTextBox: {
     flex: 5,
@@ -134,23 +108,24 @@ const styles = StyleSheet.create({
     paddingRight: 25,
   },
   buttonText: {
-    color: "#6e8ca0",
+    color: COLOR.GREEN2,
     paddingRight: 5,
   },
   eachInfoKey: {
     fontSize: 17,
     fontWeight: "800",
-    color: "#334856",
+    color: COLOR.GREEN3,
     lineHeight: 35,
     paddingBottom: 5,
   },
   eachInfoValue: {
-    color: "#6e8ca0",
+    color: COLOR.GREEN2,
     marginLeft: 26,
     marginRight: 60,
     paddingBottom: 7,
-    borderBottomColor: "#eceff0",
+    borderBottomColor: COLOR.WHITE4,
     borderBottomWidth: 1,
+    fontSize: 17,
   },
   editButtonImage: {
     width: 20,
