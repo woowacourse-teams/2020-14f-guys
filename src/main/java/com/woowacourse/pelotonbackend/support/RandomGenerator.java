@@ -4,4 +4,6 @@ public interface RandomGenerator {
     int getRandomIntLowerThan(final int bound);
 
     String getRandomString();
+
+    String getRandomSHA256(final String message);
 }

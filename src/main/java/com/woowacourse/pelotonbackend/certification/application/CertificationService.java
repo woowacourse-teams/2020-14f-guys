@@ -18,7 +18,7 @@ public class CertificationService {
     private final UploadService uploadService;
 
     public Long create(final MultipartFile file, final CertificationCreateRequest certificationCreateRequest) {
-        final String imageUrl = uploadService.uploadImage(file, "certification-image/");
+        final String imageUrl = uploadService.uploadImage(file, "certification.image/");
         final Certification certification = certificationCreateRequest.toCertification(imageUrl);
         final Certification persistCertification = certificationRepository.save(certification);
 
