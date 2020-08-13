@@ -11,22 +11,26 @@ import { memberTokenState } from "../../../state/member/MemberState";
 import { raceInfoState } from "../../../state/race/RaceState";
 import { RaceApi } from "../../../utils/api/RaceApi";
 import LinkCopyButton from "./LinkCopyButton";
-
-const calculateTotalCash = (cash) => {
-  return cash * 10;
-};
+import { RiderApi } from "../../../utils/api/RiderApi";
+import { ridersInfoState } from "../../../state/rider/RiderState";
 
 const RaceDetail = ({ route }) => {
   const token = useRecoilValue(memberTokenState);
   const setIsLoading = useSetRecoilState(loadingState);
   const raceId = route.params.location.split("/")[3];
   const [raceInfo, setRaceInfo] = useRecoilState(raceInfoState);
+  const [ridersInfo, setRidersInfo] = useRecoilState(ridersInfoState);
 
   useEffect(() => {
     const fetchRace = async () => {
       setIsLoading(true);
-      const response = await RaceApi.get(raceId, token);
-      setRaceInfo(response);
+      const race = await RaceApi.get(token, raceId);
+      const { rider_responses: riders } = await RiderApi.getInRace(
+        token,
+        raceId
+      );
+      setRidersInfo(riders);
+      setRaceInfo(race);
     };
     fetchRace();
     setIsLoading(false);
@@ -41,7 +45,7 @@ const RaceDetail = ({ route }) => {
       />
       <RaceSpec
         raceDuration={raceInfo.race_duration}
-        cash={calculateTotalCash(parseInt(raceInfo.entrance_fee))}
+        cash={parseInt(raceInfo.entrance_fee * ridersInfo.length)}
       />
       <LinkCopyButton raceId={raceId} />
     </ScrollView>

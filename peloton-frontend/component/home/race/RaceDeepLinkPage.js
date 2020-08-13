@@ -12,7 +12,10 @@ import {
 import { useNavigation } from "@react-navigation/core";
 import { MemberApi } from "../../../utils/api/MemberApi";
 import { RaceApi } from "../../../utils/api/RaceApi";
-import { memberInfoState, memberTokenState } from "../../../state/member/MemberState";
+import {
+  memberInfoState,
+  memberTokenState,
+} from "../../../state/member/MemberState";
 import { raceInfoState } from "../../../state/race/RaceState";
 import { QueryApi } from "../../../utils/api/QueryApi";
 import { RiderApi } from "../../../utils/api/RiderApi";
@@ -83,6 +86,7 @@ const RedirectPage = ({ route }) => {
       }
       if (!route || !route.params || !route.params.id) {
         alert("정상적이지 않은 접근입니다.");
+        navigateWithoutHistory(navigation, "Home");
         return;
       }
       const raceId = route.params.id;
@@ -97,17 +101,17 @@ const RedirectPage = ({ route }) => {
         setMemberInfo(newMemberInfo);
       } catch (error) {
         alert("사용자 정보를 찾을 수 없습니다. 다시 로그인 해주세요.");
-        navigateWithoutHistory(navigation, "Login");
+        navigateWithoutHistory(navigation, "Logqin");
       }
       try {
-        const newRaceInfo = await RaceApi.get(raceId, userToken);
+        const newRaceInfo = await RaceApi.get(userToken, raceId);
         setRaceInfo(newRaceInfo);
       } catch (error) {
         alert("올바르지 않은 경로입니다.");
         navigateWithoutHistory(navigation, "Home");
       }
       try {
-        const races = await QueryApi.getRaces(userToken);
+        const { race_responses: races } = await QueryApi.getRaces(userToken);
         for (let i = 0; i < races.length; i++) {
           if (String(races[i].id) === raceId) {
             navigateWithHistory(navigation, [
@@ -125,7 +129,8 @@ const RedirectPage = ({ route }) => {
           }
         }
       } catch (error) {
-        alert("서버 에러");
+        alert("조회에 실패했습니다.");
+        console.log(error);
         navigateWithoutHistory(navigation, "Home");
       }
     };

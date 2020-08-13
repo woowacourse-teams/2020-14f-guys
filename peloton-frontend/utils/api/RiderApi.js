@@ -21,4 +21,20 @@ export const RiderApi = {
       throw error;
     }
   },
+  getInRace: async (token, raceId) => {
+    try {
+      const response = await Axios({
+        method: "GET",
+        baseURL: SERVER_BASE_URL,
+        url: `/api/riders/races/${raceId}`,
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      return response.data;
+    } catch (error) {
+      console.log(error);
+      throw error;
+    }
+  },
 };
