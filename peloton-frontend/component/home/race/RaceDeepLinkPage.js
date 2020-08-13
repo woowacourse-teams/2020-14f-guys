@@ -90,8 +90,8 @@ const RedirectPage = ({ route }) => {
         return;
       }
       try {
-        const newUserInfo = await MemberApi.get(userToken);
-        setMemberInfo(newUserInfo);
+        const newMemberInfo = await MemberApi.get(userToken);
+        setMemberInfo(newMemberInfo);
       } catch (error) {
         alert("사용자 정보를 찾을 수 없습니다. 다시 로그인 해주세요.");
         navigateWithoutHistory(navigation, "Login");
