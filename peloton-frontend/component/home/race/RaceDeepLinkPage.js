@@ -15,6 +15,7 @@ import { RaceApi } from "../../../utils/api/RaceApi";
 import { memberInfoState, memberTokenState } from "../../../state/member/MemberState";
 import { raceInfoState } from "../../../state/race/RaceState";
 import { QueryApi } from "../../../utils/api/QueryApi";
+import { RiderApi } from "../../../utils/api/RiderApi";
 
 const RedirectPage = ({ route }) => {
   const setLoadingState = useSetRecoilState(loadingState);
@@ -51,6 +52,7 @@ const RedirectPage = ({ route }) => {
     }
     try {
       await MemberApi.patchCash(token, String(userCash - raceEntranceFee));
+      await RiderApi.post(token, raceInfo.id);
       const newMemberInfo = await MemberApi.get(token);
       setMemberInfo(newMemberInfo);
       navigateWithHistory(navigation, [
