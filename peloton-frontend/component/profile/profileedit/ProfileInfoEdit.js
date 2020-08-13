@@ -70,7 +70,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     marginHorizontal: 18,
     justifyContent: "space-around",
-    backgroundColor: "white",
+    backgroundColor: COLOR.WHITE,
     borderWidth: 0,
     borderColor: "#F0F3F4",
     borderRadius: 20,

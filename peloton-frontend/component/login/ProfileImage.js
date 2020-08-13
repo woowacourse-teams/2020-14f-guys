@@ -7,7 +7,7 @@ import { COLOR } from "../../utils/constants";
 import { memberInfoState } from "../../state/member/MemberState";
 
 const ProfileImage = () => {
-  const [userInfo, setUserInfo] = useRecoilState(memberInfoState);
+  const [memberInfo, setMemberInfo] = useRecoilState(memberInfoState);
 
   const openImagePickerAsync = async () => {
     const permissionResult = await ImagePicker.requestCameraRollPermissionsAsync();
@@ -35,8 +35,8 @@ const ProfileImage = () => {
         console.log("cameraroll picker cancelled");
         return;
       }
-      setUserInfo({
-        ...userInfo,
+      setMemberInfo({
+        ...memberInfo,
         profile: {
           baseImageUrl: pickerResult.uri,
         },
@@ -50,8 +50,8 @@ const ProfileImage = () => {
         <Image
           style={styles.profileImage}
           source={
-            userInfo.profile
-              ? { uri: userInfo.profile }
+            memberInfo.profile
+              ? { uri: memberInfo.profile }
               : require("../../assets/default-profile.jpg")
           }
         />

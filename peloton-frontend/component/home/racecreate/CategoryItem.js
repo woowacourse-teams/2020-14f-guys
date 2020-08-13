@@ -10,7 +10,7 @@ const CategoryItem = ({ item, onSelect }) => {
       style={styles.item}
       onPress={() => onSelect(item.category)}
     >
-      <Image style={styles.itemImage} source={{ uri: item.src }}/>
+      <Image style={styles.itemImage} source={{ uri: item.src }} />
       <Text style={styles.itemTitle}>{item.title}</Text>
       <Text style={styles.itemSubtitle}>{item.subtitle}</Text>
     </TouchableOpacity>

@@ -7,7 +7,7 @@ import { memberInfoState, memberTokenState } from "../../state/member/MemberStat
 import { loadingState } from "../../state/loading/LoadingState";
 
 const ProfileImageEditButton = ({ children }) => {
-  const [userInfo, setUserInfo] = useRecoilState(memberInfoState);
+  const [memberInfo, setMemberInfo] = useRecoilState(memberInfoState);
   const setIsLoading = useSetRecoilState(loadingState);
   const token = useRecoilValue(memberTokenState);
 
@@ -20,8 +20,8 @@ const ProfileImageEditButton = ({ children }) => {
     });
     try {
       const profile = await MemberApi.postProfile(token, formData);
-      setUserInfo({
-        ...userInfo,
+      setMemberInfo({
+        ...memberInfo,
         profile,
       });
     } catch (error) {

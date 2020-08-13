@@ -21,7 +21,7 @@ const AnimatedAppleButton = animated(
 const Login = () => {
   const [modalVisible, setModalVisible] = useState(false);
   const setToken = useSetRecoilState(memberTokenState);
-  const setUserInfo = useSetRecoilState(memberInfoState);
+  const setMemberInfo = useSetRecoilState(memberInfoState);
   const setIsLoading = useSetRecoilState(loadingState);
   const navigation = useNavigation();
 
@@ -36,7 +36,7 @@ const Login = () => {
       setToken(token);
       try {
         const memberResponse = await MemberApi.get(token);
-        setUserInfo(memberResponse);
+        setMemberInfo(memberResponse);
         navigateWithoutHistory(navigation, "ApplicationNavigationRoot");
       } catch (error) {
         console.log(error);

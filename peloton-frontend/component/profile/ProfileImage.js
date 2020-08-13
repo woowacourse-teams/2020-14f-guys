@@ -4,12 +4,12 @@ import { useRecoilValue } from "recoil/dist";
 import { memberInfoState } from "../../state/member/MemberState";
 
 const ProfileImage = () => {
-  const userInfo = useRecoilValue(memberInfoState);
+  const memberInfo = useRecoilValue(memberInfoState);
   return (
     <View style={styles.container}>
       <Image
         style={styles.profileImage}
-        source={{ uri: userInfo.profile }}
+        source={{ uri: memberInfo.profile }}
         defaultSource={require("../../assets/default-profile.jpg")}
       />
     </View>

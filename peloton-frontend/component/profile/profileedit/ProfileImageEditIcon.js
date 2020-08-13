@@ -1,6 +1,7 @@
 import React from "react";
 import { StyleSheet, View } from "react-native";
 import { Entypo } from "@expo/vector-icons";
+import { COLOR } from "../../../utils/constants";
 
 const ProfileImageEditIcon = () => {
   return (
@@ -18,7 +19,7 @@ const styles = StyleSheet.create({
     width: 30,
     height: 30,
     borderRadius: 15,
-    backgroundColor: "white",
+    backgroundColor: COLOR.WHITE,
     position: "absolute",
     top: 70,
     left: 70,

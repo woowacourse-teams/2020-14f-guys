@@ -4,9 +4,10 @@ import ProfileImageEditButton from "../profile/ProfileImageEditButton";
 import { useRecoilValue } from "recoil";
 import { memberInfoState } from "../../state/member/MemberState";
 import ProfileImageEditIcon from "../profile/profileedit/ProfileImageEditIcon";
+import { COLOR } from "../../utils/constants";
 
 const ProfileImageSelect = () => {
-  const userInfo = useRecoilValue(memberInfoState);
+  const memberInfo = useRecoilValue(memberInfoState);
 
   return (
     <View style={styles.container}>
@@ -14,8 +15,8 @@ const ProfileImageSelect = () => {
         <Image
           style={styles.profileImage}
           source={
-            userInfo.profile
-              ? { uri: userInfo.profile }
+            memberInfo.profile
+              ? { uri: memberInfo.profile }
               : require("../../assets/default-profile.jpg")
           }
           defaultSource={require("../../assets/default-profile.jpg")}
@@ -42,7 +43,7 @@ const styles = StyleSheet.create({
     width: 30,
     height: 30,
     borderRadius: 15,
-    backgroundColor: "white",
+    backgroundColor: COLOR.WHITE,
     position: "absolute",
     top: 85,
     left: 85,

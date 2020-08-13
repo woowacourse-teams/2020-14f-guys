@@ -18,13 +18,13 @@ import { raceInfoState } from "../../../state/race/RaceState";
 const RedirectPage = ({ route }) => {
   const setLoadingState = useSetRecoilState(loadingState);
   const [token, setToken] = useRecoilState(memberTokenState);
-  const [userInfo, setUserInfo] = useRecoilState(memberInfoState);
+  const [memberInfo, setMemberInfo] = useRecoilState(memberInfoState);
   const [raceInfo, setRaceInfo] = useRecoilState(raceInfoState);
   const navigation = useNavigation();
 
   const joinRace = async () => {
     setLoadingState(true);
-    const userCash = Number(userInfo.cash);
+    const userCash = Number(memberInfo.cash);
     const raceEntranceFee = Number(raceInfo.entrance_fee);
     if (userCash < raceEntranceFee) {
       Alert.alert(
@@ -51,7 +51,7 @@ const RedirectPage = ({ route }) => {
     try {
       await MemberApi.patchCash(token, String(userCash - raceEntranceFee));
       const response = await MemberApi.get(token);
-      setUserInfo(response);
+      setMemberInfo(response);
       navigateWithHistory(navigation, [
         {
           name: "Home",
@@ -91,7 +91,7 @@ const RedirectPage = ({ route }) => {
       }
       try {
         const newUserInfo = await MemberApi.get(userToken);
-        setUserInfo(newUserInfo);
+        setMemberInfo(newUserInfo);
       } catch (error) {
         alert("사용자 정보를 찾을 수 없습니다. 다시 로그인 해주세요.");
         navigateWithoutHistory(navigation, "Login");
@@ -118,7 +118,7 @@ const RedirectPage = ({ route }) => {
         <Text style={styles.raceDescription}>
           레이스 설명 : {raceInfo.description}
         </Text>
-        <Text style={styles.raceDescription}>잔액 : {userInfo.cash}</Text>
+        <Text style={styles.raceDescription}>잔액 : {memberInfo.cash}</Text>
         <Text style={styles.entranceFee}>
           {raceInfo.entrance_fee}원이 차감됩니다
         </Text>

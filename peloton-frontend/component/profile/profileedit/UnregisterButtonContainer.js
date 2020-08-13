@@ -28,7 +28,7 @@ const UnregisterButtonContainer = ({ navigation }) => {
         },
         { text: "Yes", onPress: requestUnregister },
       ],
-      { cancelable: false }
+      { cancelable: false },
     );
 
   return (

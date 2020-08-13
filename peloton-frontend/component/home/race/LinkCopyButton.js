@@ -26,16 +26,17 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   copyButton: {
-    width: 200,
+    width: 125,
     height: 50,
     flexDirection: "row",
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: COLOR.BLUE4,
+    backgroundColor: COLOR.BLUE3,
+    borderRadius: 15,
   },
   copyText: {
     color: COLOR.WHITE,
-    fontSize: 25,
+    fontSize: 15,
   },
 });
 

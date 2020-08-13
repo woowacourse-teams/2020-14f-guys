@@ -22,18 +22,18 @@ const KakaoLoginWebView = ({ toggleModal }) => {
       return;
     }
     url
-      .split("?")[1]
-      .split("&")
-      .forEach((param) => {
-        const key = param.split("=")[0];
-        if (key === "access_token") {
-          accessToken = param.split("=")[1];
-        } else if (key === "is_created") {
-          isCreated = param.split("=")[1];
-        } else if (key === "success") {
-          success = param.split("=")[1];
-        }
-      });
+    .split("?")[1]
+    .split("&")
+    .forEach((param) => {
+      const key = param.split("=")[0];
+      if (key === "access_token") {
+        accessToken = param.split("=")[1];
+      } else if (key === "is_created") {
+        isCreated = param.split("=")[1];
+      } else if (key === "success") {
+        success = param.split("=")[1];
+      }
+    });
     if (!success) {
       console.log("login Fail");
       toggleModal();

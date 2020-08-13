@@ -9,7 +9,7 @@ import { memberInfoState } from "../../../state/member/MemberState";
 
 const HomeBanner = () => {
   const navigation = useNavigation();
-  const userInfo = useRecoilValue(memberInfoState);
+  const memberInfo = useRecoilValue(memberInfoState);
 
   const goToCategorySelection = () => {
     navigation.navigate("CategorySelection");
@@ -21,7 +21,7 @@ const HomeBanner = () => {
   return (
     <View style={styles.container}>
       <View style={styles.bannerTop}>
-        <Text style={styles.title}>{userInfo.name}님,</Text>
+        <Text style={styles.title}>{memberInfo.name}님,</Text>
         <Text style={styles.subtitle}>{subtitle}</Text>
         <View style={styles.bannerSeparator} />
       </View>

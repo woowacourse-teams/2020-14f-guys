@@ -10,18 +10,18 @@ import { memberInfoState } from "../../../state/member/MemberState";
 
 const MemberInfo = () => {
   const navigation = useNavigation();
-  const userInfo = useRecoilValue(memberInfoState);
+  const memberInfo = useRecoilValue(memberInfoState);
 
   return (
     <View style={styles.memberInfo}>
       <View style={styles.imageContainer}>
-        {userInfo.profile ? (
-          <ProfileImage image={userInfo.profile} />
+        {memberInfo.profile ? (
+          <ProfileImage image={memberInfo.profile} />
         ) : (
           <ProfileDefaultImage />
         )}
       </View>
-      <MemberInfoDetail name={userInfo.name} cash={userInfo.cash}/>
+      <MemberInfoDetail name={memberInfo.name} cash={memberInfo.cash} />
       <ProfileEditButton
         text="Edit Profile"
         onPress={() => navigation.navigate("ProfileEdit")}

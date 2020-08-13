@@ -6,13 +6,13 @@ import { COLOR } from "../../../utils/constants";
 import { memberInfoState } from "../../../state/member/MemberState";
 
 const ProfileDetail = () => {
-  const userInfo = useRecoilValue(memberInfoState);
+  const memberInfo = useRecoilValue(memberInfoState);
 
   return (
     <View style={styles.container}>
       <View style={styles.memberContainer}>
         <ImageBackground
-          source={{ url: userInfo.profile }}
+          source={{ url: memberInfo.profile }}
           defaultSource={require("../../../assets/default-image-background.png")}
           style={styles.background}
           blurRadius={6}

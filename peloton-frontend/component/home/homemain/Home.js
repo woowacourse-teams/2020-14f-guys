@@ -14,7 +14,7 @@ import { memberInfoState, memberTokenState } from "../../../state/member/MemberS
 import LoadingIndicator from "../../../utils/LoadingIndicator";
 
 const Home = () => {
-  const setUserInfo = useSetRecoilState(memberInfoState);
+  const setMemberInfo = useSetRecoilState(memberInfoState);
   const token = useRecoilValue(memberTokenState);
   const setIsLoading = useSetRecoilState(loadingState);
   const navigation = useNavigation();
@@ -30,8 +30,8 @@ const Home = () => {
         alert("비정상적인 접근입니다.");
         navigateWithoutHistory(navigation, "Login");
       }
-      const userInfo = await MemberApi.get(token);
-      setUserInfo(userInfo);
+      const memberInfo = await MemberApi.get(token);
+      setMemberInfo(memberInfo);
     };
     fetchUser();
     setIsLoading(false);
@@ -41,10 +41,10 @@ const Home = () => {
     <LoadingIndicator>
       <ScrollView>
         <View style={styles.raceTitle}>
-          <HomeBanner/>
+          <HomeBanner />
         </View>
         <View style={styles.raceList}>
-          <RaceList/>
+          <RaceList />
         </View>
       </ScrollView>
     </LoadingIndicator>

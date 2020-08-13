@@ -19,16 +19,16 @@ const CashUpdate = () => {
   const [cash, setCash] = React.useState(5000);
   const token = useRecoilValue(memberTokenState);
   const navigation = useNavigation();
-  const [userInfo, setUserInfo] = useRecoilState(memberInfoState);
+  const [memberInfo, setMemberInfo] = useRecoilState(memberInfoState);
 
   const requestChangeCash = async () => {
     try {
       await MemberApi.patchCash(
         token,
-        `${Number(userInfo.cash) + Number(cash)}`,
+        `${Number(memberInfo.cash) + Number(cash)}`,
       );
       const response = await MemberApi.get(token);
-      setUserInfo(response);
+      setMemberInfo(response);
       navigation.navigate("ProfileEdit");
     } catch (error) {
       alert("에러가 발생했습니다.");
