@@ -1,5 +1,11 @@
 import React from "react";
-import { Clipboard, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import {
+  Clipboard,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
 import { Feather } from "@expo/vector-icons";
 import { COLOR, DEEP_LINK_BASE_URL } from "../../../utils/constants";
 

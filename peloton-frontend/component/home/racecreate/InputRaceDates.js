@@ -7,7 +7,7 @@ import { raceCreateInfoState } from "../../../state/race/RaceState";
 import RaceCreateView from "./RaceCreateView";
 import { RaceCreateUnitType } from "../../../utils/constants";
 
-const InputRaceInfo = () => {
+const InputRaceDates = () => {
   const { start_date, end_date } = useRecoilValue(raceCreateInfoState);
   const navigation = useNavigation();
 
@@ -35,4 +35,4 @@ const InputRaceInfo = () => {
   );
 };
 
-export default InputRaceInfo;
+export default InputRaceDates;

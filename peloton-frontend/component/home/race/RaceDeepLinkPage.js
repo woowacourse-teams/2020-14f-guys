@@ -12,8 +12,13 @@ import {
 import { useNavigation } from "@react-navigation/core";
 import { MemberApi } from "../../../utils/api/MemberApi";
 import { RaceApi } from "../../../utils/api/RaceApi";
-import { memberInfoState, memberTokenState } from "../../../state/member/MemberState";
+import {
+  memberInfoState,
+  memberTokenState,
+} from "../../../state/member/MemberState";
 import { raceInfoState } from "../../../state/race/RaceState";
+import { QueryApi } from "../../../utils/api/QueryApi";
+import { RiderApi } from "../../../utils/api/RiderApi";
 
 const RedirectPage = ({ route }) => {
   const setLoadingState = useSetRecoilState(loadingState);
@@ -50,8 +55,9 @@ const RedirectPage = ({ route }) => {
     }
     try {
       await MemberApi.patchCash(token, String(userCash - raceEntranceFee));
-      const response = await MemberApi.get(token);
-      setMemberInfo(response);
+      await RiderApi.post(token, raceInfo.id);
+      const newMemberInfo = await MemberApi.get(token);
+      setMemberInfo(newMemberInfo);
       navigateWithHistory(navigation, [
         {
           name: "Home",
@@ -80,11 +86,11 @@ const RedirectPage = ({ route }) => {
       }
       if (!route || !route.params || !route.params.id) {
         alert("정상적이지 않은 접근입니다.");
+        navigateWithoutHistory(navigation, "Home");
         return;
       }
       const raceId = route.params.id;
       if (!userToken) {
-        // todo 로그인 후 원하는 Screen으로 이동해야함.
         alert("로그인 먼저 해주세요.");
         navigateWithoutHistory(navigation, "Login");
         return;
@@ -97,13 +103,34 @@ const RedirectPage = ({ route }) => {
         navigateWithoutHistory(navigation, "Login");
       }
       try {
-        const newRaceInfo = await RaceApi.get(raceId, userToken);
+        const newRaceInfo = await RaceApi.get(userToken, raceId);
         setRaceInfo(newRaceInfo);
       } catch (error) {
         alert("올바르지 않은 경로입니다.");
         navigateWithoutHistory(navigation, "Home");
       }
-      // todo 멤버가 Race에 포함되어 있는지 확인해야함.
+      try {
+        const { race_responses: races } = await QueryApi.getRaces(userToken);
+        const filteredRace = races.filter((race) => String(race.id) === raceId);
+        if (filteredRace.length > 0) {
+          navigateWithHistory(navigation, [
+            {
+              name: "Home",
+            },
+            {
+              name: "RaceDetail",
+              params: {
+                raceInfo,
+                location: `/api/races/${raceId}`,
+              },
+            },
+          ]);
+        }
+      } catch (error) {
+        alert("조회에 실패했습니다.");
+        console.log(error);
+        navigateWithoutHistory(navigation, "Home");
+      }
     };
     fetchRaceInfo();
     setLoadingState(false);
@@ -163,7 +190,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     borderRadius: 10,
-    backgroundColor: "#4261FD",
+    backgroundColor: COLOR.BLUE6,
   },
   paymentText: {
     color: COLOR.WHITE,

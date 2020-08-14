@@ -1,11 +1,24 @@
 import React from "react";
-import { Dimensions, FlatList, StyleSheet, Text, View } from "react-native";
+import {
+  Dimensions,
+  FlatList,
+  Image,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { useSetRecoilState } from "recoil";
 
 import { raceCreateInfoState } from "../../../state/race/RaceState";
-import { CATEGORY, COLOR } from "../../../utils/constants";
-import CategoryItem from "./CategoryItem";
+import {
+  COLOR,
+  RACE_CATEGORY_PLAY,
+  RACE_CATEGORY_STUDY,
+  RACE_CATEGORY_TIME,
+} from "../../../utils/constants";
 
 const CategorySelection = () => {
   const navigation = useNavigation();
@@ -20,17 +33,45 @@ const CategorySelection = () => {
   };
 
   return (
-    <View style={styles.container}>
+    <ScrollView style={styles.container}>
       <Text style={styles.title}>어떤 레이스를 원하세요?</Text>
-      <FlatList
-        data={CATEGORY}
-        renderItem={({ item }) => (
-          <CategoryItem item={item} onSelect={onSelectCategory} />
-        )}
-        keyExtractor={(item) => item.category}
-        showsVerticalScrollIndicator={false}
-      />
-    </View>
+      <TouchableOpacity
+        activeOpacity={0.7}
+        style={styles.item}
+        onPress={() => onSelectCategory(RACE_CATEGORY_TIME)}
+      >
+        <Image
+          style={styles.itemImage}
+          source={require("../../../assets/race_category_1.jpg")}
+        />
+        <Text style={styles.itemTitle}>모임</Text>
+        <Text style={styles.itemSubtitle}>Ice Breaking</Text>
+      </TouchableOpacity>
+      <TouchableOpacity
+        activeOpacity={0.7}
+        style={styles.item}
+        onPress={() => onSelectCategory(RACE_CATEGORY_STUDY)}
+      >
+        <Image
+          style={styles.itemImage}
+          source={require("../../../assets/race_category_2.jpg")}
+        />
+        <Text style={styles.itemTitle}>학습</Text>
+        <Text style={styles.itemSubtitle}>Learning</Text>
+      </TouchableOpacity>
+      <TouchableOpacity
+        activeOpacity={0.7}
+        style={styles.item}
+        onPress={() => onSelectCategory(RACE_CATEGORY_PLAY)}
+      >
+        <Image
+          style={styles.itemImage}
+          source={require("../../../assets/race_category_3.jpg")}
+        />
+        <Text style={styles.itemTitle}>여가</Text>
+        <Text style={styles.itemSubtitle}>Play</Text>
+      </TouchableOpacity>
+    </ScrollView>
   );
 };
 
@@ -38,13 +79,40 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: COLOR.WHITE,
-    paddingHorizontal: Dimensions.get("window").width * 0.075,
+    paddingHorizontal: 15,
   },
   title: {
-    marginTop: 30,
-    marginBottom: 22,
+    marginVertical: 20,
     fontSize: 18,
     fontWeight: "600",
+  },
+  item: {
+    minWidth: 320,
+    width: "100%",
+    aspectRatio: 32 / 21,
+    borderRadius: 10,
+    overflow: "hidden",
+    marginBottom: 20,
+  },
+  itemImage: {
+    width: 400,
+    height: 250,
+    resizeMode: "cover",
+  },
+  itemTitle: {
+    position: "absolute",
+    left: 19.5,
+    bottom: 49,
+    color: COLOR.WHITE,
+    fontWeight: "bold",
+    fontSize: 30,
+  },
+  itemSubtitle: {
+    position: "absolute",
+    left: 19.5,
+    bottom: 30,
+    color: COLOR.WHITE,
+    fontSize: 15,
   },
 });
 
