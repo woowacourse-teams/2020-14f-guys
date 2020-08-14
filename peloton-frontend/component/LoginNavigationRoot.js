@@ -15,7 +15,7 @@ const LoginNavigationRoot = () => {
         options={{ headerShown: false }}
       />
       <LoginStack.Screen
-        name="ChangeNickname"
+        name="ChangeProfile"
         component={ChangeProfile}
         options={{ headerShown: false }}
       />
