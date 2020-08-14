@@ -32,7 +32,7 @@ const ChangeProfile = () => {
     setIsLoading(true);
     await AsyncStorage.setItem(TOKEN_STORAGE, token);
     try {
-      await MemberApi.patchName(token, name);
+      await MemberApi.patchName(token, userInput);
       setMemberInfo({
         ...memberInfo,
         name: userInput,
