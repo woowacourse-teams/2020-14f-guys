@@ -1,4 +1,4 @@
-import { CommonActions, StackActions, TabActions } from "@react-navigation/native";
+import { CommonActions, TabActions } from "@react-navigation/native";
 
 export const navigateWithHistory = (navigation, routes) => {
   navigation.dispatch({

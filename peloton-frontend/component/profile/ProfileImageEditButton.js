@@ -32,7 +32,6 @@ const ProfileImageEditButton = ({ children }) => {
     } catch (error) {
       alert("에러가 발생했습니다.");
     }
-    setIsLoading(false);
   };
 
   const pickAndChangeProfileImage = async () => {
@@ -53,7 +52,8 @@ const ProfileImageEditButton = ({ children }) => {
       return;
     }
     const selectedImage = pickerResult.uri;
-    requestChangeImage(selectedImage);
+    await requestChangeImage(selectedImage);
+    setIsLoading(false);
   };
 
   return (
