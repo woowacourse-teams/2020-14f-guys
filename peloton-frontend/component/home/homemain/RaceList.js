@@ -2,16 +2,16 @@ import React, { useEffect } from "react";
 import { StyleSheet, Text, View } from "react-native";
 import RaceItems from "./RaceItems";
 import { useRecoilValue, useSetRecoilState } from "recoil";
-import { userTokenState } from "../../atoms";
 import { loadingState } from "../../../state/loading/LoadingState";
 import Axios from "axios";
 import { SAMPLE_IMAGES, SERVER_BASE_URL } from "../../../utils/constants";
 import { raceResponseState } from "../../../state/race/ResponseState";
+import { memberTokenState } from "../../../state/member/MemberState";
 
 const RaceList = () => {
   const setRaces = useSetRecoilState(raceResponseState);
   const setIsLoading = useSetRecoilState(loadingState);
-  const token = useRecoilValue(userTokenState);
+  const token = useRecoilValue(memberTokenState);
   const myRaces = useRecoilValue(raceResponseState);
 
   useEffect(() => {
@@ -25,13 +25,12 @@ const RaceList = () => {
           Authorization: `Bearer ${token}`,
         },
       });
-
-      const races =
-        response.data.race_responses.length === 0
-          ? []
-          : response.data.race_responses.forEach((raceResponse) =>
-              races.push(raceResponse)
-            );
+      const races = [];
+      if (response.data.race_responses.length !== 0) {
+        response.data.race_responses.forEach((raceResponse) =>
+          races.push(raceResponse)
+        );
+      }
       setRaces(races);
     };
     fetchRaces();
