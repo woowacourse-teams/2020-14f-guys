@@ -85,4 +85,14 @@ class CertificationRepositoryTest {
             () -> assertThat(certifications.getContent().get(0).getId()).isEqualTo(1L)
         );
     }
+
+    @Test
+    void existsByRiderIdAndMissionId() {
+        final Certification certification = createCertificationWithoutId();
+        certificationRepository.save(certification);
+        certificationRepository.save(certification);
+
+        assertThatThrownBy(() -> certificationRepository.existsByRiderIdAndMissionId(certification.getRiderId().getId(),
+            certification.getMissionId().getId())).isInstanceOf(AssertionError.class);
+    }
 }

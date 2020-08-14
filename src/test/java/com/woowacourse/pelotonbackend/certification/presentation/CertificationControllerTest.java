@@ -41,6 +41,7 @@ import com.woowacourse.pelotonbackend.certification.application.CertificationSer
 import com.woowacourse.pelotonbackend.certification.presentation.dto.CertificationCreateRequest;
 import com.woowacourse.pelotonbackend.certification.presentation.dto.CertificationResponse;
 import com.woowacourse.pelotonbackend.common.ErrorCode;
+import com.woowacourse.pelotonbackend.common.exception.CertificationDuplicatedException;
 import com.woowacourse.pelotonbackend.common.exception.CertificationNotFoundException;
 import com.woowacourse.pelotonbackend.docs.CertificationDocumentation;
 import com.woowacourse.pelotonbackend.member.application.MemberService;
@@ -130,6 +131,44 @@ class CertificationControllerTest {
             .andExpect(jsonPath("$.errors[0].value").value(""))
             .andExpect(jsonPath("$.errors[0].reason").value("must not be null"))
             .andDo(CertificationDocumentation.createBadCertification());
+    }
+
+    @DisplayName("중복 reqeuest시 예외를 반환한다.")
+    @Test
+    void createDuplicatedRequest() throws Exception {
+        given(certificationService.create(any(MultipartFile.class), any(CertificationCreateRequest.class)))
+            .willReturn(TEST_CERTIFICATION_ID)
+            .willThrow(new CertificationDuplicatedException(TEST_RIDER_ID, TEST_MISSION_ID));
+        given(authInterceptor.preHandle(any(HttpServletRequest.class), any(HttpServletResponse.class),
+            any(HandlerMethod.class))).willReturn(true);
+        given(argumentResolver.supportsParameter(any())).willCallRealMethod();
+        given(argumentResolver.resolveArgument(any(MethodParameter.class), any(ModelAndViewContainer.class),
+            any(NativeWebRequest.class), any(WebDataBinderFactory.class))).willReturn(MemberFixture.memberResponse());
+
+        mockMvc.perform(
+            multipart("/api/certifications", TEST_RIDER_ID, TEST_MISSION_ID)
+                .file(createMockCertificationMultipartFile())
+                .header(HttpHeaders.AUTHORIZATION, LoginFixture.getTokenHeader())
+                .contentType(MediaType.MULTIPART_FORM_DATA_VALUE)
+                .param("status", TEST_CERTIFICATION_STATUS.name())
+                .param("description", TEST_CERTIFICATION_DESCRIPTION)
+                .param("riderId", TEST_RIDER_ID.toString())
+                .param("missionId", TEST_MISSION_ID.toString()))
+            .andExpect(status().isCreated())
+            .andExpect(
+                header().stringValues("location", String.format("/api/certifications/%d", TEST_CERTIFICATION_ID)));
+
+        mockMvc.perform(
+            multipart("/api/certifications", TEST_RIDER_ID, TEST_MISSION_ID)
+                .file(createMockCertificationMultipartFile())
+                .header(HttpHeaders.AUTHORIZATION, LoginFixture.getTokenHeader())
+                .contentType(MediaType.MULTIPART_FORM_DATA_VALUE)
+                .accept(MediaType.APPLICATION_JSON)
+                .param("status", TEST_CERTIFICATION_STATUS.name())
+                .param("description", TEST_CERTIFICATION_DESCRIPTION)
+                .param("riderId", TEST_RIDER_ID.toString())
+                .param("missionId", TEST_MISSION_ID.toString()))
+            .andExpect(status().isBadRequest());
     }
 
     @DisplayName("아이디로 인증정보를 조회한다.")

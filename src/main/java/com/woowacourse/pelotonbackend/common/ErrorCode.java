@@ -36,7 +36,8 @@ public enum ErrorCode {
 
     FILE_UPLOAD(400, "File-004"),
 
-    CERTIFICATION_NOT_FOUND(404, "Certification-001");
+    CERTIFICATION_NOT_FOUND(404, "Certification-001"),
+    CERTIFICATION_DUPLICATE(400, "Certification-002");
 
     private final int status;
     private final String code;

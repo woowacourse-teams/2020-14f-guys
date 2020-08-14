@@ -1,5 +1,7 @@
 package com.woowacourse.pelotonbackend.certification.application;
 
+import javax.validation.constraints.NotNull;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -13,7 +15,9 @@ import com.woowacourse.pelotonbackend.certification.presentation.dto.Certificati
 import com.woowacourse.pelotonbackend.certification.presentation.dto.CertificationResponse;
 import com.woowacourse.pelotonbackend.certification.presentation.dto.CertificationResponses;
 import com.woowacourse.pelotonbackend.certification.presentation.dto.CertificationStatusUpdateRequest;
+import com.woowacourse.pelotonbackend.common.exception.CertificationDuplicatedException;
 import com.woowacourse.pelotonbackend.common.exception.CertificationNotFoundException;
+import com.woowacourse.pelotonbackend.common.exception.RiderDuplicatedException;
 import com.woowacourse.pelotonbackend.infra.upload.UploadService;
 import lombok.RequiredArgsConstructor;
 
@@ -26,6 +30,16 @@ public class CertificationService {
 
     public Long create(final MultipartFile file, final CertificationCreateRequest certificationCreateRequest) {
         final String imageUrl = uploadService.uploadImage(file, "certification.image/");
+        final Long riderId = certificationCreateRequest.getRiderId();
+        final Long missionId = certificationCreateRequest.getMissionId();
+
+        final boolean isCertificationAlreadyExists = certificationRepository
+            .existsByRiderIdAndMissionId(riderId, missionId);
+
+        if (isCertificationAlreadyExists) {
+            throw new CertificationDuplicatedException(riderId, missionId);
+        }
+
         final Certification certification = certificationCreateRequest.toCertification(imageUrl);
         final Certification persistCertification = certificationRepository.save(certification);
 

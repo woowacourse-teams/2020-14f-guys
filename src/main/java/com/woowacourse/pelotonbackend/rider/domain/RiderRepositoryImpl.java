@@ -84,7 +84,7 @@ public class RiderRepositoryImpl implements RiderCustomRepository {
         return new StringBuilder()
             .append("SELECT RIDER.ID AS ID")
             .append(" FROM RIDER")
-            .append(" WHERE MEMBER_ID = :memberId AND RACE_ID = :raceId")
+            .append(" WHERE RIDER.MEMBER_ID = :memberId AND RIDER.RACE_ID = :raceId")
             .toString();
     }
 }

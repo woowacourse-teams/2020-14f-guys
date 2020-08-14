@@ -205,8 +205,6 @@ public class RiderControllerTest {
         given(argumentResolver.resolveArgument(any(MethodParameter.class), any(ModelAndViewContainer.class),
             any(NativeWebRequest.class), any(WebDataBinderFactory.class))).willReturn(MemberFixture.memberResponse());
         given(argumentResolver.supportsParameter(any())).willReturn(true);
-        // given(globalExceptionHandler.businessException(any(BusinessException.class))).willReturn(
-        //     ResponseEntity.badRequest().body(ErrorResponse.of(400, "Rider-002", "")));
 
         this.mockMvc.perform(post("/api/riders")
             .header(HttpHeaders.AUTHORIZATION, LoginFixture.getTokenHeader())
