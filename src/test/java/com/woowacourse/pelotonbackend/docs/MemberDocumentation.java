@@ -10,6 +10,7 @@ import static org.springframework.restdocs.request.RequestDocumentation.*;
 
 import org.apache.http.HttpHeaders;
 import org.springframework.restdocs.mockmvc.RestDocumentationResultHandler;
+import org.springframework.test.web.servlet.ResultHandler;
 
 public class MemberDocumentation {
     public static RestDocumentationResultHandler createMember() {
@@ -101,6 +102,21 @@ public class MemberDocumentation {
             responseHeaders(
                 headerWithName(HttpHeaders.LOCATION).description("Resource의 Location 헤더")
             )
+        );
+    }
+
+    public static RestDocumentationResultHandler createBadCashUpdate() {
+        return document("member/update-cash-fail",
+            getDocumentRequest(),
+            getDocumentResponse(),
+            requestHeaders(
+                headerWithName(HttpHeaders.AUTHORIZATION).description("사용자 인증 Access Token 헤더"),
+                headerWithName(HttpHeaders.CONTENT_TYPE).description("Content-Type 헤더")
+            ),
+            requestFields(
+                fieldWithPath("cash").type(STRING).description("변경될 Member 보유 Cash")
+            ),
+            getErrorResponseFieldsWithFieldErrors()
         );
     }
 

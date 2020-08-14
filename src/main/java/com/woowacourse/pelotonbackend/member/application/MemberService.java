@@ -72,9 +72,17 @@ public class MemberService {
         return MemberResponse.from(persist);
     }
 
-    public MemberResponse updateCash(final Long id, final MemberCashUpdateRequest request) {
+    public MemberResponse chargeCash(final Long id, final MemberCashUpdateRequest request) {
         final Member member = findMemberById(id);
-        final Member updatedMember = member.changeCash(request.getCash());
+        final Member updatedMember = member.plusCash(request.getCash());
+        final Member persist = memberRepository.save(updatedMember);
+
+        return MemberResponse.from(persist);
+    }
+
+    public MemberResponse minusCash(final Long id, final MemberCashUpdateRequest request) {
+        final Member member = findMemberById(id);
+        final Member updatedMember = member.minusCash(request.getCash());
         final Member persist = memberRepository.save(updatedMember);
 
         return MemberResponse.from(persist);

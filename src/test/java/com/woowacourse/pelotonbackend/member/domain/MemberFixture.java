@@ -100,7 +100,7 @@ public class MemberFixture {
             .profile(PROFILE)
             .email(EMAIL)
             .name(NAME)
-            .cash(UPDATE_CASH)
+            .cash(CASH.plus(UPDATE_CASH))
             .role(ROLE)
             .build();
     }
@@ -148,6 +148,12 @@ public class MemberFixture {
     public static MemberCashUpdateRequest createCashUpdateRequest() {
         return MemberCashUpdateRequest.builder()
             .cash(UPDATE_CASH)
+            .build();
+    }
+
+    public static MemberCashUpdateRequest createBadCashUpdateRequest(long value) {
+        return MemberCashUpdateRequest.builder()
+            .cash(new Cash(BigDecimal.valueOf(value)))
             .build();
     }
 

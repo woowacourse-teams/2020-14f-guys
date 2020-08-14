@@ -92,7 +92,7 @@ public class MemberAcceptanceTest extends AcceptanceTest {
         final MemberResponse cashUpdatedResponse = requestFind(memberResponse.getKakaoId());
 
         assertAll(
-            () -> assertThat(cashUpdatedResponse.getCash()).isEqualTo(cashUpdatedRequest.getCash()),
+            () -> assertThat(cashUpdatedResponse.getCash()).isEqualTo(memberResponse.getCash().plus(cashUpdatedRequest.getCash())),
             () -> assertThat(cashUpdatedResponse).isEqualToIgnoringGivenFields(memberResponse, "name", "cash")
         );
     }

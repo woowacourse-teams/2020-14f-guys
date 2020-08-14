@@ -58,14 +58,18 @@ public class Member {
         return this.toBuilder()
             .name(name)
             .build();
-        // todo : 테스트 추가 필요
     }
 
-    public Member changeCash(final Cash cash) {
+    public Member plusCash(final Cash cash) {
         return this.toBuilder()
-            .cash(cash)
+            .cash(this.cash.plus(cash))
             .build();
-        // todo : 테스트 추가 필요
+    }
+
+    public Member minusCash(final Cash cash) {
+        return this.toBuilder()
+            .cash(this.cash.minus(cash))
+            .build();
     }
 
     public Member changeProfile(final ImageUrl profileImageUrl) {

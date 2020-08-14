@@ -2,6 +2,7 @@ package com.woowacourse.pelotonbackend.member.presentation.dto;
 
 import java.beans.ConstructorProperties;
 
+import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 
 import com.woowacourse.pelotonbackend.vo.Cash;
@@ -14,6 +15,6 @@ import lombok.Getter;
 @Builder
 @Getter
 public class MemberCashUpdateRequest {
-    @NotNull
+    @Valid
     private final Cash cash;
 }

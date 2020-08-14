@@ -142,11 +142,11 @@ class MemberServiceTest {
         given(memberRepository.findById(anyLong())).willReturn(Optional.of(originMember));
         given(memberRepository.save(any(Member.class))).willReturn(updatedMember);
 
-        final MemberResponse memberResponse = memberService.updateCash(originMember.getId(),
+        final MemberResponse memberResponse = memberService.chargeCash(originMember.getId(),
             createCashUpdateRequest());
 
         assertAll(
-            () -> assertThat(memberResponse.getCash()).isEqualTo(createCashUpdateRequest().getCash()),
+            () -> assertThat(memberResponse.getCash()).isEqualTo(originMember.getCash().plus(createCashUpdateRequest().getCash())),
             () -> assertThat(memberResponse).isEqualToIgnoringGivenFields(originMember, "cash", "createdAt",
                 "updatedAt")
         );
