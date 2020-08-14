@@ -76,4 +76,17 @@ public class RiderRepositoryTest {
         riders.forEach(
             rider -> assertThat(rider).isEqualToIgnoringGivenFields(riderWithoutId, "id", "createdAt", "updatedAt"));
     }
+
+    @DisplayName("멤버 id와 race id로 라이더를 조회한다.")
+    @Test
+    void existsByMemberIdAndRaceId() {
+        final Rider rider = createRiderBy(1L, 1L, null);
+
+        riderRepository.save(rider);
+        assertThat(riderRepository.existsByMemberIdAndRaceID(1L, 1L)).isTrue();
+
+        riderRepository.save(rider);
+        assertThatThrownBy(() -> riderRepository.existsByMemberIdAndRaceID(1L, 1L))
+            .isInstanceOf(AssertionError.class);
+    }
 }

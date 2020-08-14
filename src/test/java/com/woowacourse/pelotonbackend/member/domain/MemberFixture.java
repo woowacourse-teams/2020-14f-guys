@@ -1,6 +1,7 @@
 package com.woowacourse.pelotonbackend.member.domain;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 import org.assertj.core.util.Lists;
 import org.springframework.mock.web.MockMultipartFile;
@@ -50,6 +51,11 @@ public class MemberFixture {
             .cash(CASH)
             .role(ROLE)
             .build();
+    }
+
+    public static List<MemberCreateRequest> createRequests() {
+        return Lists.newArrayList(createRequest(KAKAO_ID, EMAIL, NAME), createRequest(KAKAO_ID2, EMAIL2, NAME2),
+            createRequest(KAKAO_ID3, EMAIL3, NAME3));
     }
 
     public static Member createWithoutId(final Long kakaoId, final String email, final String name) {

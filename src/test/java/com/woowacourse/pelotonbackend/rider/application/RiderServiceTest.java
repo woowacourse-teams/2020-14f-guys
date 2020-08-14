@@ -12,11 +12,14 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import com.woowacourse.pelotonbackend.common.exception.RiderDuplicatedException;
 import com.woowacourse.pelotonbackend.member.domain.MemberFixture;
+import com.woowacourse.pelotonbackend.member.presentation.dto.MemberResponse;
 import com.woowacourse.pelotonbackend.race.domain.RaceFixture;
 import com.woowacourse.pelotonbackend.rider.domain.Rider;
 import com.woowacourse.pelotonbackend.rider.domain.RiderFixture;
 import com.woowacourse.pelotonbackend.rider.domain.RiderRepository;
+import com.woowacourse.pelotonbackend.rider.presentation.dto.RiderCreateRequest;
 import com.woowacourse.pelotonbackend.rider.presentation.dto.RiderResponse;
 
 @ExtendWith(MockitoExtension.class)
@@ -31,7 +34,7 @@ public class RiderServiceTest {
         riderService = new RiderService(riderRepository);
     }
 
-    @DisplayName("create시 save가 정상적으로 완료되는지 확인")
+    @DisplayName("Rider를 생성한다.")
     @Test
     void createTest() {
         given(riderRepository.save(any())).willReturn(RiderFixture.createMockRider());
@@ -84,5 +87,23 @@ public class RiderServiceTest {
         riderService.deleteById(RiderFixture.TEST_RIDER_ID);
 
         verify(riderRepository).deleteById(RiderFixture.TEST_RIDER_ID);
+    }
+
+    @Test
+    void createDuplicatedRider() {
+        final MemberResponse memberResponse = MemberFixture.memberResponse();
+        final RiderCreateRequest riderCreateRequest = RiderFixture.createMockRequest();
+        final Rider expectedRider = RiderFixture.createRiderWithId(RiderFixture.TEST_RIDER_ID);
+
+        given(riderRepository.existsByMemberIdAndRaceID(memberResponse.getId(),
+            riderCreateRequest.getRaceId())).willReturn(false, true);
+        given(riderRepository.save(any(Rider.class))).willReturn(expectedRider);
+
+
+        riderService.create(memberResponse, riderCreateRequest);
+        assertThatThrownBy(() -> riderService.create(memberResponse, riderCreateRequest))
+            .isInstanceOf(RiderDuplicatedException.class)
+            .hasMessage("Rider(member id: %d, certification id: %d) already exists!",
+                memberResponse.getId(), riderCreateRequest.getRaceId());
     }
 }

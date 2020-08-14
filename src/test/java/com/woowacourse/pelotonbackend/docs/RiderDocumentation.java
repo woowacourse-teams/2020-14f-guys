@@ -9,6 +9,7 @@ import static org.springframework.restdocs.request.RequestDocumentation.*;
 
 import org.apache.http.HttpHeaders;
 import org.springframework.restdocs.mockmvc.RestDocumentationResultHandler;
+import org.springframework.test.web.servlet.ResultHandler;
 
 public class RiderDocumentation {
     public static RestDocumentationResultHandler createRider() {
@@ -132,6 +133,13 @@ public class RiderDocumentation {
             requestHeaders(
                 headerWithName(HttpHeaders.AUTHORIZATION).description("사용자 인증 Access Token 헤더")
             )
+        );
+    }
+
+    public static RestDocumentationResultHandler createDuplicatedRider() {
+        return document("rider/create-duplicate",
+            getDocumentRequest(),
+            getDocumentResponse()
         );
     }
 }

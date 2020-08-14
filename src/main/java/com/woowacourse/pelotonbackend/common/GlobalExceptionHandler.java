@@ -17,9 +17,8 @@ import lombok.extern.slf4j.Slf4j;
 @RestControllerAdvice
 @Slf4j
 public class GlobalExceptionHandler {
-
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    protected ResponseEntity<ErrorResponse> validException(final MethodArgumentNotValidException exception) {
+    public ResponseEntity<ErrorResponse> validException(final MethodArgumentNotValidException exception) {
         log.info("Validate Exception ! : {} ", exception.toString(), exception);
 
         final ErrorCode errorCode = ErrorCode.INVALID_VALIDATE;
@@ -30,7 +29,7 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(BindException.class)
-    protected ResponseEntity<ErrorResponse> bindException(final BindException exception) {
+    public ResponseEntity<ErrorResponse> bindException(final BindException exception) {
         log.info("HandleBind Exception ! : {} ", exception.toString(), exception);
 
         final ErrorCode errorCode = ErrorCode.INVALID_VALIDATE;
@@ -45,7 +44,7 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler({ConstraintViolationException.class, HttpMessageNotReadableException.class,
         MethodArgumentTypeMismatchException.class})
-    protected ResponseEntity<ErrorResponse> invalidInputException(final RuntimeException exception) {
+    public ResponseEntity<ErrorResponse> invalidInputException(final RuntimeException exception) {
         log.info(exception.getClass().getSimpleName() + " Exception !", exception);
 
         final ErrorCode errorCode = ErrorCode.INVALID_VALIDATE;
@@ -56,7 +55,7 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(BusinessException.class)
-    protected ResponseEntity<ErrorResponse> businessException(final BusinessException exception) {
+    public ResponseEntity<ErrorResponse> businessException(final BusinessException exception) {
         log.info("Business Exception ! : {}", exception.toString(), exception);
 
         final ErrorCode errorCode = exception.getErrorCode();
@@ -69,7 +68,7 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(Exception.class)
-    protected ResponseEntity<ErrorResponse> UnexpectedException(final Exception exception) {
+    public ResponseEntity<ErrorResponse> UnexpectedException(final Exception exception) {
         log.error("Unexpected Exception ! {} ", exception.toString(), exception);
 
         final ErrorResponse errorResponse = ErrorResponse.of(
