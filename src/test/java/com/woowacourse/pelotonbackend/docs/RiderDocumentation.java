@@ -8,6 +8,7 @@ import static org.springframework.restdocs.payload.PayloadDocumentation.*;
 import static org.springframework.restdocs.request.RequestDocumentation.*;
 
 import org.apache.http.HttpHeaders;
+import org.apache.http.client.methods.HttpHead;
 import org.springframework.restdocs.mockmvc.RestDocumentationResultHandler;
 import org.springframework.test.web.servlet.ResultHandler;
 
@@ -137,9 +138,17 @@ public class RiderDocumentation {
     }
 
     public static RestDocumentationResultHandler createDuplicatedRider() {
-        return document("rider/create-duplicate",
+        return document("rider/create-duplicated",
             getDocumentRequest(),
-            getDocumentResponse()
+            getDocumentResponse(),
+            requestHeaders(
+                headerWithName(HttpHeaders.AUTHORIZATION).description("사용자 인증 Access Token 헤더"),
+                headerWithName(HttpHeaders.CONTENT_TYPE).description("Content-Type 헤더")
+            ),
+            requestFields(
+                fieldWithPath("race_id").type(NUMBER).description("해당 Rider가 참여한 Race ID")
+            ),
+            getErrorResponseFields()
         );
     }
 }

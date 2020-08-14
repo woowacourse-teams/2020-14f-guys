@@ -102,6 +102,7 @@ class ReportControllerTest {
             .header(HttpHeaders.AUTHORIZATION, LoginFixture.getTokenHeader())
             .content(objectMapper.writeValueAsBytes(reportCreateRequest))
             .contentType(MediaType.APPLICATION_JSON))
-            .andExpect(status().isBadRequest());
+            .andExpect(status().isBadRequest())
+            .andDo(ReportDocumentation.createDuplicatedReport());
     }
 }

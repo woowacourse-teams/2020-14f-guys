@@ -10,6 +10,7 @@ import static org.springframework.restdocs.request.RequestDocumentation.*;
 
 import org.springframework.http.HttpHeaders;
 import org.springframework.restdocs.mockmvc.RestDocumentationResultHandler;
+import org.springframework.test.web.servlet.ResultHandler;
 
 public class CertificationDocumentation {
     public static RestDocumentationResultHandler createCertification() {
@@ -177,6 +178,28 @@ public class CertificationDocumentation {
             pathParameters(
                 parameterWithName("id").description("인증 ID")
             )
+        );
+    }
+
+    public static RestDocumentationResultHandler createDuplicatedCertification() {
+        return document("certification/create-duplicated",
+            getDocumentRequest(),
+            getDocumentResponse(),
+            requestHeaders(
+                headerWithName(HttpHeaders.AUTHORIZATION).description("사용자 인증 토큰"),
+                headerWithName(HttpHeaders.CONTENT_TYPE).description("Content-Type 헤더"),
+                headerWithName(HttpHeaders.ACCEPT).description("Accept 헤더")
+            ),
+            requestParts(
+                partWithName("certification_image").description("인증 사진")
+            ),
+            requestParameters(
+                parameterWithName("status").description("인증 성공 여부"),
+                parameterWithName("description").description("인증 세부내용").optional(),
+                parameterWithName("riderId").description("인증 라이더 ID"),
+                parameterWithName("missionId").description("인증 대상 미션 ID")
+            ),
+            getErrorResponseFields()
         );
     }
 }

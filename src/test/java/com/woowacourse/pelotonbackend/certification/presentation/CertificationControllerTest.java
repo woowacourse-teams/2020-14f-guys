@@ -168,7 +168,8 @@ class CertificationControllerTest {
                 .param("description", TEST_CERTIFICATION_DESCRIPTION)
                 .param("riderId", TEST_RIDER_ID.toString())
                 .param("missionId", TEST_MISSION_ID.toString()))
-            .andExpect(status().isBadRequest());
+            .andExpect(status().isBadRequest())
+            .andDo(CertificationDocumentation.createDuplicatedCertification());
     }
 
     @DisplayName("아이디로 인증정보를 조회한다.")
