@@ -8,6 +8,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +25,7 @@ import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.filter.CharacterEncodingFilter;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.woowacourse.pelotonbackend.common.exception.ReportDuplicateException;
 import com.woowacourse.pelotonbackend.docs.ReportDocumentation;
 import com.woowacourse.pelotonbackend.member.domain.LoginFixture;
 import com.woowacourse.pelotonbackend.member.presentation.LoginMemberArgumentResolver;
@@ -58,11 +60,12 @@ class ReportControllerTest {
             .build();
     }
 
+    @DisplayName("Report를 정상적으로 생성한다.")
     @Test
     void createReport() throws Exception {
         final Long createdReportId = 10L;
         given(authInterceptor.preHandle(any(), any(), any())).willReturn(true);
-        when(reportService.createReport(any(ReportCreateRequest.class))).thenReturn(createdReportId);
+        given(reportService.createReport(any(ReportCreateRequest.class))).willReturn(createdReportId);
 
         MvcResult mvcResult = mockMvc.perform(
             post("/api/reports")
@@ -75,5 +78,30 @@ class ReportControllerTest {
 
         assertThat(mvcResult.getResponse().getHeader("Location"))
             .isEqualTo(String.format("/api/reports/%d", createdReportId));
+    }
+
+    @DisplayName("Report 중복 생성 시 예외를 반환한다.")
+    @Test
+    void createDuplicatedReport() throws Exception {
+        final Long createdReportId = 10L;
+        final ReportCreateRequest reportCreateRequest = ReportFixture.createRequestContent();
+
+        given(authInterceptor.preHandle(any(), any(), any())).willReturn(true);
+        given(reportService.createReport(any(ReportCreateRequest.class))).willReturn(createdReportId)
+            .willThrow(new ReportDuplicateException(reportCreateRequest.getReportMemberId(),
+                reportCreateRequest.getCertificationId()));
+
+        mockMvc.perform(post("/api/reports")
+            .header(HttpHeaders.AUTHORIZATION, LoginFixture.getTokenHeader())
+            .content(objectMapper.writeValueAsBytes(reportCreateRequest))
+            .contentType(MediaType.APPLICATION_JSON))
+            .andExpect(status().isCreated())
+            .andExpect(header().stringValues("Location", String.format("/api/reports/%d", createdReportId)));
+
+        mockMvc.perform(post("/api/reports")
+            .header(HttpHeaders.AUTHORIZATION, LoginFixture.getTokenHeader())
+            .content(objectMapper.writeValueAsBytes(reportCreateRequest))
+            .contentType(MediaType.APPLICATION_JSON))
+            .andExpect(status().isBadRequest());
     }
 }
