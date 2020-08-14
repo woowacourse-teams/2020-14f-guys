@@ -80,4 +80,20 @@ public class QueryDocumentation {
             getErrorResponseFields()
         );
     }
+
+    public static RestDocumentationResultHandler getUpcomingMissions() {
+        return document("queries/get-upcoming-missions",
+            getDocumentRequest(),
+            getDocumentResponse(),
+            requestHeaders(
+                headerWithName(HttpHeaders.AUTHORIZATION).description("인증 토큰")
+            ),
+            responseFields(
+                subsectionWithPath("upcoming_missions").type(ARRAY).description("해야할 미션 목록"),
+                subsectionWithPath("upcoming_missions[].rider").type(OBJECT).description("미션을 진행해야하는 Rider"),
+                subsectionWithPath("upcoming_missions[].race").type(OBJECT).description("미션에 해당하는 Race"),
+                subsectionWithPath("upcoming_missions[].mission").type(OBJECT).description("미션 정보")
+            )
+        );
+    }
 }

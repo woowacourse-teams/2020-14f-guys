@@ -17,6 +17,7 @@ import com.woowacourse.pelotonbackend.rider.presentation.dto.RiderUpdateRequest;
 
 public class RiderFixture {
     public static final Long TEST_RIDER_ID = 1L;
+    public static final Long TEST_RIDER_ID2 = 2L;
     public static final Long TEST_RACE_ID = 1L;
     public static final Long TEST_MEMBER_ID = 1L;
     public static final Long TEST_CHANGED_RACE_ID = 8L;
@@ -65,6 +66,15 @@ public class RiderFixture {
         return Rider.builder()
             .id(id)
             .raceId(AggregateReference.to(TEST_RACE_ID))
+            .memberId(AggregateReference.to(TEST_MEMBER_ID))
+            .createdAt(TEST_CREATED_DATE_TIME)
+            .build();
+    }
+
+    public static Rider createRiderWithIdAndRaceId(final Long riderId, final Long raceId) {
+        return Rider.builder()
+            .id(riderId)
+            .raceId(AggregateReference.to(raceId))
             .memberId(AggregateReference.to(TEST_MEMBER_ID))
             .createdAt(TEST_CREATED_DATE_TIME)
             .build();

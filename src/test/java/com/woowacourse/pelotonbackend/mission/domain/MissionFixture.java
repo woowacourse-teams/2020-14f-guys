@@ -12,17 +12,23 @@ import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.assertj.core.util.Lists;
 import org.springframework.data.jdbc.core.mapping.AggregateReference;
 
 import com.woowacourse.pelotonbackend.certification.domain.TimeDuration;
 import com.woowacourse.pelotonbackend.mission.presentation.dto.MissionCreateRequest;
 import com.woowacourse.pelotonbackend.mission.presentation.dto.MissionResponse;
 import com.woowacourse.pelotonbackend.mission.presentation.dto.MissionUpdateRequest;
+import com.woowacourse.pelotonbackend.race.domain.RaceFixture;
 
 public class MissionFixture {
     public static final Long TEST_MISSION_ID = 1L;
     public static final LocalDateTime START_TIME = LocalDateTime.parse(LocalDateTime.now().plusYears(2L).format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS")));
     public static final LocalDateTime END_TIME = LocalDateTime.parse(LocalDateTime.now().plusYears(3L).format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS")));
+    public static final long TEST_MISSION_ID2 = 2L;
+    public static final long TEST_MISSION_ID3 = 3L;
+    public static final long TEST_MISSION_ID4 = 4L;
+    public static final long TEST_MISSION_ID5 = 5L;
     public static final DateTimeDuration MISSION_DURATION = new DateTimeDuration(START_TIME, END_TIME);
     private static final DateTimeDuration MISSION_UTC_DURATION = new DateTimeDuration(
         LocalDateTime.parse(LocalDateTime.ofInstant(Instant.now(), ZoneOffset.UTC).format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS"))),
@@ -146,5 +152,53 @@ public class MissionFixture {
             .missionInstruction(MISSION_INSTRUCTION_UPDATED)
             .raceId(AggregateReference.to(RACE_ID_UPDATED))
             .build();
+    }
+
+    public static List<Mission> upcomingMissionWithIds() {
+        return upcomingMissions(
+            Arrays.asList(TEST_MISSION_ID, TEST_MISSION_ID2, TEST_MISSION_ID3, TEST_MISSION_ID4, TEST_MISSION_ID5));
+    }
+
+    public static List<Mission> upcomingMissionWithoutIds() {
+        return upcomingMissions(Arrays.asList(null, null, null, null, null));
+    }
+
+    private static List<Mission> upcomingMissions(final List<Long> ids) {
+        return Lists.newArrayList(
+            Mission.builder()
+                .id(ids.get(0))
+                .raceId(AggregateReference.to(RaceFixture.TEST_RACE_ID))
+                .missionDuration(
+                    new DateTimeDuration(LocalDateTime.of(2020, 8, 14, 6, 50), LocalDateTime.of(2020, 8, 14, 7, 30)))
+                .missionInstruction(MISSION_INSTRUCTION)
+                .build(),
+            Mission.builder()
+                .id(ids.get(1))
+                .raceId(AggregateReference.to(RaceFixture.TEST_RACE_ID))
+                .missionDuration(
+                    new DateTimeDuration(LocalDateTime.of(2020, 8, 15, 6, 50), LocalDateTime.of(2020, 8, 15, 7, 30)))
+                .missionInstruction(MISSION_INSTRUCTION)
+                .build(),
+            Mission.builder()
+                .id(ids.get(2))
+                .raceId(AggregateReference.to(RaceFixture.TEST_RACE_ID))
+                .missionDuration(
+                    new DateTimeDuration(LocalDateTime.of(2020, 8, 16, 6, 50), LocalDateTime.of(2020, 8, 16, 7, 30)))
+                .missionInstruction(MISSION_INSTRUCTION)
+                .build(),
+            Mission.builder()
+                .id(ids.get(3))
+                .raceId(AggregateReference.to(RaceFixture.TEST_RACE_ID2))
+                .missionDuration(
+                    new DateTimeDuration(LocalDateTime.of(2020, 8, 15, 8, 0), LocalDateTime.of(2020, 8, 15, 8, 10)))
+                .missionInstruction(MISSION_INSTRUCTION)
+                .build(),
+            Mission.builder()
+                .id(ids.get(4))
+                .raceId(AggregateReference.to(RaceFixture.TEST_RACE_ID2))
+                .missionDuration(
+                    new DateTimeDuration(LocalDateTime.of(2020, 8, 16, 8, 0), LocalDateTime.of(2020, 8, 16, 8, 10)))
+                .missionInstruction(MISSION_INSTRUCTION)
+                .build());
     }
 }

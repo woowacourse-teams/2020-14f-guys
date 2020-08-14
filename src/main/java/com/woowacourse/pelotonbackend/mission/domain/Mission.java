@@ -26,10 +26,10 @@ public class Mission {
     @Id @With(value = AccessLevel.PACKAGE)
     private final Long id;
 
-    @Embedded.Empty @Valid
+    @Embedded.Empty
     private final DateTimeDuration missionDuration;
 
-    @Embedded.Empty @Valid
+    @Embedded.Empty
     private final MissionInstruction missionInstruction;
 
     private final AggregateReference<Race, @NotNull Long> raceId;
