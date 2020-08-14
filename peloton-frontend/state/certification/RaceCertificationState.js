@@ -45,7 +45,7 @@ export const raceCertificationFixture = [
       id: 1,
       title: "운동",
       certification_example:
-        "https://lh3.googleusercontent.com/W-z2puouUJ_ZDRiZxZ4NJl1Mi-TDJ9NVTz6XBbtO17po8Ave86MTPin_9NVm6_QF-V8",
+        "https://scontent-ssn1-1.xx.fbcdn.net/v/t1.0-9/52141277_2197572873680103_3494833992769732608_n.jpg?_nc_cat=110&_nc_sid=8024bb&_nc_ohc=7FhhUh4U9WEAX9PRgmy&_nc_ht=scontent-ssn1-1.xx&oh=ad66b941b3527a5d59d269d6afb3d87c&oe=5F5C4AAF",
       thumbnail:
         "https://post-phinf.pstatic.net/MjAxOTEyMTFfMjgy/MDAxNTc2MDUwODAxODQ3.qV7kcYtxZZr7ycnGUsmKyj2-eYBThcJbaAf7Xr4uLzAg.T0x40qYIWBL2pXFG51QhCt6N5xSFZVKOZaicP3XGx5Yg.JPEG/image_8240955871576050766062.jpg?type=w1200",
     },
@@ -55,7 +55,7 @@ export const raceCertificationFixture = [
         start_time: todayOneHourBefore,
         end_time: todayOneHourAfter,
       },
-      mission_instruction: "점프를 뛰세요",
+      mission_instruction: "한명에게 별을 몰아주고 사진을 찍어요!",
       race_id: 1,
     },
   },
@@ -64,7 +64,7 @@ export const raceCertificationFixture = [
       id: 2,
       title: "기상",
       certification_example:
-        "https://lh3.googleusercontent.com/5EfQBHDb47tchiART6U6yk3yYS9qBYr6VUssB5wHE1AgavqV5E2SSuzyiNkc7UgVng",
+        "https://i.pinimg.com/474x/fd/8c/20/fd8c20bc1b23f05d33385e11741a6e0f.jpg",
       thumbnail:
         "https://t1.daumcdn.net/thumb/R720x0/?fname=http://t1.daumcdn.net/brunch/service/user/Jp6/image/92CQBbgioOWYSe-SFIUkkjJEGpQ.jpg",
     },

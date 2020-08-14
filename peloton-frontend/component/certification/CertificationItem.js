@@ -1,15 +1,17 @@
 import React, { useEffect, useState } from "react";
 import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { useNavigation } from "@react-navigation/core";
 
 import { CERTIFICATION_TYPE, COLOR } from "../../utils/constants";
 
-const CertificationItem = ({ item, currentTime }) => {
+const CertificationItem = ({ item, index, currentTime }) => {
   const [leftTime, setLeftTime] = useState(
     new Date(item.mission.mission_duration.start_time - currentTime),
   );
   const [certificationType, setCertificationType] = useState(
     leftTime > 0 ? CERTIFICATION_TYPE.WAIT : CERTIFICATION_TYPE.AVAILABLE,
   );
+  const navigation = useNavigation();
 
   useEffect(() => {
     const startLeftTime =
@@ -26,8 +28,8 @@ const CertificationItem = ({ item, currentTime }) => {
     }
   }, [currentTime]);
 
-  const navigateToCertificate = (mission, certificationExample) => {
-    console.log("이동");
+  const navigateToCertificate = () => {
+    navigation.navigate("CertificationSubmit", { index });
   };
 
   const timeForm = () => {
@@ -37,10 +39,7 @@ const CertificationItem = ({ item, currentTime }) => {
 
   const onSelect = () => {
     if (certificationType === CERTIFICATION_TYPE.AVAILABLE) {
-      return navigateToCertificate(
-        item.mission,
-        item.race.certification_example,
-      );
+      return navigateToCertificate();
     } else if (certificationType === CERTIFICATION_TYPE.WAIT) {
       return () => {};
     }

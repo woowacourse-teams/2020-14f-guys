@@ -35,8 +35,12 @@ const Certification = () => {
       {certifications.length > 0 ? (
         <FlatList
           data={certifications}
-          renderItem={({ item }) => (
-            <CertificationItem item={item} currentTime={currentTime} />
+          renderItem={({ item, index }) => (
+            <CertificationItem
+              item={item}
+              index={index}
+              currentTime={currentTime}
+            />
           )}
           keyExtractor={(item) => String.valueOf()(item.mission.id)}
           showsVerticalScrollIndicator={false}

@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { ScrollView, StyleSheet } from "react-native";
 import RaceDetailInfo from "./RaceDetailInfo";
-import RaceCertificationImage from "./RaceCertificationImage";
+import RaceCertificationImages from "./RaceCertificationImages";
 import RaceSpec from "./RaceSpec";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import { loadingState } from "../../../state/loading/LoadingState";
@@ -38,7 +38,7 @@ const RaceDetail = ({ route }) => {
 
   return (
     <ScrollView style={styles.container}>
-      <RaceCertificationImage />
+      <RaceCertificationImages />
       <RaceDetailInfo
         title={raceInfo.title}
         description={raceInfo.description}
