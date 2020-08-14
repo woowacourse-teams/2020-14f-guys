@@ -19,6 +19,7 @@ import com.woowacourse.pelotonbackend.member.presentation.dto.MemberNameUpdateRe
 import com.woowacourse.pelotonbackend.member.presentation.dto.MemberProfileResponse;
 import com.woowacourse.pelotonbackend.member.presentation.dto.MemberResponse;
 import com.woowacourse.pelotonbackend.member.presentation.dto.MemberResponses;
+import com.woowacourse.pelotonbackend.vo.Cash;
 import com.woowacourse.pelotonbackend.vo.ImageUrl;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -42,6 +43,13 @@ public class MemberService {
     public MemberResponse findMember(final Long id) {
         final Member member = findMemberById(id);
 
+        return MemberResponse.from(member);
+    }
+
+    public MemberResponse findByKakaoId(final Long kakaoId) {
+        final Member member = memberRepository.findByKakaoId(kakaoId)
+            .orElseThrow(
+                () -> new MemberNotFoundException(String.format("Member(member kakaoId = %d) does not exist", kakaoId)));
         return MemberResponse.from(member);
     }
 
@@ -80,12 +88,10 @@ public class MemberService {
         return MemberResponse.from(persist);
     }
 
-    public MemberResponse minusCash(final Long id, final MemberCashUpdateRequest request) {
+    public void minusCash(final Long id, final Cash cash) {
         final Member member = findMemberById(id);
-        final Member updatedMember = member.minusCash(request.getCash());
-        final Member persist = memberRepository.save(updatedMember);
-
-        return MemberResponse.from(persist);
+        final Member updatedMember = member.minusCash(cash);
+        memberRepository.save(updatedMember);
     }
 
     public void deleteById(final Long id) {
@@ -95,13 +101,6 @@ public class MemberService {
     private Member findMemberById(final Long id) {
         return memberRepository.findById(id)
             .orElseThrow(() -> new MemberNotFoundException(id));
-    }
-
-    public MemberResponse findByKakaoId(final Long kakaoId) {
-        final Member member = memberRepository.findByKakaoId(kakaoId)
-            .orElseThrow(
-                () -> new MemberNotFoundException(String.format("Member(member kakaoId = %d) does not exist", kakaoId)));
-        return MemberResponse.from(member);
     }
 
     public MemberProfileResponse updateProfileImage(final Long memberId, final MultipartFile file) {

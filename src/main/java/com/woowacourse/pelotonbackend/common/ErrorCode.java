@@ -27,7 +27,7 @@ public enum ErrorCode {
     MISSION_DUPLICATE(400, "Mission-002"),
     MISSION_ID_INVALID(400, "Mission-003"),
 
-    RIDER_NOT_FOUND(404,"Rider-001"),
+    RIDER_NOT_FOUND(404, "Rider-001"),
     RIDER_DUPLICATE(400, "Rider-002"),
 
     UN_AUTHORIZED(401, "Auth-001"),
@@ -37,7 +37,9 @@ public enum ErrorCode {
     FILE_UPLOAD(400, "File-004"),
 
     CERTIFICATION_NOT_FOUND(404, "Certification-001"),
-    CERTIFICATION_DUPLICATE(400, "Certification-002");
+    CERTIFICATION_DUPLICATE(400, "Certification-002"),
+
+    MONEY_NOT_ENOUGH(400, "MONEY");
 
     private final int status;
     private final String code;

@@ -15,9 +15,11 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.TestExecutionListeners;
 
 import com.woowacourse.pelotonbackend.DataInitializeExecutionListener;
+import com.woowacourse.pelotonbackend.member.domain.MemberFixture;
 import com.woowacourse.pelotonbackend.member.presentation.dto.MemberCreateRequest;
 import com.woowacourse.pelotonbackend.member.presentation.dto.MemberResponse;
 import com.woowacourse.pelotonbackend.member.presentation.dto.MemberResponses;
+import com.woowacourse.pelotonbackend.race.presentation.dto.RaceCreateRequest;
 import com.woowacourse.pelotonbackend.support.dto.JwtTokenResponse;
 import io.restassured.RestAssured;
 import io.restassured.http.Header;
@@ -57,6 +59,22 @@ public class AcceptanceTest {
             .map(request -> JwtTokenResponse.of(jwtTokenProvider.createToken(String.valueOf(request.getKakaoId())),
                 ADMIT))
             .collect(Collectors.toList());
+    }
+
+    protected void chargeCashes(List<MemberCreateRequest> requests) {
+        requests.forEach(this::requestChargeCash);
+    }
+
+    private void requestChargeCash(final MemberCreateRequest memberCreateRequest) {
+        given()
+            .header(createTokenHeader(memberCreateRequest.getKakaoId()))
+            .contentType(MediaType.APPLICATION_JSON_VALUE)
+            .body(MemberFixture.createCashUpdateRequest(30000L))
+            .when()
+            .patch(RESOURCE_URL + "/cash")
+            .then()
+            .log().all()
+            .statusCode(HttpStatus.OK.value());
     }
 
     protected Long requestCreate(final MemberCreateRequest memberRequest) {
@@ -105,5 +123,17 @@ public class AcceptanceTest {
 
     protected Header createTokenHeader(final JwtTokenResponse tokenResponse) {
         return new Header("Authorization", "Bearer " + tokenResponse.getAccessToken());
+    }
+
+    protected void createRace(final RaceCreateRequest request, final JwtTokenResponse tokenResponse) {
+        given()
+            .header(createTokenHeader(tokenResponse))
+            .contentType(MediaType.APPLICATION_JSON_VALUE)
+            .body(request)
+            .when()
+            .post("/api/races")
+            .then()
+            .log().all()
+            .statusCode(HttpStatus.CREATED.value());
     }
 }

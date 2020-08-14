@@ -20,7 +20,7 @@ class MemberCreateRequestTest {
             + "\"profile\":\"https://lh3.googleusercontent.com/5EfQBHDb47tchiART6U6yk3yYS9qBYr6VUssB5wHE1AgavqV5E2SSuzyiNkc7UgVng\",\n"
             + "\"name\":\"DD\",\n"
             + "\"email\":\"dd@email.com\",\n"
-            + "\"cash\":\"1\",\n"
+            + "\"cash\":\"50000\",\n"
             + "\"role\":\"MEMBER\"\n"
             + "}";
 

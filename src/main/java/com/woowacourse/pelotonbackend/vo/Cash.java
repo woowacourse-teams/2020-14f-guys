@@ -31,4 +31,8 @@ public class Cash {
     public Cash minus(final Cash cash) {
         return new Cash(this.cash.subtract(cash.cash));
     }
+
+    public boolean isGreaterOrEqualThan(final BigDecimal value) {
+        return this.cash.intValue() >= value.intValue();
+    }
 }

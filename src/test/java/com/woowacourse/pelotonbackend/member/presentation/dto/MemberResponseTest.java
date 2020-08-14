@@ -21,7 +21,7 @@ class MemberResponseTest {
             + "\"profile\":\"https://lh3.googleusercontent.com/5EfQBHDb47tchiART6U6yk3yYS9qBYr6VUssB5wHE1AgavqV5E2SSuzyiNkc7UgVng\","
             + "\"name\":\"jinju\","
             + "\"email\":\"jj@woowa.com\","
-            + "\"cash\":\"1\","
+            + "\"cash\":\"50000\","
             + "\"role\":\"MEMBER\""
             + "}";
 

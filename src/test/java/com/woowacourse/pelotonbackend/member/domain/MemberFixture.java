@@ -24,7 +24,7 @@ public class MemberFixture {
     public static final String NAME2 = "sika";
     public static final String NAME3 = "dd";
     public static final String UPDATE_NAME = "blbi";
-    public static final Cash CASH = new Cash(BigDecimal.ONE);
+    public static final Cash CASH = new Cash(BigDecimal.valueOf(50000));
     public static final Cash UPDATE_CASH = new Cash(BigDecimal.TEN);
     public static final ImageUrl PROFILE = new ImageUrl(
         "https://lh3.googleusercontent.com/5EfQBHDb47tchiART6U6yk3yYS9qBYr6VUssB5wHE1AgavqV5E2SSuzyiNkc7UgVng");
@@ -148,6 +148,12 @@ public class MemberFixture {
     public static MemberCashUpdateRequest createCashUpdateRequest() {
         return MemberCashUpdateRequest.builder()
             .cash(UPDATE_CASH)
+            .build();
+    }
+
+    public static MemberCashUpdateRequest createCashUpdateRequest(Long money) {
+        return MemberCashUpdateRequest.builder()
+            .cash(new Cash(BigDecimal.valueOf(money)))
             .build();
     }
 
