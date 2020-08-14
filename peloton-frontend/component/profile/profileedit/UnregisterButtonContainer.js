@@ -1,11 +1,13 @@
 import React from "react";
 import { Alert, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { useNavigation } from "@react-navigation/native";
 import Axios from "axios";
-import { COLOR, SERVER_BASE_URL } from "../../../utils/constants";
 import { useRecoilValue } from "recoil";
+import { COLOR, SERVER_BASE_URL } from "../../../utils/constants";
 import { memberTokenState } from "../../../state/member/MemberState";
 
-const UnregisterButtonContainer = ({ navigation }) => {
+const UnregisterButtonContainer = () => {
+  const navigation = useNavigation();
   const token = useRecoilValue(memberTokenState);
 
   const requestUnregister = () => {
@@ -14,21 +16,22 @@ const UnregisterButtonContainer = ({ navigation }) => {
         Authorization: `Bearer ${token}`,
       },
     });
-    navigation.navigate("Home");
+    navigation.navigate("Login");
   };
   const createTwoButtonAlert = () =>
     Alert.alert(
       "Unregister",
-      "Why so serious",
+      "정말로 탈퇴하시겠습니까?",
       [
         {
           text: "Nope",
-          onPress: () => console.log("someone tried to unregister"),
+          onPress: () =>
+            console.log("Someone tried to unregister. But didn't."),
           style: "cancel",
         },
         { text: "Yes", onPress: requestUnregister },
       ],
-      { cancelable: false },
+      { cancelable: false }
     );
 
   return (
