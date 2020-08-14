@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   Dimensions,
   Image,
@@ -7,25 +7,54 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import { useRecoilValue } from "recoil";
+import { useRecoilValue, useSetRecoilState } from "recoil";
 import { Feather } from "@expo/vector-icons";
+import * as ImagePicker from "expo-image-picker";
 
 import { raceCertificationState } from "../../state/certification/RaceCertificationState";
 import { COLOR } from "../../utils/constants";
+import { loadingState } from "../../state/loading/LoadingState";
+import {
+  getCameraPermission,
+  getCameraRollPermission,
+} from "../../utils/Permission";
 
 const CertificationSubmit = ({ route }) => {
   const raceCertifications = useRecoilValue(raceCertificationState);
+  const setIsLoading = useSetRecoilState(loadingState);
 
   const { index } = route.params;
   const raceCertification = raceCertifications[index];
+  const [photoUri, setPhotoUri] = useState(
+    raceCertification.race.certification_example,
+  );
+
+  const takePhoto = async () => {
+    setIsLoading(true);
+    const hasCameraPermission = await getCameraPermission();
+    const hasCameraRollPermission = await getCameraRollPermission();
+    if (hasCameraPermission === false || hasCameraRollPermission === false) {
+      setIsLoading(false);
+      return;
+    }
+    const pickerResult = await ImagePicker.launchCameraAsync({
+      allowsEditing: true,
+      aspect: [4, 3],
+      base64: true,
+    });
+
+    if (pickerResult.cancelled === true) {
+      setIsLoading(false);
+      return;
+    }
+    const selectedImage = pickerResult.uri;
+    setPhotoUri(selectedImage);
+  };
 
   return (
     <View style={styles.container}>
-      <TouchableOpacity style={styles.certificationButton}>
-        <Image
-          source={{ uri: raceCertification.race.certification_example }}
-          style={styles.certificationExample}
-        />
+      <TouchableOpacity style={styles.certificationButton} onPress={takePhoto}>
+        <Image source={{ uri: photoUri }} style={styles.certificationExample} />
         <View style={styles.certificationPhoto}>
           <Feather name="camera" size={50} color="white" />
         </View>

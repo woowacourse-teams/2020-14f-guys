@@ -9,6 +9,7 @@ import {
   memberTokenState,
 } from "../../state/member/MemberState";
 import { loadingState } from "../../state/loading/LoadingState";
+import { getCameraRollPermission } from "../../utils/Permission";
 
 const ProfileImageEditButton = ({ children }) => {
   const [memberInfo, setMemberInfo] = useRecoilState(memberInfoState);
@@ -36,36 +37,23 @@ const ProfileImageEditButton = ({ children }) => {
 
   const pickAndChangeProfileImage = async () => {
     setIsLoading(true);
-    const permissionResult = await ImagePicker.requestCameraRollPermissionsAsync();
-    if (permissionResult.granted === false) {
-      Alert.alert(
-        "카메라 롤 권한이 없습니다.",
-        "권한 설정 페이지로 이동하시겠습니까?",
-        [
-          {
-            text: "Cancel",
-            style: "cancel",
-          },
-          { text: "OK", onPress: async () => await Linking.openSettings() },
-        ],
-        { cancelable: false },
-      );
+    const hasCameraRollPermission = await getCameraRollPermission();
+    if (hasCameraRollPermission === false) {
       setIsLoading(false);
-    } else {
-      const pickerResult = await ImagePicker.launchImageLibraryAsync({
-        allowsEditing: true,
-        aspect: [4, 3],
-        base64: true,
-      });
-
-      if (pickerResult.cancelled === true) {
-        console.log("cameraroll picker cancelled");
-        setIsLoading(false);
-        return;
-      }
-      const selectedImage = pickerResult.uri;
-      requestChangeImage(selectedImage);
+      return;
     }
+    const pickerResult = await ImagePicker.launchImageLibraryAsync({
+      allowsEditing: true,
+      aspect: [4, 3],
+      base64: true,
+    });
+
+    if (pickerResult.cancelled === true) {
+      setIsLoading(false);
+      return;
+    }
+    const selectedImage = pickerResult.uri;
+    requestChangeImage(selectedImage);
   };
 
   return (
