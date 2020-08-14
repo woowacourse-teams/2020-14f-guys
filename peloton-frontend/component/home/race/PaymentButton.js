@@ -8,7 +8,7 @@ import {
 } from "react-native";
 import { COLOR } from "../../../utils/constants";
 
-const PaymentButton = (onPress) => {
+const PaymentButton = ({ onPress }) => {
   return (
     <TouchableOpacity onPress={onPress}>
       <View style={styles.paymentButton}>
