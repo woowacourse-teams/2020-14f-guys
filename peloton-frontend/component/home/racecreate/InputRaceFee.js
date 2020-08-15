@@ -9,7 +9,11 @@ import { COLOR } from "../../../utils/constants";
 import { loadingState } from "../../../state/loading/LoadingState";
 import LoadingIndicator from "../../../utils/LoadingIndicator";
 import RaceCreateView from "./RaceCreateView";
-import { navigateTabScreen, navigateWithHistory } from "../../../utils/util";
+import {
+  alertNotEnoughCash,
+  navigateTabScreen,
+  navigateWithHistory,
+} from "../../../utils/util";
 import {
   memberInfoState,
   memberTokenState,
@@ -78,23 +82,9 @@ const InputRaceFee = () => {
     }
 
     if (userCash < entrance_fee) {
-      Alert.alert(
-        "잔액이 부족합니다.",
-        "캐시 충전 페이지로 이동하시겠습니까?",
-        [
-          {
-            text: "Cancel",
-            style: "cancel",
-          },
-          {
-            text: "OK",
-            onPress: () => {
-              navigateTabScreen(navigation, "Profile");
-            },
-          },
-        ],
-        { cancelable: false },
-      );
+      alertNotEnoughCash({
+        onOk: () => navigateTabScreen(navigation, "Profile"),
+      });
       setGlobalLoading(false);
       return;
     }

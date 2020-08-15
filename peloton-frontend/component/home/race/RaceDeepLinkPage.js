@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { Alert, StyleSheet, View } from "react-native";
+import { StyleSheet, View } from "react-native";
 import { useRecoilState, useSetRecoilState } from "recoil";
 import AsyncStorage from "@react-native-community/async-storage";
 import { useNavigation } from "@react-navigation/core";
@@ -7,6 +7,7 @@ import { useNavigation } from "@react-navigation/core";
 import { loadingState } from "../../../state/loading/LoadingState";
 import { DEEP_LINK_BASE_URL, TOKEN_STORAGE } from "../../../utils/constants";
 import {
+  alertNotEnoughCash,
   navigateTabScreen,
   navigateWithHistory,
   navigateWithoutHistory,
@@ -31,26 +32,28 @@ const RedirectPage = ({ route }) => {
   const [raceInfo, setRaceInfo] = useRecoilState(raceInfoState);
   const navigation = useNavigation();
 
+  const navigateToRaceDetail = () => {
+    navigateWithHistory(navigation, [
+      {
+        name: "Home",
+      },
+      {
+        name: "RaceDetail",
+        params: {
+          raceInfo,
+          id: raceInfo.id,
+        },
+      },
+    ]);
+  };
+
   const chargeMoney = () => {
-    Alert.alert(
-      "잔액이 부족합니다.",
-      "캐시 충전 페이지로 이동하시겠습니까?",
-      [
-        {
-          text: "Cancel",
-          style: "cancel",
-        },
-        {
-          text: "OK",
-          onPress: () => {
-            navigateWithoutHistory(navigation, "Home");
-            navigateTabScreen(navigation, "Profile");
-          },
-        },
-      ],
-      { cancelable: false }
-    );
-    setLoadingState(false);
+    alertNotEnoughCash({
+      onOk: () => {
+        navigateWithoutHistory(navigation, "Home");
+        navigateTabScreen(navigation, "Profile");
+      },
+    });
   };
 
   const payEntranceFee = async () => {
@@ -61,18 +64,7 @@ const RedirectPage = ({ route }) => {
       await RiderApi.post(token, raceInfo.id);
       const newMemberInfo = await MemberApi.get(token);
       setMemberInfo(newMemberInfo);
-      navigateWithHistory(navigation, [
-        {
-          name: "Home",
-        },
-        {
-          name: "RaceDetail",
-          params: {
-            raceInfo,
-            id: raceInfo.id,
-          },
-        },
-      ]);
+      navigateToRaceDetail();
     } catch (error) {
       console.log(error);
     }
@@ -122,18 +114,7 @@ const RedirectPage = ({ route }) => {
         const { race_responses: races } = await QueryApi.getRaces(userToken);
         const filteredRace = races.filter((race) => String(race.id) === raceId);
         if (filteredRace.length > 0) {
-          navigateWithHistory(navigation, [
-            {
-              name: "Home",
-            },
-            {
-              name: "RaceDetail",
-              params: {
-                raceInfo,
-                id: raceId,
-              },
-            },
-          ]);
+          navigateToRaceDetail();
         }
       } catch (error) {
         alert("조회에 실패했습니다.");
