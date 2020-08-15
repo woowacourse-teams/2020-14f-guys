@@ -1,32 +1,14 @@
-import React, { useState } from "react";
+import React from "react";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
-import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
+import { useRecoilState } from "recoil";
 import { useNavigation } from "@react-navigation/core";
-import { memberInfoState, memberTokenState } from "../../../state/member/MemberState";
-import { MemberApi } from "../../../utils/api/MemberApi";
-import { loadingState } from "../../../state/loading/LoadingState";
+import { memberInfoState } from "../../../state/member/MemberState";
 import { AntDesign } from "@expo/vector-icons";
 import { COLOR } from "../../../utils/constants";
 
 const ProfileEditInfo = () => {
   const [memberInfo, setMemberInfo] = useRecoilState(memberInfoState);
-  const setIsLoading = useSetRecoilState(loadingState);
-  const token = useRecoilValue(memberTokenState);
   const navigation = useNavigation();
-
-  const [name, setName] = useState(memberInfo.name);
-
-  const requestChangeName = async () => {
-    setIsLoading(true);
-    try {
-      await MemberApi.patchName(token, name);
-      const newMemberInfo = await MemberApi.get(token);
-      setMemberInfo(newMemberInfo);
-    } catch (error) {
-      console.log(error);
-    }
-    setIsLoading(false);
-  };
 
   return (
     <View style={styles.infoContainer}>
@@ -35,7 +17,10 @@ const ProfileEditInfo = () => {
           <Text style={styles.eachInfoKey}>🚴 ‍️Rider Name</Text>
           <Text style={styles.eachInfoValue}>{memberInfo.name}</Text>
         </View>
-        <TouchableOpacity style={styles.button} onPress={() => navigation.navigate("NameUpdate")}>
+        <TouchableOpacity
+          style={styles.button}
+          onPress={() => navigation.navigate("NameUpdate")}
+        >
           <Text style={styles.buttonText}>수정하기</Text>
           <AntDesign name="right" size={18} color={COLOR.GREEN2} />
         </TouchableOpacity>
