@@ -1,5 +1,6 @@
 import React from "react";
 import {
+  Alert,
   Keyboard,
   StyleSheet,
   Text,
@@ -12,14 +13,38 @@ import { COLOR } from "../../../utils/constants";
 import { useRecoilValue } from "recoil";
 import { useNavigation } from "@react-navigation/core";
 import { MemberApi } from "../../../utils/api/MemberApi";
-import { memberInfoState, memberTokenState } from "../../../state/member/MemberState";
+import {
+  memberInfoState,
+  memberTokenState,
+} from "../../../state/member/MemberState";
 import { useRecoilState } from "recoil/dist";
 
 const CashUpdate = () => {
+  const [input, setInput] = React.useState(5000);
   const [cash, setCash] = React.useState(5000);
+  const [isValid, setIsValid] = React.useState(true);
   const token = useRecoilValue(memberTokenState);
   const navigation = useNavigation();
   const [memberInfo, setMemberInfo] = useRecoilState(memberInfoState);
+
+  const setCashWithValidate = (input) => {
+    const onlyNumber = /^[0-9]+$/;
+    setInput(input);
+    if (!onlyNumber.test(input)) {
+      setIsValid(false);
+      return;
+    }
+    setIsValid(true);
+    setCash(input);
+  };
+
+  const ErrorMessage = () => {
+    return isValid ? null : (
+      <View>
+        <Text style={styles.errorMessage}>금액만 입력해주세요 : ) </Text>
+      </View>
+    );
+  };
 
   const requestChangeCash = async () => {
     try {
@@ -44,9 +69,10 @@ const CashUpdate = () => {
             <Text style={styles.chargeText}>충전 금액을 입력해주세요</Text>
             <TextInput
               style={styles.chargeInput}
-              onChangeText={(text) => setCash(text)}
-              value={String(cash)}
+              onChangeText={(text) => setCashWithValidate(text)}
+              value={String(input)}
             />
+            <ErrorMessage />
           </View>
         </View>
         <View style={styles.buttonContainer}>
@@ -77,6 +103,15 @@ const styles = StyleSheet.create({
     lineHeight: 21,
     letterSpacing: -0.36,
     marginBottom: 20,
+  },
+  errorMessage: {
+    position: "absolute",
+    marginTop: "3%",
+    marginLeft: "14%",
+    color: COLOR.RED,
+    fontWeight: "bold",
+    fontSize: 15,
+    lineHeight: 21,
   },
   chargeInput: {
     backgroundColor: COLOR.WHITE,
