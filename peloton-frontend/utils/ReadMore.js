@@ -6,7 +6,7 @@ const THREE_LINE_HEIGHT = 65;
 const INITIAL_MAXIMUM_LINE_NUMBER = 3;
 const INFINITE_LINE_NUMBER = 10;
 
-const ReadMore = ({ children }) => {
+const ReadMore = ({ children, fontStyle }) => {
   const [isFirst, setIsFirst] = useState(true);
   const [firstHeight, setFirstHeight] = useState(0);
   const [isPressedReadMore, setIsPressedReadMore] = useState(false);
@@ -43,7 +43,7 @@ const ReadMore = ({ children }) => {
   return (
     <View style={styles.container}>
       <Text
-        style={styles.description}
+        style={[styles.description, fontStyle]}
         numberOfLines={calculatedNumberOfLines()}
         onLayout={getOriginalHeight}
       >

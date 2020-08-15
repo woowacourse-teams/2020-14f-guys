@@ -1,11 +1,11 @@
 import React from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import HomeNavigationRoot from "./home/HomeNavigationRoot";
+import HomeNavigationRoot from "./HomeNavigationRoot";
 import Certification from "./certification/Certification";
 import { MaterialIcons } from "@expo/vector-icons";
 import { View } from "react-native";
 import { COLOR } from "../utils/constants";
-import ProfileNavigationRoot from "./profile/ProfileStackRoot";
+import ProfileNavigationRoot from "./ProfileStackRoot";
 
 const Tab = createBottomTabNavigator();
 

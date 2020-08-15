@@ -1,8 +1,8 @@
-import React, { useEffect } from "react";
-import { Alert, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import React, { useEffect, useState } from "react";
+import { Alert, StyleSheet, View } from "react-native";
 import { useRecoilState, useSetRecoilState } from "recoil";
 import { loadingState } from "../../../state/loading/LoadingState";
-import { COLOR, TOKEN_STORAGE } from "../../../utils/constants";
+import { TOKEN_STORAGE } from "../../../utils/constants";
 import AsyncStorage from "@react-native-community/async-storage";
 import {
   navigateTabScreen,
@@ -19,6 +19,10 @@ import {
 import { raceInfoState } from "../../../state/race/RaceState";
 import { QueryApi } from "../../../utils/api/QueryApi";
 import { RiderApi } from "../../../utils/api/RiderApi";
+import PaymentButton from "./PaymentButton";
+
+import RaceJoinTitle from "./RaceJoinTitle";
+import RaceJoinBody from "./RaceJoinBody";
 
 const RedirectPage = ({ route }) => {
   const setLoadingState = useSetRecoilState(loadingState);
@@ -27,32 +31,32 @@ const RedirectPage = ({ route }) => {
   const [raceInfo, setRaceInfo] = useRecoilState(raceInfoState);
   const navigation = useNavigation();
 
-  const joinRace = async () => {
+  const chargeMoney = () => {
+    Alert.alert(
+      "잔액이 부족합니다.",
+      "캐시 충전 페이지로 이동하시겠습니까?",
+      [
+        {
+          text: "Cancel",
+          style: "cancel",
+        },
+        {
+          text: "OK",
+          onPress: () => {
+            navigateWithoutHistory(navigation, "Home");
+            navigateTabScreen(navigation, "Profile");
+          },
+        },
+      ],
+      { cancelable: false }
+    );
+    setLoadingState(false);
+  };
+
+  const payEntranceFee = async () => {
     setLoadingState(true);
     const userCash = Number(memberInfo.cash);
     const raceEntranceFee = Number(raceInfo.entrance_fee);
-    if (userCash < raceEntranceFee) {
-      Alert.alert(
-        "잔액이 부족합니다.",
-        "캐시 충전 페이지로 이동하시겠습니까?",
-        [
-          {
-            text: "Cancel",
-            style: "cancel",
-          },
-          {
-            text: "OK",
-            onPress: () => {
-              navigateWithoutHistory(navigation, "Home");
-              navigateTabScreen(navigation, "Profile");
-            },
-          },
-        ],
-        { cancelable: false },
-      );
-      setLoadingState(false);
-      return;
-    }
     try {
       await MemberApi.patchCash(token, String(userCash - raceEntranceFee));
       await RiderApi.post(token, raceInfo.id);
@@ -74,6 +78,12 @@ const RedirectPage = ({ route }) => {
       console.log(error);
     }
     setLoadingState(false);
+  };
+
+  const isPayment = () => {
+    const userCash = Number(memberInfo.cash);
+    const raceEntranceFee = Number(raceInfo.entrance_fee);
+    return userCash >= raceEntranceFee;
   };
 
   useEffect(() => {
@@ -138,23 +148,13 @@ const RedirectPage = ({ route }) => {
 
   return (
     <View style={styles.container}>
-      <View style={styles.raceTitleContainer}>
-        <Text style={styles.raceTitle}>레이스 제목 : {raceInfo.title}</Text>
-      </View>
-      <View style={styles.raceBody}>
-        <Text style={styles.raceDescription}>
-          레이스 설명 : {raceInfo.description}
-        </Text>
-        <Text style={styles.raceDescription}>잔액 : {memberInfo.cash}</Text>
-        <Text style={styles.entranceFee}>
-          {raceInfo.entrance_fee}원이 차감됩니다
-        </Text>
-      </View>
-      <TouchableOpacity onPress={joinRace}>
-        <View style={styles.paymentButton}>
-          <Text style={styles.paymentText}>결제하기</Text>
-        </View>
-      </TouchableOpacity>
+      <RaceJoinTitle thumbnail={raceInfo.thumbnail} title={raceInfo.title} />
+      <RaceJoinBody raceInfo={raceInfo} memberInfo={memberInfo} />
+      <PaymentButton
+        isPayment={isPayment}
+        paymentButton={payEntranceFee}
+        charge={chargeMoney}
+      />
     </View>
   );
 };
@@ -162,40 +162,6 @@ const RedirectPage = ({ route }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-  },
-  raceTitleContainer: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    backgroundColor: COLOR.BLUE1,
-  },
-  raceTitle: {
-    fontSize: 36,
-    color: COLOR.WHITE,
-    fontWeight: "200",
-  },
-  raceBody: {
-    flex: 5,
-  },
-  raceDescription: {
-    fontSize: 20,
-  },
-  entranceFee: {
-    fontSize: 28,
-    color: COLOR.LAVENDER,
-  },
-  paymentButton: {
-    width: 150,
-    height: 50,
-    justifyContent: "center",
-    alignItems: "center",
-    borderRadius: 10,
-    backgroundColor: COLOR.BLUE6,
-  },
-  paymentText: {
-    color: COLOR.WHITE,
-    fontSize: 15,
-    fontWeight: "600",
   },
 });
 

@@ -1,44 +1,44 @@
 import React from "react";
 import { createStackNavigator } from "@react-navigation/stack";
-import ProfileDetail from "./profiledetail/ProfileDetail";
-import ProfileEdit from "./profileedit/ProfileEdit";
-import CashUpdate from "./profileedit/CashUpdate";
-import NameUpdate from "./profileedit/NameUpdate";
+import ProfileDetail from "./profile/profiledetail/ProfileDetail";
+import ProfileEdit from "./profile/profileedit/ProfileEdit";
+import CashUpdate from "./profile/profileedit/CashUpdate";
+import NameUpdate from "./profile/profileedit/NameUpdate";
 
-const Stack = createStackNavigator();
+const ProfileStack = createStackNavigator();
 
 const ProfileStackRoot = () => {
   return (
-    <Stack.Navigator initialRouteName="ProfileDetail">
-      <Stack.Screen
+    <ProfileStack.Navigator initialRouteName="ProfileDetail">
+      <ProfileStack.Screen
         name="ProfileDetail"
         component={ProfileDetail}
         options={{
           title: "Peloton",
         }}
       />
-      <Stack.Screen
+      <ProfileStack.Screen
         name="ProfileEdit"
         component={ProfileEdit}
         options={{
           title: "Settings",
         }}
       />
-      <Stack.Screen
+      <ProfileStack.Screen
         name="CashUpdate"
         component={CashUpdate}
         options={{
           title: "충전하기",
         }}
       />
-      <Stack.Screen
+      <ProfileStack.Screen
         name="NameUpdate"
         component={NameUpdate}
         options={{
           title: "닉네임 변경",
         }}
       />
-    </Stack.Navigator>
+    </ProfileStack.Navigator>
   );
 };
 

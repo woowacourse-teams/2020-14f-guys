@@ -2,12 +2,12 @@ import { StyleSheet, Text, View } from "react-native";
 import React from "react";
 import { COLOR } from "../../../utils/constants";
 
-const RaceSpecItem = ({ itemKey, value, border }) => {
+const RaceSpecItem = ({ itemKey, value, border, valueStyle }) => {
   return (
     <View style={styles.container}>
       <View style={styles.itemBox}>
         <Text style={styles.key}>{itemKey}</Text>
-        <Text style={styles.value}>{value}</Text>
+        <Text style={[styles.value, valueStyle]}>{value}</Text>
       </View>
       {border && <View style={styles.border} />}
     </View>
