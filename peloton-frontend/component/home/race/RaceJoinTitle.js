@@ -8,7 +8,7 @@ const RaceJoinTitle = ({ thumbnail, title }) => {
     <View style={styles.raceTitleContainer}>
       <Image
         source={{
-          uri: thumbnail || "../../../assets/default-race-join.png",
+          uri: thumbnail ? thumbnail : "../../../assets/default-race-join.png",
         }}
         defaultSource={DefaultImage}
         style={styles.thumbnail}

@@ -12,7 +12,10 @@ import {
 import { useNavigation } from "@react-navigation/core";
 import { MemberApi } from "../../../utils/api/MemberApi";
 import { RaceApi } from "../../../utils/api/RaceApi";
-import { memberInfoState, memberTokenState, } from "../../../state/member/MemberState";
+import {
+  memberInfoState,
+  memberTokenState,
+} from "../../../state/member/MemberState";
 import { raceInfoState } from "../../../state/race/RaceState";
 import { QueryApi } from "../../../utils/api/QueryApi";
 import { RiderApi } from "../../../utils/api/RiderApi";
@@ -26,7 +29,6 @@ const RedirectPage = ({ route }) => {
   const [token, setToken] = useRecoilState(memberTokenState);
   const [memberInfo, setMemberInfo] = useRecoilState(memberInfoState);
   const [raceInfo, setRaceInfo] = useRecoilState(raceInfoState);
-  const [thumbnail, setThumbnail] = useState("");
   const navigation = useNavigation();
 
   const chargeMoney = () => {
@@ -141,7 +143,6 @@ const RedirectPage = ({ route }) => {
       }
     };
     fetchRaceInfo();
-    setThumbnail(raceInfo.thumbnail);
     setLoadingState(false);
   }, []);
 

@@ -1,5 +1,11 @@
 import React from "react";
-import { Dimensions, StyleSheet, Text, TouchableOpacity, View, } from "react-native";
+import {
+  Dimensions,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
 import { COLOR } from "../../../utils/constants";
 
 const PaymentButton = ({ isPayment, paymentButton, charge }) => {
@@ -28,7 +34,7 @@ const styles = StyleSheet.create({
   },
   chargeButton: {
     width: Dimensions.get("window").width,
-    height: Dimensions.get("window").height * 0.07,
+    height: 55,
     justifyContent: "center",
     alignItems: "center",
     backgroundColor: COLOR.RED,
