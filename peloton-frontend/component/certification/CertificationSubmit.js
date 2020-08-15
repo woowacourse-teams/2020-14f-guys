@@ -11,6 +11,7 @@ import { useRecoilValue, useSetRecoilState } from "recoil";
 import { Feather } from "@expo/vector-icons";
 import * as ImagePicker from "expo-image-picker";
 import { useLinkTo } from "@react-navigation/native";
+import { useNavigation } from "@react-navigation/core";
 
 import { raceCertificationState } from "../../state/certification/RaceCertificationState";
 import { COLOR } from "../../utils/constants";
@@ -23,11 +24,13 @@ import PaymentButton from "../home/race/PaymentButton";
 import { CertificationApi } from "../../utils/api/CertificationApi";
 import { memberTokenState } from "../../state/member/MemberState";
 import LoadingIndicator from "../../utils/LoadingIndicator";
+import { navigateWithoutHistory } from "../../utils/util";
 
 const CertificationSubmit = ({ route }) => {
   const raceCertifications = useRecoilValue(raceCertificationState);
   const setIsLoading = useSetRecoilState(loadingState);
   const token = useRecoilValue(memberTokenState);
+  const navigation = useNavigation();
   const linkTo = useLinkTo();
 
   const { index } = route.params;
@@ -55,6 +58,8 @@ const CertificationSubmit = ({ route }) => {
       return;
     }
     alert("인증 완료되었습니다");
+    setPhotoUri(raceCertification.race.certification_example);
+    navigateWithoutHistory(navigation, "CertificationHome");
     linkTo(`/home/races/detail/${raceCertification.race.id}`);
   };
 
