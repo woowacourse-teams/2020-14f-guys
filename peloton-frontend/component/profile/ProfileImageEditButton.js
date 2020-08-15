@@ -43,8 +43,9 @@ const ProfileImageEditButton = ({ children }) => {
     }
     const pickerResult = await ImagePicker.launchImageLibraryAsync({
       allowsEditing: true,
-      aspect: [4, 3],
+      aspect: [1, 1],
       base64: true,
+      quality: 0.1,
     });
 
     if (pickerResult.cancelled === true) {

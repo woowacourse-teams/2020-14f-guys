@@ -67,17 +67,17 @@ const CertificationSubmit = ({ route }) => {
       return;
     }
     const pickerResult = await ImagePicker.launchCameraAsync({
-      allowsEditing: true,
-      aspect: [4, 3],
+      mediaTypes: ImagePicker.MediaTypeOptions.Images,
       base64: true,
+      quality: 0.1,
     });
 
     if (pickerResult.cancelled === true) {
       setIsLoading(false);
       return;
     }
-    const selectedImage = pickerResult.uri;
-    setPhotoUri(selectedImage);
+    const takenPhoto = pickerResult.uri;
+    setPhotoUri(takenPhoto);
     setIsLoading(false);
   };
 
