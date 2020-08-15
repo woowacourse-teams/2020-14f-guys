@@ -7,7 +7,10 @@ export const raceCertificationState = atom({
       race: {
         id: "",
         title: "",
+        certification_example: "",
+        thumbnail: "",
       },
+      rider_id: "",
       mission: {
         id: "",
         mission_duration: {

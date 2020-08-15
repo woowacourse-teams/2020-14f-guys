@@ -57,7 +57,11 @@ const CertificationItem = ({ item, index, currentTime }) => {
     >
       <Image
         style={styles.itemImage}
-        source={{ uri: item.race.thumbnail }}
+        source={
+          item.race.thumbnail
+            ? { uri: item.race.thumbnail }
+            : require("../../assets/default-race-thumbnail.jpg")
+        }
         blurRadius={certificationType.blurRadius}
       />
       <View
@@ -86,10 +90,7 @@ const styles = StyleSheet.create({
   item: {
     flex: 1,
     minWidth: 320,
-    width: "100%",
     aspectRatio: 32 / 21,
-    overflow: "hidden",
-    backgroundColor: "black",
   },
   itemImage: {
     flex: 1,

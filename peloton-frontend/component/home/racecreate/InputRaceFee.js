@@ -48,7 +48,7 @@ const InputRaceFee = () => {
   const createRaceRequest = async () => {
     setGlobalLoading(true);
     try {
-      const location = await RaceApi.post(token, formatPostRaceBody());
+      const { location } = await RaceApi.post(token, formatPostRaceBody());
       const race_id = location.split("/")[3];
       await RiderApi.post(token, race_id);
       resetRaceCreateInfo();
@@ -56,7 +56,7 @@ const InputRaceFee = () => {
         { name: "Home" },
         {
           name: "RaceDetail",
-          params: { location },
+          params: { id: race_id },
         },
       ]);
     } catch (e) {

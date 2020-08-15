@@ -17,7 +17,7 @@ import { ridersInfoState } from "../../../state/rider/RiderState";
 const RaceDetail = ({ route }) => {
   const token = useRecoilValue(memberTokenState);
   const setIsLoading = useSetRecoilState(loadingState);
-  const raceId = route.params.location.split("/")[3];
+  const raceId = route.params.id;
   const [raceInfo, setRaceInfo] = useRecoilState(raceInfoState);
   const [ridersInfo, setRidersInfo] = useRecoilState(ridersInfoState);
 

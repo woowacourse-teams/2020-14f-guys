@@ -1,15 +1,16 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { Alert, StyleSheet, View } from "react-native";
 import { useRecoilState, useSetRecoilState } from "recoil";
-import { loadingState } from "../../../state/loading/LoadingState";
-import { TOKEN_STORAGE } from "../../../utils/constants";
 import AsyncStorage from "@react-native-community/async-storage";
+import { useNavigation } from "@react-navigation/core";
+
+import { loadingState } from "../../../state/loading/LoadingState";
+import { DEEP_LINK_BASE_URL, TOKEN_STORAGE } from "../../../utils/constants";
 import {
   navigateTabScreen,
   navigateWithHistory,
   navigateWithoutHistory,
 } from "../../../utils/util";
-import { useNavigation } from "@react-navigation/core";
 import { MemberApi } from "../../../utils/api/MemberApi";
 import { RaceApi } from "../../../utils/api/RaceApi";
 import {
@@ -20,7 +21,6 @@ import { raceInfoState } from "../../../state/race/RaceState";
 import { QueryApi } from "../../../utils/api/QueryApi";
 import { RiderApi } from "../../../utils/api/RiderApi";
 import PaymentButton from "./PaymentButton";
-
 import RaceJoinTitle from "./RaceJoinTitle";
 import RaceJoinBody from "./RaceJoinBody";
 
@@ -69,7 +69,7 @@ const RedirectPage = ({ route }) => {
           name: "RaceDetail",
           params: {
             raceInfo,
-            location: `/api/races/${raceInfo.id}`,
+            id: raceInfo.id,
           },
         },
       ]);
@@ -130,7 +130,7 @@ const RedirectPage = ({ route }) => {
               name: "RaceDetail",
               params: {
                 raceInfo,
-                location: `/api/races/${raceId}`,
+                id: raceId,
               },
             },
           ]);
@@ -163,5 +163,9 @@ const styles = StyleSheet.create({
     flex: 1,
   },
 });
+
+export const raceShareLink = (id) => {
+  return `${DEEP_LINK_BASE_URL}home/races/${id}`;
+};
 
 export default RedirectPage;

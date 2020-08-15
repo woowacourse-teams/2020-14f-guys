@@ -8,10 +8,11 @@ import {
 } from "react-native";
 import { Feather } from "@expo/vector-icons";
 import { COLOR, DEEP_LINK_BASE_URL } from "../../../utils/constants";
+import { raceShareLink } from "./RaceDeepLinkPage";
 
 const LinkCopyButton = ({ raceId }) => {
   const copyLink = async () => {
-    Clipboard.setString(`${DEEP_LINK_BASE_URL}races/${raceId}`);
+    Clipboard.setString(raceShareLink(raceId));
     alert("클립보드에 복사되었습니다.");
   };
 
