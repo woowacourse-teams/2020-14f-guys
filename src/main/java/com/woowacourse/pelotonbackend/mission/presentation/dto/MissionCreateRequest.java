@@ -1,5 +1,6 @@
 package com.woowacourse.pelotonbackend.mission.presentation.dto;
 
+import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 
 import org.springframework.data.jdbc.core.mapping.AggregateReference;
@@ -19,10 +20,10 @@ import lombok.Getter;
 @Getter
 @JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class)
 public class MissionCreateRequest {
-    @NotNull
+    @NotNull @Valid
     private final DateTimeDuration missionDuration;
 
-    @NotNull
+    @NotNull @Valid
     private final MissionInstruction missionInstruction;
 
     @NotNull

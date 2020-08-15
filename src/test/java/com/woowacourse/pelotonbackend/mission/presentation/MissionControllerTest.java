@@ -9,6 +9,8 @@ import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuild
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
+import java.util.TimeZone;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -17,8 +19,11 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.context.annotation.Import;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.restdocs.RestDocumentationContextProvider;
@@ -38,9 +43,12 @@ import com.woowacourse.pelotonbackend.member.domain.LoginFixture;
 import com.woowacourse.pelotonbackend.member.presentation.LoginMemberArgumentResolver;
 import com.woowacourse.pelotonbackend.mission.application.MissionService;
 import com.woowacourse.pelotonbackend.mission.domain.MissionFixture;
+import com.woowacourse.pelotonbackend.mission.presentation.dto.MissionCreateRequest;
 import com.woowacourse.pelotonbackend.mission.presentation.dto.MissionResponse;
 import com.woowacourse.pelotonbackend.mission.presentation.dto.MissionUpdateRequest;
 import com.woowacourse.pelotonbackend.support.BearerAuthInterceptor;
+import com.woowacourse.pelotonbackend.support.annotation.FutureOrPresentBasedUTC;
+import com.woowacourse.pelotonbackend.support.annotation.FutureOrPresentBasedUTCValidator;
 
 @ExtendWith(RestDocumentationExtension.class)
 @WebMvcTest(MissionController.class)
@@ -96,6 +104,20 @@ class MissionControllerTest {
             .content(objectMapper.writeValueAsBytes(MissionFixture.badMockCreateRequest()))
         )
             .andExpect(status().isBadRequest());
+    }
+
+    @DisplayName("UTC 기준으로 요청(서울 기준-9시간)이 와도 정상적으로 응답한다.")
+    @Test
+    void createWithUTCTimeRequest() throws Exception {
+        given(bearerAuthInterceptor.preHandle(any(HttpServletRequest.class), any(HttpServletResponse.class),
+            any(HandlerMethod.class))).willReturn(true);
+
+        mockMvc.perform(post(MISSION_API_URL)
+            .header(HttpHeaders.AUTHORIZATION, LoginFixture.getTokenHeader())
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(objectMapper.writeValueAsBytes(MissionFixture.mockUTCCreateRequest()))
+        )
+            .andExpect(status().isCreated());
     }
 
     @DisplayName("미션 조회 요청에 정상적으로 응답한다.")
