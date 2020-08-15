@@ -38,27 +38,28 @@ const CashUpdate = () => {
     setCash(input);
   };
 
+  const requestChangeCash = async () => {
+    if (!isValid) {
+      Alert.alert("충전 금액을 다시 입력해주세요.");
+      return;
+    }
+    try {
+      await MemberApi.patchCash(token, cash);
+      const response = await MemberApi.get(token);
+      setMemberInfo(response);
+      navigation.navigate("ProfileEdit");
+    } catch (error) {
+      Alert.alert("에러가 발생했습니다.");
+      console.log(error);
+    }
+  };
+
   const ErrorMessage = () => {
     return isValid ? null : (
       <View>
         <Text style={styles.errorMessage}>금액만 입력해주세요 : ) </Text>
       </View>
     );
-  };
-
-  const requestChangeCash = async () => {
-    try {
-      await MemberApi.patchCash(
-        token,
-        `${Number(memberInfo.cash) + Number(cash)}`,
-      );
-      const response = await MemberApi.get(token);
-      setMemberInfo(response);
-      navigation.navigate("ProfileEdit");
-    } catch (error) {
-      alert("에러가 발생했습니다.");
-      console.log(error);
-    }
   };
 
   return (
@@ -71,6 +72,7 @@ const CashUpdate = () => {
               style={styles.chargeInput}
               onChangeText={(text) => setCashWithValidate(text)}
               value={String(input)}
+              keyboardType={"number-pad"}
             />
             <ErrorMessage />
           </View>
