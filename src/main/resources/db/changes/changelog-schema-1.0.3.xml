@@ -1,0 +1,13 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+
+    <changeSet author="sika" id="20200814">
+        <sql dbms="mariadb">ALTER TABLE race ALTER COLUMN START_DATE DROP DEFAULT</sql>
+        <sql dbms="mariadb">ALTER TABLE race ALTER COLUMN END_DATE DROP DEFAULT</sql>
+        <sql dbms="mariadb">ALTER TABLE mission ALTER COLUMN START_TIME DROP DEFAULT</sql>
+        <sql dbms="mariadb">ALTER TABLE mission ALTER COLUMN START_TIME DROP DEFAULT</sql>
+    </changeSet>
+
+</databaseChangeLog>
