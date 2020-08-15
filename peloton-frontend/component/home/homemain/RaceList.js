@@ -3,10 +3,10 @@ import { StyleSheet, Text, View } from "react-native";
 import RaceItems from "./RaceItems";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import { loadingState } from "../../../state/loading/LoadingState";
-import Axios from "axios";
-import { SAMPLE_IMAGES, SERVER_BASE_URL } from "../../../utils/constants";
 import { raceResponseState } from "../../../state/race/ResponseState";
 import { memberTokenState } from "../../../state/member/MemberState";
+import { QueryApi } from "../../../utils/api/QueryApi";
+import LoadingIndicator from "../../../utils/LoadingIndicator";
 
 const RaceList = () => {
   const setRaces = useSetRecoilState(raceResponseState);
@@ -17,40 +17,32 @@ const RaceList = () => {
   useEffect(() => {
     const fetchRaces = async () => {
       setIsLoading(true);
-      const response = await Axios({
-        method: "GET",
-        baseURL: SERVER_BASE_URL,
-        url: "/api/queries/races",
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-      const races = [];
-      if (response.data.race_responses.length !== 0) {
-        response.data.race_responses.forEach((raceResponse) =>
-          races.push(raceResponse)
-        );
-      }
-      setRaces(races);
+      const response = await QueryApi.getRaces(token);
+
+      setRaces(response.race_responses);
     };
     fetchRaces();
     setIsLoading(false);
   }, []);
 
   return myRaces.length !== 0 ? (
-    <View style={styles.container}>
-      <Text style={styles.title}>달리고 있는 레이스들</Text>
-      <View style={styles.raceItems}>
-        <RaceItems races={myRaces} hasRace={true} />
+    <LoadingIndicator>
+      <View style={styles.container}>
+        <Text style={styles.title}>달리고 있는 레이스들</Text>
+        <View style={styles.raceItems}>
+          <RaceItems />
+        </View>
       </View>
-    </View>
+    </LoadingIndicator>
   ) : (
-    <View style={styles.container}>
-      <Text style={styles.title}>달릴 수 있는 레이스들</Text>
-      <View style={styles.raceItems}>
-        <RaceItems races={SAMPLE_IMAGES} hasRace={false} />
+    <LoadingIndicator>
+      <View style={styles.container}>
+        <Text style={styles.title}>달릴 수 있는 레이스들</Text>
+        <View style={styles.raceItems}>
+          <RaceItems />
+        </View>
       </View>
-    </View>
+    </LoadingIndicator>
   );
 };
 

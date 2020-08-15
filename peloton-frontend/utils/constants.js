@@ -37,29 +37,29 @@ export const SAMPLE_IMAGES = [
   {
     id: 1,
     title: "레이스1",
-    src:
+    thumbnail:
       "https://i.pinimg.com/736x/fd/e7/6d/fde76d74009056da95e35abec597f22e.jpg",
-    text:
-      "안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요",
+    description:
+      "안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요",
   },
   {
     id: 2,
     title: "레이스2",
-    src:
+    thumbnail:
       "https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcQqH2LDKlEd-C6ahSmsVLD0LLAnTc4oy7NAtw&usqp=CAU",
-    text: "레이스2",
+    description: "레이스2",
   },
   {
     id: 3,
     title: "레이스3",
-    src: "https://pbs.twimg.com/media/EADIWaaU4AI5lK_.jpg:small",
-    text: "레이스3",
+    thumbnail: "https://pbs.twimg.com/media/EADIWaaU4AI5lK_.jpg:small",
+    description: "레이스3",
   },
   {
     id: 4,
     title: "레이스4",
-    src: "https://t1.daumcdn.net/cfile/tistory/2563273358A2A65114",
-    text: "레이스4",
+    thumbnail: "https://t1.daumcdn.net/cfile/tistory/2563273358A2A65114",
+    description: "레이스4",
   },
 ];
 

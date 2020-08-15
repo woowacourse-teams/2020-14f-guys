@@ -6,7 +6,7 @@ const RaceItemImage = ({ item, parallaxProps }) => {
   return (
     <ParallaxImage
       source={{
-        uri: item.src,
+        uri: item.thumbnail,
       }}
       style={styles.carouselImage}
       containerStyle={styles.container}
