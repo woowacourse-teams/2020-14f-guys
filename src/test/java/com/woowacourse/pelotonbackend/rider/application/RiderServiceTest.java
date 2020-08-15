@@ -89,6 +89,7 @@ public class RiderServiceTest {
         verify(riderRepository).deleteById(RiderFixture.TEST_RIDER_ID);
     }
 
+    @DisplayName("Rider 중복 생성 요청에 대해 예외를 반환한다.")
     @Test
     void createDuplicatedRider() {
         final MemberResponse memberResponse = MemberFixture.memberResponse();
@@ -98,9 +99,8 @@ public class RiderServiceTest {
         given(riderRepository.existsByMemberIdAndRaceID(memberResponse.getId(),
             riderCreateRequest.getRaceId())).willReturn(false, true);
         given(riderRepository.save(any(Rider.class))).willReturn(expectedRider);
-
-
         riderService.create(memberResponse, riderCreateRequest);
+
         assertThatThrownBy(() -> riderService.create(memberResponse, riderCreateRequest))
             .isInstanceOf(RiderDuplicatedException.class)
             .hasMessage("Rider(member id: %d, certification id: %d) already exists!",

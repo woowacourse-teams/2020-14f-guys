@@ -198,21 +198,13 @@ public class RiderControllerTest {
     @DisplayName("Rider 중복 생성 요청에 대해서 예외를 반환한다.")
     @Test
     void createDuplicatedRiderTest() throws Exception {
-        given(riderService.create(any(MemberResponse.class), any(RiderCreateRequest.class))).willReturn(TEST_RIDER_ID)
+        given(riderService.create(any(MemberResponse.class), any(RiderCreateRequest.class)))
             .willThrow(new RiderDuplicatedException(TEST_MEMBER_ID, TEST_RACE_ID));
         given(bearerAuthInterceptor.preHandle(any(HttpServletRequest.class), any(HttpServletResponse.class),
             any(HandlerMethod.class))).willReturn(true);
         given(argumentResolver.resolveArgument(any(MethodParameter.class), any(ModelAndViewContainer.class),
             any(NativeWebRequest.class), any(WebDataBinderFactory.class))).willReturn(MemberFixture.memberResponse());
         given(argumentResolver.supportsParameter(any())).willReturn(true);
-
-        this.mockMvc.perform(post("/api/riders")
-            .header(HttpHeaders.AUTHORIZATION, LoginFixture.getTokenHeader())
-            .content(objectMapper.writeValueAsBytes(RiderFixture.createMockRequest()))
-            .contentType(MediaType.APPLICATION_JSON)
-        )
-            .andExpect(status().isCreated())
-            .andExpect(header().exists("Location"));
 
         this.mockMvc.perform(post("/api/riders")
             .header(HttpHeaders.AUTHORIZATION, LoginFixture.getTokenHeader())

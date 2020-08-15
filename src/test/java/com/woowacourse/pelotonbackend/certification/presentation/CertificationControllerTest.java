@@ -137,26 +137,12 @@ class CertificationControllerTest {
     @Test
     void createDuplicatedRequest() throws Exception {
         given(certificationService.create(any(MultipartFile.class), any(CertificationCreateRequest.class)))
-            .willReturn(TEST_CERTIFICATION_ID)
             .willThrow(new CertificationDuplicatedException(TEST_RIDER_ID, TEST_MISSION_ID));
         given(authInterceptor.preHandle(any(HttpServletRequest.class), any(HttpServletResponse.class),
             any(HandlerMethod.class))).willReturn(true);
         given(argumentResolver.supportsParameter(any())).willCallRealMethod();
         given(argumentResolver.resolveArgument(any(MethodParameter.class), any(ModelAndViewContainer.class),
             any(NativeWebRequest.class), any(WebDataBinderFactory.class))).willReturn(MemberFixture.memberResponse());
-
-        mockMvc.perform(
-            multipart("/api/certifications", TEST_RIDER_ID, TEST_MISSION_ID)
-                .file(createMockCertificationMultipartFile())
-                .header(HttpHeaders.AUTHORIZATION, LoginFixture.getTokenHeader())
-                .contentType(MediaType.MULTIPART_FORM_DATA_VALUE)
-                .param("status", TEST_CERTIFICATION_STATUS.name())
-                .param("description", TEST_CERTIFICATION_DESCRIPTION)
-                .param("riderId", TEST_RIDER_ID.toString())
-                .param("missionId", TEST_MISSION_ID.toString()))
-            .andExpect(status().isCreated())
-            .andExpect(
-                header().stringValues("location", String.format("/api/certifications/%d", TEST_CERTIFICATION_ID)));
 
         mockMvc.perform(
             multipart("/api/certifications", TEST_RIDER_ID, TEST_MISSION_ID)

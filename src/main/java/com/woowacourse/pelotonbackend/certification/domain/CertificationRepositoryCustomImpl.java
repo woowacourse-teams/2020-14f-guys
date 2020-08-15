@@ -74,7 +74,7 @@ public class CertificationRepositoryCustomImpl implements CertificationRepositor
             return false;
         } catch (IncorrectResultSizeDataAccessException e) {
             throw new AssertionError(
-                String.format("There should not be duplicated (member_id, race_id), but (%d, %d)",
+                String.format("There should not be duplicated (rider_id, mission_id), but (%d, %d)",
                     riderId, missionId));
         }
     }

@@ -77,12 +77,7 @@ public class RiderAcceptanceTest extends AcceptanceTest {
         assertThat(riderResponses.getRiderResponses()).extracting(RiderResponse::getRaceId)
             .allMatch(raceId::equals);
 
-        final ErrorResponse errorResponse = fetchCreateDuplicatedRider(tokenResponses.get(0), riderCreateRequest);
-
-        assertThat(errorResponse).extracting(ErrorResponse::getCode).isEqualTo(ErrorCode.RIDER_DUPLICATE.getCode());
-        assertThat(errorResponse).extracting(ErrorResponse::getMessage)
-            .isEqualTo(String.format("Rider(member id: %d, certification id: %d) already exists!",
-                memberResponse.getId(), riderCreateRequest.getRaceId()));
+        fetchCreateDuplicatedRider(memberResponse, riderCreateRequest);
 
         fetchFindRidersByRaceId(riderCreateRequest.getRaceId(), tokenResponse);
         fetchFindRidersByMemberId(memberResponse.getId(), tokenResponse);
@@ -94,11 +89,11 @@ public class RiderAcceptanceTest extends AcceptanceTest {
         fetchFindRiderFailed(resource, tokenResponse);
     }
 
-    private ErrorResponse fetchCreateDuplicatedRider(final JwtTokenResponse tokenResponse,
+    private void fetchCreateDuplicatedRider(final MemberResponse memberResponse,
         final RiderCreateRequest request) {
 
-        return given()
-            .header(createTokenHeader(tokenResponse))
+        final ErrorResponse errorResponse = given()
+            .header(createTokenHeader(memberResponse.getKakaoId()))
             .body(request)
             .contentType(MediaType.APPLICATION_JSON_VALUE)
             .when()
@@ -108,6 +103,11 @@ public class RiderAcceptanceTest extends AcceptanceTest {
             .statusCode(HttpStatus.BAD_REQUEST.value())
             .extract()
             .as(ErrorResponse.class);
+
+        assertThat(errorResponse).extracting(ErrorResponse::getCode).isEqualTo(ErrorCode.RIDER_DUPLICATE.getCode());
+        assertThat(errorResponse).extracting(ErrorResponse::getMessage)
+            .isEqualTo(String.format("Rider(member id: %d, certification id: %d) already exists!",
+                memberResponse.getId(), request.getRaceId()));
     }
 
     private RiderResponses findAllRidersInRace(final Long raceId,
