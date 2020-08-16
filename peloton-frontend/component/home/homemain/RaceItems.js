@@ -2,7 +2,6 @@ import React from "react";
 import { Dimensions, StyleSheet, View } from "react-native";
 import Carousel from "react-native-snap-carousel";
 import RaceItem from "./RaceItem";
-import { SAMPLE_IMAGES } from "../../../utils/constants";
 import { useRecoilValue } from "recoil";
 import { raceResponseState } from "../../../state/race/ResponseState";
 
@@ -15,14 +14,10 @@ const RaceItems = () => {
 
   const width = Math.round(Dimensions.get("window").width);
 
-  if (!myRaces) {
-    return;
-  }
-
   return (
     <View style={styles.container}>
       <Carousel
-        data={myRaces.length !== 0 ? myRaces : SAMPLE_IMAGES}
+        data={myRaces}
         sliderWidth={width}
         sliderHeight={180}
         itemWidth={250}

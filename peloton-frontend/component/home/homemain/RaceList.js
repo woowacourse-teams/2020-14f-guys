@@ -1,25 +1,24 @@
 import React, { useEffect } from "react";
 import { StyleSheet, Text, View } from "react-native";
 import RaceItems from "./RaceItems";
-import { useRecoilValue, useSetRecoilState } from "recoil";
+import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import { loadingState } from "../../../state/loading/LoadingState";
 import { raceResponseState } from "../../../state/race/ResponseState";
 import { memberTokenState } from "../../../state/member/MemberState";
 import { QueryApi } from "../../../utils/api/QueryApi";
-import LoadingIndicator from "../../../utils/LoadingIndicator";
+import { COLOR } from "../../../utils/constants";
 
 const RaceList = () => {
-  const setRaces = useSetRecoilState(raceResponseState);
+  const [races, setRaces] = useRecoilState(raceResponseState);
   const setIsLoading = useSetRecoilState(loadingState);
   const token = useRecoilValue(memberTokenState);
-  const myRaces = useRecoilValue(raceResponseState);
 
   useEffect(() => {
+    setIsLoading(true);
     const fetchRaces = async () => {
-      setIsLoading(true);
       try {
-        const response = await QueryApi.getRaces(token);
-        setRaces(response.race_responses);
+        const { race_responses } = await QueryApi.getRaces(token);
+        setRaces(race_responses);
       } catch (error) {
         alert("race 조회에 실패했습니다");
         console.log(error);
@@ -31,18 +30,20 @@ const RaceList = () => {
   }, []);
 
   return (
-    <LoadingIndicator>
-      <View style={styles.container}>
-        <Text style={styles.title}>
-          {myRaces.length !== 0
-            ? "달리고 있는 레이스들"
-            : "달릴 수 있는 레이스들"}
-        </Text>
+    <View style={styles.container}>
+      <Text style={styles.title}>
+        {races.length !== 0
+          ? "달리고 있는 레이스들"
+          : "달리고 있는 레이스가 없네요 😭"}
+      </Text>
+      {races.length !== 0 ? (
         <View style={styles.raceItems}>
           <RaceItems />
         </View>
-      </View>
-    </LoadingIndicator>
+      ) : (
+        <Text style={styles.empty}>텅</Text>
+      )}
+    </View>
   );
 };
 
@@ -58,6 +59,13 @@ const styles = StyleSheet.create({
     paddingLeft: 35,
     fontSize: 18,
     fontWeight: "600",
+  },
+  empty: {
+    fontSize: 380,
+    fontWeight: "600",
+    marginTop: 30,
+    color: COLOR.GRAY1,
+    textAlign: "center",
   },
 });
 

@@ -1,15 +1,13 @@
 import React from "react";
-import { StyleSheet, TouchableOpacity, View } from "react-native";
+import { StyleSheet, TouchableOpacity } from "react-native";
 import RaceItemImage from "./RaceItemImage";
 import RaceItemText from "./RaceItemText";
 import { COLOR } from "../../../utils/constants";
 import { useNavigation } from "@react-navigation/native";
-import { useRecoilValue } from "recoil";
-import { raceResponseState } from "../../../state/race/ResponseState";
 
 const RaceItem = ({ item, parallaxProps }) => {
   const navigation = useNavigation();
-  const myRaces = useRecoilValue(raceResponseState);
+
   const onItemClick = () => {
     navigation.navigate({
       name: "RaceDetail",
@@ -17,16 +15,11 @@ const RaceItem = ({ item, parallaxProps }) => {
     });
   };
 
-  return myRaces.length !== 0 ? (
+  return (
     <TouchableOpacity style={styles.container} onPress={onItemClick}>
       <RaceItemImage item={item} parallaxProps={parallaxProps} />
       <RaceItemText item={item} />
     </TouchableOpacity>
-  ) : (
-    <View style={styles.container}>
-      <RaceItemImage item={item} parallaxProps={parallaxProps} />
-      <RaceItemText item={item} />
-    </View>
   );
 };
 
