@@ -14,15 +14,15 @@ import lombok.RequiredArgsConstructor;
 @Getter
 public enum RaceCategory {
     TIME(Arrays.asList(
-        new ImageUrl("s3://14f-guys-image/race-thumbnail-image/thumbnail1.png"),
-        new ImageUrl("s3://14f-guys-image/race-thumbnail-image/thumbnail2.jpg"),
-        new ImageUrl("s3://14f-guys-image/race-thumbnail-image/thumbnail3.jpeg"),
-        new ImageUrl("s3://14f-guys-image/race-thumbnail-image/thumbnail4.jpeg"),
-        new ImageUrl("s3://14f-guys-image/race-thumbnail-image/thumbnail5.jpg"),
-        new ImageUrl("s3://14f-guys-image/race-thumbnail-image/thumbnail6.jpg"),
-        new ImageUrl("s3://14f-guys-image/race-thumbnail-image/thumbnail7.jpeg"),
-        new ImageUrl("s3://14f-guys-image/race-thumbnail-image/thumbnail8.jpeg"),
-        new ImageUrl("s3://14f-guys-image/race-thumbnail-image/thumbnail9.jpg")
+        new ImageUrl("https://14f-guys-image.s3.ap-northeast-2.amazonaws.com/race-thumbnail-image/thumbnail1.png"),
+        new ImageUrl("https://14f-guys-image.s3.ap-northeast-2.amazonaws.com/race-thumbnail-image/thumbnail2.jpg"),
+        new ImageUrl("https://14f-guys-image.s3.ap-northeast-2.amazonaws.com/race-thumbnail-image/thumbnail3.jpeg"),
+        new ImageUrl("https://14f-guys-image.s3.ap-northeast-2.amazonaws.com/race-thumbnail-image/thumbnail4.jpeg"),
+        new ImageUrl("https://14f-guys-image.s3.ap-northeast-2.amazonaws.com/race-thumbnail-image/thumbnail5.jpg"),
+        new ImageUrl("https://14f-guys-image.s3.ap-northeast-2.amazonaws.com/race-thumbnail-image/thumbnail6.jpg"),
+        new ImageUrl("https://14f-guys-image.s3.ap-northeast-2.amazonaws.com/race-thumbnail-image/thumbnail7.jpeg"),
+        new ImageUrl("https://14f-guys-image.s3.ap-northeast-2.amazonaws.com/race-thumbnail-image/thumbnail8.jpeg"),
+        new ImageUrl("https://14f-guys-image.s3.ap-northeast-2.amazonaws.com/race-thumbnail-image/thumbnail9.jpg")
     ),
         Collections.singletonList(new ImageUrl("TEST_TIME_CERTIFICATION_IMAGE")),
         Arrays.asList(new MissionInstruction("시계를 다리 사이에 두고 물구나무서서 찍기"),
@@ -30,15 +30,15 @@ public enum RaceCategory {
     ),
 
     STUDY(Arrays.asList(
-        new ImageUrl("s3://14f-guys-image/race-thumbnail-image/thumbnail1.png"),
-        new ImageUrl("s3://14f-guys-image/race-thumbnail-image/thumbnail2.jpg"),
-        new ImageUrl("s3://14f-guys-image/race-thumbnail-image/thumbnail3.jpeg"),
-        new ImageUrl("s3://14f-guys-image/race-thumbnail-image/thumbnail4.jpeg"),
-        new ImageUrl("s3://14f-guys-image/race-thumbnail-image/thumbnail5.jpg"),
-        new ImageUrl("s3://14f-guys-image/race-thumbnail-image/thumbnail6.jpg"),
-        new ImageUrl("s3://14f-guys-image/race-thumbnail-image/thumbnail7.jpeg"),
-        new ImageUrl("s3://14f-guys-image/race-thumbnail-image/thumbnail8.jpeg"),
-        new ImageUrl("s3://14f-guys-image/race-thumbnail-image/thumbnail9.jpg")
+        new ImageUrl("https://14f-guys-image.s3.ap-northeast-2.amazonaws.com/race-thumbnail-image/thumbnail1.png"),
+        new ImageUrl("https://14f-guys-image.s3.ap-northeast-2.amazonaws.com/race-thumbnail-image/thumbnail2.jpg"),
+        new ImageUrl("https://14f-guys-image.s3.ap-northeast-2.amazonaws.com/race-thumbnail-image/thumbnail3.jpeg"),
+        new ImageUrl("https://14f-guys-image.s3.ap-northeast-2.amazonaws.com/race-thumbnail-image/thumbnail4.jpeg"),
+        new ImageUrl("https://14f-guys-image.s3.ap-northeast-2.amazonaws.com/race-thumbnail-image/thumbnail5.jpg"),
+        new ImageUrl("https://14f-guys-image.s3.ap-northeast-2.amazonaws.com/race-thumbnail-image/thumbnail6.jpg"),
+        new ImageUrl("https://14f-guys-image.s3.ap-northeast-2.amazonaws.com/race-thumbnail-image/thumbnail7.jpeg"),
+        new ImageUrl("https://14f-guys-image.s3.ap-northeast-2.amazonaws.com/race-thumbnail-image/thumbnail8.jpeg"),
+        new ImageUrl("https://14f-guys-image.s3.ap-northeast-2.amazonaws.com/race-thumbnail-image/thumbnail9.jpg")
     ),
         Collections.singletonList(new ImageUrl("TEST_STUDY_CERTIFICATION_IMAGE")),
         Arrays.asList(new MissionInstruction("스터디원끼리 모여서 점프샷 찍기"),
