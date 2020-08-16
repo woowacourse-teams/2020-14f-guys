@@ -14,9 +14,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import com.woowacourse.pelotonbackend.infra.login.LoginAPIService;
 import com.woowacourse.pelotonbackend.infra.login.dto.KakaoTokenResponse;
 import com.woowacourse.pelotonbackend.infra.login.dto.KakaoUserResponse;
-import com.woowacourse.pelotonbackend.member.presentation.dto.MemberCreateRequest;
 import com.woowacourse.pelotonbackend.support.JwtTokenProvider;
-import com.woowacourse.pelotonbackend.support.RandomGenerator;
 import com.woowacourse.pelotonbackend.support.dto.JwtTokenResponse;
 import reactor.core.publisher.Mono;
 
@@ -33,12 +31,9 @@ class LoginServiceTest {
     @Mock
     private JwtTokenProvider jwtTokenProvider;
 
-    @Mock
-    private RandomGenerator randomGenerator;
-
     @BeforeEach
     void setUp() {
-        loginService = new LoginService(kakaoAPIService, memberService, jwtTokenProvider, randomGenerator);
+        loginService = new LoginService(kakaoAPIService, memberService, jwtTokenProvider);
     }
 
     @DisplayName("CodeUrl을 요청하면 kakaoAPI에서 CodeUrl을 받아서 반환한다.")
@@ -71,8 +66,7 @@ class LoginServiceTest {
         when(kakaoAPIService.fetchUserInfo(any(KakaoTokenResponse.class))).thenReturn(
             Mono.just(createMockKakaoUserResponse()));
         when(memberService.existsByKakaoId(anyLong())).thenReturn(false);
-        when(randomGenerator.getRandomString()).thenReturn(NICKNAME);
-        when(memberService.createMember(any(MemberCreateRequest.class))).thenReturn(createMockMemberResponse());
+        when(memberService.createByLoginApiUser(any(KakaoUserResponse.class))).thenReturn(createMockMemberResponse());
         when(jwtTokenProvider.createToken(anyString())).thenReturn(TOKEN);
 
         assertThat(loginService.createJwtTokenUrl(CODE_VALUE)).isEqualTo(URL);

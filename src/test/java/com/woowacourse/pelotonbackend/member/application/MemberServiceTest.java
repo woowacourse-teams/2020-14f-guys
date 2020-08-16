@@ -23,7 +23,9 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.woowacourse.pelotonbackend.common.exception.MemberNotFoundException;
 import com.woowacourse.pelotonbackend.common.exception.UploadFailureException;
+import com.woowacourse.pelotonbackend.infra.login.dto.KakaoUserResponse;
 import com.woowacourse.pelotonbackend.infra.upload.UploadService;
+import com.woowacourse.pelotonbackend.member.domain.LoginFixture;
 import com.woowacourse.pelotonbackend.member.domain.Member;
 import com.woowacourse.pelotonbackend.member.domain.MemberFixture;
 import com.woowacourse.pelotonbackend.member.domain.MemberRepository;
@@ -32,6 +34,8 @@ import com.woowacourse.pelotonbackend.member.presentation.dto.MemberProfileRespo
 import com.woowacourse.pelotonbackend.member.presentation.dto.MemberResponse;
 import com.woowacourse.pelotonbackend.member.presentation.dto.MemberResponses;
 import com.woowacourse.pelotonbackend.vo.Cash;
+import com.woowacourse.pelotonbackend.support.RandomGenerator;
+import com.woowacourse.pelotonbackend.vo.ImageUrl;
 
 @ExtendWith(MockitoExtension.class)
 class MemberServiceTest {
@@ -43,11 +47,14 @@ class MemberServiceTest {
     @Mock
     private UploadService uploadService;
 
+    @Mock
+    private RandomGenerator randomGenerator;
+
     private Member expectedMember;
 
     @BeforeEach
     void setUp() {
-        memberService = new MemberService(memberRepository, uploadService);
+        memberService = new MemberService(memberRepository, uploadService, randomGenerator);
         expectedMember = createWithId(MEMBER_ID);
     }
 
@@ -60,6 +67,39 @@ class MemberServiceTest {
         final MemberResponse response = memberService.createMember(memberCreateRequest);
 
         assertThat(response).isEqualToIgnoringGivenFields(expectedMember, "createdAt", "updatedAt");
+    }
+
+    @DisplayName("로그인 API를 통해 불러온 회원정보로 회원을 생성한다")
+    @Test
+    void createByLoginApiUser_Test() {
+        final String appendingString = "12345";
+        KakaoUserResponse kakaoUserResponse = LoginFixture.createKakaoUserResponseWithNullProfile();
+        given(randomGenerator.getRandomString()).willReturn(appendingString);
+        Member memberWithBasicProfile = expectedMember.toBuilder()
+            .name(expectedMember.getName() + appendingString)
+            .profile(new ImageUrl(BASIC_PROFILE_URL))
+            .build();
+        given(memberRepository.save(any(Member.class))).willReturn(memberWithBasicProfile);
+
+        final MemberResponse response = memberService.createByLoginApiUser(kakaoUserResponse);
+
+        assertThat(response).isEqualToIgnoringGivenFields(memberWithBasicProfile, "createdAt", "updatedAt");
+    }
+
+    @DisplayName("로그인 API를 통해 불러온 회원정보의 프로필 이미지가 null일 때 기본 프로필 이미지로 회원을 생성한다")
+    @Test
+    void createByLoginApiUser_WithNullProfile_Test() {
+        final String appendingString = "12345";
+        KakaoUserResponse kakaoUserResponse = LoginFixture.createMockKakaoUserResponse();
+        given(randomGenerator.getRandomString()).willReturn(appendingString);
+        Member memberWithAppendedName = expectedMember.toBuilder()
+            .name(expectedMember.getName() + appendingString)
+            .build();
+        given(memberRepository.save(any(Member.class))).willReturn(memberWithAppendedName);
+
+        final MemberResponse response = memberService.createByLoginApiUser(kakaoUserResponse);
+
+        assertThat(response).isEqualToIgnoringGivenFields(memberWithAppendedName, "createdAt", "updatedAt");
     }
 
     @DisplayName("회원을 조회한다.")
@@ -182,17 +222,15 @@ class MemberServiceTest {
         assertThat(response.getImageUrl()).contains(UPLOAD_SERVER_URL);
     }
 
-    @DisplayName("프로필의 바디가 null인 경우 기본 이미지를 등록한다.")
+    @DisplayName("변경되는 프로필 파일이 null일 경우 기존 프로필 사진 URL을 반환한다")
     @Test
     void updateProfileBasic() {
         final Member originMember = MemberFixture.createWithId(MEMBER_ID);
-        final Member updatedMember = MemberFixture.memberUpdatedBasicProfile(MEMBER_ID);
         given(memberRepository.findById(MEMBER_ID)).willReturn(Optional.of(originMember));
-        given(memberRepository.save(any(Member.class))).willReturn(updatedMember);
 
         final MemberProfileResponse response = memberService.updateProfileImage(MEMBER_ID, null);
-        assertThat(response.getImageUrl()).isEqualTo(
-            String.format("%s/%s", UPLOAD_SERVER_URL, BASIC_PROFILE_FILE_NAME));
+
+        assertThat(response.getImageUrl()).isEqualTo(originMember.getProfile().getBaseImageUrl());
     }
 
     @DisplayName("특정 회원을 삭제한다")
