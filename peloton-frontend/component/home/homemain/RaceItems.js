@@ -15,6 +15,10 @@ const RaceItems = () => {
 
   const width = Math.round(Dimensions.get("window").width);
 
+  if (!myRaces) {
+    return;
+  }
+
   return (
     <View style={styles.container}>
       <Carousel

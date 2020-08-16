@@ -17,27 +17,27 @@ const RaceList = () => {
   useEffect(() => {
     const fetchRaces = async () => {
       setIsLoading(true);
-      const response = await QueryApi.getRaces(token);
-
-      setRaces(response.race_responses);
+      try {
+        const response = await QueryApi.getRaces(token);
+        setRaces(response.race_responses);
+      } catch (error) {
+        alert("race 조회에 실패했습니다");
+        console.log(error);
+        setRaces([]);
+      }
     };
     fetchRaces();
     setIsLoading(false);
   }, []);
 
-  return myRaces.length !== 0 ? (
+  return (
     <LoadingIndicator>
       <View style={styles.container}>
-        <Text style={styles.title}>달리고 있는 레이스들</Text>
-        <View style={styles.raceItems}>
-          <RaceItems />
-        </View>
-      </View>
-    </LoadingIndicator>
-  ) : (
-    <LoadingIndicator>
-      <View style={styles.container}>
-        <Text style={styles.title}>달릴 수 있는 레이스들</Text>
+        <Text style={styles.title}>
+          {myRaces.length !== 0
+            ? "달리고 있는 레이스들"
+            : "달릴 수 있는 레이스들"}
+        </Text>
         <View style={styles.raceItems}>
           <RaceItems />
         </View>

@@ -32,13 +32,12 @@ export const COLOR = {
   BLACK: "#000",
   BLACK2: "#1b1c20",
 };
-
 export const SAMPLE_IMAGES = [
   {
     id: 1,
     title: "레이스1",
     thumbnail:
-      "https://i.pinimg.com/736x/fd/e7/6d/fde76d74009056da95e35abec597f22e.jpg",
+      "https://14f-guys-image.s3.ap-northeast-2.amazonaws.com/race-thumbnail-image/thumbnail1.png",
     description:
       "안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요",
   },
@@ -46,19 +45,21 @@ export const SAMPLE_IMAGES = [
     id: 2,
     title: "레이스2",
     thumbnail:
-      "https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcQqH2LDKlEd-C6ahSmsVLD0LLAnTc4oy7NAtw&usqp=CAU",
+      "https://14f-guys-image.s3.ap-northeast-2.amazonaws.com/race-thumbnail-image/thumbnail2.jpg",
     description: "레이스2",
   },
   {
     id: 3,
     title: "레이스3",
-    thumbnail: "https://pbs.twimg.com/media/EADIWaaU4AI5lK_.jpg:small",
+    thumbnail:
+      "https://14f-guys-image.s3.ap-northeast-2.amazonaws.com/race-thumbnail-image/thumbnail3.jpeg",
     description: "레이스3",
   },
   {
     id: 4,
     title: "레이스4",
-    thumbnail: "https://t1.daumcdn.net/cfile/tistory/2563273358A2A65114",
+    thumbnail:
+      "https://14f-guys-image.s3.ap-northeast-2.amazonaws.com/race-thumbnail-image/thumbnail4.jpeg",
     description: "레이스4",
   },
 ];
