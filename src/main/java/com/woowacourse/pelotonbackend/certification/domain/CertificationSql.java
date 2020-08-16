@@ -41,7 +41,7 @@ public class CertificationSql {
             .toString();
     }
 
-    static String existsCertificationByRiderIdAndMissionId() {
+    static String existsCertificationByRiderIdAndMissionIdSql() {
         return new StringBuilder()
             .append("SELECT CERTIFICATION.ID AS ID")
             .append(" FROM CERTIFICATION")

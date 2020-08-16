@@ -18,7 +18,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class GlobalExceptionHandler {
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<ErrorResponse> validException(final MethodArgumentNotValidException exception) {
+    protected ResponseEntity<ErrorResponse> validException(final MethodArgumentNotValidException exception) {
         log.info("Validate Exception ! : {} ", exception.toString(), exception);
 
         final ErrorCode errorCode = ErrorCode.INVALID_VALIDATE;
@@ -29,7 +29,7 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(BindException.class)
-    public ResponseEntity<ErrorResponse> bindException(final BindException exception) {
+    protected ResponseEntity<ErrorResponse> bindException(final BindException exception) {
         log.info("HandleBind Exception ! : {} ", exception.toString(), exception);
 
         final ErrorCode errorCode = ErrorCode.INVALID_VALIDATE;
@@ -44,7 +44,7 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler({ConstraintViolationException.class, HttpMessageNotReadableException.class,
         MethodArgumentTypeMismatchException.class})
-    public ResponseEntity<ErrorResponse> invalidInputException(final RuntimeException exception) {
+    protected ResponseEntity<ErrorResponse> invalidInputException(final RuntimeException exception) {
         log.info(exception.getClass().getSimpleName() + " Exception !", exception);
 
         final ErrorCode errorCode = ErrorCode.INVALID_VALIDATE;
@@ -55,7 +55,7 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(BusinessException.class)
-    public ResponseEntity<ErrorResponse> businessException(final BusinessException exception) {
+    protected ResponseEntity<ErrorResponse> businessException(final BusinessException exception) {
         log.info("Business Exception ! : {}", exception.toString(), exception);
 
         final ErrorCode errorCode = exception.getErrorCode();
@@ -68,7 +68,7 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(Exception.class)
-    public ResponseEntity<ErrorResponse> UnexpectedException(final Exception exception) {
+    protected ResponseEntity<ErrorResponse> UnexpectedException(final Exception exception) {
         log.error("Unexpected Exception ! {} ", exception.toString(), exception);
 
         final ErrorResponse errorResponse = ErrorResponse.of(

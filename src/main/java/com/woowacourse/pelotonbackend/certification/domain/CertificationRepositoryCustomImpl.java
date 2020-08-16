@@ -69,7 +69,7 @@ public class CertificationRepositoryCustomImpl implements CertificationRepositor
             .addValue("missionId", missionId);
 
         try {
-            return jdbcOperations.queryForObject(existsCertificationByRiderIdAndMissionId(), parameterSource, Boolean.class);
+            return jdbcOperations.queryForObject(existsCertificationByRiderIdAndMissionIdSql(), parameterSource, Boolean.class);
         } catch (EmptyResultDataAccessException e) {
             return false;
         } catch (IncorrectResultSizeDataAccessException e) {
