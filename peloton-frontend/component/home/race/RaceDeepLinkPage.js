@@ -40,7 +40,6 @@ const RedirectPage = ({ route }) => {
       {
         name: "RaceDetail",
         params: {
-          raceInfo,
           id: raceInfo.id,
         },
       },

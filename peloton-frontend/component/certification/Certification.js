@@ -4,21 +4,19 @@ import { useRecoilState } from "recoil";
 import { useFocusEffect } from "@react-navigation/core";
 
 import {
-  raceCertificationFixture,
-  raceCertificationState,
-} from "../../state/certification/RaceCertificationState";
+  raceMissionFixture,
+  raceMissionState,
+} from "../../state/certification/RaceMissionState";
 import CertificationItem from "./CertificationItem";
 import { COLOR } from "../../utils/constants";
 
 const Certification = () => {
-  const [certifications, setCertifications] = useRecoilState(
-    raceCertificationState,
-  );
+  const [certifications, setCertifications] = useRecoilState(raceMissionState);
   const [currentTime, setCurrentTime] = useState(new Date());
 
   useEffect(() => {
     // TODO: 미션 정보 받아오는 부분이 여기 들어가야함
-    setCertifications(raceCertificationFixture);
+    setCertifications(raceMissionFixture);
   }, []);
 
   useFocusEffect(

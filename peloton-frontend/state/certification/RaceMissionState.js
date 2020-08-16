@@ -1,7 +1,7 @@
 import { atom } from "recoil";
 
-export const raceCertificationState = atom({
-  key: "RaceCertificationState",
+export const raceMissionState = atom({
+  key: "raceMissionState",
   default: [
     {
       race: {
@@ -10,7 +10,9 @@ export const raceCertificationState = atom({
         certification_example: "",
         thumbnail: "",
       },
-      rider_id: "",
+      rider: {
+        id: "",
+      },
       mission: {
         id: "",
         mission_duration: {
@@ -42,7 +44,7 @@ const todayTwoHourAfter = (() => {
   return date;
 })();
 
-export const raceCertificationFixture = [
+export const raceMissionFixture = [
   {
     race: {
       id: 1,
@@ -52,7 +54,9 @@ export const raceCertificationFixture = [
       thumbnail:
         "https://post-phinf.pstatic.net/MjAxOTEyMTFfMjgy/MDAxNTc2MDUwODAxODQ3.qV7kcYtxZZr7ycnGUsmKyj2-eYBThcJbaAf7Xr4uLzAg.T0x40qYIWBL2pXFG51QhCt6N5xSFZVKOZaicP3XGx5Yg.JPEG/image_8240955871576050766062.jpg?type=w1200",
     },
-    rider_id: 1,
+    rider: {
+      id: 1,
+    },
     mission: {
       id: 1,
       mission_duration: {
@@ -72,7 +76,9 @@ export const raceCertificationFixture = [
       thumbnail:
         "https://t1.daumcdn.net/thumb/R720x0/?fname=http://t1.daumcdn.net/brunch/service/user/Jp6/image/92CQBbgioOWYSe-SFIUkkjJEGpQ.jpg",
     },
-    rider_id: 2,
+    rider: {
+      id: 1,
+    },
     mission: {
       id: 2,
       mission_duration: {

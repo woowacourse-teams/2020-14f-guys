@@ -13,7 +13,7 @@ import * as ImagePicker from "expo-image-picker";
 import { useLinkTo } from "@react-navigation/native";
 import { useNavigation } from "@react-navigation/core";
 
-import { raceCertificationState } from "../../state/certification/RaceCertificationState";
+import { raceMissionState } from "../../state/certification/RaceMissionState";
 import { COLOR } from "../../utils/constants";
 import { loadingState } from "../../state/loading/LoadingState";
 import {
@@ -27,7 +27,7 @@ import LoadingIndicator from "../../utils/LoadingIndicator";
 import { navigateWithoutHistory } from "../../utils/util";
 
 const CertificationSubmit = ({ route }) => {
-  const raceCertifications = useRecoilValue(raceCertificationState);
+  const raceCertifications = useRecoilValue(raceMissionState);
   const setIsLoading = useSetRecoilState(loadingState);
   const token = useRecoilValue(memberTokenState);
   const navigation = useNavigation();
@@ -49,18 +49,18 @@ const CertificationSubmit = ({ route }) => {
     });
     formData.append("status", "SUCCESS");
     formData.append("description", "필요없을 수도 있는 설명");
-    formData.append("riderId", raceCertification.rider_id);
+    formData.append("riderId", raceCertification.rider.id);
     formData.append("missionId", raceCertification.mission.id);
-    const { location } = await CertificationApi.post(token, formData);
-    setIsLoading(false);
-    if (!location) {
-      alert("문제가 발생했습니다. 잠시 후 다시 시도해주세요");
-      return;
+    try {
+      await CertificationApi.post(token, formData);
+      alert("인증 완료되었습니다");
+      setPhotoUri(raceCertification.race.certification_example);
+      navigateWithoutHistory(navigation, "CertificationHome");
+      linkTo(`/home/races/detail/${raceCertification.race.id}`);
+    } catch (e) {
+      alert(e.response.data.message);
     }
-    alert("인증 완료되었습니다");
-    setPhotoUri(raceCertification.race.certification_example);
-    navigateWithoutHistory(navigation, "CertificationHome");
-    linkTo(`/home/races/detail/${raceCertification.race.id}`);
+    setIsLoading(false);
   };
 
   const takePhoto = async () => {
