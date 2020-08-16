@@ -13,6 +13,8 @@ import com.woowacourse.pelotonbackend.certification.presentation.dto.Certificati
 import com.woowacourse.pelotonbackend.certification.presentation.dto.CertificationDescriptionUpdateRequest;
 import com.woowacourse.pelotonbackend.certification.presentation.dto.CertificationResponse;
 import com.woowacourse.pelotonbackend.certification.presentation.dto.CertificationStatusUpdateRequest;
+import com.woowacourse.pelotonbackend.common.ErrorCode;
+import com.woowacourse.pelotonbackend.common.ErrorResponse;
 import com.woowacourse.pelotonbackend.member.domain.MemberFixture;
 import com.woowacourse.pelotonbackend.support.AcceptanceTest;
 import com.woowacourse.pelotonbackend.support.dto.JwtTokenResponse;
@@ -59,6 +61,8 @@ public class CertificationAcceptanceTest extends AcceptanceTest {
         final CertificationResponse response = fetchRetrieveCertification(token, resource);
         assertThat(createRequest).isEqualToIgnoringGivenFields(response, "id", "createdAt", "updatedAt","description");
 
+        createDuplicatedCertification(token, createRequest);
+
         fetchUpdateDescriptionCertification(token, descriptionUpdateRequest);
         final CertificationResponse descriptionUpdated = fetchRetrieveCertification(token, resource);
         assertThat(response).isEqualToIgnoringGivenFields(descriptionUpdated,"updatedAt", "description");
@@ -71,6 +75,32 @@ public class CertificationAcceptanceTest extends AcceptanceTest {
 
         fetchDeleteCertification(token, resource);
         fetchCertificationNotFound(token, resource);
+    }
+
+    private void createDuplicatedCertification(final JwtTokenResponse token,
+        final CertificationCreateRequest createRequest) {
+
+        final ErrorResponse errorResponse = given()
+            .header(createTokenHeader(token))
+            .contentType(MediaType.MULTIPART_FORM_DATA_VALUE)
+            .multiPart("certification_image", TEST_CERTIFICATION_FILE_NAME, TEST_CERTIFICATION_FILE,
+                MediaType.IMAGE_JPEG_VALUE)
+            .param("status", createRequest.getStatus())
+            .param("description", createRequest.getDescription())
+            .param("riderId", createRequest.getRiderId())
+            .param("missionId", createRequest.getMissionId())
+            .when()
+            .post("/api/certifications")
+            .then()
+            .log().all()
+            .statusCode(HttpStatus.BAD_REQUEST.value())
+            .extract()
+            .as(ErrorResponse.class);
+
+        assertThat(errorResponse).extracting(ErrorResponse::getCode).isEqualTo(ErrorCode.CERTIFICATION_DUPLICATE.getCode());
+        assertThat(errorResponse).extracting(ErrorResponse::getMessage)
+            .isEqualTo(String.format("Certification(rider id: %d, mission id: %d) already exists!",
+                createRequest.getRiderId(), createRequest.getMissionId()));
     }
 
     private String fetchCreateCertification(

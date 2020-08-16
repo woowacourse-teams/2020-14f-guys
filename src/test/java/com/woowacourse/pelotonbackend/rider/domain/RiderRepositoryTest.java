@@ -7,6 +7,8 @@ import static org.junit.jupiter.api.Assertions.*;
 import java.util.Arrays;
 import java.util.List;
 
+import javax.validation.constraints.NotNull;
+
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -75,5 +77,36 @@ public class RiderRepositoryTest {
         assertThat(riders.size()).isEqualTo(expectedRiders.size());
         riders.forEach(
             rider -> assertThat(rider).isEqualToIgnoringGivenFields(riderWithoutId, "id", "createdAt", "updatedAt"));
+    }
+
+    @DisplayName("멤버 id와 레이스 id로 라이더가 존재하는 지 확인한다.")
+    @Test
+    void existsByMemberIdAndRaceId() {
+        final Rider rider = createRiderWithoutId();
+        riderRepository.save(rider);
+
+        assertThat(riderRepository.existsByMemberIdAndRaceID(rider.getMemberId().getId(), rider.getRaceId().getId()))
+            .isTrue();
+    }
+
+    @DisplayName("멤버 id와 레이스 id로 라이더가 존재하지 않는 지 확인한다.")
+    @Test
+    void notExistsByMemberIdAndRaceId() {
+        assertThat(riderRepository.existsByMemberIdAndRaceID(1L, 1L)).isFalse();
+    }
+
+    @DisplayName("멤버 id와 race id로 중복된 라이더가 있을 때 예외를 반환한다.")
+    @Test
+    void existsDuplicatedByMemberIdAndRaceId() {
+        final Rider rider = createRiderWithoutId();
+        final Long memberId = rider.getMemberId().getId();
+        final Long raceId = rider.getRaceId().getId();
+        riderRepository.save(rider);
+        riderRepository.save(rider);
+
+        assertThatThrownBy(() -> riderRepository.existsByMemberIdAndRaceID(memberId, raceId))
+            .isInstanceOf(AssertionError.class)
+            .hasMessage(String.format("There should not be duplicated (member_id, race_id), but (%d, %d)",
+                memberId, raceId));
     }
 }

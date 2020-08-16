@@ -25,6 +25,7 @@ import com.woowacourse.pelotonbackend.certification.domain.CertificationReposito
 import com.woowacourse.pelotonbackend.certification.presentation.dto.CertificationCreateRequest;
 import com.woowacourse.pelotonbackend.certification.presentation.dto.CertificationResponse;
 import com.woowacourse.pelotonbackend.certification.presentation.dto.CertificationResponses;
+import com.woowacourse.pelotonbackend.common.exception.CertificationDuplicatedException;
 import com.woowacourse.pelotonbackend.infra.upload.UploadService;
 
 @ExtendWith(SpringExtension.class)
@@ -59,6 +60,21 @@ class CertificationServiceTest {
                 certificationService.create(multipartFile, certificationCreateRequest))
                 .isEqualTo(TEST_CERTIFICATION_ID)
         );
+    }
+
+    @DisplayName("Certification 중복 생성 시 예외를 반환한다.")
+    @Test
+    void createDuplicate() {
+        given(certificationRepository.save(createCertificationWithoutId())).willReturn(createCertificationWithId());
+        given(certificationRepository.existsByRiderIdAndMissionId(TEST_RIDER_ID, TEST_MISSION_ID)).willReturn(false)
+            .willReturn(true);
+        given(uploadService.uploadImage(multipartFile, CERTIFICATION_IMAGE_PATH)).willReturn(
+            TEST_CERTIFICATION_FILE_URL.getBaseImageUrl());
+
+        certificationService.create(multipartFile, certificationCreateRequest);
+        assertThatThrownBy(() -> certificationService.create(multipartFile, certificationCreateRequest))
+            .isInstanceOf(CertificationDuplicatedException.class)
+            .hasMessage("Certification(rider id: %d, mission id: %d) already exists!", TEST_RIDER_ID, TEST_MISSION_ID);
     }
 
     @DisplayName("아이디를 기반으로 인증을 조회한다.")

@@ -10,4 +10,6 @@ public interface CertificationRepositoryCustom {
     Page<Certification> findByRiderId(Long id, Pageable pageable);
 
     Page<Certification> findByMissionIds(List<Long> missionIds, Pageable pageable);
+
+    boolean existsByRiderIdAndMissionId(Long riderId, Long missionId);
 }

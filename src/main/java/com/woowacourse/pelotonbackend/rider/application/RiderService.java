@@ -2,9 +2,12 @@ package com.woowacourse.pelotonbackend.rider.application;
 
 import java.util.List;
 
+import javax.validation.constraints.NotNull;
+
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.woowacourse.pelotonbackend.common.exception.RiderDuplicatedException;
 import com.woowacourse.pelotonbackend.common.exception.RiderNotFoundException;
 import com.woowacourse.pelotonbackend.member.presentation.dto.MemberResponse;
 import com.woowacourse.pelotonbackend.rider.domain.Rider;
@@ -22,6 +25,13 @@ public class RiderService {
     private final RiderRepository riderRepository;
 
     public Long create(final MemberResponse member, final RiderCreateRequest riderCreateRequest) {
+        final Long memberId = member.getId();
+        final Long raceId = riderCreateRequest.getRaceId();
+
+        final boolean isRiderAlreadyExists = riderRepository.existsByMemberIdAndRaceID(memberId, raceId);
+        if (isRiderAlreadyExists) {
+            throw new RiderDuplicatedException(memberId, raceId);
+        }
         final Rider riderWithoutId = riderCreateRequest.toRider(member);
 
         return riderRepository.save(riderWithoutId).getId();

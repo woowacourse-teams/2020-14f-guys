@@ -6,6 +6,8 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.Arrays;
 
+import javax.validation.constraints.NotNull;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -84,5 +86,39 @@ class CertificationRepositoryTest {
             () -> assertThat(certifications.getContent().size()).isEqualTo(1),
             () -> assertThat(certifications.getContent().get(0).getId()).isEqualTo(1L)
         );
+    }
+
+    @DisplayName("라이더 id와 미션 id로 Rider가 존재하는 지 확인한다.")
+    @Test
+    void existsByRiderIdAndMissionId() {
+        final Certification certification = createCertificationWithoutId();
+        certificationRepository.save(certification);
+
+        assertThat(certificationRepository.existsByRiderIdAndMissionId(certification.getRiderId().getId(),
+            certification.getMissionId().getId())).isTrue();
+    }
+
+    @DisplayName("라이더 id와 미션 id로 존재하지 않는 Rider가 존재하지 않는 지 확인한다.")
+    @Test
+    void notExistsByRiderIdAndMissionId() {
+        final Certification certification = createCertificationWithoutId();
+
+        assertThat(certificationRepository.existsByRiderIdAndMissionId(certification.getRiderId().getId(),
+            certification.getMissionId().getId())).isFalse();
+    }
+
+    @DisplayName("라이더 id와 미션 id로 중복된 라이더를 조회 시 예외를 반환한다.")
+    @Test
+    void existsDuplicateByRiderIdAndMissionId() {
+        final Certification certification = createCertificationWithoutId();
+        final Long riderId = certification.getRiderId().getId();
+        final Long missionId = certification.getMissionId().getId();
+        certificationRepository.save(certification);
+        certificationRepository.save(certification);
+
+        assertThatThrownBy(() -> certificationRepository.existsByRiderIdAndMissionId(riderId, missionId))
+            .isInstanceOf(AssertionError.class)
+            .hasMessage(String.format("There should not be duplicated (rider_id, mission_id), but (%d, %d)", riderId,
+                missionId));
     }
 }

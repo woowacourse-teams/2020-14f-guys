@@ -40,4 +40,12 @@ public class CertificationSql {
             .append(" WHERE MISSION_ID IN (:missionIds)")
             .toString();
     }
+
+    static String existsCertificationByRiderIdAndMissionIdSql() {
+        return new StringBuilder()
+            .append("SELECT CERTIFICATION.ID AS ID")
+            .append(" FROM CERTIFICATION")
+            .append(" WHERE CERTIFICATION.RIDER_ID = :riderId AND CERTIFICATION.MISSION_ID = :missionId")
+            .toString();
+    }
 }

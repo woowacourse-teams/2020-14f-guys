@@ -3,13 +3,22 @@ package com.woowacourse.pelotonbackend.rider.acceptance;
 import static com.woowacourse.pelotonbackend.rider.domain.RiderFixture.*;
 import static org.assertj.core.api.Assertions.*;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
+
+import org.assertj.core.util.Lists;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 
+import com.woowacourse.pelotonbackend.common.ErrorCode;
+import com.woowacourse.pelotonbackend.common.ErrorResponse;
 import com.woowacourse.pelotonbackend.member.domain.MemberFixture;
+import com.woowacourse.pelotonbackend.member.presentation.dto.MemberCreateRequest;
 import com.woowacourse.pelotonbackend.member.presentation.dto.MemberResponse;
+import com.woowacourse.pelotonbackend.member.presentation.dto.MemberResponses;
 import com.woowacourse.pelotonbackend.rider.domain.RiderFixture;
 import com.woowacourse.pelotonbackend.rider.presentation.dto.RiderCreateRequest;
 import com.woowacourse.pelotonbackend.rider.presentation.dto.RiderResponse;
@@ -49,35 +58,82 @@ public class RiderAcceptanceTest extends AcceptanceTest {
     @DisplayName("Rider 관리 기능")
     @Test
     void manageRider() {
+        final List<MemberCreateRequest> members = MemberFixture.createRequests();
+        final List<JwtTokenResponse> tokenResponses = loginMembers(members);
         final RiderCreateRequest riderCreateRequest = RiderFixture.createMockRequest();
-        final JwtTokenResponse tokenResponse = loginMember(
-            MemberFixture.createRequest(MemberFixture.KAKAO_ID, MemberFixture.EMAIL, MemberFixture.NAME));
-        final MemberResponse memberResponse = requestFind(MemberFixture.KAKAO_ID);
-        final String resource = fetchCreateRider(tokenResponse, riderCreateRequest);
-        final RiderResponse riderResponse = fetchFindRider(resource, tokenResponse);
 
-        assertThat(riderResponse.getId()).isNotNull();
-        assertThat(riderResponse.getMemberId()).isEqualTo(memberResponse.getId());
-        assertThat(riderResponse.getRaceId()).isEqualTo(riderCreateRequest.getRaceId());
+        final Long raceId = riderCreateRequest.getRaceId();
+        final JwtTokenResponse tokenResponse = tokenResponses.get(0);
+        final MemberResponses memberResponses = findAllMembers(tokenResponse);
+        final MemberResponse memberResponse = memberResponses.getResponses().get(0);
+        final List<String> resources = fetchCreateRiders(tokenResponses, riderCreateRequest);
+        final String resource = resources.get(0);
+        final RiderResponses riderResponses = findAllRidersInRace(riderCreateRequest.getRaceId(), tokenResponse);
 
-        fetchCreateRiders(tokenResponse, riderCreateRequest);
-        fetchFindRidersByRaceId(TEST_RACE_ID, tokenResponse);
+        assertThat(riderResponses.getRiderResponses()).hasSize(RIDER_NUMBER);
+        assertThat(riderResponses.getRiderResponses()).extracting(RiderResponse::getMemberId)
+            .containsExactlyElementsOf(
+                memberResponses.getResponses().stream().map(MemberResponse::getId).collect(Collectors.toList()));
+        assertThat(riderResponses.getRiderResponses()).extracting(RiderResponse::getRaceId)
+            .allMatch(raceId::equals);
+
+        fetchCreateDuplicatedRider(memberResponse, riderCreateRequest);
+
+        fetchFindRidersByRaceId(riderCreateRequest.getRaceId(), tokenResponse);
         fetchFindRidersByMemberId(memberResponse.getId(), tokenResponse);
 
         fetchUpdateRider(resource, tokenResponse);
-        final RiderResponse updatedRiderResponse = fetchFindRider(resource, tokenResponse);
-
-        assertThat(updatedRiderResponse.getMemberId()).isEqualTo((TEST_CHANGED_MEMBER_ID));
-        assertThat(updatedRiderResponse.getRaceId()).isEqualTo(TEST_CHANGED_RACE_ID);
+        fetchFindRider(resource, tokenResponse);
 
         fetchDeleteRider(resource, tokenResponse);
         fetchFindRiderFailed(resource, tokenResponse);
     }
 
-    private void fetchCreateRiders(final JwtTokenResponse tokenResponse, final RiderCreateRequest riderCreateRequest) {
-        for (int i = 0; i < RIDER_NUMBER; i++) {
-            fetchCreateRider(tokenResponse, riderCreateRequest);
+    private void fetchCreateDuplicatedRider(final MemberResponse memberResponse,
+        final RiderCreateRequest request) {
+
+        final ErrorResponse errorResponse = given()
+            .header(createTokenHeader(memberResponse.getKakaoId()))
+            .body(request)
+            .contentType(MediaType.APPLICATION_JSON_VALUE)
+            .when()
+            .post("/api/riders")
+            .then()
+            .log().all()
+            .statusCode(HttpStatus.BAD_REQUEST.value())
+            .extract()
+            .as(ErrorResponse.class);
+
+        assertThat(errorResponse).extracting(ErrorResponse::getCode).isEqualTo(ErrorCode.RIDER_DUPLICATE.getCode());
+        assertThat(errorResponse).extracting(ErrorResponse::getMessage)
+            .isEqualTo(String.format("Rider(member id: %d, certification id: %d) already exists!",
+                memberResponse.getId(), request.getRaceId()));
+    }
+
+    private RiderResponses findAllRidersInRace(final Long raceId,
+        final JwtTokenResponse tokenResponse) {
+
+        return given()
+            .header(createTokenHeader(tokenResponse))
+            .accept(MediaType.APPLICATION_JSON_VALUE)
+            .when()
+            .get("/api/riders/races/{id}", raceId)
+            .then()
+            .log().all()
+            .statusCode(HttpStatus.OK.value())
+            .extract()
+            .as(RiderResponses.class);
+    }
+
+    private List<String> fetchCreateRiders(final List<JwtTokenResponse> tokenResponses,
+        final RiderCreateRequest riderCreateRequest) {
+
+        final ArrayList<String> resources = Lists.newArrayList();
+
+        for (JwtTokenResponse tokenResponse : tokenResponses) {
+            resources.add(fetchCreateRider(tokenResponse, riderCreateRequest));
         }
+        return resources;
     }
 
     private void fetchFindRidersByRaceId(final Long raceId, final JwtTokenResponse tokenResponse) {
@@ -92,11 +148,11 @@ public class RiderAcceptanceTest extends AcceptanceTest {
             .body()
             .as(RiderResponses.class);
 
-        assertThat(riders.getRiderResponses().size()).isEqualTo(RIDER_NUMBER + 1);
+        assertThat(riders.getRiderResponses().size()).isEqualTo(RIDER_NUMBER);
     }
 
-    private RiderResponse fetchFindRider(final String resource, JwtTokenResponse tokenResponse) {
-        return given()
+    private void fetchFindRider(final String resource, JwtTokenResponse tokenResponse) {
+        final RiderResponse updatedRiderResponse = given()
             .header(createTokenHeader(tokenResponse))
             .accept(MediaType.APPLICATION_JSON_VALUE)
             .when()
@@ -106,6 +162,9 @@ public class RiderAcceptanceTest extends AcceptanceTest {
             .statusCode(HttpStatus.OK.value())
             .extract()
             .as(RiderResponse.class);
+
+        assertThat(updatedRiderResponse.getMemberId()).isEqualTo((TEST_CHANGED_MEMBER_ID));
+        assertThat(updatedRiderResponse.getRaceId()).isEqualTo(TEST_CHANGED_RACE_ID);
     }
 
     private String fetchCreateRider(JwtTokenResponse tokenResponse, RiderCreateRequest request) {
@@ -134,7 +193,7 @@ public class RiderAcceptanceTest extends AcceptanceTest {
             .body()
             .as(RiderResponses.class);
 
-        assertThat(riders.getRiderResponses().size()).isEqualTo(RIDER_NUMBER + 1);
+        assertThat(riders.getRiderResponses().size()).isEqualTo(1L);
     }
 
     private void fetchUpdateRider(final String resource, final JwtTokenResponse tokenResponse) {

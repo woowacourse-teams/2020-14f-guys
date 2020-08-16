@@ -204,6 +204,10 @@ operation::certification/create-success[snippets='http-request,http-response,req
 ==== Failure
 operation::certification/create-fail[snippets='http-request,http-response,request-parameters,request-parts,response-headers,response-fields']
 
+[[resources-certification-create-duplicated]]
+==== Duplicated
+operation::certification/create-duplicated[snippets='http-request,http-response,request-parameters,request-parts,response-fields']
+
 [[resources-certification-get-certification]]
 ==== Success
 operation::certification/get-certification[snippets='http-request,http-response,path-parameters,request-headers,response-headers,response-fields']
@@ -447,6 +451,10 @@ operation::mission/delete-success[snippets='http-request,http-response,path-para
 ==== Success
 operation::report/create-success[snippets='http-request,http-response,request-headers,request-fields,response-headers']
 
+[[resources-report-create-duplicated]]
+==== Duplicated
+operation::report/create-duplicated[snippets='http-request,http-response,request-headers,request-fields,response-fields']
+
 [[resources-rider]]
 == Rider
 
@@ -454,10 +462,14 @@ operation::report/create-success[snippets='http-request,http-response,request-he
 [[resources-rider-create]]
 === Create Rider
 
-
 [[resources-rider-create-success]]
 ==== Success
 operation::rider/create-success[snippets='http-request,http-response,request-headers,request-fields,response-headers']
+
+
+[[resources-rider-create-duplicated]]
+==== Duplicated
+operation::rider/create-duplicated[snippets='http-request,http-response,request-headers,request-fields,response-fields']
 
 [[resources-rider-get]]
 === Get Rider

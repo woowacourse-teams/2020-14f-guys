@@ -3,6 +3,9 @@ package com.woowacourse.pelotonbackend.support;
 import static com.woowacourse.pelotonbackend.member.domain.LoginFixture.*;
 import static com.woowacourse.pelotonbackend.member.domain.MemberFixture.*;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -14,6 +17,7 @@ import org.springframework.test.context.TestExecutionListeners;
 import com.woowacourse.pelotonbackend.DataInitializeExecutionListener;
 import com.woowacourse.pelotonbackend.member.presentation.dto.MemberCreateRequest;
 import com.woowacourse.pelotonbackend.member.presentation.dto.MemberResponse;
+import com.woowacourse.pelotonbackend.member.presentation.dto.MemberResponses;
 import com.woowacourse.pelotonbackend.support.dto.JwtTokenResponse;
 import io.restassured.RestAssured;
 import io.restassured.http.Header;
@@ -46,6 +50,15 @@ public class AcceptanceTest {
         return JwtTokenResponse.of(token, ADMIT);
     }
 
+    protected List<JwtTokenResponse> loginMembers(List<MemberCreateRequest> requests) {
+        requests.forEach(this::requestCreate);
+
+        return requests.stream()
+            .map(request -> JwtTokenResponse.of(jwtTokenProvider.createToken(String.valueOf(request.getKakaoId())),
+                ADMIT))
+            .collect(Collectors.toList());
+    }
+
     protected Long requestCreate(final MemberCreateRequest memberRequest) {
         final String header = given()
             .body(memberRequest)
@@ -72,6 +85,18 @@ public class AcceptanceTest {
             .statusCode(HttpStatus.OK.value())
             .extract()
             .as(MemberResponse.class);
+    }
+
+    protected MemberResponses findAllMembers(final JwtTokenResponse tokenResponse) {
+        return given()
+            .header(createTokenHeader(tokenResponse))
+            .when()
+            .get(RESOURCE_URL+"/all")
+            .then()
+            .log().all()
+            .statusCode(HttpStatus.OK.value())
+            .extract()
+            .as(MemberResponses.class);
     }
 
     protected Header createTokenHeader(final Long kakaoId) {

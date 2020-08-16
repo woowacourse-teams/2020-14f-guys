@@ -1,7 +1,11 @@
 package com.woowacourse.pelotonbackend.certification.domain;
 
+import static com.woowacourse.pelotonbackend.certification.domain.CertificationSql.*;
+
 import java.util.List;
 
+import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.dao.IncorrectResultSizeDataAccessException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jdbc.core.convert.EntityRowMapper;
@@ -56,5 +60,22 @@ public class CertificationRepositoryCustomImpl implements CertificationRepositor
 
         return PageableExecutionUtils.getPage(certifications, pageable, () ->
             this.jdbcOperations.queryForObject(CertificationSql.countByMissionIds(), parameterSource, Long.class));
+    }
+
+    @Override
+    public boolean existsByRiderIdAndMissionId(final Long riderId, final Long missionId) {
+        final SqlParameterSource parameterSource = new MapSqlParameterSource()
+            .addValue("riderId", riderId)
+            .addValue("missionId", missionId);
+
+        try {
+            return jdbcOperations.queryForObject(existsCertificationByRiderIdAndMissionIdSql(), parameterSource, Boolean.class);
+        } catch (EmptyResultDataAccessException e) {
+            return false;
+        } catch (IncorrectResultSizeDataAccessException e) {
+            throw new AssertionError(
+                String.format("There should not be duplicated (rider_id, mission_id), but (%d, %d)",
+                    riderId, missionId));
+        }
     }
 }
