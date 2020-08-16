@@ -145,7 +145,7 @@ class QueryControllerTest {
         when(bearerAuthInterceptor.preHandle(any(HttpServletRequest.class), any(HttpServletResponse.class),
             any(HandlerMethod.class))).thenReturn(true);
 
-        mockMvc.perform(get("/api/queries/races/certifications/{raceId}", TEST_RACE_ID)
+        mockMvc.perform(get("/api/queries/races/{raceId}/certifications", TEST_RACE_ID)
             .header(HttpHeaders.AUTHORIZATION, "TEST_TOKEN")
             .accept(MediaType.APPLICATION_JSON)
         )
@@ -160,7 +160,7 @@ class QueryControllerTest {
         when(bearerAuthInterceptor.preHandle(any(HttpServletRequest.class), any(HttpServletResponse.class),
             any(HandlerMethod.class))).thenReturn(true);
 
-        mockMvc.perform(get("/api/queries/races/certifications/{raceId}", TEST_RACE_ID)
+        mockMvc.perform(get("/api/queries/races/{raceId}/certifications", TEST_RACE_ID)
             .header(HttpHeaders.AUTHORIZATION, "TEST_TOKEN")
             .accept(MediaType.APPLICATION_JSON)
         )
