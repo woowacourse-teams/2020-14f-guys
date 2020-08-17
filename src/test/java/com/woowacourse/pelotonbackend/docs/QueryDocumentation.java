@@ -7,9 +7,14 @@ import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.*;
 import static org.springframework.restdocs.payload.JsonFieldType.*;
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
 import static org.springframework.restdocs.request.RequestDocumentation.*;
+import static org.springframework.restdocs.snippet.Attributes.*;
+
+import java.util.Arrays;
 
 import org.apache.http.HttpHeaders;
 import org.springframework.restdocs.mockmvc.RestDocumentationResultHandler;
+
+import com.woowacourse.pelotonbackend.report.domain.ReportType;
 
 public class QueryDocumentation {
     public static RestDocumentationResultHandler getRaces() {
@@ -53,7 +58,8 @@ public class QueryDocumentation {
             getDocumentRequest(),
             getDocumentResponse(),
             requestHeaders(
-                headerWithName(HttpHeaders.AUTHORIZATION).description("인증 토큰")
+                headerWithName(HttpHeaders.AUTHORIZATION).description("인증 토큰"),
+                headerWithName(HttpHeaders.ACCEPT).description("Accept 헤더")
             ),
             pathParameters(
                 parameterWithName("raceId").description("레이스 아이디")
@@ -72,7 +78,8 @@ public class QueryDocumentation {
             getDocumentRequest(),
             getDocumentResponse(),
             requestHeaders(
-                headerWithName(HttpHeaders.AUTHORIZATION).description("인증 토큰")
+                headerWithName(HttpHeaders.AUTHORIZATION).description("인증 토큰"),
+                headerWithName(HttpHeaders.ACCEPT).description("Accept 헤더")
             ),
             pathParameters(
                 parameterWithName("raceId").description("레이스 아이디")
@@ -86,7 +93,8 @@ public class QueryDocumentation {
             getDocumentRequest(),
             getDocumentResponse(),
             requestHeaders(
-                headerWithName(HttpHeaders.AUTHORIZATION).description("인증 토큰")
+                headerWithName(HttpHeaders.AUTHORIZATION).description("인증 토큰"),
+                headerWithName(HttpHeaders.ACCEPT).description("Accept 헤더")
             ),
             responseFields(
                 subsectionWithPath("upcoming_missions").type(ARRAY).description("해야할 미션 목록"),

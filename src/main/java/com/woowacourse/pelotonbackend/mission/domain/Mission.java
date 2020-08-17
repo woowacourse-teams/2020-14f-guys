@@ -29,7 +29,7 @@ public class Mission {
     @Embedded.Empty
     private final DateTimeDuration missionDuration;
 
-    @Embedded.Empty
+    @Embedded.Empty @Valid
     private final MissionInstruction missionInstruction;
 
     private final AggregateReference<Race, @NotNull Long> raceId;

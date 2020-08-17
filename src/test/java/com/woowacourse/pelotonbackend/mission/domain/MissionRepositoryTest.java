@@ -9,6 +9,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.assertj.core.util.Lists;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -110,6 +111,7 @@ class MissionRepositoryTest {
     @Test
     void findByRaceIdsEndTimeAfterThanAndWithinOneDayOrderByStartTime() {
         final List<Mission> missions = upcomingMissionWithoutIds();
+        final List<Mission> expectedMissions = upcomingMissionWithIds();
         missionRepository.saveAll(missions);
         final List<Long> raceIds = missions.stream()
             .map(mission -> mission.getRaceId().getId())
@@ -120,7 +122,7 @@ class MissionRepositoryTest {
         final List<Mission> results = missionRepository.findAllByRaceIdsEndTimeAfterThanAndWithinOneDayOrderByStartTime(
             raceIds, criterion);
 
-        assertThat(results).extracting(Mission::getId)
-            .isEqualTo(Arrays.asList(TEST_MISSION_ID2, TEST_MISSION_ID4, TEST_MISSION_ID3));
+        assertThat(results).containsExactlyInAnyOrderElementsOf(
+            Lists.newArrayList(expectedMissions.get(1), expectedMissions.get(3), expectedMissions.get(2)));
     }
 }

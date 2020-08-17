@@ -115,8 +115,7 @@ class QueryControllerTest {
             .andReturn();
 
         final byte[] contentBytes = result.getResponse().getContentAsByteArray();
-        final RaceResponses responseBody = objectMapper.readValue(contentBytes,
-            RaceResponses.class);
+        final RaceResponses responseBody = objectMapper.readValue(contentBytes, RaceResponses.class);
 
         assertAll(
             () -> assertThat(responseBody.getRaceResponses().get(0))
