@@ -3,11 +3,42 @@
                    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
                    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
 
-    <changeSet author="sika" id="20200814">
+    <changeSet author="sika" id="20200817">
+        <sql dbms="mariadb">ALTER TABLE member ALTER COLUMN CREATED_AT DROP DEFAULT</sql>
+        <sql dbms="mariadb">ALTER TABLE member ALTER COLUMN UPDATED_AT DROP DEFAULT</sql>
+        <sql dbms="mariadb">ALTER TABLE member MODIFY CREATED_AT DATETIME</sql>
+        <sql dbms="mariadb">ALTER TABLE member MODIFY UPDATED_AT DATETIME</sql>
+
+        <sql dbms="mariadb">ALTER TABLE race ALTER COLUMN CREATED_AT DROP DEFAULT</sql>
+        <sql dbms="mariadb">ALTER TABLE race ALTER COLUMN UPDATED_AT DROP DEFAULT</sql>
         <sql dbms="mariadb">ALTER TABLE race ALTER COLUMN START_DATE DROP DEFAULT</sql>
         <sql dbms="mariadb">ALTER TABLE race ALTER COLUMN END_DATE DROP DEFAULT</sql>
+        <sql dbms="mariadb">ALTER TABLE race MODIFY CREATED_AT DATETIME</sql>
+        <sql dbms="mariadb">ALTER TABLE race MODIFY UPDATED_AT DATETIME</sql>
+        <sql dbms="mariadb">ALTER TABLE race MODIFY START_DATE DATE</sql>
+        <sql dbms="mariadb">ALTER TABLE race MODIFY END_DATE DATE</sql>
+
+        <sql dbms="mariadb">ALTER TABLE rider ALTER COLUMN CREATED_AT DROP DEFAULT</sql>
+        <sql dbms="mariadb">ALTER TABLE rider ALTER COLUMN UPDATED_AT DROP DEFAULT</sql>
+        <sql dbms="mariadb">ALTER TABLE rider MODIFY CREATED_AT DATETIME</sql>
+        <sql dbms="mariadb">ALTER TABLE rider MODIFY UPDATED_AT DATETIME</sql>
+
+        <sql dbms="mariadb">ALTER TABLE mission ALTER COLUMN CREATED_AT DROP DEFAULT</sql>
+        <sql dbms="mariadb">ALTER TABLE mission ALTER COLUMN UPDATED_AT DROP DEFAULT</sql>
         <sql dbms="mariadb">ALTER TABLE mission ALTER COLUMN START_TIME DROP DEFAULT</sql>
         <sql dbms="mariadb">ALTER TABLE mission ALTER COLUMN START_TIME DROP DEFAULT</sql>
+        <sql dbms="mariadb">ALTER TABLE mission MODIFY CREATED_AT DATETIME</sql>
+        <sql dbms="mariadb">ALTER TABLE mission MODIFY UPDATED_AT DATETIME</sql>
+
+        <sql dbms="mariadb">ALTER TABLE certification ALTER COLUMN CREATED_AT DROP DEFAULT</sql>
+        <sql dbms="mariadb">ALTER TABLE certification ALTER COLUMN UPDATED_AT DROP DEFAULT</sql>
+        <sql dbms="mariadb">ALTER TABLE certification MODIFY CREATED_AT DATETIME</sql>
+        <sql dbms="mariadb">ALTER TABLE certification MODIFY UPDATED_AT DATETIME</sql>
+
+        <sql dbms="mariadb">ALTER TABLE report ALTER COLUMN CREATED_AT DROP DEFAULT</sql>
+        <sql dbms="mariadb">ALTER TABLE report ALTER COLUMN UPDATED_AT DROP DEFAULT</sql>
+        <sql dbms="mariadb">ALTER TABLE report MODIFY CREATED_AT DATETIME</sql>
+        <sql dbms="mariadb">ALTER TABLE report MODIFY UPDATED_AT DATETIME</sql>
     </changeSet>
 
 </databaseChangeLog>
