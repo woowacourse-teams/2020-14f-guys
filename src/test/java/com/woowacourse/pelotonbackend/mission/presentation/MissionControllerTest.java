@@ -9,8 +9,6 @@ import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuild
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-import java.util.TimeZone;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -19,11 +17,8 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.context.annotation.Import;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.restdocs.RestDocumentationContextProvider;
@@ -43,12 +38,9 @@ import com.woowacourse.pelotonbackend.member.domain.LoginFixture;
 import com.woowacourse.pelotonbackend.member.presentation.LoginMemberArgumentResolver;
 import com.woowacourse.pelotonbackend.mission.application.MissionService;
 import com.woowacourse.pelotonbackend.mission.domain.MissionFixture;
-import com.woowacourse.pelotonbackend.mission.presentation.dto.MissionCreateRequest;
 import com.woowacourse.pelotonbackend.mission.presentation.dto.MissionResponse;
 import com.woowacourse.pelotonbackend.mission.presentation.dto.MissionUpdateRequest;
 import com.woowacourse.pelotonbackend.support.BearerAuthInterceptor;
-import com.woowacourse.pelotonbackend.support.annotation.FutureOrPresentBasedUTC;
-import com.woowacourse.pelotonbackend.support.annotation.FutureOrPresentBasedUTCValidator;
 
 @ExtendWith(RestDocumentationExtension.class)
 @WebMvcTest(MissionController.class)

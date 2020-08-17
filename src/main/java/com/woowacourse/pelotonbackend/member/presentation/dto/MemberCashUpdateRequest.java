@@ -4,10 +4,6 @@ import java.beans.ConstructorProperties;
 
 import javax.validation.constraints.NotNull;
 
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.woowacourse.pelotonbackend.support.jsonparser.CashDeserializer;
-import com.woowacourse.pelotonbackend.support.jsonparser.CashSerializer;
 import com.woowacourse.pelotonbackend.vo.Cash;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;

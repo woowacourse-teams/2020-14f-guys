@@ -1,5 +1,7 @@
 package com.woowacourse.pelotonbackend.mission.presentation.dto;
 
+import java.beans.ConstructorProperties;
+
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 
@@ -15,7 +17,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 
-@AllArgsConstructor(access = AccessLevel.PRIVATE)
+@AllArgsConstructor(access = AccessLevel.PRIVATE, onConstructor_ = @ConstructorProperties({"missionDuration", "missionInstruction", "raceId"}))
 @Builder
 @Getter
 @JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class)
