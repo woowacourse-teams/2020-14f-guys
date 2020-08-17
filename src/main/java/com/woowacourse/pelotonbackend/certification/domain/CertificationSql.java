@@ -25,6 +25,7 @@ public class CertificationSql {
         return new StringBuilder()
             .append("SELECT CERTIFICATION.ID AS ID")
             .append(", CERTIFICATION.STATUS AS STATUS")
+            .append(", CERTIFICATION.BASE_IMAGE_URL AS BASE_IMAGE_URL")
             .append(", CERTIFICATION.DESCRIPTION AS DESCRIPTION")
             .append(", CERTIFICATION.RIDER_ID AS RIDER_ID, CERTIFICATION.MISSION_ID AS MISSION_ID")
             .append(" FROM CERTIFICATION")

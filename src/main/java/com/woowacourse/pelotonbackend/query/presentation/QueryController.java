@@ -25,7 +25,7 @@ public class QueryController {
         return ResponseEntity.ok(queryService.retrieveRacesBy(loginMember));
     }
 
-    @GetMapping("/races/certifications/{raceId}")
+    @GetMapping("/races/{raceId}/certifications")
     public ResponseEntity<RaceCertificationsResponse> findCertificationsByRaceId(
         @PathVariable final Long raceId, final Pageable pageable) {
 
