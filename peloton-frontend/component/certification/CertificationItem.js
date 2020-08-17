@@ -3,10 +3,14 @@ import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { useNavigation } from "@react-navigation/core";
 
 import { CERTIFICATION_TYPE, COLOR } from "../../utils/constants";
+import CertificationStateIcon from "./CertificationStateIcon";
 
 const CertificationItem = ({ item, index, currentTime }) => {
+  const missionStartTime = new Date(item.mission.mission_duration.start_time);
+  const missionEndTime = new Date(item.mission.mission_duration.end_time);
+
   const [leftTime, setLeftTime] = useState(
-    new Date(item.mission.mission_duration.start_time - currentTime),
+    new Date(missionStartTime - currentTime),
   );
   const [certificationType, setCertificationType] = useState(
     leftTime > 0 ? CERTIFICATION_TYPE.WAIT : CERTIFICATION_TYPE.AVAILABLE,
@@ -14,8 +18,7 @@ const CertificationItem = ({ item, index, currentTime }) => {
   const navigation = useNavigation();
 
   useEffect(() => {
-    const startLeftTime =
-      item.mission.mission_duration.start_time - currentTime;
+    const startLeftTime = missionStartTime - currentTime;
     // TODO: 타임존 해결
     // new Date("2020-08-13T19:46:54.725+09:00") - currentTime) / 1000 / 3600
     // new Date("2020-08-13T19:46:54.725") - currentTime) / 1000 / 3600
@@ -23,7 +26,7 @@ const CertificationItem = ({ item, index, currentTime }) => {
       setLeftTime(startLeftTime);
       setCertificationType(CERTIFICATION_TYPE.WAIT);
     } else {
-      setLeftTime(item.mission.mission_duration.end_time - currentTime);
+      setLeftTime(missionEndTime - currentTime);
       setCertificationType(CERTIFICATION_TYPE.AVAILABLE);
     }
   }, [currentTime]);
@@ -64,6 +67,20 @@ const CertificationItem = ({ item, index, currentTime }) => {
         }
         blurRadius={certificationType.blurRadius}
       />
+      {item.certification && (
+        <CertificationStateIcon
+          backgroundColor={certificationType.backgroundColor}
+          iconColor={certificationType.typeColor}
+          icon="check-circle"
+        />
+      )}
+      {certificationType === CERTIFICATION_TYPE.WAIT && (
+        <CertificationStateIcon
+          backgroundColor={certificationType.backgroundColor}
+          iconColor={certificationType.typeColor}
+          icon="clock"
+        />
+      )}
       <View
         style={{
           ...styles.certificationInfo,

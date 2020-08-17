@@ -5,9 +5,11 @@ import { COLOR } from "../../../utils/constants";
 const InputBox = ({
   value,
   onChangeText,
-  onClick,
+  onClick = null,
   editable = true,
   number = false,
+  placeholder = "",
+  fontSize = 20,
 }) => {
   return (
     <TouchableOpacity
@@ -16,7 +18,7 @@ const InputBox = ({
       activeOpacity={1}
     >
       <TextInput
-        style={styles.textBox}
+        style={{ ...styles.textBox, fontSize }}
         multiline
         textAlignVertical="top"
         value={value}
@@ -24,6 +26,7 @@ const InputBox = ({
         editable={editable}
         keyboardType={number ? "number-pad" : "default"}
         pointerEvents={onClick ? "none" : "auto"}
+        placeholder={placeholder}
       />
     </TouchableOpacity>
   );

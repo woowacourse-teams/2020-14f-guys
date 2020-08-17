@@ -5,7 +5,11 @@ import AsyncStorage from "@react-native-community/async-storage";
 import { useNavigation } from "@react-navigation/core";
 
 import { loadingState } from "../../../state/loading/LoadingState";
-import { DEEP_LINK_BASE_URL, TOKEN_STORAGE } from "../../../utils/constants";
+import {
+  COLOR,
+  DEEP_LINK_BASE_URL,
+  TOKEN_STORAGE,
+} from "../../../utils/constants";
 import {
   alertNotEnoughCash,
   navigateTabScreen,
@@ -21,7 +25,7 @@ import {
 import { raceInfoState } from "../../../state/race/RaceState";
 import { QueryApi } from "../../../utils/api/QueryApi";
 import { RiderApi } from "../../../utils/api/RiderApi";
-import PaymentButton from "./PaymentButton";
+import FullWidthButton from "./FullWidthButton";
 import RaceJoinTitle from "./RaceJoinTitle";
 import RaceJoinBody from "./RaceJoinBody";
 
@@ -129,11 +133,12 @@ const RedirectPage = ({ route }) => {
     <View style={styles.container}>
       <RaceJoinTitle thumbnail={raceInfo.thumbnail} title={raceInfo.title} />
       <RaceJoinBody raceInfo={raceInfo} memberInfo={memberInfo} />
-      <PaymentButton
-        isPayment={isPayment}
-        paymentButton={payEntranceFee}
-        charge={chargeMoney}
-      />
+      <FullWidthButton
+        color={isPayment() ? COLOR.BLUE3 : COLOR.RED}
+        onClick={isPayment() ? payEntranceFee : chargeMoney}
+      >
+        {isPayment() ? "결제하기" : "충전하기"}
+      </FullWidthButton>
     </View>
   );
 };

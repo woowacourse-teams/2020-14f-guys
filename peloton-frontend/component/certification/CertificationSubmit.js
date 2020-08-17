@@ -2,9 +2,11 @@ import React, { useState } from "react";
 import {
   Dimensions,
   Image,
+  Keyboard,
   StyleSheet,
   Text,
   TouchableOpacity,
+  TouchableWithoutFeedback,
   View,
 } from "react-native";
 import { useRecoilValue, useSetRecoilState } from "recoil";
@@ -20,11 +22,13 @@ import {
   getCameraPermission,
   getCameraRollPermission,
 } from "../../utils/Permission";
-import PaymentButton from "../home/race/PaymentButton";
+import FullWidthButton from "../home/race/FullWidthButton";
 import { CertificationApi } from "../../utils/api/CertificationApi";
 import { memberTokenState } from "../../state/member/MemberState";
 import LoadingIndicator from "../../utils/LoadingIndicator";
 import { navigateWithoutHistory } from "../../utils/util";
+import InputBox from "../home/racecreate/InputBox";
+import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 
 const CertificationSubmit = ({ route }) => {
   const raceCertifications = useRecoilValue(raceMissionState);
@@ -32,12 +36,14 @@ const CertificationSubmit = ({ route }) => {
   const token = useRecoilValue(memberTokenState);
   const navigation = useNavigation();
   const linkTo = useLinkTo();
+  const [description, setDescription] = useState();
 
   const { index } = route.params;
   const raceCertification = raceCertifications[index];
-  const [photoUri, setPhotoUri] = useState(
-    raceCertification.race.certification_example,
-  );
+  const defaultPhotoUri = raceCertification.certification
+    ? raceCertification.certification.image
+    : raceCertification.race.certification_example;
+  const [photoUri, setPhotoUri] = useState(defaultPhotoUri);
 
   const submitCertification = async () => {
     setIsLoading(true);
@@ -48,7 +54,7 @@ const CertificationSubmit = ({ route }) => {
       name: photoUri.substring(9),
     });
     formData.append("status", "SUCCESS");
-    formData.append("description", "필요없을 수도 있는 설명");
+    formData.append("description", description);
     formData.append("riderId", raceCertification.rider.id);
     formData.append("missionId", raceCertification.mission.id);
     try {
@@ -91,37 +97,59 @@ const CertificationSubmit = ({ route }) => {
 
   return (
     <LoadingIndicator>
-      <View style={styles.container}>
-        <TouchableOpacity
-          style={styles.certificationButton}
-          onPress={takePhoto}
+      <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
+        <KeyboardAwareScrollView
+          extraHeight={200}
+          contentContainerStyle={styles.container}
         >
-          <Image
-            source={{ uri: photoUri }}
-            style={{
-              ...styles.certificationExample,
-              opacity: isNotExample() ? 1 : 0.1,
-            }}
-          />
-          <View style={styles.certificationPhoto}>
-            <MaterialCommunityIcons
-              name="image-plus"
-              size={50}
-              color={COLOR.GRAY3}
-            />
+          <View style={styles.container}>
+            <TouchableOpacity
+              style={styles.certificationButton}
+              onPress={takePhoto}
+            >
+              <Image
+                source={{ uri: photoUri }}
+                style={{
+                  ...styles.certificationExample,
+                  opacity: isNotExample() ? 1 : 0.1,
+                }}
+              />
+              <View style={styles.certificationPhoto}>
+                <MaterialCommunityIcons
+                  name="image-plus"
+                  size={50}
+                  color={COLOR.GRAY3}
+                />
+              </View>
+            </TouchableOpacity>
+            <View style={styles.instructionContainer}>
+              <Text style={styles.instruction}>
+                {raceCertification.mission.mission_instruction}
+              </Text>
+            </View>
+
+            {isNotExample() ? (
+              <View style={styles.absoluteBottom}>
+                <FullWidthButton
+                  onClick={submitCertification}
+                  color={COLOR.BLUE3}
+                >
+                  인증하기
+                </FullWidthButton>
+              </View>
+            ) : (
+              <View style={styles.descriptionInput}>
+                <InputBox
+                  value={description}
+                  onChangeText={setDescription}
+                  placeholder="간단한 설명을 남겨주세요."
+                  fontSize={17}
+                />
+              </View>
+            )}
           </View>
-        </TouchableOpacity>
-        <View style={styles.instructionContainer}>
-          <Text style={styles.instruction}>
-            {raceCertification.mission.mission_instruction}
-          </Text>
-        </View>
-        {isNotExample() && (
-          <View style={styles.absoluteBottom}>
-            <PaymentButton onPress={submitCertification} />
-          </View>
-        )}
-      </View>
+        </KeyboardAwareScrollView>
+      </TouchableWithoutFeedback>
     </LoadingIndicator>
   );
 };
@@ -166,6 +194,10 @@ const styles = StyleSheet.create({
   absoluteBottom: {
     position: "absolute",
     bottom: 0,
+  },
+  descriptionInput: {
+    alignSelf: "flex-start",
+    marginHorizontal: 30,
   },
 });
 

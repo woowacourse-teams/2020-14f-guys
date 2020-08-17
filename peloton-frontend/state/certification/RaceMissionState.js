@@ -22,6 +22,9 @@ export const raceMissionState = atom({
         mission_instruction: "",
         race_id: "",
       },
+      certification: {
+        id: "",
+      },
     },
   ],
 });
@@ -60,11 +63,38 @@ export const raceMissionFixture = [
     mission: {
       id: 1,
       mission_duration: {
-        start_time: todayOneHourBefore,
-        end_time: todayOneHourAfter,
+        start_time: todayOneHourBefore.toISOString(),
+        end_time: todayOneHourAfter.toISOString(),
       },
       mission_instruction: "한명에게 별을 몰아주고 사진을 찍어요!",
       race_id: 1,
+    },
+    certification: null,
+  },
+  {
+    race: {
+      id: 3,
+      title: "모임",
+      certification_example:
+        "https://i.pinimg.com/originals/34/9c/25/349c257611365c8380df8c21015d0279.jpg",
+      thumbnail: "https://m1.daumcdn.net/cfile176/image/99B382425D105DE608474D",
+    },
+    rider: {
+      id: 3,
+    },
+    mission: {
+      id: 3,
+      mission_duration: {
+        start_time: todayOneHourBefore.toISOString(),
+        end_time: todayOneHourAfter.toISOString(),
+      },
+      mission_instruction: "쪼르륵 앉아서 한쪽으로 기울이고 사진을 찍어요!",
+      race_id: 3,
+    },
+    certification: {
+      id: 3,
+      image:
+        "https://14f-guys-image.s3.ap-northeast-2.amazonaws.com/certification.image/2482C991-AB0A-4B1B-9198-2E9E20D103A6_1_105_c.jpeg",
     },
   },
   {
@@ -82,8 +112,8 @@ export const raceMissionFixture = [
     mission: {
       id: 2,
       mission_duration: {
-        start_time: todayOneHourAfter,
-        end_time: todayTwoHourAfter,
+        start_time: todayOneHourAfter.toISOString(),
+        end_time: todayTwoHourAfter.toISOString(),
       },
       mission_instruction: "지건을 찌르세요",
       race_id: 2,
