@@ -28,7 +28,7 @@ const Certification = () => {
       return () => {
         clearInterval(intervalId);
       };
-    }, [])
+    }, []),
   );
 
   return (

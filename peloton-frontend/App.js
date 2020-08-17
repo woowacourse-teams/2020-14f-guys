@@ -23,6 +23,14 @@ const linking = {
               },
             },
           },
+          Certification: {
+            path: "certification",
+            screens: {
+              CertificationDetail: {
+                path: "detail/:id",
+              },
+            },
+          },
         },
       },
       ErrorPage: {

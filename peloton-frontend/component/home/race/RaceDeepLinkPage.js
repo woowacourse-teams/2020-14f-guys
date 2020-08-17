@@ -30,13 +30,14 @@ import RaceJoinTitle from "./RaceJoinTitle";
 import RaceJoinBody from "./RaceJoinBody";
 
 const RedirectPage = ({ route }) => {
+  const newRaceId = route.params.id;
   const setLoadingState = useSetRecoilState(loadingState);
   const [token, setToken] = useRecoilState(memberTokenState);
   const [memberInfo, setMemberInfo] = useRecoilState(memberInfoState);
   const [raceInfo, setRaceInfo] = useRecoilState(raceInfoState);
   const navigation = useNavigation();
 
-  const navigateToRaceDetail = () => {
+  const navigateToRaceDetail = (raceId) => {
     navigateWithHistory(navigation, [
       {
         name: "Home",
@@ -44,10 +45,16 @@ const RedirectPage = ({ route }) => {
       {
         name: "RaceDetail",
         params: {
-          id: raceInfo.id,
+          id: raceId,
         },
       },
     ]);
+  };
+
+  const isPayment = () => {
+    const userCash = Number(memberInfo.cash);
+    const raceEntranceFee = Number(raceInfo.entrance_fee);
+    return userCash >= raceEntranceFee;
   };
 
   const chargeMoney = () => {
@@ -61,23 +68,15 @@ const RedirectPage = ({ route }) => {
 
   const payEntranceFee = async () => {
     setLoadingState(true);
-    const userCash = Number(memberInfo.cash);
-    const raceEntranceFee = Number(raceInfo.entrance_fee);
     try {
-      await RiderApi.post(token, raceInfo.id);
+      await RiderApi.post(token, newRaceId);
       const newMemberInfo = await MemberApi.get(token);
       setMemberInfo(newMemberInfo);
-      navigateToRaceDetail();
+      navigateToRaceDetail(newRaceId);
     } catch (error) {
       console.log(error.response.data.message);
     }
     setLoadingState(false);
-  };
-
-  const isPayment = () => {
-    const userCash = Number(memberInfo.cash);
-    const raceEntranceFee = Number(raceInfo.entrance_fee);
-    return userCash >= raceEntranceFee;
   };
 
   useEffect(() => {
@@ -88,15 +87,16 @@ const RedirectPage = ({ route }) => {
         userToken = await AsyncStorage.getItem(TOKEN_STORAGE);
         setToken(userToken);
       }
-      if (!route || !route.params || !route.params.id) {
+      if (!newRaceId) {
         alert("정상적이지 않은 접근입니다.");
         navigateWithoutHistory(navigation, "Home");
+        setLoadingState(false);
         return;
       }
-      const raceId = route.params.id;
       if (!userToken) {
         alert("로그인 먼저 해주세요.");
         navigateWithoutHistory(navigation, "Login");
+        setLoadingState(false);
         return;
       }
       try {
@@ -107,7 +107,7 @@ const RedirectPage = ({ route }) => {
         navigateWithoutHistory(navigation, "Login");
       }
       try {
-        const newRaceInfo = await RaceApi.get(userToken, raceId);
+        const newRaceInfo = await RaceApi.get(userToken, newRaceId);
         setRaceInfo(newRaceInfo);
       } catch (error) {
         alert(error.response.data.code);
@@ -115,7 +115,9 @@ const RedirectPage = ({ route }) => {
       }
       try {
         const { race_responses: races } = await QueryApi.getRaces(userToken);
-        const filteredRace = races.filter((race) => String(race.id) === raceId);
+        const filteredRace = races.filter(
+          (race) => String(race.id) === newRaceId,
+        );
         if (filteredRace.length > 0) {
           navigateToRaceDetail();
         }
@@ -124,9 +126,9 @@ const RedirectPage = ({ route }) => {
         console.log(error.response.data.message);
         navigateWithoutHistory(navigation, "Home");
       }
+      setLoadingState(false);
     };
     fetchRaceInfo();
-    setLoadingState(false);
   }, []);
 
   return (

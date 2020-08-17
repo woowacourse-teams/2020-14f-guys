@@ -120,3 +120,7 @@ export const raceMissionFixture = [
     },
   },
 ];
+export const raceCertificationState = atom({
+  key: "raceCertificationState",
+  default: null,
+});
