@@ -14,7 +14,7 @@ import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
-@AllArgsConstructor(access = AccessLevel.PRIVATE, onConstructor_ = @ConstructorProperties("riderId, race, mission"))
+@AllArgsConstructor(access = AccessLevel.PRIVATE, onConstructor_ = @ConstructorProperties("rider, race, mission"))
 @Getter
 @JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class)
 public class UpcomingMissionResponse {

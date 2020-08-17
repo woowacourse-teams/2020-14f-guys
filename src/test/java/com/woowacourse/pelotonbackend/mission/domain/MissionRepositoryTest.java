@@ -4,7 +4,7 @@ import static com.woowacourse.pelotonbackend.mission.domain.MissionFixture.*;
 import static org.assertj.core.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.*;
 
-import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -23,6 +23,9 @@ import com.woowacourse.pelotonbackend.DataInitializeExecutionListener;
     listeners = DataInitializeExecutionListener.class,
     mergeMode = TestExecutionListeners.MergeMode.MERGE_WITH_DEFAULTS)
 class MissionRepositoryTest {
+    private static final int SECOND_MISSON = 1;
+    private static final int FOURTH_MISSON = 3;
+    private static final int THIRD_MISSION = 2;
     @Autowired
     private MissionRepository missionRepository;
 
@@ -101,7 +104,7 @@ class MissionRepositoryTest {
     }
 
     /**
-     * -----------------------------------현재 시간--------------------------------------------------------------------
+     * -----------------------------------기준 시간--------------------------------------------------------------------
      * -------08/14 07:30--08/15 06:50--08/15 07:00--08/15 07:30--08/15 08:00--08/16 06:50--08/16 07:30--08/16 08:00
      * 레이스1---미션1 종료-- --미션2 시작------------------미션2 종료------------------미션3 시작-----미션3 종료----------------
      * 레이스2-------------------------------------------------------미션4 시작-------------------------------미션5 시작--
@@ -111,18 +114,21 @@ class MissionRepositoryTest {
     @Test
     void findByRaceIdsEndTimeAfterThanAndWithinOneDayOrderByStartTime() {
         final List<Mission> missions = upcomingMissionWithoutIds();
-        final List<Mission> expectedMissions = upcomingMissionWithIds();
         missionRepository.saveAll(missions);
         final List<Long> raceIds = missions.stream()
             .map(mission -> mission.getRaceId().getId())
             .distinct()
             .collect(Collectors.toList());
-        final LocalDateTime criterion = LocalDateTime.of(2020, 8, 15, 7, 0);
 
         final List<Mission> results = missionRepository.findAllByRaceIdsEndTimeAfterThanAndWithinOneDayOrderByStartTime(
-            raceIds, criterion);
+            raceIds, CRITERION_TIME);
 
-        assertThat(results).containsExactlyInAnyOrderElementsOf(
-            Lists.newArrayList(expectedMissions.get(1), expectedMissions.get(3), expectedMissions.get(2)));
+        final List<Mission> missionsWithIds = upcomingMissionWithIds();
+        final List<Mission> expectedMissionsWithOrder = Lists.newArrayList(
+            missionsWithIds.get(SECOND_MISSON),
+            missionsWithIds.get(FOURTH_MISSON),
+            missionsWithIds.get(THIRD_MISSION));
+
+        assertThat(results).containsExactlyInAnyOrderElementsOf(expectedMissionsWithOrder);
     }
 }

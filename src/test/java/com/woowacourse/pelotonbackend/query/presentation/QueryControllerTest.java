@@ -176,9 +176,9 @@ class QueryControllerTest {
     @DisplayName("멤버가 인증해야할 미션을 조회한다.")
     @Test
     void findUpcomingMissions() throws Exception {
-        final UpcomingMissionResponses expectedResponses = new UpcomingMissionResponses(Collections.singletonList(
+        final UpcomingMissionResponses expectedResponses = UpcomingMissionResponses.of(Collections.singletonList(
             UpcomingMissionResponse.of(MissionFixture.createWithId(MissionFixture.TEST_MISSION_ID),
-                createRiderWithId(RiderFixture.TEST_RIDER_ID), createWithId(RaceFixture.TEST_RACE_ID))));
+                createRiderWithId(RiderFixture.TEST_RIDER_ID), RaceFixture.createWithId(RaceFixture.TEST_RACE_ID))));
         final MemberResponse member = MemberFixture.memberResponse();
         when(argumentResolver.resolveArgument(any(MethodParameter.class), any(ModelAndViewContainer.class),
             any(NativeWebRequest.class), any(WebDataBinderFactory.class))).thenReturn(member);

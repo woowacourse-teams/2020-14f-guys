@@ -73,14 +73,15 @@ public class QueryService {
             })
             .collect(Collectors.toList());
 
-        return new UpcomingMissionResponses(upcomingMissionResponses);
+        return UpcomingMissionResponses.of(upcomingMissionResponses);
     }
 
     private List<Mission> retrieveUpcomingMissionsByRaceIds(final List<Race> races) {
-        return races.stream()
+        final List<Long> raceIds = races.stream()
             .map(Race::getId)
-            .collect(Collectors.collectingAndThen(Collectors.toList(),
-                raceIds -> missionRepository.findAllByRaceIdsEndTimeAfterThanAndWithinOneDayOrderByStartTime(raceIds,
-                    LocalDateTime.now())));
+            .collect(Collectors.toList());
+
+        return missionRepository.findAllByRaceIdsEndTimeAfterThanAndWithinOneDayOrderByStartTime(raceIds,
+            LocalDateTime.now());
     }
 }
