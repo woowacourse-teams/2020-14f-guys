@@ -8,7 +8,7 @@ import {
   View,
 } from "react-native";
 import { useRecoilValue, useSetRecoilState } from "recoil";
-import { Feather } from "@expo/vector-icons";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
 import * as ImagePicker from "expo-image-picker";
 import { useLinkTo } from "@react-navigation/native";
 import { useNavigation } from "@react-navigation/core";
@@ -86,6 +86,9 @@ const CertificationSubmit = ({ route }) => {
     setIsLoading(false);
   };
 
+  const isNotExample = () =>
+    photoUri !== raceCertification.race.certification_example;
+
   return (
     <LoadingIndicator>
       <View style={styles.container}>
@@ -95,10 +98,17 @@ const CertificationSubmit = ({ route }) => {
         >
           <Image
             source={{ uri: photoUri }}
-            style={styles.certificationExample}
+            style={{
+              ...styles.certificationExample,
+              opacity: isNotExample() ? 1 : 0.1,
+            }}
           />
           <View style={styles.certificationPhoto}>
-            <Feather name="camera" size={50} color="white" />
+            <MaterialCommunityIcons
+              name="image-plus"
+              size={50}
+              color={COLOR.GRAY3}
+            />
           </View>
         </TouchableOpacity>
         <View style={styles.instructionContainer}>
@@ -106,7 +116,7 @@ const CertificationSubmit = ({ route }) => {
             {raceCertification.mission.mission_instruction}
           </Text>
         </View>
-        {photoUri !== raceCertification.race.certification_example && (
+        {isNotExample() && (
           <View style={styles.absoluteBottom}>
             <PaymentButton onPress={submitCertification} />
           </View>
@@ -140,6 +150,7 @@ const styles = StyleSheet.create({
     textAlign: "center",
   },
   certificationButton: {
+    backgroundColor: COLOR.WHITE,
     width,
   },
   certificationPhoto: {
