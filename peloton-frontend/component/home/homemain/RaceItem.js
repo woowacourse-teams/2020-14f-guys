@@ -1,15 +1,25 @@
 import React from "react";
-import { StyleSheet, View } from "react-native";
+import { StyleSheet, TouchableOpacity } from "react-native";
 import RaceItemImage from "./RaceItemImage";
 import RaceItemText from "./RaceItemText";
 import { COLOR } from "../../../utils/constants";
+import { useNavigation } from "@react-navigation/native";
 
 const RaceItem = ({ item, parallaxProps }) => {
+  const navigation = useNavigation();
+
+  const onItemClick = () => {
+    navigation.navigate({
+      name: "RaceDetail",
+      params: { location: `/api/races/${item.id}` },
+    });
+  };
+
   return (
-    <View style={styles.container}>
+    <TouchableOpacity style={styles.container} onPress={onItemClick}>
       <RaceItemImage item={item} parallaxProps={parallaxProps} />
       <RaceItemText item={item} />
-    </View>
+    </TouchableOpacity>
   );
 };
 

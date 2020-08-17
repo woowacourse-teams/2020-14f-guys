@@ -6,7 +6,7 @@ const RaceItemText = ({ item }) => {
     <View style={styles.container}>
       <Text style={styles.raceTitle}>{item.title}</Text>
       <Text style={styles.raceDescription} numberOfLines={1}>
-        {item.text}
+        {item.description}
       </Text>
     </View>
   );
