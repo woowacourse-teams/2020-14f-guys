@@ -69,13 +69,14 @@ const CertificationItem = ({ item, index, currentTime }) => {
           ...styles.certificationInfo,
           backgroundColor: certificationType.color,
         }}
-      />
-      <Text style={styles.itemTitle}>{item.race.title}</Text>
-      <Text style={styles.itemSubtitle}>{timeForm()}</Text>
+      >
+        <Text style={styles.itemTitle}>{item.race.title}</Text>
+        <Text style={styles.itemSubtitle}>{timeForm()}</Text>
+      </View>
       <View
         style={{
           ...styles.certificationTypeView,
-          backgroundColor: certificationType.color,
+          backgroundColor: certificationType.typeColor,
         }}
       >
         <Text style={styles.certificationTypeMessage}>
@@ -96,17 +97,12 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   itemTitle: {
-    position: "absolute",
-    left: 19.5,
-    bottom: 49,
     color: COLOR.WHITE,
     fontWeight: "bold",
     fontSize: 30,
+    marginBottom: 3,
   },
   itemSubtitle: {
-    position: "absolute",
-    left: 19.5,
-    bottom: 30,
     color: COLOR.WHITE,
     fontSize: 15,
   },
@@ -115,11 +111,11 @@ const styles = StyleSheet.create({
     position: "absolute",
     bottom: 25,
     left: 7,
-    width: 120,
-    height: 60,
-    opacity: 0.3,
+    minWidth: 120,
+    minHeight: 60,
     borderRadius: 10,
     padding: 10,
+    justifyContent: "center",
   },
   certificationTypeView: {
     position: "absolute",

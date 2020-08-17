@@ -130,13 +130,15 @@ export const CERTIFICATION_TYPE = {
   AVAILABLE: {
     activeOpacity: 0.7,
     blurRadius: 0,
-    color: COLOR.GREEN4,
+    color: "rgba(52,199,89,0.3)",
+    typeColor: COLOR.GREEN4,
     message: "인증 가능",
   },
   WAIT: {
     activeOpacity: 1,
     blurRadius: 10,
-    color: COLOR.GRAY1,
+    color: "rgba(142,142,147,0.3)",
+    typeColor: COLOR.GRAY1,
     message: "인증 대기",
   },
 };

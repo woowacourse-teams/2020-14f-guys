@@ -7,7 +7,8 @@ import {
   View,
 } from "react-native";
 import { Feather } from "@expo/vector-icons";
-import { COLOR, DEEP_LINK_BASE_URL } from "../../../utils/constants";
+
+import { COLOR } from "../../../utils/constants";
 import { raceShareLink } from "./RaceDeepLinkPage";
 
 const LinkCopyButton = ({ raceId }) => {
