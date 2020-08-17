@@ -18,6 +18,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.test.context.TestExecutionListeners;
 
 import com.woowacourse.pelotonbackend.DataInitializeExecutionListener;
+import com.woowacourse.pelotonbackend.mission.domain.Mission;
 import com.woowacourse.pelotonbackend.mission.domain.MissionFixture;
 import com.woowacourse.pelotonbackend.mission.domain.MissionRepository;
 import com.woowacourse.pelotonbackend.rider.domain.Rider;
@@ -71,20 +72,22 @@ class CertificationRepositoryTest {
         );
     }
 
-    @DisplayName("Mission Ids로 인증사진을 조회한다."
-        + "총 갯수 2개, 페이지 번호 0번, 페이지당 컨텐츠 1개")
+    @DisplayName("Mission Ids로 인증사진을 조회한다.")
     @Test
     void findByMissionId() {
-        missionRepository.save(MissionFixture.createWithoutId());
-        certificationRepository.save(CertificationFixture.createCertificationWithoutId());
-        certificationRepository.save(CertificationFixture.createCertificationWithoutId());
+        final Certification certification = createCertificationWithoutId();
+        final Mission mission = MissionFixture.createWithoutId();
+
+        missionRepository.save(mission);
+        certificationRepository.save(certification);
         final Page<Certification> certifications = certificationRepository.findByMissionIds(
             Arrays.asList(TEST_MISSION_ID), PageRequest.of(0, 1));
 
         assertAll(
-            () -> assertThat(certifications.getTotalPages()).isEqualTo(2),
-            () -> assertThat(certifications.getContent().size()).isEqualTo(1),
-            () -> assertThat(certifications.getContent().get(0).getId()).isEqualTo(1L)
+            () -> assertThat(certifications.getTotalPages()).isEqualTo(1),
+            () -> assertThat(certifications.getContent()).hasSize(1),
+            () -> assertThat(certifications.getContent().get(0))
+                .isEqualToIgnoringGivenFields(certification, "id")
         );
     }
 
