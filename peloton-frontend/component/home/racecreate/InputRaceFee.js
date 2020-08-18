@@ -64,7 +64,7 @@ const InputRaceFee = () => {
         },
       ]);
     } catch (e) {
-      alert(e);
+      alert(e.response.data.code);
     }
     setGlobalLoading(false);
   };
@@ -93,7 +93,7 @@ const InputRaceFee = () => {
       setMemberInfo(newMemberInfo);
       await createRaceRequest();
     } catch (e) {
-      console.log(e);
+      console.log(e.response.data.code);
     }
   };
 

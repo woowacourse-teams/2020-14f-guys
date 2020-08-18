@@ -26,7 +26,7 @@ export const RaceApi = {
       });
       return headers;
     } catch (error) {
-      console.log(error);
+      console.log(error.response.data.code);
       throw error;
     }
   },

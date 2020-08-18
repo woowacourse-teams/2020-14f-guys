@@ -20,8 +20,8 @@ const RaceList = () => {
         const { race_responses } = await QueryApi.getRaces(token);
         setRaces(race_responses);
       } catch (error) {
-        alert("race 조회에 실패했습니다");
-        console.log(error);
+        alert(error.response.data.code);
+        console.log(error.response.data.code);
         setRaces([]);
       }
     };

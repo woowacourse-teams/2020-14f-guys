@@ -27,7 +27,7 @@ export const MemberApi = {
       );
       return response.data.image_url;
     } catch (error) {
-      console.log(error);
+      console.log(error.response.data.code);
     }
   },
   patchCash: async (token, cash) => {
@@ -44,7 +44,7 @@ export const MemberApi = {
         },
       });
     } catch (error) {
-      console.log(error);
+      console.log(error.response.data.code);
     }
   },
   patchName: async (token, name) => {
@@ -54,14 +54,14 @@ export const MemberApi = {
         baseURL: SERVER_BASE_URL,
         url: "/api/members/name",
         headers: {
-          Authorization: `Bearer ${token}`,
+          Authorization: `Bearer ${token}asdasd`,
         },
         data: {
           name,
         },
       });
     } catch (error) {
-      console.log(error);
+      console.log(error.response.data.code);
     }
   },
   delete: async (token) => {
