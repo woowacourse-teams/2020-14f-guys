@@ -15,6 +15,7 @@ import { useSetRecoilState } from "recoil";
 import { raceCreateInfoState } from "../../../state/race/RaceState";
 import {
   COLOR,
+  RACE_CATEGORY_EXERCISE,
   RACE_CATEGORY_PLAY,
   RACE_CATEGORY_STUDY,
   RACE_CATEGORY_TIME,
@@ -42,10 +43,10 @@ const CategorySelection = () => {
       >
         <Image
           style={styles.itemImage}
-          source={require("../../../assets/race_category_1.jpg")}
+          source={require("../../../assets/race_category_meeting.jpg")}
         />
         <Text style={styles.itemTitle}>모임</Text>
-        <Text style={styles.itemSubtitle}>Ice Breaking</Text>
+        <Text style={styles.itemSubtitle}>친구들과 생산성을 높여보아요.👩‍💻</Text>
       </TouchableOpacity>
       <TouchableOpacity
         activeOpacity={0.7}
@@ -54,10 +55,12 @@ const CategorySelection = () => {
       >
         <Image
           style={styles.itemImage}
-          source={require("../../../assets/race_category_2.jpg")}
+          source={require("../../../assets/race_category_books.jpg")}
         />
         <Text style={styles.itemTitle}>학습</Text>
-        <Text style={styles.itemSubtitle}>Learning</Text>
+        <Text style={styles.itemSubtitle}>
+          함께 가면 멀리 간대요! 같이 공부해요.📖
+        </Text>
       </TouchableOpacity>
       <TouchableOpacity
         activeOpacity={0.7}
@@ -66,10 +69,26 @@ const CategorySelection = () => {
       >
         <Image
           style={styles.itemImage}
-          source={require("../../../assets/race_category_3.jpg")}
+          source={require("../../../assets/race_category_leisure.jpg")}
         />
         <Text style={styles.itemTitle}>여가</Text>
-        <Text style={styles.itemSubtitle}>Play</Text>
+        <Text style={styles.itemSubtitle}>
+          쉬는 것도 함께 하면 두배로 행복!👭
+        </Text>
+      </TouchableOpacity>
+      <TouchableOpacity
+        activeOpacity={0.7}
+        style={styles.item}
+        onPress={() => onSelectCategory(RACE_CATEGORY_EXERCISE)}
+      >
+        <Image
+          style={styles.itemImage}
+          source={require("../../../assets/race_category_exercise.jpg")}
+        />
+        <Text style={styles.itemTitle}>운동</Text>
+        <Text style={styles.itemSubtitle}>
+          힘든 운동도 함께라면 할 수 있어요!🏋️‍♂️
+        </Text>
       </TouchableOpacity>
     </ScrollView>
   );
