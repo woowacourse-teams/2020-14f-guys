@@ -7,6 +7,7 @@ import static org.assertj.core.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.BDDMockito.*;
 
+import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
@@ -30,6 +31,7 @@ import com.woowacourse.pelotonbackend.member.presentation.dto.MemberCreateReques
 import com.woowacourse.pelotonbackend.member.presentation.dto.MemberProfileResponse;
 import com.woowacourse.pelotonbackend.member.presentation.dto.MemberResponse;
 import com.woowacourse.pelotonbackend.member.presentation.dto.MemberResponses;
+import com.woowacourse.pelotonbackend.vo.Cash;
 
 @ExtendWith(MockitoExtension.class)
 class MemberServiceTest {
@@ -134,22 +136,32 @@ class MemberServiceTest {
         );
     }
 
-    @DisplayName("회원의 캐시를 수정한다")
+    @DisplayName("회원의 캐시를 충전한다")
     @Test
-    void updateCashTest() {
+    void plusCashTest() {
         final Member originMember = MemberFixture.createWithId(MEMBER_ID);
         final Member updatedMember = MemberFixture.memberCashUpdated(MEMBER_ID);
         given(memberRepository.findById(anyLong())).willReturn(Optional.of(originMember));
         given(memberRepository.save(any(Member.class))).willReturn(updatedMember);
 
-        final MemberResponse memberResponse = memberService.updateCash(originMember.getId(),
+        final MemberResponse memberResponse = memberService.chargeCash(originMember.getId(),
             createCashUpdateRequest());
 
         assertAll(
-            () -> assertThat(memberResponse.getCash()).isEqualTo(createCashUpdateRequest().getCash()),
+            () -> assertThat(memberResponse.getCash()).isEqualTo(originMember.getCash().plus(createCashUpdateRequest().getCash())),
             () -> assertThat(memberResponse).isEqualToIgnoringGivenFields(originMember, "cash", "createdAt",
                 "updatedAt")
         );
+    }
+
+    @DisplayName("회원의 캐시를 차감한다")
+    @Test
+    void minusCashTest() {
+        final Member originMember = MemberFixture.createWithId(MEMBER_ID);
+        given(memberRepository.findById(anyLong())).willReturn(Optional.of(originMember));
+
+        memberService.minusCash(originMember.getId(), new Cash(BigDecimal.ONE));
+        verify(memberRepository).save(any());
     }
 
     @DisplayName("회원의 프로필을 수정한다.")

@@ -58,7 +58,6 @@ const RedirectPage = ({ route }) => {
     const userCash = Number(memberInfo.cash);
     const raceEntranceFee = Number(raceInfo.entrance_fee);
     try {
-      await MemberApi.patchCash(token, String(userCash - raceEntranceFee));
       await RiderApi.post(token, raceInfo.id);
       const newMemberInfo = await MemberApi.get(token);
       setMemberInfo(newMemberInfo);

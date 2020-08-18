@@ -13,9 +13,12 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import com.woowacourse.pelotonbackend.common.exception.RiderDuplicatedException;
+import com.woowacourse.pelotonbackend.member.application.MemberService;
 import com.woowacourse.pelotonbackend.member.domain.MemberFixture;
 import com.woowacourse.pelotonbackend.member.presentation.dto.MemberResponse;
+import com.woowacourse.pelotonbackend.race.application.RaceService;
 import com.woowacourse.pelotonbackend.race.domain.RaceFixture;
+import com.woowacourse.pelotonbackend.race.domain.RaceRepository;
 import com.woowacourse.pelotonbackend.rider.domain.Rider;
 import com.woowacourse.pelotonbackend.rider.domain.RiderFixture;
 import com.woowacourse.pelotonbackend.rider.domain.RiderRepository;
@@ -27,17 +30,24 @@ public class RiderServiceTest {
     @Mock
     private RiderRepository riderRepository;
 
+    @Mock
+    private MemberService memberService;
+
+    @Mock
+    private RaceService raceService;
+
     private RiderService riderService;
 
     @BeforeEach
     void setUp() {
-        riderService = new RiderService(riderRepository);
+        riderService = new RiderService(riderRepository, memberService, raceService);
     }
 
     @DisplayName("Rider를 생성한다.")
     @Test
     void createTest() {
         given(riderRepository.save(any())).willReturn(RiderFixture.createMockRider());
+        given(raceService.retrieve(anyLong())).willReturn(RaceFixture.retrieveResponse());
         riderService.create(MemberFixture.memberResponse(), RiderFixture.createMockRequest());
         verify(riderRepository).save(any());
     }
@@ -99,6 +109,7 @@ public class RiderServiceTest {
         given(riderRepository.existsByMemberIdAndRaceID(memberResponse.getId(),
             riderCreateRequest.getRaceId())).willReturn(false, true);
         given(riderRepository.save(any(Rider.class))).willReturn(expectedRider);
+        given(raceService.retrieve(anyLong())).willReturn(RaceFixture.retrieveResponse());
         riderService.create(memberResponse, riderCreateRequest);
 
         assertThatThrownBy(() -> riderService.create(memberResponse, riderCreateRequest))

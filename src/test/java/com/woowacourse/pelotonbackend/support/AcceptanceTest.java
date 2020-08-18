@@ -15,9 +15,11 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.TestExecutionListeners;
 
 import com.woowacourse.pelotonbackend.DataInitializeExecutionListener;
+import com.woowacourse.pelotonbackend.member.domain.MemberFixture;
 import com.woowacourse.pelotonbackend.member.presentation.dto.MemberCreateRequest;
 import com.woowacourse.pelotonbackend.member.presentation.dto.MemberResponse;
 import com.woowacourse.pelotonbackend.member.presentation.dto.MemberResponses;
+import com.woowacourse.pelotonbackend.race.presentation.dto.RaceCreateRequest;
 import com.woowacourse.pelotonbackend.support.dto.JwtTokenResponse;
 import io.restassured.RestAssured;
 import io.restassured.http.Header;
@@ -43,14 +45,14 @@ public class AcceptanceTest {
         RestAssured.port = port;
     }
 
-    protected JwtTokenResponse loginMember(MemberCreateRequest request) {
+    protected JwtTokenResponse loginMember(final MemberCreateRequest request) {
         requestCreate(request);
 
         final String token = jwtTokenProvider.createToken(String.valueOf(request.getKakaoId()));
         return JwtTokenResponse.of(token, ADMIT);
     }
 
-    protected List<JwtTokenResponse> loginMembers(List<MemberCreateRequest> requests) {
+    protected List<JwtTokenResponse> loginMembers(final List<MemberCreateRequest> requests) {
         requests.forEach(this::requestCreate);
 
         return requests.stream()
@@ -105,5 +107,17 @@ public class AcceptanceTest {
 
     protected Header createTokenHeader(final JwtTokenResponse tokenResponse) {
         return new Header("Authorization", "Bearer " + tokenResponse.getAccessToken());
+    }
+
+    protected void createRace(final RaceCreateRequest request, final JwtTokenResponse tokenResponse) {
+        given()
+            .header(createTokenHeader(tokenResponse))
+            .contentType(MediaType.APPLICATION_JSON_VALUE)
+            .body(request)
+            .when()
+            .post("/api/races")
+            .then()
+            .log().all()
+            .statusCode(HttpStatus.CREATED.value());
     }
 }

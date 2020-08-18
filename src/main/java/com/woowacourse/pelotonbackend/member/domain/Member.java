@@ -1,5 +1,6 @@
 package com.woowacourse.pelotonbackend.member.domain;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 import javax.validation.Valid;
@@ -13,6 +14,7 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.relational.core.mapping.Embedded;
 
+import com.woowacourse.pelotonbackend.common.exception.MoneyInvalidException;
 import com.woowacourse.pelotonbackend.vo.Cash;
 import com.woowacourse.pelotonbackend.vo.ImageUrl;
 import lombok.AccessLevel;
@@ -58,14 +60,27 @@ public class Member {
         return this.toBuilder()
             .name(name)
             .build();
-        // todo : 테스트 추가 필요
     }
 
-    public Member changeCash(final Cash cash) {
+    public Member plusCash(final Cash value) {
         return this.toBuilder()
-            .cash(cash)
+            .cash(cash.plus(value))
             .build();
-        // todo : 테스트 추가 필요
+    }
+
+    public Member minusCash(final Cash value) {
+        if(isNotEnoughMoney(value)) {
+            throw new MoneyInvalidException();
+        }
+
+        return this.toBuilder()
+            .cash(cash.minus(value))
+            .build();
+    }
+
+    private boolean isNotEnoughMoney(final Cash value) {
+        final Cash calculatedMoney = cash.minus(value);
+        return !calculatedMoney.isGreaterOrEqualThan(BigDecimal.ZERO);
     }
 
     public Member changeProfile(final ImageUrl profileImageUrl) {

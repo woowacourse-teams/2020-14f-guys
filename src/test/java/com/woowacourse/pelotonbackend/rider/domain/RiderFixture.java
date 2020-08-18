@@ -17,7 +17,7 @@ import com.woowacourse.pelotonbackend.rider.presentation.dto.RiderUpdateRequest;
 
 public class RiderFixture {
     public static final Long TEST_RIDER_ID = 1L;
-    public static final Long TEST_RACE_ID = 7L;
+    public static final Long TEST_RACE_ID = 1L;
     public static final Long TEST_MEMBER_ID = 1L;
     public static final Long TEST_CHANGED_RACE_ID = 8L;
     public static final Long TEST_CHANGED_MEMBER_ID = 11L;

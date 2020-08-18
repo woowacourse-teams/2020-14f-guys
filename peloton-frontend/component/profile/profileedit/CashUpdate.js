@@ -1,5 +1,6 @@
 import React from "react";
 import {
+  Alert,
   Keyboard,
   StyleSheet,
   Text,
@@ -9,31 +10,61 @@ import {
   View,
 } from "react-native";
 import { COLOR } from "../../../utils/constants";
-import { useRecoilValue } from "recoil";
+import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import { useNavigation } from "@react-navigation/core";
 import { MemberApi } from "../../../utils/api/MemberApi";
-import { memberInfoState, memberTokenState } from "../../../state/member/MemberState";
-import { useRecoilState } from "recoil/dist";
+import {
+  memberInfoState,
+  memberTokenState,
+} from "../../../state/member/MemberState";
 
 const CashUpdate = () => {
   const [cash, setCash] = React.useState(5000);
   const token = useRecoilValue(memberTokenState);
   const navigation = useNavigation();
-  const [memberInfo, setMemberInfo] = useRecoilState(memberInfoState);
+  const setMemberInfo = useSetRecoilState(memberInfoState);
+
+  const validateCash = (value) => {
+    const onlyNumber = /^[0-9]+$/;
+    if (value.length === 0) {
+      return true;
+    }
+    return onlyNumber.test(value);
+  };
+
+  const setCashWithoutPrettyFormat = (value) => {
+    const onlyNumberInput = value.replace(/\,/g, "");
+    setCash(onlyNumberInput);
+  };
+
+  const prettyPrint = (value) => {
+    return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  };
 
   const requestChangeCash = async () => {
+    if (validateCash(cash)) {
+      Alert.alert("충전 금액을 다시 입력해주세요.");
+      return;
+    }
     try {
-      await MemberApi.patchCash(
-        token,
-        `${Number(memberInfo.cash) + Number(cash)}`,
-      );
+      await MemberApi.patchCash(token, cash);
       const response = await MemberApi.get(token);
       setMemberInfo(response);
       navigation.navigate("ProfileEdit");
     } catch (error) {
-      alert("에러가 발생했습니다.");
+      Alert.alert("에러가 발생했습니다.");
       console.log(error);
     }
+  };
+
+  const ErrorMessage = () => {
+    return validateCash(cash) ? null : (
+      <View>
+        <Text style={styles.errorMessage}>
+          금액을 천원단위로 입력해주세요😊
+        </Text>
+      </View>
+    );
   };
 
   return (
@@ -44,9 +75,11 @@ const CashUpdate = () => {
             <Text style={styles.chargeText}>충전 금액을 입력해주세요</Text>
             <TextInput
               style={styles.chargeInput}
-              onChangeText={(text) => setCash(text)}
-              value={String(cash)}
+              onChangeText={(text) => setCashWithoutPrettyFormat(text)}
+              value={prettyPrint(String(cash))}
+              keyboardType={"number-pad"}
             />
+            <ErrorMessage />
           </View>
         </View>
         <View style={styles.buttonContainer}>
@@ -77,6 +110,15 @@ const styles = StyleSheet.create({
     lineHeight: 21,
     letterSpacing: -0.36,
     marginBottom: 20,
+  },
+  errorMessage: {
+    position: "absolute",
+    marginTop: "3%",
+    marginLeft: "14%",
+    color: COLOR.RED,
+    fontWeight: "bold",
+    fontSize: 15,
+    lineHeight: 21,
   },
   chargeInput: {
     backgroundColor: COLOR.WHITE,

@@ -17,13 +17,13 @@ class MemberResponsesTest {
     void memberResponsesTest() throws JsonProcessingException {
         final String expectedValue = "{\"responses\":[{\"id\":" + MEMBER_ID + ",\"kakao_id\":" + KAKAO_ID
             + ",\"profile\":\"https://lh3.googleusercontent.com/5EfQBHDb47tchiART6U6yk3yYS9qBYr6VUssB5wHE1AgavqV5E2SSuzyiNkc7UgVng\",\"name\":\""
-            + NAME + "\",\"email\":\"" + EMAIL + "\",\"cash\":\"1\",\"role\":\"MEMBER\"},{\"id\":" + MEMBER_ID2
+            + NAME + "\",\"email\":\"" + EMAIL + "\",\"cash\":\"50000\",\"role\":\"MEMBER\"},{\"id\":" + MEMBER_ID2
             + ",\"kakao_id\":" + KAKAO_ID2
             + ",\"profile\":\"https://lh3.googleusercontent.com/5EfQBHDb47tchiART6U6yk3yYS9qBYr6VUssB5wHE1AgavqV5E2SSuzyiNkc7UgVng\",\"name\":\""
-            + NAME2 + "\",\"email\":\"" + EMAIL2 + "\",\"cash\":\"1\",\"role\":\"MEMBER\"},{\"id\":" + MEMBER_ID3
+            + NAME2 + "\",\"email\":\"" + EMAIL2 + "\",\"cash\":\"50000\",\"role\":\"MEMBER\"},{\"id\":" + MEMBER_ID3
             + ",\"kakao_id\":" + KAKAO_ID3
             + ",\"profile\":\"https://lh3.googleusercontent.com/5EfQBHDb47tchiART6U6yk3yYS9qBYr6VUssB5wHE1AgavqV5E2SSuzyiNkc7UgVng\",\"name\":\""
-            + NAME3 + "\",\"email\":\"" + EMAIL3 + "\",\"cash\":\"1\",\"role\":\"MEMBER\"}]}";
+            + NAME3 + "\",\"email\":\"" + EMAIL3 + "\",\"cash\":\"50000\",\"role\":\"MEMBER\"}]}";
 
         assertThat(objectMapper.writeValueAsString(memberResponses())).isEqualTo(expectedValue);
     }

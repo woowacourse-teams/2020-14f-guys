@@ -12,12 +12,15 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.ConstraintViolationException;
+import javax.validation.Valid;
 
 import org.apache.http.HttpHeaders;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -181,7 +184,7 @@ public class MemberControllerTest {
             NativeWebRequest.class), any(WebDataBinderFactory.class))).willReturn(expectedResponse);
         given(argumentResolver.supportsParameter(any())).willReturn(true);
         given(memberService.findMember(MEMBER_ID)).willReturn(expectedResponse);
-        given(memberService.updateCash(anyLong(), any(MemberCashUpdateRequest.class)))
+        given(memberService.chargeCash(anyLong(), any(MemberCashUpdateRequest.class)))
             .willReturn(MemberFixture.memberResponse());
 
         mockMvc.perform(patch(RESOURCE_URL + "/cash")
@@ -192,6 +195,27 @@ public class MemberControllerTest {
             .andExpect(status().isOk())
             .andExpect(header().string("Location", String.format("%s/%d", RESOURCE_URL, MEMBER_ID)))
             .andDo(MemberDocumentation.updateCash());
+    }
+
+    @DisplayName("잘못된 CashUpdatedRequest에 대해서 예외를 반환한다.")
+    @ParameterizedTest
+    @ValueSource(longs = {-1, -1000})
+    void updateNotValidCash(final long badValue) throws Exception {
+        final MemberResponse expectedResponse = memberResponse();
+        given(bearerAuthInterceptor.preHandle(any(HttpServletRequest.class), any(HttpServletResponse.class),
+            any(HandlerMethod.class))).willReturn(true);
+        given(argumentResolver.resolveArgument(any(MethodParameter.class), any(ModelAndViewContainer.class), any(
+            NativeWebRequest.class), any(WebDataBinderFactory.class))).willReturn(expectedResponse);
+        given(argumentResolver.supportsParameter(any())).willReturn(true);
+
+        mockMvc.perform(patch(RESOURCE_URL + "/cash")
+            .header(HttpHeaders.AUTHORIZATION, LoginFixture.getTokenHeader())
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(objectMapper.writeValueAsBytes(createBadCashUpdateRequest(badValue)))
+        )
+            .andExpect(status().isBadRequest())
+            .andExpect(jsonPath("code").value(ErrorCode.INVALID_VALIDATE.getCode()))
+            .andDo(MemberDocumentation.createBadCashUpdate());
     }
 
     @DisplayName("회원의 Profile 사진을 수정한다.")

@@ -10,7 +10,10 @@ import { loadingState } from "../../../state/loading/LoadingState";
 import LoadingIndicator from "../../../utils/LoadingIndicator";
 import RaceCreateView from "./RaceCreateView";
 import { navigateTabScreen, navigateWithHistory } from "../../../utils/util";
-import { memberInfoState, memberTokenState } from "../../../state/member/MemberState";
+import {
+  memberInfoState,
+  memberTokenState,
+} from "../../../state/member/MemberState";
 import { RaceApi } from "../../../utils/api/RaceApi";
 import { MemberApi } from "../../../utils/api/MemberApi";
 import { RiderApi } from "../../../utils/api/RiderApi";
@@ -96,7 +99,6 @@ const InputRaceFee = () => {
       return;
     }
     try {
-      await MemberApi.patchCash(token, String(userCash - entrance_fee));
       const newMemberInfo = await MemberApi.get(token);
       setMemberInfo(newMemberInfo);
       await createRaceRequest();

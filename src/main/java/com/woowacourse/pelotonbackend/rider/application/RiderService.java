@@ -9,7 +9,10 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.woowacourse.pelotonbackend.common.exception.RiderDuplicatedException;
 import com.woowacourse.pelotonbackend.common.exception.RiderNotFoundException;
+import com.woowacourse.pelotonbackend.member.application.MemberService;
 import com.woowacourse.pelotonbackend.member.presentation.dto.MemberResponse;
+import com.woowacourse.pelotonbackend.race.application.RaceService;
+import com.woowacourse.pelotonbackend.race.presentation.dto.RaceResponse;
 import com.woowacourse.pelotonbackend.rider.domain.Rider;
 import com.woowacourse.pelotonbackend.rider.domain.RiderRepository;
 import com.woowacourse.pelotonbackend.rider.presentation.dto.RiderCreateRequest;
@@ -23,6 +26,8 @@ import lombok.RequiredArgsConstructor;
 @Transactional
 public class RiderService {
     private final RiderRepository riderRepository;
+    private final MemberService memberService;
+    private final RaceService raceService;
 
     public Long create(final MemberResponse member, final RiderCreateRequest riderCreateRequest) {
         final Long memberId = member.getId();
@@ -32,6 +37,9 @@ public class RiderService {
         if (isRiderAlreadyExists) {
             throw new RiderDuplicatedException(memberId, raceId);
         }
+
+        final RaceResponse raceResponse = raceService.retrieve(riderCreateRequest.getRaceId());
+        memberService.minusCash(member.getId(), raceResponse.getEntranceFee());
         final Rider riderWithoutId = riderCreateRequest.toRider(member);
 
         return riderRepository.save(riderWithoutId).getId();

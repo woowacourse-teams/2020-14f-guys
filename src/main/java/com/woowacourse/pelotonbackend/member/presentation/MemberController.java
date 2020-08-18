@@ -73,9 +73,9 @@ public class MemberController {
     }
 
     @PatchMapping("/cash")
-    public ResponseEntity<Void> updateCash(@LoginMember final MemberResponse loginMemberResponse,
+    public ResponseEntity<Void> chargeCash(@LoginMember final MemberResponse loginMemberResponse,
         @RequestBody @Valid final MemberCashUpdateRequest request) {
-        final MemberResponse memberResponse = memberService.updateCash(loginMemberResponse.getId(), request);
+        final MemberResponse memberResponse = memberService.chargeCash(loginMemberResponse.getId(), request);
 
         return ResponseEntity.ok()
             .header("Location", String.format("/api/members/%d", memberResponse.getId()))

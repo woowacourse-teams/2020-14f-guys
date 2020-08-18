@@ -16,7 +16,7 @@ class RiderCreateRequestTest {
     @Test
     void riderCreateRequestTest() throws JsonProcessingException {
         final String requestBody = "{\n"
-            + "\"race_id\":\"7\"\n"
+            + "\"race_id\":\"1\"\n"
             + "}";
 
         final RiderCreateRequest request = objectMapper.readValue(requestBody, RiderCreateRequest.class);

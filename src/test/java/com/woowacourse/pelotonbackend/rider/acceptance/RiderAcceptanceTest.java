@@ -3,6 +3,7 @@ package com.woowacourse.pelotonbackend.rider.acceptance;
 import static com.woowacourse.pelotonbackend.rider.domain.RiderFixture.*;
 import static org.assertj.core.api.Assertions.*;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -19,6 +20,7 @@ import com.woowacourse.pelotonbackend.member.domain.MemberFixture;
 import com.woowacourse.pelotonbackend.member.presentation.dto.MemberCreateRequest;
 import com.woowacourse.pelotonbackend.member.presentation.dto.MemberResponse;
 import com.woowacourse.pelotonbackend.member.presentation.dto.MemberResponses;
+import com.woowacourse.pelotonbackend.race.domain.RaceFixture;
 import com.woowacourse.pelotonbackend.rider.domain.RiderFixture;
 import com.woowacourse.pelotonbackend.rider.presentation.dto.RiderCreateRequest;
 import com.woowacourse.pelotonbackend.rider.presentation.dto.RiderResponse;
@@ -26,6 +28,7 @@ import com.woowacourse.pelotonbackend.rider.presentation.dto.RiderResponses;
 import com.woowacourse.pelotonbackend.rider.presentation.dto.RiderUpdateRequest;
 import com.woowacourse.pelotonbackend.support.AcceptanceTest;
 import com.woowacourse.pelotonbackend.support.dto.JwtTokenResponse;
+import com.woowacourse.pelotonbackend.vo.Cash;
 
 public class RiderAcceptanceTest extends AcceptanceTest {
     /**
@@ -40,12 +43,6 @@ public class RiderAcceptanceTest extends AcceptanceTest {
      * Given: Rider가 존재한다.
      * When: 라이더를 조회한다.
      * Then: 라이더를 반환한다.
-     *
-     * Given: Race에 참여중인 멤버들이 존재한다.
-     * When: Race에 참여중인 Rider들을 RACE ID 기준으로 조회한다.
-     * Then: 참여중인 Rider들이 반환된다.
-     * When: Race에 참여중인 Rider들을 MEMBER ID 기준으로 조회한다.
-     * Then: 참여중인 Rider들이 반환된다.
      *
      * Given: Rider를 업데이트한다.
      * When: 라이더를 조회한다.
@@ -62,11 +59,15 @@ public class RiderAcceptanceTest extends AcceptanceTest {
         final List<JwtTokenResponse> tokenResponses = loginMembers(members);
         final RiderCreateRequest riderCreateRequest = RiderFixture.createMockRequest();
 
-        final Long raceId = riderCreateRequest.getRaceId();
         final JwtTokenResponse tokenResponse = tokenResponses.get(0);
+        createRace(RaceFixture.createMockRequest(), tokenResponse);
         final MemberResponses memberResponses = findAllMembers(tokenResponse);
         final MemberResponse memberResponse = memberResponses.getResponses().get(0);
         final List<String> resources = fetchCreateRiders(tokenResponses, riderCreateRequest);
+        final MemberResponses membersAfterJoinRace = findAllMembers(tokenResponse);
+        final Cash expectedMoney = new Cash(BigDecimal.valueOf(30000L));
+        assertThat(membersAfterJoinRace.getResponses().get(0).getCash()).isEqualTo(expectedMoney);
+
         final String resource = resources.get(0);
         final RiderResponses riderResponses = findAllRidersInRace(riderCreateRequest.getRaceId(), tokenResponse);
 
@@ -75,10 +76,9 @@ public class RiderAcceptanceTest extends AcceptanceTest {
             .containsExactlyElementsOf(
                 memberResponses.getResponses().stream().map(MemberResponse::getId).collect(Collectors.toList()));
         assertThat(riderResponses.getRiderResponses()).extracting(RiderResponse::getRaceId)
-            .allMatch(raceId::equals);
+            .allMatch(riderCreateRequest.getRaceId()::equals);
 
         fetchCreateDuplicatedRider(memberResponse, riderCreateRequest);
-
         fetchFindRidersByRaceId(riderCreateRequest.getRaceId(), tokenResponse);
         fetchFindRidersByMemberId(memberResponse.getId(), tokenResponse);
 
@@ -151,7 +151,7 @@ public class RiderAcceptanceTest extends AcceptanceTest {
         assertThat(riders.getRiderResponses().size()).isEqualTo(RIDER_NUMBER);
     }
 
-    private void fetchFindRider(final String resource, JwtTokenResponse tokenResponse) {
+    private void fetchFindRider(final String resource, final JwtTokenResponse tokenResponse) {
         final RiderResponse updatedRiderResponse = given()
             .header(createTokenHeader(tokenResponse))
             .accept(MediaType.APPLICATION_JSON_VALUE)
