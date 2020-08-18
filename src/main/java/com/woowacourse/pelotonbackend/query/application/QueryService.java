@@ -60,16 +60,26 @@ public class QueryService {
         final List<Rider> riders = riderRepository.findRidersByMemberId(member.getId());
         final List<Race> races = retrieveRacesByRiderIds(riders);
         final List<Mission> missions = retrieveUpcomingMissionsByRaceIds(races);
+        final List<Certification> certifications = retrieveCertificationByMissionIds(missions);
 
         final Map<Long, Rider> raceIdToRider = riders.stream()
             .collect(Collectors.toMap(rider -> rider.getRaceId().getId(), Function.identity()));
         final Map<Long, Race> raceIdToRace = races.stream()
             .collect(Collectors.toMap(Race::getId, Function.identity()));
+        final Map<Long, Certification> missionIdToCertification = certifications.stream()
+            .collect(Collectors.toMap(certification -> certification.getMissionId().getId(), Function.identity()));
 
         final List<UpcomingMissionResponse> upcomingMissionResponses = missions.stream()
             .map(mission -> {
                 final Long raceId = mission.getRaceId().getId();
-                return UpcomingMissionResponse.of(mission, raceIdToRider.get(raceId), raceIdToRace.get(raceId));
+                Certification certification;
+                try {
+                    certification = missionIdToCertification.get(mission.getId());
+                } catch (NullPointerException e) {
+                    certification = null;
+                }
+                return UpcomingMissionResponse.of(
+                    mission, raceIdToRider.get(raceId), raceIdToRace.get(raceId), certification);
             })
             .collect(Collectors.toList());
 
@@ -83,5 +93,13 @@ public class QueryService {
 
         return missionRepository.findAllByRaceIdsEndTimeAfterThanAndWithinOneDayOrderByStartTime(raceIds,
             LocalDateTime.now());
+    }
+
+    private List<Certification> retrieveCertificationByMissionIds(final List<Mission> missions) {
+        final List<Long> missionIds = missions.stream()
+            .map(Mission::getId)
+            .collect(Collectors.toList());
+
+        return certificationRepository.findByMissionIds(missionIds, Pageable.unpaged()).getContent();
     }
 }

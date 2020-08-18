@@ -1,7 +1,6 @@
 package com.woowacourse.pelotonbackend.query.presentation;
 
 import static com.woowacourse.pelotonbackend.race.domain.RaceFixture.*;
-import static com.woowacourse.pelotonbackend.rider.domain.RiderFixture.*;
 import static org.assertj.core.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.*;
@@ -11,7 +10,7 @@ import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuild
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-import java.util.Collections;
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -176,9 +175,10 @@ class QueryControllerTest {
     @DisplayName("멤버가 인증해야할 미션을 조회한다.")
     @Test
     void findUpcomingMissions() throws Exception {
-        final UpcomingMissionResponses expectedResponses = UpcomingMissionResponses.of(Collections.singletonList(
-            UpcomingMissionResponse.of(MissionFixture.createWithId(MissionFixture.TEST_MISSION_ID),
-                createRiderWithId(RiderFixture.TEST_RIDER_ID), RaceFixture.createWithId(RaceFixture.TEST_RACE_ID))));
+        final UpcomingMissionResponse noCertificationMission = MissionFixture.upcomingMissionResponseWithoutCertification();
+        final UpcomingMissionResponse hasCertificationMission = MissionFixture.upcomingMissionResponseWithCertification();
+        final UpcomingMissionResponses expectedResponses = UpcomingMissionResponses.of(
+            Arrays.asList(noCertificationMission, hasCertificationMission));
         final MemberResponse member = MemberFixture.memberResponse();
         when(argumentResolver.resolveArgument(any(MethodParameter.class), any(ModelAndViewContainer.class),
             any(NativeWebRequest.class), any(WebDataBinderFactory.class))).thenReturn(member);

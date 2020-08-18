@@ -4,7 +4,6 @@ import static com.woowacourse.pelotonbackend.mission.domain.MissionFixture.*;
 import static org.assertj.core.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.*;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -23,9 +22,10 @@ import com.woowacourse.pelotonbackend.DataInitializeExecutionListener;
     listeners = DataInitializeExecutionListener.class,
     mergeMode = TestExecutionListeners.MergeMode.MERGE_WITH_DEFAULTS)
 class MissionRepositoryTest {
-    private static final int SECOND_MISSON = 1;
-    private static final int FOURTH_MISSON = 3;
+    private static final int SECOND_MISSION = 1;
+    private static final int FOURTH_MISSION = 3;
     private static final int THIRD_MISSION = 2;
+
     @Autowired
     private MissionRepository missionRepository;
 
@@ -125,8 +125,8 @@ class MissionRepositoryTest {
 
         final List<Mission> missionsWithIds = upcomingMissionWithIds();
         final List<Mission> expectedMissionsWithOrder = Lists.newArrayList(
-            missionsWithIds.get(SECOND_MISSON),
-            missionsWithIds.get(FOURTH_MISSON),
+            missionsWithIds.get(SECOND_MISSION),
+            missionsWithIds.get(FOURTH_MISSION),
             missionsWithIds.get(THIRD_MISSION));
 
         assertThat(results).containsExactlyInAnyOrderElementsOf(expectedMissionsWithOrder);

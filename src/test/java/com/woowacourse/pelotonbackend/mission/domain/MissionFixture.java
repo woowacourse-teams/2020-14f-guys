@@ -1,5 +1,7 @@
 package com.woowacourse.pelotonbackend.mission.domain;
 
+import static com.woowacourse.pelotonbackend.rider.domain.RiderFixture.*;
+
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -15,11 +17,14 @@ import java.util.stream.Collectors;
 import org.assertj.core.util.Lists;
 import org.springframework.data.jdbc.core.mapping.AggregateReference;
 
+import com.woowacourse.pelotonbackend.certification.domain.CertificationFixture;
 import com.woowacourse.pelotonbackend.certification.domain.TimeDuration;
 import com.woowacourse.pelotonbackend.mission.presentation.dto.MissionCreateRequest;
 import com.woowacourse.pelotonbackend.mission.presentation.dto.MissionResponse;
 import com.woowacourse.pelotonbackend.mission.presentation.dto.MissionUpdateRequest;
+import com.woowacourse.pelotonbackend.query.presentation.dto.UpcomingMissionResponse;
 import com.woowacourse.pelotonbackend.race.domain.RaceFixture;
+import com.woowacourse.pelotonbackend.rider.domain.RiderFixture;
 
 public class MissionFixture {
     public static final Long TEST_MISSION_ID = 1L;
@@ -201,5 +206,21 @@ public class MissionFixture {
                     new DateTimeDuration(LocalDateTime.of(2020, 8, 16, 8, 0), LocalDateTime.of(2020, 8, 16, 8, 10)))
                 .missionInstruction(MISSION_INSTRUCTION)
                 .build());
+    }
+
+    public static UpcomingMissionResponse upcomingMissionResponseWithoutCertification() {
+        return UpcomingMissionResponse.of(
+            MissionFixture.createWithId(MissionFixture.TEST_MISSION_ID),
+            createRiderWithId(RiderFixture.TEST_RIDER_ID),
+            RaceFixture.createWithId(RaceFixture.TEST_RACE_ID),
+            null);
+    }
+
+    public static UpcomingMissionResponse upcomingMissionResponseWithCertification() {
+        return UpcomingMissionResponse.of(
+            MissionFixture.createWithId(MissionFixture.TEST_MISSION_ID2),
+            createRiderWithId(RiderFixture.TEST_RIDER_ID),
+            RaceFixture.createWithId(RaceFixture.TEST_RACE_ID),
+            CertificationFixture.createCertificationWithId());
     }
 }

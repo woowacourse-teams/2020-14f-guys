@@ -24,9 +24,12 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jdbc.core.mapping.AggregateReference;
 
+import com.woowacourse.pelotonbackend.certification.domain.Certification;
 import com.woowacourse.pelotonbackend.certification.domain.CertificationFixture;
 import com.woowacourse.pelotonbackend.certification.domain.CertificationRepository;
 import com.woowacourse.pelotonbackend.certification.presentation.dto.CertificationResponse;
@@ -46,6 +49,10 @@ import com.woowacourse.pelotonbackend.rider.domain.RiderRepository;
 @ExtendWith(MockitoExtension.class)
 @SpringBootTest
 class QueryServiceTest {
+    private static final int SECOND_MISSION = 1;
+    private static final int FOURTH_MISSION = 3;
+    private static final int THIRD_MISSION = 2;
+
     @Mock
     private RiderRepository riderRepository;
 
@@ -122,19 +129,38 @@ class QueryServiceTest {
      * 레이스1---미션1 종료-- --미션2 시작------------------미션2 종료------------------미션3 시작-----미션3 종료----------------
      * 레이스2-------------------------------------------------------미션4 시작-------------------------------미션5 시작--
      * result: [미션2, 미션4, 미션3]
+     * 미션 2는 이미 인증을 완료 -> 미션 2만 Certification 결과가 있고, 미션 3,4는 Certifaction 결과가 null
      */
     @DisplayName("레이스 아이디들로 24시간 이내에 시작하는 미션 또는 진행중인 미션과 그에 해당하는 rider, race 정보를 미션 시작시간 기준으로 반환한다.")
     @Test
     void findUpcomingByRaceIds() {
         final List<Mission> missions = upcomingMissionWithIds();
-        when(riderRepository.findRidersByMemberId(MEMBER_ID)).thenReturn(
-            Arrays.asList(RiderFixture.createRiderWithIdAndRaceId(TEST_RIDER_ID, TEST_RACE_ID),
-                RiderFixture.createRiderWithIdAndRaceId(TEST_RIDER_ID2, TEST_RACE_ID2)));
+        final List<Rider> expectedRiders = Arrays.asList(createRiderWithIdAndRaceId(TEST_RIDER_ID, TEST_RACE_ID),
+            createRiderWithIdAndRaceId(TEST_RIDER_ID2, TEST_RACE_ID2));
+        when(riderRepository.findRidersByMemberId(MEMBER_ID)).thenReturn(expectedRiders);
+
         final List<Long> raceIds = Arrays.asList(TEST_RACE_ID, TEST_RACE_ID2);
-        when(raceRepository.findAllById(raceIds)).thenReturn(
-            Arrays.asList(RaceFixture.createWithId(TEST_RACE_ID), RaceFixture.createWithId(TEST_RACE_ID2)));
-        when(missionRepository.findAllByRaceIdsEndTimeAfterThanAndWithinOneDayOrderByStartTime(eq(raceIds),
-            any(LocalDateTime.class))).thenReturn(Arrays.asList(missions.get(1), missions.get(3), missions.get(2)));
+        final List<Race> expectedRaces = Arrays.asList(RaceFixture.createWithId(TEST_RACE_ID),
+            RaceFixture.createWithId(TEST_RACE_ID2));
+        when(raceRepository.findAllById(raceIds)).thenReturn(expectedRaces);
+
+        final List<Mission> expectedMissionsWithOrder = Arrays.asList(missions.get(SECOND_MISSION),
+            missions.get(FOURTH_MISSION), missions.get(THIRD_MISSION));
+        when(missionRepository.findAllByRaceIdsEndTimeAfterThanAndWithinOneDayOrderByStartTime(
+            eq(raceIds), any(LocalDateTime.class))).thenReturn(expectedMissionsWithOrder);
+
+        final List<Long> certificationIds = expectedMissionsWithOrder.stream()
+            .map(Mission::getId)
+            .collect(Collectors.toList());
+        final Certification expectedCertification = CertificationFixture.createCertificationWithId()
+            .toBuilder()
+            .missionId(AggregateReference.to(TEST_MISSION_ID2))
+            .riderId(AggregateReference.to(TEST_RIDER_ID))
+            .build();
+        final List<Certification> expectedCertifications = Collections.singletonList(
+            expectedCertification);
+        when(certificationRepository.findByMissionIds(certificationIds, Pageable.unpaged()))
+            .thenReturn(new PageImpl<>(expectedCertifications));
 
         final UpcomingMissionResponses responses = queryService.retrieveUpcomingMissionsBy(memberResponse());
 
@@ -142,18 +168,23 @@ class QueryServiceTest {
             () -> assertThat(responses.getUpcomingMissions().get(0).getMission().getId()).isEqualTo(TEST_MISSION_ID2),
             () -> assertThat(responses.getUpcomingMissions().get(0).getRider().getId()).isEqualTo(TEST_RIDER_ID),
             () -> assertThat(responses.getUpcomingMissions().get(0).getRace().getId()).isEqualTo(TEST_RACE_ID),
+            () -> assertThat(responses.getUpcomingMissions().get(0).getCertification().getId())
+                .isEqualTo(CertificationFixture.TEST_CERTIFICATION_ID),
             () -> assertThat(responses.getUpcomingMissions().get(1).getMission().getId()).isEqualTo(TEST_MISSION_ID4),
             () -> assertThat(responses.getUpcomingMissions().get(1).getRider().getId()).isEqualTo(TEST_RIDER_ID2),
             () -> assertThat(responses.getUpcomingMissions().get(1).getRace().getId()).isEqualTo(TEST_RACE_ID2),
+            () -> assertThat(responses.getUpcomingMissions().get(1).getCertification()).isNull(),
             () -> assertThat(responses.getUpcomingMissions().get(2).getMission().getId()).isEqualTo(TEST_MISSION_ID3),
             () -> assertThat(responses.getUpcomingMissions().get(2).getRider().getId()).isEqualTo(TEST_RIDER_ID),
-            () -> assertThat(responses.getUpcomingMissions().get(2).getRace().getId()).isEqualTo(TEST_RACE_ID));
+            () -> assertThat(responses.getUpcomingMissions().get(2).getRace().getId()).isEqualTo(TEST_RACE_ID),
+            () -> assertThat(responses.getUpcomingMissions().get(2).getCertification()).isNull());
     }
 
     @DisplayName("진행해야할 미션을 조회할 때, 해당 멤버가 참여한 Race가 없는 경우 빈 배열이 나온다.")
     @Test
     void findUpcomingByRaceIdsNoRider() {
         when(riderRepository.findRidersByMemberId(MEMBER_ID)).thenReturn(Collections.emptyList());
+        when(certificationRepository.findByMissionIds(anyList(), eq(Pageable.unpaged()))).thenReturn(Page.empty());
 
         final UpcomingMissionResponses responses = queryService.retrieveUpcomingMissionsBy(memberResponse());
 
