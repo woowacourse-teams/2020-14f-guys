@@ -1,17 +1,18 @@
 import React from "react";
 import { createStackNavigator } from "@react-navigation/stack";
 
-import Home from "./home/homemain/Home";
-import RaceDetail from "./home/race/RaceDetail";
-import CategorySelection from "./home/racecreate/CategorySelection";
-import RaceShareButton from "./home/race/RaceShareButton";
-import InputRaceInfo from "./home/racecreate/InputRaceInfo";
-import InputRaceDates from "./home/racecreate/InputRaceDates";
-import InputRaceFee from "./home/racecreate/InputRaceFee";
-import RaceDeepLinkPage from "./home/race/RaceDeepLinkPage";
-import GoBackButton from "./home/race/GoBackButton";
-import InputRaceMissionTime from "./home/racecreate/InputRaceMissionTime";
-import InputRaceMissionDays from "./home/racecreate/InputRaceMissionDays";
+import Home from "./homemain/Home";
+import RaceDetail from "./race/RaceDetail";
+import CategorySelection from "./racecreate/CategorySelection";
+import RaceShareButton from "./race/RaceShareButton";
+import InputRaceInfo from "./racecreate/InputRaceInfo";
+import InputRaceDates from "./racecreate/InputRaceDates";
+import InputRaceFee from "./racecreate/InputRaceFee";
+import RaceDeepLinkPage from "./race/RaceDeepLinkPage";
+import GoBackButton from "./race/GoBackButton";
+import InputRaceMissionTime from "./racecreate/InputRaceMissionTime";
+import InputRaceMissionDays from "./racecreate/InputRaceMissionDays";
+import CertificationDetail from "../certification/CertificationDetail";
 
 const HomeStack = createStackNavigator();
 
@@ -70,6 +71,16 @@ const HomeNavigationRoot = () => {
         name="RaceDeepLinkPage"
         component={RaceDeepLinkPage}
         options={{ title: "레이스 참여" }}
+      />
+      <HomeStack.Screen
+        name="CertificationDetail"
+        component={CertificationDetail}
+        options={{
+          title: "진행중인 레이스",
+          headerTransparent: true,
+          headerTitle: false,
+          headerLeft: () => <GoBackButton />,
+        }}
       />
     </HomeStack.Navigator>
   );

@@ -38,7 +38,7 @@ const todayOneHourBefore = (() => {
 const todayOneHourAfter = (() => {
   const date = new Date();
   // date.setHours(today.getHours() + 1);
-  date.setSeconds(today.getSeconds() + 600);
+  date.setSeconds(today.getSeconds() + 10);
   return date;
 })();
 const todayTwoHourAfter = (() => {
@@ -99,7 +99,7 @@ export const raceMissionFixture = [
   },
   {
     race: {
-      id: 2,
+      id: 1,
       title: "기상",
       certification_example:
         "https://i.pinimg.com/474x/fd/8c/20/fd8c20bc1b23f05d33385e11741a6e0f.jpg",
@@ -116,7 +116,7 @@ export const raceMissionFixture = [
         end_time: todayTwoHourAfter.toISOString(),
       },
       mission_instruction: "지건을 찌르세요",
-      race_id: 2,
+      race_id: 1,
     },
   },
 ];

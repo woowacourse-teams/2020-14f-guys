@@ -4,20 +4,21 @@ import Swiper from "react-native-swiper";
 import RaceCertificationImage from "./RaceCertificationImage";
 
 const RaceCertificationImages = ({ certifications }) => {
+  console.log(certifications);
   return (
     <Swiper
       style={styles.container}
-      loop={true}
-      showsPagination={false}
+      loop={false}
+      showsPagination={true}
       autoplay
       autoplayTimeout={2.5}
     >
       {certifications && certifications.length > 0 ? (
         certifications.map((item, index) => (
-          <RaceCertificationImage key={index} uri={item.image} />
+          <RaceCertificationImage key={index} item={item} />
         ))
       ) : (
-        <RaceCertificationImage key={0} uri={null} />
+        <RaceCertificationImage key={1} item={null} />
       )}
     </Swiper>
   );

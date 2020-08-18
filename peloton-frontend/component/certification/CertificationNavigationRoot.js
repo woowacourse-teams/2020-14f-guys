@@ -4,6 +4,7 @@ import { createStackNavigator } from "@react-navigation/stack";
 
 import Certification from "./Certification";
 import CertificationSubmit from "./CertificationSubmit";
+import CertificationDetail from "./CertificationDetail";
 
 const CertificationStack = createStackNavigator();
 
@@ -24,6 +25,11 @@ const CertificationNavigationRoot = () => {
           options={{
             title: "인증",
           }}
+        />
+        <CertificationStack.Screen
+          name="CertificationDetail"
+          component={CertificationDetail}
+          options={{ title: "인증 상세정보" }}
         />
       </CertificationStack.Navigator>
     </View>

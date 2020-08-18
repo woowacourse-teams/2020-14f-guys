@@ -15,31 +15,35 @@ import { RiderApi } from "../../../utils/api/RiderApi";
 import { ridersInfoState } from "../../../state/rider/RiderState";
 import { QueryApi } from "../../../utils/api/QueryApi";
 import LoadingIndicator from "../../../utils/LoadingIndicator";
-import { raceCertificationState } from "../../../state/certification/RaceMissionState";
+import { certificationState } from "../../../state/certification/CertificationState";
 
 const RaceDetail = ({ route }) => {
+  const newRaceId = route.params.id;
   const token = useRecoilValue(memberTokenState);
   const setIsLoading = useSetRecoilState(loadingState);
-  const raceId = route.params.id;
   const [raceInfo, setRaceInfo] = useRecoilState(raceInfoState);
   const [ridersInfo, setRidersInfo] = useRecoilState(ridersInfoState);
   const [certificationInfo, setCertificationInfo] = useRecoilState(
-    raceCertificationState,
+    certificationState,
   );
 
   useEffect(() => {
     setIsLoading(true);
-
     const fetchRace = async () => {
-      const race = await RaceApi.get(token, raceId);
+      if (!newRaceId) {
+        alert("잘못된 경로입니다.");
+        setIsLoading(false);
+        return;
+      }
+      const race = await RaceApi.get(token, newRaceId);
       const { rider_responses: riders } = await RiderApi.getInRace(
         token,
-        raceId,
+        newRaceId,
       );
 
       const { certifications } = await QueryApi.getRaceCertifications(
         token,
-        raceId,
+        newRaceId,
       );
 
       setRidersInfo(riders);
@@ -63,7 +67,7 @@ const RaceDetail = ({ route }) => {
           cash={raceInfo.entrance_fee}
           riderCount={ridersInfo.length}
         />
-        <LinkCopyButton raceId={raceId} />
+        <LinkCopyButton raceId={newRaceId} />
       </ScrollView>
     </LoadingIndicator>
   );
