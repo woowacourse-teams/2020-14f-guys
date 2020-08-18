@@ -77,25 +77,6 @@ public class LoginFixture {
             .build();
     }
 
-    public static KakaoUserResponse createKakaoUserResponseWithNullProfile() {
-        return KakaoUserResponse.builder()
-            .id(KAKAO_ID)
-            .nickname(NICKNAME)
-            .profileImage(null)
-            .thumbnailImage(URL)
-            .hasEmail(ADMIT)
-            .emailValid(!ADMIT)
-            .emailVerified(!ADMIT)
-            .email(EMAIL)
-            .emailNeedsAgreement(ADMIT)
-            .hasBirthday(ADMIT)
-            .birthdayNeedsAgreement(ADMIT)
-            .birthday(BIRTHDAY)
-            .hasGender(ADMIT)
-            .genderNeedsAgreement(ADMIT)
-            .build();
-    }
-
     public static MemberResponse createMockMemberResponse() {
         return MemberResponse.builder()
             .kakaoId(KAKAO_ID)
