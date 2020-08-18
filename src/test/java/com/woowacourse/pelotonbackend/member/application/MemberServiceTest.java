@@ -31,12 +31,7 @@ import com.woowacourse.pelotonbackend.member.presentation.dto.MemberCreateReques
 import com.woowacourse.pelotonbackend.member.presentation.dto.MemberProfileResponse;
 import com.woowacourse.pelotonbackend.member.presentation.dto.MemberResponse;
 import com.woowacourse.pelotonbackend.member.presentation.dto.MemberResponses;
-<<<<<<< HEAD
 import com.woowacourse.pelotonbackend.vo.Cash;
-import com.woowacourse.pelotonbackend.support.RandomGenerator;
-import com.woowacourse.pelotonbackend.vo.ImageUrl;
-=======
->>>>>>> feat: config 설정에 기본 프로필 이미지 url 추가, 리뷰 반영
 
 @ExtendWith(MockitoExtension.class)
 class MemberServiceTest {
@@ -47,8 +42,6 @@ class MemberServiceTest {
 
     @Mock
     private UploadService uploadService;
-
-    private String basicProfileUrl;
 
     private Member expectedMember;
 
