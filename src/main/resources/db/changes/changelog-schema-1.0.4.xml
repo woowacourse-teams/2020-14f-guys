@@ -4,75 +4,27 @@
                    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
 
     <changeSet author="sika" id="20200818">
-        <modifyDataType columnName="CREATED_AT"
-                        schemaName="PUBLIC"
-                        newDataType="DATETIME"
-                        tableName="member"/>
-        <modifyDataType columnName="UPDATED_AT"
-                        schemaName="PUBLIC"
-                        newDataType="DATETIME"
-                        tableName="member"/>
+        <sql dbms="mariadb">ALTER TABLE MEMBER MODIFY COLUMN CREATED_AT DATETIME NOT NULL</sql>
+        <sql dbms="mariadb">ALTER TABLE MEMBER MODIFY COLUMN UPDATED_AT DATETIME NOT NULL</sql>
 
-        <modifyDataType columnName="CREATED_AT"
-                        schemaName="PUBLIC"
-                        newDataType="DATETIME"
-                        tableName="race"/>
-        <modifyDataType columnName="UPDATED_AT"
-                        schemaName="PUBLIC"
-                        newDataType="DATETIME"
-                        tableName="race"/>
-        <modifyDataType columnName="START_DATE"
-                        schemaName="PUBLIC"
-                        newDataType="DATETIME"
-                        tableName="race"/>
-        <modifyDataType columnName="END_DATE"
-                        schemaName="PUBLIC"
-                        newDataType="DATETIME"
-                        tableName="race"/>
+        <sql dbms="mariadb">ALTER TABLE RACE MODIFY COLUMN CREATED_AT DATETIME NOT NULL</sql>
+        <sql dbms="mariadb">ALTER TABLE RACE MODIFY COLUMN UPDATED_AT DATETIME NOT NULL</sql>
+        <sql dbms="mariadb">ALTER TABLE RACE MODIFY COLUMN START_DATE DATETIME NOT NULL</sql>
+        <sql dbms="mariadb">ALTER TABLE RACE MODIFY COLUMN END_DATE DATETIME NOT NULL</sql>
 
-        <modifyDataType columnName="CREATED_AT"
-                        schemaName="PUBLIC"
-                        newDataType="DATETIME"
-                        tableName="rider"/>
-        <modifyDataType columnName="UPDATED_AT"
-                        schemaName="PUBLIC"
-                        newDataType="DATETIME"
-                        tableName="rider"/>
+        <sql dbms="mariadb">ALTER TABLE RIDER MODIFY COLUMN CREATED_AT DATETIME NOT NULL</sql>
+        <sql dbms="mariadb">ALTER TABLE RIDER MODIFY COLUMN UPDATED_AT DATETIME NOT NULL</sql>
 
-        <modifyDataType columnName="CREATED_AT"
-                        schemaName="PUBLIC"
-                        newDataType="DATETIME"
-                        tableName="mission"/>
-        <modifyDataType columnName="UPDATED_AT"
-                        schemaName="PUBLIC"
-                        newDataType="DATETIME"
-                        tableName="mission"/>
-        <modifyDataType columnName="START_TIME"
-                        schemaName="PUBLIC"
-                        newDataType="DATETIME"
-                        tableName="mission"/>
-        <modifyDataType columnName="END_TIME"
-                        schemaName="PUBLIC"
-                        newDataType="DATETIME"
-                        tableName="mission"/>
+        <sql dbms="mariadb">ALTER TABLE MISSION MODIFY COLUMN CREATED_AT DATETIME NOT NULL</sql>
+        <sql dbms="mariadb">ALTER TABLE MISSION MODIFY COLUMN UPDATED_AT DATETIME NOT NULL</sql>
+        <sql dbms="mariadb">ALTER TABLE MISSION MODIFY COLUMN START_TIME DATETIME NOT NULL</sql>
+        <sql dbms="mariadb">ALTER TABLE MISSION MODIFY COLUMN END_TIME DATETIME NOT NULL</sql>
 
-        <modifyDataType columnName="CREATED_AT"
-                        schemaName="PUBLIC"
-                        newDataType="DATETIME"
-                        tableName="certification"/>
-        <modifyDataType columnName="UPDATED_AT"
-                        schemaName="PUBLIC"
-                        newDataType="DATETIME"
-                        tableName="certification"/>
+        <sql dbms="mariadb">ALTER TABLE CERTIFICATION MODIFY COLUMN CREATED_AT DATETIME NOT NULL</sql>
+        <sql dbms="mariadb">ALTER TABLE CERTIFICATION MODIFY COLUMN UPDATED_AT DATETIME NOT NULL</sql>
 
-        <modifyDataType columnName="CREATED_AT"
-                        schemaName="PUBLIC"
-                        newDataType="DATETIME"
-                        tableName="report"/>
-        <modifyDataType columnName="UPDATED_AT"
-                        schemaName="PUBLIC"
-                        newDataType="DATETIME"
-                        tableName="report"/>
+        <sql dbms="mariadb">ALTER TABLE REPORT MODIFY COLUMN CREATED_AT DATETIME NOT NULL</sql>
+        <sql dbms="mariadb">ALTER TABLE REPORT MODIFY COLUMN UPDATED_AT DATETIME NOT NULL</sql>
     </changeSet>
 
 </databaseChangeLog>

@@ -5,74 +5,58 @@
 
     <changeSet author="sika" id="20200817">
         <dropDefaultValue  columnDataType="TIMESTAMP"
-                           schemaName="PUBLIC"
                            columnName="CREATED_AT"
-                           tableName="member"/>
+                           tableName="MEMBER"/>
         <dropDefaultValue  columnDataType="TIMESTAMP"
-                           schemaName="PUBLIC"
                            columnName="UPDATED_AT"
-                           tableName="member"/>
+                           tableName="MEMBER"/>
 
         <dropDefaultValue  columnDataType="TIMESTAMP"
-                           schemaName="PUBLIC"
                            columnName="CREATED_AT"
-                           tableName="race"/>
+                           tableName="RACE"/>
         <dropDefaultValue  columnDataType="TIMESTAMP"
-                           schemaName="PUBLIC"
                            columnName="UPDATED_AT"
-                           tableName="race"/>
+                           tableName="RACE"/>
         <dropDefaultValue  columnDataType="TIMESTAMP"
-                           schemaName="PUBLIC"
                            columnName="START_DATE"
-                           tableName="race"/>
+                           tableName="RACE"/>
         <dropDefaultValue  columnDataType="TIMESTAMP"
-                           schemaName="PUBLIC"
                            columnName="END_DATE"
-                           tableName="race"/>
+                           tableName="RACE"/>
 
         <dropDefaultValue  columnDataType="TIMESTAMP"
-                           schemaName="PUBLIC"
                            columnName="CREATED_AT"
-                           tableName="rider"/>
+                           tableName="RIDER"/>
         <dropDefaultValue  columnDataType="TIMESTAMP"
-                           schemaName="PUBLIC"
                            columnName="UPDATED_AT"
-                           tableName="rider"/>
+                           tableName="RIDER"/>
 
         <dropDefaultValue  columnDataType="TIMESTAMP"
-                           schemaName="PUBLIC"
                            columnName="CREATED_AT"
-                           tableName="mission"/>
+                           tableName="MISSION"/>
         <dropDefaultValue  columnDataType="TIMESTAMP"
-                           schemaName="PUBLIC"
                            columnName="UPDATED_AT"
-                           tableName="mission"/>
+                           tableName="MISSION"/>
         <dropDefaultValue  columnDataType="TIMESTAMP"
-                           schemaName="PUBLIC"
                            columnName="START_TIME"
-                           tableName="mission"/>
+                           tableName="MISSION"/>
         <dropDefaultValue  columnDataType="TIMESTAMP"
-                           schemaName="PUBLIC"
                            columnName="END_TIME"
-                           tableName="mission"/>
+                           tableName="MISSION"/>
 
         <dropDefaultValue  columnDataType="TIMESTAMP"
-                           schemaName="PUBLIC"
                            columnName="CREATED_AT"
-                           tableName="certification"/>
+                           tableName="CERTIFICATION"/>
         <dropDefaultValue  columnDataType="TIMESTAMP"
-                           schemaName="PUBLIC"
                            columnName="UPDATED_AT"
-                           tableName="certification"/>
+                           tableName="CERTIFICATION"/>
 
         <dropDefaultValue  columnDataType="TIMESTAMP"
-                           schemaName="PUBLIC"
                            columnName="CREATED_AT"
-                           tableName="report"/>
+                           tableName="REPORT"/>
         <dropDefaultValue  columnDataType="TIMESTAMP"
-                           schemaName="PUBLIC"
                            columnName="UPDATED_AT"
-                           tableName="report"/>
+                           tableName="REPORT"/>
     </changeSet>
 
 </databaseChangeLog>
