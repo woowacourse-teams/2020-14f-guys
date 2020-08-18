@@ -22,7 +22,7 @@ public class MemberDocumentation {
               fieldWithPath("profile").type(STRING).description("profile Image Url"),
               fieldWithPath("name").type(STRING).description("member name"),
               fieldWithPath("email").type(STRING).attributes(getEmailFormat()).description("member email"),
-              fieldWithPath("cash").type(NUMBER).description("member cash"),
+              fieldWithPath("cash").type(STRING).description("member cash"),
               fieldWithPath("role").type(STRING).attributes(getMemberRoleFormat()).description("member role")
             ),
             responseHeaders(

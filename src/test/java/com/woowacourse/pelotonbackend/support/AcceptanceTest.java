@@ -45,36 +45,20 @@ public class AcceptanceTest {
         RestAssured.port = port;
     }
 
-    protected JwtTokenResponse loginMember(MemberCreateRequest request) {
+    protected JwtTokenResponse loginMember(final MemberCreateRequest request) {
         requestCreate(request);
 
         final String token = jwtTokenProvider.createToken(String.valueOf(request.getKakaoId()));
         return JwtTokenResponse.of(token, ADMIT);
     }
 
-    protected List<JwtTokenResponse> loginMembers(List<MemberCreateRequest> requests) {
+    protected List<JwtTokenResponse> loginMembers(final List<MemberCreateRequest> requests) {
         requests.forEach(this::requestCreate);
 
         return requests.stream()
             .map(request -> JwtTokenResponse.of(jwtTokenProvider.createToken(String.valueOf(request.getKakaoId())),
                 ADMIT))
             .collect(Collectors.toList());
-    }
-
-    protected void chargeCashes(List<MemberCreateRequest> requests) {
-        requests.forEach(this::requestChargeCash);
-    }
-
-    private void requestChargeCash(final MemberCreateRequest memberCreateRequest) {
-        given()
-            .header(createTokenHeader(memberCreateRequest.getKakaoId()))
-            .contentType(MediaType.APPLICATION_JSON_VALUE)
-            .body(MemberFixture.createCashUpdateRequest(30000L))
-            .when()
-            .patch(RESOURCE_URL + "/cash")
-            .then()
-            .log().all()
-            .statusCode(HttpStatus.OK.value());
     }
 
     protected Long requestCreate(final MemberCreateRequest memberRequest) {
