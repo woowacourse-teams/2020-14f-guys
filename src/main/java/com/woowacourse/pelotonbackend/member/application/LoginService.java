@@ -1,14 +1,22 @@
 package com.woowacourse.pelotonbackend.member.application;
 
+import java.util.Optional;
+
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.woowacourse.pelotonbackend.infra.login.LoginAPIService;
 import com.woowacourse.pelotonbackend.infra.login.dto.KakaoTokenResponse;
 import com.woowacourse.pelotonbackend.infra.login.dto.KakaoUserResponse;
+import com.woowacourse.pelotonbackend.member.domain.Role;
+import com.woowacourse.pelotonbackend.member.presentation.dto.MemberCreateRequest;
 import com.woowacourse.pelotonbackend.member.presentation.dto.MemberResponse;
 import com.woowacourse.pelotonbackend.support.JwtTokenProvider;
+import com.woowacourse.pelotonbackend.support.RandomGenerator;
 import com.woowacourse.pelotonbackend.support.dto.JwtTokenResponse;
+import com.woowacourse.pelotonbackend.vo.Cash;
+import com.woowacourse.pelotonbackend.vo.ImageUrl;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 
@@ -22,6 +30,10 @@ public class LoginService {
     private final LoginAPIService<KakaoTokenResponse, KakaoUserResponse> kakaoAPIService;
     private final MemberService memberService;
     private final JwtTokenProvider jwtTokenProvider;
+    private final RandomGenerator randomGenerator;
+
+    @Value("${cloud.aws.s3.basic-profile-url}")
+    private String basicProfileUrl;
 
     public String createCodeUrl() {
         return kakaoAPIService.getCodeUrl();
@@ -40,9 +52,17 @@ public class LoginService {
                 NOT_CREATED);
         }
 
-        MemberResponse memberResponse = memberService.createByLoginApiUser(kakaoUserResponse);
+        final MemberCreateRequest memberCreateRequest = MemberCreateRequest.builder()
+            .email(kakaoUserResponse.getEmail())
+            .cash(Cash.initial())
+            .kakaoId(kakaoUserResponse.getId())
+            .name(kakaoUserResponse.getNickname() + randomGenerator.getRandomString())
+            .profile(new ImageUrl(Optional.ofNullable(kakaoUserResponse.getProfileImage()).orElse(basicProfileUrl)))
+            .role(Role.MEMBER)
+            .build();
 
         return JwtTokenResponse.of(
-            jwtTokenProvider.createToken(memberResponse.getKakaoId().toString()), CREATED);
+            jwtTokenProvider.createToken(
+                memberService.createMember(memberCreateRequest).getKakaoId().toString()), CREATED);
     }
 }

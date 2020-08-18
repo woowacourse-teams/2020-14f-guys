@@ -29,6 +29,7 @@ const ProfileImageSelect = () => {
 const styles = StyleSheet.create({
   container: {
     paddingBottom: 130,
+    minHeight: 120,
   },
   profileImage: {
     height: 120,

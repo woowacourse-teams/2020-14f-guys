@@ -32,7 +32,6 @@ public class MemberFixture {
     public static final Long MEMBER_ID = 1L;
     public static final Long MEMBER_ID2 = 2L;
     public static final Long MEMBER_ID3 = 3L;
-    public static final Long NOT_EXIST_ID = 100L;
     public static final Long KAKAO_ID = 1L;
     public static final Long KAKAO_ID2 = 2L;
     public static final Long KAKAO_ID3 = 3L;
@@ -135,7 +134,8 @@ public class MemberFixture {
 
     public static MemberResponses memberResponses() {
         return MemberResponses.from(
-            Lists.newArrayList(createWithInfo(MEMBER_ID, KAKAO_ID, EMAIL, NAME), createWithInfo(MEMBER_ID2, KAKAO_ID2, EMAIL2, NAME2),
+            Lists.newArrayList(createWithInfo(MEMBER_ID, KAKAO_ID, EMAIL, NAME),
+                createWithInfo(MEMBER_ID2, KAKAO_ID2, EMAIL2, NAME2),
                 createWithInfo(MEMBER_ID3, KAKAO_ID3, EMAIL3, NAME3)));
     }
 
@@ -180,19 +180,6 @@ public class MemberFixture {
             .id(id)
             .kakaoId(KAKAO_ID)
             .profile(new ImageUrl(TEST_UPDATED_URL))
-            .email(EMAIL)
-            .name(NAME)
-            .cash(CASH)
-            .role(ROLE)
-            .build();
-    }
-
-    public static Member memberUpdatedBasicProfile(final Long id) {
-        return Member.builder()
-            .id(id)
-            .kakaoId(KAKAO_ID)
-            .profile(new ImageUrl(
-                String.format("%s/%s/%s", UPLOAD_SERVER_URL, PROFILE_UPLOAD_PATH, BASIC_PROFILE_FILE_NAME)))
             .email(EMAIL)
             .name(NAME)
             .cash(CASH)

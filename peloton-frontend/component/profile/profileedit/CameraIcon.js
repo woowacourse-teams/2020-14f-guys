@@ -21,8 +21,8 @@ const styles = StyleSheet.create({
     borderRadius: 15,
     backgroundColor: COLOR.WHITE,
     position: "absolute",
-    marginTop: 90,
-    alignSelf: "flex-end",
+    bottom: 0,
+    right: 0,
   },
 });
 

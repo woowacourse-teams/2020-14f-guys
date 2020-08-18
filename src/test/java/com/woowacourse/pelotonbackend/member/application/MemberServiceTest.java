@@ -23,9 +23,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.woowacourse.pelotonbackend.common.exception.MemberNotFoundException;
 import com.woowacourse.pelotonbackend.common.exception.UploadFailureException;
-import com.woowacourse.pelotonbackend.infra.login.dto.KakaoUserResponse;
 import com.woowacourse.pelotonbackend.infra.upload.UploadService;
-import com.woowacourse.pelotonbackend.member.domain.LoginFixture;
 import com.woowacourse.pelotonbackend.member.domain.Member;
 import com.woowacourse.pelotonbackend.member.domain.MemberFixture;
 import com.woowacourse.pelotonbackend.member.domain.MemberRepository;
@@ -33,9 +31,12 @@ import com.woowacourse.pelotonbackend.member.presentation.dto.MemberCreateReques
 import com.woowacourse.pelotonbackend.member.presentation.dto.MemberProfileResponse;
 import com.woowacourse.pelotonbackend.member.presentation.dto.MemberResponse;
 import com.woowacourse.pelotonbackend.member.presentation.dto.MemberResponses;
+<<<<<<< HEAD
 import com.woowacourse.pelotonbackend.vo.Cash;
 import com.woowacourse.pelotonbackend.support.RandomGenerator;
 import com.woowacourse.pelotonbackend.vo.ImageUrl;
+=======
+>>>>>>> feat: config 설정에 기본 프로필 이미지 url 추가, 리뷰 반영
 
 @ExtendWith(MockitoExtension.class)
 class MemberServiceTest {
@@ -47,14 +48,13 @@ class MemberServiceTest {
     @Mock
     private UploadService uploadService;
 
-    @Mock
-    private RandomGenerator randomGenerator;
+    private String basicProfileUrl;
 
     private Member expectedMember;
 
     @BeforeEach
     void setUp() {
-        memberService = new MemberService(memberRepository, uploadService, randomGenerator);
+        memberService = new MemberService(memberRepository, uploadService);
         expectedMember = createWithId(MEMBER_ID);
     }
 
@@ -67,39 +67,6 @@ class MemberServiceTest {
         final MemberResponse response = memberService.createMember(memberCreateRequest);
 
         assertThat(response).isEqualToIgnoringGivenFields(expectedMember, "createdAt", "updatedAt");
-    }
-
-    @DisplayName("로그인 API를 통해 불러온 회원정보로 회원을 생성한다")
-    @Test
-    void createByLoginApiUser_Test() {
-        final String appendingString = "12345";
-        KakaoUserResponse kakaoUserResponse = LoginFixture.createKakaoUserResponseWithNullProfile();
-        given(randomGenerator.getRandomString()).willReturn(appendingString);
-        Member memberWithBasicProfile = expectedMember.toBuilder()
-            .name(expectedMember.getName() + appendingString)
-            .profile(new ImageUrl(BASIC_PROFILE_URL))
-            .build();
-        given(memberRepository.save(any(Member.class))).willReturn(memberWithBasicProfile);
-
-        final MemberResponse response = memberService.createByLoginApiUser(kakaoUserResponse);
-
-        assertThat(response).isEqualToIgnoringGivenFields(memberWithBasicProfile, "createdAt", "updatedAt");
-    }
-
-    @DisplayName("로그인 API를 통해 불러온 회원정보의 프로필 이미지가 null일 때 기본 프로필 이미지로 회원을 생성한다")
-    @Test
-    void createByLoginApiUser_WithNullProfile_Test() {
-        final String appendingString = "12345";
-        KakaoUserResponse kakaoUserResponse = LoginFixture.createMockKakaoUserResponse();
-        given(randomGenerator.getRandomString()).willReturn(appendingString);
-        Member memberWithAppendedName = expectedMember.toBuilder()
-            .name(expectedMember.getName() + appendingString)
-            .build();
-        given(memberRepository.save(any(Member.class))).willReturn(memberWithAppendedName);
-
-        final MemberResponse response = memberService.createByLoginApiUser(kakaoUserResponse);
-
-        assertThat(response).isEqualToIgnoringGivenFields(memberWithAppendedName, "createdAt", "updatedAt");
     }
 
     @DisplayName("회원을 조회한다.")
