@@ -3,7 +3,6 @@ import { createStackNavigator } from "@react-navigation/stack";
 import ChangeProfile from "./login/ChangeProfile";
 import Login from "./login/Login";
 import ApplicationNavigationRoot from "./ApplicationNavigationRoot";
-import GoBackButton from "./home/race/GoBackButton";
 
 const LoginStack = createStackNavigator();
 
