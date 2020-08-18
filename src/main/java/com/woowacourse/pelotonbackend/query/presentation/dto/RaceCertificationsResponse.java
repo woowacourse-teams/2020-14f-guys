@@ -1,4 +1,4 @@
-package com.woowacourse.pelotonbackend.query;
+package com.woowacourse.pelotonbackend.query.presentation.dto;
 
 import java.beans.ConstructorProperties;
 import java.util.List;

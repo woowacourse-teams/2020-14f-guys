@@ -21,7 +21,6 @@ public class CertificationCreateRequest {
     @NotNull
     private final CertificationStatus status;
 
-    @NotBlank
     private final String description;
 
     @NotNull

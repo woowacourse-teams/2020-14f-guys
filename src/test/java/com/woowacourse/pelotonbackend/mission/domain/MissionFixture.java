@@ -1,5 +1,7 @@
 package com.woowacourse.pelotonbackend.mission.domain;
 
+import static com.woowacourse.pelotonbackend.rider.domain.RiderFixture.*;
+
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -12,17 +14,26 @@ import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.assertj.core.util.Lists;
 import org.springframework.data.jdbc.core.mapping.AggregateReference;
 
+import com.woowacourse.pelotonbackend.certification.domain.CertificationFixture;
 import com.woowacourse.pelotonbackend.certification.domain.TimeDuration;
 import com.woowacourse.pelotonbackend.mission.presentation.dto.MissionCreateRequest;
 import com.woowacourse.pelotonbackend.mission.presentation.dto.MissionResponse;
 import com.woowacourse.pelotonbackend.mission.presentation.dto.MissionUpdateRequest;
+import com.woowacourse.pelotonbackend.query.presentation.dto.UpcomingMissionResponse;
+import com.woowacourse.pelotonbackend.race.domain.RaceFixture;
+import com.woowacourse.pelotonbackend.rider.domain.RiderFixture;
 
 public class MissionFixture {
     public static final Long TEST_MISSION_ID = 1L;
     public static final LocalDateTime START_TIME = LocalDateTime.parse(LocalDateTime.now().plusYears(2L).format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS")));
     public static final LocalDateTime END_TIME = LocalDateTime.parse(LocalDateTime.now().plusYears(3L).format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS")));
+    public static final long TEST_MISSION_ID2 = 2L;
+    public static final long TEST_MISSION_ID3 = 3L;
+    public static final long TEST_MISSION_ID4 = 4L;
+    public static final long TEST_MISSION_ID5 = 5L;
     public static final DateTimeDuration MISSION_DURATION = new DateTimeDuration(START_TIME, END_TIME);
     private static final DateTimeDuration MISSION_UTC_DURATION = new DateTimeDuration(
         LocalDateTime.parse(LocalDateTime.ofInstant(Instant.now(), ZoneOffset.UTC).format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS"))),
@@ -31,6 +42,7 @@ public class MissionFixture {
     public static final LocalDateTime END_TIME_UPDATED = LocalDateTime.parse(LocalDateTime.now().plusYears(10L).format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS")));
     public static final DateTimeDuration MISSION_DURATION_UPDATED = new DateTimeDuration(START_TIME_UPDATED,
         END_TIME_UPDATED);
+    public static final LocalDateTime CRITERION_TIME = LocalDateTime.of(2020, 8, 15, 7, 0);
     public static final MissionInstruction MISSION_INSTRUCTION = new MissionInstruction("다같이 손을 잡고 사진을 찍는다.");
     public static final MissionInstruction MISSION_INSTRUCTION_UPDATED = new MissionInstruction("다같이 손을 잡고 사진을 찍는다.");
     public static final Long RACE_ID = 7L;
@@ -146,5 +158,69 @@ public class MissionFixture {
             .missionInstruction(MISSION_INSTRUCTION_UPDATED)
             .raceId(AggregateReference.to(RACE_ID_UPDATED))
             .build();
+    }
+
+    public static List<Mission> upcomingMissionWithIds() {
+        return upcomingMissions(
+            Arrays.asList(TEST_MISSION_ID, TEST_MISSION_ID2, TEST_MISSION_ID3, TEST_MISSION_ID4, TEST_MISSION_ID5));
+    }
+
+    public static List<Mission> upcomingMissionWithoutIds() {
+        return upcomingMissions(Arrays.asList(null, null, null, null, null));
+    }
+
+    private static List<Mission> upcomingMissions(final List<Long> ids) {
+        return Lists.newArrayList(
+            Mission.builder()
+                .id(ids.get(0))
+                .raceId(AggregateReference.to(RaceFixture.TEST_RACE_ID))
+                .missionDuration(
+                    new DateTimeDuration(LocalDateTime.of(2020, 8, 14, 6, 50), LocalDateTime.of(2020, 8, 14, 7, 30)))
+                .missionInstruction(MISSION_INSTRUCTION)
+                .build(),
+            Mission.builder()
+                .id(ids.get(1))
+                .raceId(AggregateReference.to(RaceFixture.TEST_RACE_ID))
+                .missionDuration(
+                    new DateTimeDuration(LocalDateTime.of(2020, 8, 15, 6, 50), LocalDateTime.of(2020, 8, 15, 7, 30)))
+                .missionInstruction(MISSION_INSTRUCTION)
+                .build(),
+            Mission.builder()
+                .id(ids.get(2))
+                .raceId(AggregateReference.to(RaceFixture.TEST_RACE_ID))
+                .missionDuration(
+                    new DateTimeDuration(LocalDateTime.of(2020, 8, 16, 6, 50), LocalDateTime.of(2020, 8, 16, 7, 30)))
+                .missionInstruction(MISSION_INSTRUCTION)
+                .build(),
+            Mission.builder()
+                .id(ids.get(3))
+                .raceId(AggregateReference.to(RaceFixture.TEST_RACE_ID2))
+                .missionDuration(
+                    new DateTimeDuration(LocalDateTime.of(2020, 8, 15, 8, 0), LocalDateTime.of(2020, 8, 15, 8, 10)))
+                .missionInstruction(MISSION_INSTRUCTION)
+                .build(),
+            Mission.builder()
+                .id(ids.get(4))
+                .raceId(AggregateReference.to(RaceFixture.TEST_RACE_ID2))
+                .missionDuration(
+                    new DateTimeDuration(LocalDateTime.of(2020, 8, 16, 8, 0), LocalDateTime.of(2020, 8, 16, 8, 10)))
+                .missionInstruction(MISSION_INSTRUCTION)
+                .build());
+    }
+
+    public static UpcomingMissionResponse upcomingMissionResponseWithoutCertification() {
+        return UpcomingMissionResponse.of(
+            MissionFixture.createWithId(MissionFixture.TEST_MISSION_ID),
+            createRiderWithId(RiderFixture.TEST_RIDER_ID),
+            RaceFixture.createWithId(RaceFixture.TEST_RACE_ID),
+            null);
+    }
+
+    public static UpcomingMissionResponse upcomingMissionResponseWithCertification() {
+        return UpcomingMissionResponse.of(
+            MissionFixture.createWithId(MissionFixture.TEST_MISSION_ID2),
+            createRiderWithId(RiderFixture.TEST_RIDER_ID),
+            RaceFixture.createWithId(RaceFixture.TEST_RACE_ID),
+            CertificationFixture.createCertificationWithId());
     }
 }

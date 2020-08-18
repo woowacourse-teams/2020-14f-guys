@@ -535,3 +535,10 @@ operation::queries/get-certifications-race-id[snippets='http-request,http-respon
 [[resource-query-certifications-fail]]
 ==== Not Exist
 operation::queries/get-certifications-race-not-exist[snippets='http-request,http-response,path-parameters,request-headers,response-fields']
+
+[[resources-queries-upcoming-missions]]
+=== Get Upcoming Missions
+
+[[resource-query-upcoming-missions]]
+==== Success
+operation::queries/get-upcoming-missions[snippets='http-request,http-response,request-headers,response-fields']

@@ -10,6 +10,7 @@ import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuild
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -52,8 +53,11 @@ import com.woowacourse.pelotonbackend.member.domain.LoginFixture;
 import com.woowacourse.pelotonbackend.member.domain.MemberFixture;
 import com.woowacourse.pelotonbackend.member.presentation.LoginMemberArgumentResolver;
 import com.woowacourse.pelotonbackend.member.presentation.dto.MemberResponse;
-import com.woowacourse.pelotonbackend.query.RaceCertificationsResponse;
+import com.woowacourse.pelotonbackend.mission.domain.MissionFixture;
 import com.woowacourse.pelotonbackend.query.application.QueryService;
+import com.woowacourse.pelotonbackend.query.presentation.dto.RaceCertificationsResponse;
+import com.woowacourse.pelotonbackend.query.presentation.dto.UpcomingMissionResponse;
+import com.woowacourse.pelotonbackend.query.presentation.dto.UpcomingMissionResponses;
 import com.woowacourse.pelotonbackend.race.domain.Race;
 import com.woowacourse.pelotonbackend.race.domain.RaceFixture;
 import com.woowacourse.pelotonbackend.race.presentation.dto.RaceResponses;
@@ -110,8 +114,7 @@ class QueryControllerTest {
             .andReturn();
 
         final byte[] contentBytes = result.getResponse().getContentAsByteArray();
-        final RaceResponses responseBody = objectMapper.readValue(contentBytes,
-            RaceResponses.class);
+        final RaceResponses responseBody = objectMapper.readValue(contentBytes, RaceResponses.class);
 
         assertAll(
             () -> assertThat(responseBody.getRaceResponses().get(0))
@@ -137,16 +140,16 @@ class QueryControllerTest {
     @DisplayName("레이스의 아이디로 인증을 조회한다.")
     @Test
     void findCertificationsByRaceId() throws Exception {
-        final Page<Certification> pagedCertifications = CertificationFixture.createMockPagedCertifications(
-            PageRequest.of(0, 1));
+        final Page<Certification> pagedCertifications =
+            CertificationFixture.createMockPagedCertifications(PageRequest.of(0, 1));
         final RaceCertificationsResponse response = RaceCertificationsResponse.of(pagedCertifications);
 
         when(queryService.findCertificationsByRaceId(anyLong(), any(Pageable.class))).thenReturn(response);
         when(bearerAuthInterceptor.preHandle(any(HttpServletRequest.class), any(HttpServletResponse.class),
             any(HandlerMethod.class))).thenReturn(true);
 
-        mockMvc.perform(get("/api/queries/races/{raceId}/certifications", TEST_RACE_ID)
-            .header(HttpHeaders.AUTHORIZATION, "TEST_TOKEN")
+        mockMvc.perform(get("/api/queries/races/{raceId}/certifications", RaceFixture.TEST_RACE_ID)
+            .header(HttpHeaders.AUTHORIZATION, LoginFixture.getTokenHeader())
             .accept(MediaType.APPLICATION_JSON)
         )
             .andExpect(status().isOk())
@@ -156,15 +159,45 @@ class QueryControllerTest {
     @DisplayName("존재하지 않는 race의 아이디로 인증을 조회한다.")
     @Test
     void findCertificationByNotExistRaceId() throws Exception {
-        when(queryService.findCertificationsByRaceId(anyLong(), any(Pageable.class))).thenThrow(new RaceNotFoundException(TEST_RACE_ID));
+        when(queryService.findCertificationsByRaceId(anyLong(), any(Pageable.class)))
+            .thenThrow(new RaceNotFoundException(RaceFixture.TEST_RACE_ID));
         when(bearerAuthInterceptor.preHandle(any(HttpServletRequest.class), any(HttpServletResponse.class),
             any(HandlerMethod.class))).thenReturn(true);
 
-        mockMvc.perform(get("/api/queries/races/{raceId}/certifications", TEST_RACE_ID)
-            .header(HttpHeaders.AUTHORIZATION, "TEST_TOKEN")
+        mockMvc.perform(get("/api/queries/races/{raceId}/certifications", RaceFixture.TEST_RACE_ID)
+            .header(HttpHeaders.AUTHORIZATION, LoginFixture.getTokenHeader())
             .accept(MediaType.APPLICATION_JSON)
         )
             .andExpect(status().isNotFound())
             .andDo(QueryDocumentation.findCertificationsByNotExistRaceId());
+    }
+
+    @DisplayName("멤버가 인증해야할 미션을 조회한다.")
+    @Test
+    void findUpcomingMissions() throws Exception {
+        final UpcomingMissionResponse noCertificationMission = MissionFixture.upcomingMissionResponseWithoutCertification();
+        final UpcomingMissionResponse hasCertificationMission = MissionFixture.upcomingMissionResponseWithCertification();
+        final UpcomingMissionResponses expectedResponses = UpcomingMissionResponses.of(
+            Arrays.asList(noCertificationMission, hasCertificationMission));
+        final MemberResponse member = MemberFixture.memberResponse();
+        when(argumentResolver.resolveArgument(any(MethodParameter.class), any(ModelAndViewContainer.class),
+            any(NativeWebRequest.class), any(WebDataBinderFactory.class))).thenReturn(member);
+        when(argumentResolver.supportsParameter(any())).thenReturn(true);
+        when(queryService.retrieveUpcomingMissionsBy(member)).thenReturn(expectedResponses);
+        when(bearerAuthInterceptor.preHandle(any(HttpServletRequest.class), any(HttpServletResponse.class),
+            any(HandlerMethod.class))).thenReturn(true);
+
+        final byte[] content = mockMvc.perform(get("/api/queries/missions/upcoming")
+            .header(HttpHeaders.AUTHORIZATION, LoginFixture.getTokenHeader())
+            .accept(MediaType.APPLICATION_JSON)
+        )
+            .andExpect(status().isOk())
+            .andDo(QueryDocumentation.getUpcomingMissions())
+            .andReturn()
+            .getResponse()
+            .getContentAsByteArray();
+
+        final UpcomingMissionResponses responses = objectMapper.readValue(content, UpcomingMissionResponses.class);
+        assertThat(responses).usingRecursiveComparison().isEqualTo(expectedResponses);
     }
 }

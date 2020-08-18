@@ -14,6 +14,7 @@ import com.woowacourse.pelotonbackend.vo.ImageUrl;
 
 public class RaceFixture {
     public static final Long TEST_RACE_ID = 1L;
+    public static final Long TEST_RACE_ID2 = 2L;
     public static final String TEST_TITLE = "14층 녀석들 기상 레이스";
     public static final String TEST_CHANGED_TITLE = "14층 녀석들 지각 안하기 레이스";
     public static final String TEST_DESCRIPTION = "아침 6시에 일어나보자!";

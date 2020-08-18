@@ -8,6 +8,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.assertj.core.util.Lists;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +22,10 @@ import com.woowacourse.pelotonbackend.DataInitializeExecutionListener;
     listeners = DataInitializeExecutionListener.class,
     mergeMode = TestExecutionListeners.MergeMode.MERGE_WITH_DEFAULTS)
 class MissionRepositoryTest {
+    private static final int SECOND_MISSION = 1;
+    private static final int FOURTH_MISSION = 3;
+    private static final int THIRD_MISSION = 2;
+
     @Autowired
     private MissionRepository missionRepository;
 
@@ -31,7 +36,7 @@ class MissionRepositoryTest {
 
         final Mission persist = missionRepository.save(mission);
 
-        assertThat(persist).isEqualToIgnoringGivenFields(mission, "id","createdAt","updatedAt");
+        assertThat(persist).isEqualToIgnoringGivenFields(mission, "id", "createdAt", "updatedAt");
     }
 
     @DisplayName("id들로 미션을 조회한 후 리스트로 반환한다.")
@@ -96,5 +101,34 @@ class MissionRepositoryTest {
             () -> assertThat(missions.get(1)).isEqualToIgnoringGivenFields(missionWithoutId,
                 "id", "createdAt", "updatedAt", "missionDuration")
         );
+    }
+
+    /**
+     * -----------------------------------기준 시간--------------------------------------------------------------------
+     * -------08/14 07:30--08/15 06:50--08/15 07:00--08/15 07:30--08/15 08:00--08/16 06:50--08/16 07:30--08/16 08:00
+     * 레이스1---미션1 종료-- --미션2 시작------------------미션2 종료------------------미션3 시작-----미션3 종료----------------
+     * 레이스2-------------------------------------------------------미션4 시작-------------------------------미션5 시작--
+     * result: [미션2, 미션4, 미션3]
+     */
+    @DisplayName("레이스 아이디들로 24시간 이내에 시작하는 미션 또는 진행중인 미션을 시작시간을 기준으로 정렬해서 조회한다.")
+    @Test
+    void findByRaceIdsEndTimeAfterThanAndWithinOneDayOrderByStartTime() {
+        final List<Mission> missions = upcomingMissionWithoutIds();
+        missionRepository.saveAll(missions);
+        final List<Long> raceIds = missions.stream()
+            .map(mission -> mission.getRaceId().getId())
+            .distinct()
+            .collect(Collectors.toList());
+
+        final List<Mission> results = missionRepository.findAllByRaceIdsEndTimeAfterThanAndWithinOneDayOrderByStartTime(
+            raceIds, CRITERION_TIME);
+
+        final List<Mission> missionsWithIds = upcomingMissionWithIds();
+        final List<Mission> expectedMissionsWithOrder = Lists.newArrayList(
+            missionsWithIds.get(SECOND_MISSION),
+            missionsWithIds.get(FOURTH_MISSION),
+            missionsWithIds.get(THIRD_MISSION));
+
+        assertThat(results).containsExactlyInAnyOrderElementsOf(expectedMissionsWithOrder);
     }
 }

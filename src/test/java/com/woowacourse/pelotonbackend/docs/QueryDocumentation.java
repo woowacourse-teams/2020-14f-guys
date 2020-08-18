@@ -28,9 +28,15 @@ public class QueryDocumentation {
                 fieldWithPath("race_responses[].thumbnail").type(STRING).description("썸네일 이미지 URL"),
                 fieldWithPath("race_responses[].certification_example").type(STRING).description("인증 예시 이미지 URL"),
                 fieldWithPath("race_responses[].race_duration").type(OBJECT).description("Race 기간"),
-                fieldWithPath("race_responses[].race_duration.start_date").type(STRING).attributes(getDateFormat()).description("Race 시작 날짜"),
-                fieldWithPath("race_responses[].race_duration.end_date").type(STRING).attributes(getDateFormat()).description("Race 종료 날짜"),
-                fieldWithPath("race_responses[].category").type(STRING).attributes(getRaceCategoryFormat()).description("Race 종류"),
+                fieldWithPath("race_responses[].race_duration.start_date").type(STRING)
+                    .attributes(getDateFormat())
+                    .description("Race 시작 날짜"),
+                fieldWithPath("race_responses[].race_duration.end_date").type(STRING)
+                    .attributes(getDateFormat())
+                    .description("Race 종료 날짜"),
+                fieldWithPath("race_responses[].category").type(STRING)
+                    .attributes(getRaceCategoryFormat())
+                    .description("Race 종류"),
                 subsectionWithPath("race_responses[].entrance_fee").type(STRING).description("레이스 입장료")
             )
         );
@@ -53,7 +59,8 @@ public class QueryDocumentation {
             getDocumentRequest(),
             getDocumentResponse(),
             requestHeaders(
-                headerWithName(HttpHeaders.AUTHORIZATION).description("인증 토큰")
+                headerWithName(HttpHeaders.AUTHORIZATION).description("인증 토큰"),
+                headerWithName(HttpHeaders.ACCEPT).description("Accept 헤더")
             ),
             pathParameters(
                 parameterWithName("raceId").description("레이스 아이디")
@@ -72,12 +79,32 @@ public class QueryDocumentation {
             getDocumentRequest(),
             getDocumentResponse(),
             requestHeaders(
-                headerWithName(HttpHeaders.AUTHORIZATION).description("인증 토큰")
+                headerWithName(HttpHeaders.AUTHORIZATION).description("인증 토큰"),
+                headerWithName(HttpHeaders.ACCEPT).description("Accept 헤더")
             ),
             pathParameters(
                 parameterWithName("raceId").description("레이스 아이디")
             ),
             getErrorResponseFields()
+        );
+    }
+
+    public static RestDocumentationResultHandler getUpcomingMissions() {
+        return document("queries/get-upcoming-missions",
+            getDocumentRequest(),
+            getDocumentResponse(),
+            requestHeaders(
+                headerWithName(HttpHeaders.AUTHORIZATION).description("인증 토큰"),
+                headerWithName(HttpHeaders.ACCEPT).description("Accept 헤더")
+            ),
+            responseFields(
+                fieldWithPath("upcoming_missions").type(ARRAY).description("해야할 미션 목록"),
+                subsectionWithPath("upcoming_missions[].rider").type(OBJECT).description("미션을 진행해야하는 Rider"),
+                subsectionWithPath("upcoming_missions[].race").type(OBJECT).description("미션에 해당하는 Race"),
+                subsectionWithPath("upcoming_missions[].mission").type(OBJECT).description("미션 정보"),
+                subsectionWithPath("upcoming_missions[].certification").type(OBJECT)
+                    .description("미션과 라이더에 해당하는 인증 정보").optional()
+            )
         );
     }
 }

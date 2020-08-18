@@ -5,8 +5,8 @@ import static org.assertj.core.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.Arrays;
-
-import javax.validation.constraints.NotNull;
+import java.util.Collections;
+import java.util.List;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -123,5 +123,24 @@ class CertificationRepositoryTest {
             .isInstanceOf(AssertionError.class)
             .hasMessage(String.format("There should not be duplicated (rider_id, mission_id), but (%d, %d)", riderId,
                 missionId));
+    }
+
+    @DisplayName("unpaged를 사용할 때, 페이지 1에 미션에 모두 담기는지 확인한다.")
+    @Test
+    void findByMissionIdsUnPaged() {
+        final Certification certification = createCertificationWithoutId();
+        final Long missionId = certification.getMissionId().getId();
+        final List<Certification> certifications =
+            Arrays.asList(certification, certification, certification, certification, certification);
+        certificationRepository.saveAll(certifications);
+
+        final Page<Certification> result = certificationRepository.findByMissionIds(
+            Collections.singletonList(missionId), PageRequest.of(0, Integer.MAX_VALUE));
+        assertThat(result.getTotalPages()).isEqualTo(1);
+        assertThat(result.getTotalElements()).isEqualTo(certifications.size());
+        assertThat(result.getContent())
+            .usingRecursiveFieldByFieldElementComparator()
+            .usingElementComparatorIgnoringFields("id")
+            .isEqualTo(certifications);
     }
 }
