@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { FlatList, StyleSheet, Text, View } from "react-native";
-import { useRecoilState } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
 import { useFocusEffect } from "@react-navigation/core";
 
 import {
@@ -9,14 +9,20 @@ import {
 } from "../../state/certification/RaceMissionState";
 import CertificationItem from "./CertificationItem";
 import { COLOR } from "../../utils/constants";
+import { QueryApi } from "../../utils/api/QueryApi";
+import { memberTokenState } from "../../state/member/MemberState";
 
 const Certification = () => {
   const [certifications, setCertifications] = useRecoilState(raceMissionState);
   const [currentTime, setCurrentTime] = useState(new Date());
+  const token = useRecoilValue(memberTokenState);
 
   useEffect(() => {
-    // TODO: 미션 정보 받아오는 부분이 여기 들어가야함
-    setCertifications(raceMissionFixture);
+    (async () => {
+      const { upcoming_missions } = await QueryApi.getMissions(token);
+      console.log(upcoming_missions);
+      setCertifications(upcoming_missions);
+    })();
   }, []);
 
   useFocusEffect(

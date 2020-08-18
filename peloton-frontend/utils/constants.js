@@ -139,7 +139,7 @@ export const CERTIFICATION_TYPE = {
   },
   WAIT: {
     activeOpacity: 1,
-    blurRadius: 10,
+    blurRadius: 3,
     color: "#444",
     typeColor: "#444",
     backgroundColor: "#666",
