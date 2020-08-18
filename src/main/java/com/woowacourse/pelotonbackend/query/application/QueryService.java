@@ -1,12 +1,15 @@
 package com.woowacourse.pelotonbackend.query.application;
 
+import java.time.Instant;
 import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -92,7 +95,7 @@ public class QueryService {
             .collect(Collectors.toList());
 
         return missionRepository.findAllByRaceIdsEndTimeAfterThanAndWithinOneDayOrderByStartTime(raceIds,
-            LocalDateTime.now());
+            LocalDateTime.ofInstant(Instant.now(), ZoneOffset.UTC));
     }
 
     private List<Certification> retrieveCertificationByMissionIds(final List<Mission> missions) {
@@ -100,6 +103,7 @@ public class QueryService {
             .map(Mission::getId)
             .collect(Collectors.toList());
 
-        return certificationRepository.findByMissionIds(missionIds, Pageable.unpaged()).getContent();
+        return certificationRepository.findByMissionIds(missionIds, PageRequest.of(0, Integer.MAX_VALUE))
+            .getContent();
     }
 }

@@ -159,7 +159,7 @@ class QueryServiceTest {
             .build();
         final List<Certification> expectedCertifications = Collections.singletonList(
             expectedCertification);
-        when(certificationRepository.findByMissionIds(certificationIds, Pageable.unpaged()))
+        when(certificationRepository.findByMissionIds(eq(certificationIds), any(Pageable.class)))
             .thenReturn(new PageImpl<>(expectedCertifications));
 
         final UpcomingMissionResponses responses = queryService.retrieveUpcomingMissionsBy(memberResponse());
@@ -184,7 +184,7 @@ class QueryServiceTest {
     @Test
     void findUpcomingByRaceIdsNoRider() {
         when(riderRepository.findRidersByMemberId(MEMBER_ID)).thenReturn(Collections.emptyList());
-        when(certificationRepository.findByMissionIds(anyList(), eq(Pageable.unpaged()))).thenReturn(Page.empty());
+        when(certificationRepository.findByMissionIds(anyList(), any(Pageable.class))).thenReturn(Page.empty());
 
         final UpcomingMissionResponses responses = queryService.retrieveUpcomingMissionsBy(memberResponse());
 
