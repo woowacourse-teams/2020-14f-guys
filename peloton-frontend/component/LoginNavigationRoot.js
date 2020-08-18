@@ -3,6 +3,7 @@ import { createStackNavigator } from "@react-navigation/stack";
 import ChangeProfile from "./login/ChangeProfile";
 import Login from "./login/Login";
 import ApplicationNavigationRoot from "./ApplicationNavigationRoot";
+import GoBackButton from "./home/race/GoBackButton";
 
 const LoginStack = createStackNavigator();
 
@@ -17,7 +18,7 @@ const LoginNavigationRoot = () => {
       <LoginStack.Screen
         name="ChangeProfile"
         component={ChangeProfile}
-        options={{ headerShown: false }}
+        options={{ headerShown: false}}
       />
       <LoginStack.Screen
         name="ApplicationNavigationRoot"

@@ -9,7 +9,7 @@ import ProfileImage from "../profile/ProfileImage";
 const ProfileImageSelect = () => {
   return (
     <View style={styles.container}>
-      <ProfileImageEditButton>
+      <ProfileImageEditButton directUpdate={false}>
         <ProfileImage />
         <CameraIcon />
       </ProfileImageEditButton>
