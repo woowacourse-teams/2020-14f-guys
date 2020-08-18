@@ -52,7 +52,7 @@ class MemberRepositoryTest {
 
         assertThatThrownBy(() -> memberRepository.save(member))
             .isInstanceOf(ConstraintViolationException.class)
-            .hasMessage("profile: 널이어서는 안됩니다");
+            .hasMessageContaining("profile:");
     }
 
     @DisplayName("Profile image의 url이 null인 회원을 저장하면 예외가 발생한다.")
@@ -65,7 +65,7 @@ class MemberRepositoryTest {
 
         assertThatThrownBy(() -> memberRepository.save(member))
             .isInstanceOf(ConstraintViolationException.class)
-            .hasMessage("profile.baseImageUrl: 공백일 수 없습니다");
+            .hasMessageContaining("profile.baseImageUrl:");
     }
 
     @DisplayName("모든 회원들을 리스트로 반환한다.")
