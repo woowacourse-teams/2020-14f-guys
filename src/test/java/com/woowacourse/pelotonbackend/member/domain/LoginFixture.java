@@ -22,11 +22,9 @@ public class LoginFixture {
     public static final String CLIENT_SECRET_VALUE = "SECRET";
     public static final String RESPONSE_TYPE_VALUE = "RESPONSE";
     public static final String GRANT_TYPE_VALUE = "code";
-    public static final String GRANT_TYPE = "GRANT_TYPE";
     public static final String AUTHORIZE_PATH = "/oauth/authorize";
     public static final String RESPONSE_TYPE = "response_type";
     public static final String CLIENT_ID = "client_id";
-    public static final String CLIENT_SECRET = "client_secret";
     public static final String REDIRECT_URI = "redirect_uri";
     public static final String REDIRECT_PATH = "/api/login/token";
     public static final String OAUTH_TOKEN_PATH = "/oauth/token";
@@ -41,6 +39,7 @@ public class LoginFixture {
     public static final String BIRTHDAY = "0429";
     public static final int EXPIRE = 1;
     public static final boolean ADMIT = true;
+    public static final String BASIC_PROFILE_URL= "https://14f-guys-image.s3.ap-northeast-2.amazonaws.com/basic.profile.image.png";
 
     public static class TestController {
         public void testMethod(@LoginMember Member member) {
