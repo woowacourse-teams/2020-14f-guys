@@ -10,7 +10,7 @@ import {
   View,
 } from "react-native";
 import { COLOR } from "../../../utils/constants";
-import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
+import { useRecoilValue, useSetRecoilState } from "recoil";
 import { useNavigation } from "@react-navigation/core";
 import { MemberApi } from "../../../utils/api/MemberApi";
 import {

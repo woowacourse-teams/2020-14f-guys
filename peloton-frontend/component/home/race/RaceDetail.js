@@ -6,7 +6,7 @@ import RaceSpec from "./RaceSpec";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import { loadingState } from "../../../state/loading/LoadingState";
 import { COLOR } from "../../../utils/constants";
-import { useRecoilState } from "recoil/dist";
+import { useRecoilState } from "recoil";
 import { memberTokenState } from "../../../state/member/MemberState";
 import { raceInfoState } from "../../../state/race/RaceState";
 import { RaceApi } from "../../../utils/api/RaceApi";

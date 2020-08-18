@@ -6,21 +6,21 @@ const FullWidthButton = ({ color, children, onClick }) => {
   return (
     <TouchableOpacity
       onPress={onClick}
-      style={{ ...styles.paymentButton, backgroundColor: color }}
+      style={{ ...styles.container, backgroundColor: color }}
     >
-      <Text style={styles.paymentText}>{children}</Text>
+      <Text style={styles.text}>{children}</Text>
     </TouchableOpacity>
   );
 };
 
 const styles = StyleSheet.create({
-  paymentButton: {
+  container: {
     width: Dimensions.get("window").width,
     height: 55,
     justifyContent: "center",
     alignItems: "center",
   },
-  paymentText: {
+  text: {
     color: COLOR.WHITE,
     fontSize: 15,
     fontWeight: "600",
