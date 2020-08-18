@@ -1,15 +1,21 @@
-import React, { useEffect, useState } from "react";
-import { Alert, StyleSheet, View } from "react-native";
+import React, { useEffect } from "react";
+import { StyleSheet, View } from "react-native";
 import { useRecoilState, useSetRecoilState } from "recoil";
-import { loadingState } from "../../../state/loading/LoadingState";
-import { TOKEN_STORAGE } from "../../../utils/constants";
 import AsyncStorage from "@react-native-community/async-storage";
+import { useNavigation } from "@react-navigation/core";
+
+import { loadingState } from "../../../state/loading/LoadingState";
 import {
+  COLOR,
+  DEEP_LINK_BASE_URL,
+  TOKEN_STORAGE,
+} from "../../../utils/constants";
+import {
+  alertNotEnoughCash,
   navigateTabScreen,
   navigateWithHistory,
   navigateWithoutHistory,
 } from "../../../utils/util";
-import { useNavigation } from "@react-navigation/core";
 import { MemberApi } from "../../../utils/api/MemberApi";
 import { RaceApi } from "../../../utils/api/RaceApi";
 import {
@@ -19,8 +25,7 @@ import {
 import { raceInfoState } from "../../../state/race/RaceState";
 import { QueryApi } from "../../../utils/api/QueryApi";
 import { RiderApi } from "../../../utils/api/RiderApi";
-import PaymentButton from "./PaymentButton";
-
+import FullWidthButton from "./FullWidthButton";
 import RaceJoinTitle from "./RaceJoinTitle";
 import RaceJoinBody from "./RaceJoinBody";
 
@@ -31,26 +36,27 @@ const RedirectPage = ({ route }) => {
   const [raceInfo, setRaceInfo] = useRecoilState(raceInfoState);
   const navigation = useNavigation();
 
+  const navigateToRaceDetail = () => {
+    navigateWithHistory(navigation, [
+      {
+        name: "Home",
+      },
+      {
+        name: "RaceDetail",
+        params: {
+          id: raceInfo.id,
+        },
+      },
+    ]);
+  };
+
   const chargeMoney = () => {
-    Alert.alert(
-      "잔액이 부족합니다.",
-      "캐시 충전 페이지로 이동하시겠습니까?",
-      [
-        {
-          text: "Cancel",
-          style: "cancel",
-        },
-        {
-          text: "OK",
-          onPress: () => {
-            navigateWithoutHistory(navigation, "Home");
-            navigateTabScreen(navigation, "Profile");
-          },
-        },
-      ],
-      { cancelable: false }
-    );
-    setLoadingState(false);
+    alertNotEnoughCash({
+      onOk: () => {
+        navigateWithoutHistory(navigation, "Home");
+        navigateTabScreen(navigation, "Profile");
+      },
+    });
   };
 
   const payEntranceFee = async () => {
@@ -61,18 +67,7 @@ const RedirectPage = ({ route }) => {
       await RiderApi.post(token, raceInfo.id);
       const newMemberInfo = await MemberApi.get(token);
       setMemberInfo(newMemberInfo);
-      navigateWithHistory(navigation, [
-        {
-          name: "Home",
-        },
-        {
-          name: "RaceDetail",
-          params: {
-            raceInfo,
-            location: `/api/races/${raceInfo.id}`,
-          },
-        },
-      ]);
+      navigateToRaceDetail();
     } catch (error) {
       console.log(error);
     }
@@ -122,18 +117,7 @@ const RedirectPage = ({ route }) => {
         const { race_responses: races } = await QueryApi.getRaces(userToken);
         const filteredRace = races.filter((race) => String(race.id) === raceId);
         if (filteredRace.length > 0) {
-          navigateWithHistory(navigation, [
-            {
-              name: "Home",
-            },
-            {
-              name: "RaceDetail",
-              params: {
-                raceInfo,
-                location: `/api/races/${raceId}`,
-              },
-            },
-          ]);
+          navigateToRaceDetail();
         }
       } catch (error) {
         alert("조회에 실패했습니다.");
@@ -149,11 +133,12 @@ const RedirectPage = ({ route }) => {
     <View style={styles.container}>
       <RaceJoinTitle thumbnail={raceInfo.thumbnail} title={raceInfo.title} />
       <RaceJoinBody raceInfo={raceInfo} memberInfo={memberInfo} />
-      <PaymentButton
-        isPayment={isPayment}
-        paymentButton={payEntranceFee}
-        charge={chargeMoney}
-      />
+      <FullWidthButton
+        color={isPayment() ? COLOR.BLUE3 : COLOR.RED}
+        onClick={isPayment() ? payEntranceFee : chargeMoney}
+      >
+        {isPayment() ? "결제하기" : "충전하기"}
+      </FullWidthButton>
     </View>
   );
 };
@@ -163,5 +148,9 @@ const styles = StyleSheet.create({
     flex: 1,
   },
 });
+
+export const raceShareLink = (id) => {
+  return `${DEEP_LINK_BASE_URL}home/races/${id}`;
+};
 
 export default RedirectPage;

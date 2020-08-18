@@ -3,6 +3,7 @@ import { NavigationContainer } from "@react-navigation/native";
 import { StatusBar } from "expo-status-bar";
 import { RecoilRoot } from "recoil";
 import LoginNavigationRoot from "./component/LoginNavigationRoot";
+
 import { DEEP_LINK_BASE_URL } from "./utils/constants";
 
 const linking = {
@@ -12,10 +13,13 @@ const linking = {
       ApplicationNavigationRoot: {
         screens: {
           Home: {
+            path: "home",
             screens: {
               RaceDeepLinkPage: {
                 path: "races/:id",
-                exact: true,
+              },
+              RaceDetail: {
+                path: "races/detail/:id",
               },
             },
           },
@@ -32,8 +36,8 @@ const App = () => {
   return (
     <RecoilRoot>
       <NavigationContainer linking={linking}>
-        <StatusBar/>
-        <LoginNavigationRoot/>
+        <StatusBar />
+        <LoginNavigationRoot />
       </NavigationContainer>
     </RecoilRoot>
   );

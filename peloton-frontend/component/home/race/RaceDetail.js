@@ -1,12 +1,12 @@
 import React, { useEffect } from "react";
 import { ScrollView, StyleSheet } from "react-native";
 import RaceDetailInfo from "./RaceDetailInfo";
-import RaceCertificationImage from "./RaceCertificationImage";
+import RaceCertificationImages from "./RaceCertificationImages";
 import RaceSpec from "./RaceSpec";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import { loadingState } from "../../../state/loading/LoadingState";
 import { COLOR } from "../../../utils/constants";
-import { useRecoilState } from "recoil/dist";
+import { useRecoilState } from "recoil";
 import { memberTokenState } from "../../../state/member/MemberState";
 import { raceInfoState } from "../../../state/race/RaceState";
 import { RaceApi } from "../../../utils/api/RaceApi";
@@ -17,7 +17,7 @@ import { ridersInfoState } from "../../../state/rider/RiderState";
 const RaceDetail = ({ route }) => {
   const token = useRecoilValue(memberTokenState);
   const setIsLoading = useSetRecoilState(loadingState);
-  const raceId = route.params.location.split("/")[3];
+  const raceId = route.params.id;
   const [raceInfo, setRaceInfo] = useRecoilState(raceInfoState);
   const [ridersInfo, setRidersInfo] = useRecoilState(ridersInfoState);
 
@@ -38,7 +38,7 @@ const RaceDetail = ({ route }) => {
 
   return (
     <ScrollView style={styles.container}>
-      <RaceCertificationImage />
+      <RaceCertificationImages />
       <RaceDetailInfo
         title={raceInfo.title}
         description={raceInfo.description}

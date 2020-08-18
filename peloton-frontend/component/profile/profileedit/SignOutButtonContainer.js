@@ -1,14 +1,20 @@
 import React from "react";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import AsyncStorage from "@react-native-community/async-storage";
-import { navigateWithoutHistory } from "../../../utils/util";
+import { useResetRecoilState } from "recoil";
 import { useNavigation } from "@react-navigation/core";
+
+import { navigateWithoutHistory } from "../../../utils/util";
 import { COLOR, TOKEN_STORAGE } from "../../../utils/constants";
+import { memberTokenState } from "../../../state/member/MemberState";
 
 const SignOutButtonContainer = () => {
   const navigation = useNavigation();
+  const resetTokenState = useResetRecoilState(memberTokenState);
+
   const onSignOut = async () => {
     await AsyncStorage.removeItem(TOKEN_STORAGE);
+    resetTokenState();
     navigateWithoutHistory(navigation, "Login");
   };
 

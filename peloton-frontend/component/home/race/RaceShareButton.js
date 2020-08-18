@@ -1,16 +1,18 @@
 import React from "react";
 import { Share, StyleSheet, TouchableOpacity } from "react-native";
 import { EvilIcons } from "@expo/vector-icons";
-import { COLOR, DEEP_LINK_BASE_URL } from "../../../utils/constants";
-import { useRecoilValue } from "recoil/dist";
+import { useRecoilValue } from "recoil";
+
+import { COLOR } from "../../../utils/constants";
 import { raceInfoState } from "../../../state/race/RaceState";
+import { raceShareLink } from "./RaceDeepLinkPage";
 
 const RaceShareButton = () => {
   const raceInfo = useRecoilValue(raceInfoState);
 
   const onShare = async () => {
     await Share.share({
-      url: `${DEEP_LINK_BASE_URL}races/${raceInfo.id}`,
+      url: raceShareLink(raceInfo.id),
     });
   };
 

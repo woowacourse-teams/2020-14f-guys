@@ -9,9 +9,9 @@ export const raceCreateInfoState = atom({
     end_date: "",
     category: "",
     entrance_fee: "",
-    days: ["MONDAY", "TUESDAY", "FRIDAY"],
-    start_time: "08:00:00",
-    end_time: "10:00:00",
+    days: [],
+    mission_start_time: "",
+    mission_end_time: "",
   },
 });
 
@@ -29,10 +29,5 @@ export const raceInfoState = atom({
     },
     thumbnail: null,
     title: null,
-    days: null,
-    certification_available_duration: {
-      start_time: null,
-      end_time: null,
-    },
   },
 });

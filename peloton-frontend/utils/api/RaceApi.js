@@ -15,7 +15,7 @@ export const RaceApi = {
   },
   post: async (token, data) => {
     try {
-      const response = await Axios({
+      const { headers } = await Axios({
         method: "POST",
         baseURL: SERVER_BASE_URL,
         url: "/api/races",
@@ -24,7 +24,7 @@ export const RaceApi = {
           Authorization: `Bearer ${token}`,
         },
       });
-      return response.headers.location;
+      return headers;
     } catch (error) {
       console.log(error);
       throw error;

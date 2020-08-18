@@ -1,11 +1,13 @@
 import React from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import HomeNavigationRoot from "./HomeNavigationRoot";
 import Certification from "./certification/Certification";
 import { MaterialIcons } from "@expo/vector-icons";
 import { View } from "react-native";
+
 import { COLOR } from "../utils/constants";
+import HomeNavigationRoot from "./HomeNavigationRoot";
 import ProfileNavigationRoot from "./ProfileStackRoot";
+import CertificationNavigationRoot from "./certification/CertificationNavigationRoot";
 
 const Tab = createBottomTabNavigator();
 
@@ -47,7 +49,10 @@ const ApplicationNavigationRoot = () => {
       initialRouteName="Home"
     >
       <Tab.Screen name="Home" component={HomeNavigationRoot} />
-      <Tab.Screen name="Certification" component={Certification} />
+      <Tab.Screen
+        name="Certification"
+        component={CertificationNavigationRoot}
+      />
       <Tab.Screen name="Profile" component={ProfileNavigationRoot} />
     </Tab.Navigator>
   );

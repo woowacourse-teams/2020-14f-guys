@@ -9,7 +9,11 @@ import { COLOR } from "../../../utils/constants";
 import { loadingState } from "../../../state/loading/LoadingState";
 import LoadingIndicator from "../../../utils/LoadingIndicator";
 import RaceCreateView from "./RaceCreateView";
-import { navigateTabScreen, navigateWithHistory } from "../../../utils/util";
+import {
+  alertNotEnoughCash,
+  navigateTabScreen,
+  navigateWithHistory,
+} from "../../../utils/util";
 import {
   memberInfoState,
   memberTokenState,
@@ -48,7 +52,7 @@ const InputRaceFee = () => {
   const createRaceRequest = async () => {
     setGlobalLoading(true);
     try {
-      const location = await RaceApi.post(token, formatPostRaceBody());
+      const { location } = await RaceApi.post(token, formatPostRaceBody());
       const race_id = location.split("/")[3];
       await RiderApi.post(token, race_id);
       resetRaceCreateInfo();
@@ -56,7 +60,7 @@ const InputRaceFee = () => {
         { name: "Home" },
         {
           name: "RaceDetail",
-          params: { location },
+          params: { id: race_id },
         },
       ]);
     } catch (e) {
@@ -78,23 +82,9 @@ const InputRaceFee = () => {
     }
 
     if (userCash < entrance_fee) {
-      Alert.alert(
-        "잔액이 부족합니다.",
-        "캐시 충전 페이지로 이동하시겠습니까?",
-        [
-          {
-            text: "Cancel",
-            style: "cancel",
-          },
-          {
-            text: "OK",
-            onPress: () => {
-              navigateTabScreen(navigation, "Profile");
-            },
-          },
-        ],
-        { cancelable: false },
-      );
+      alertNotEnoughCash({
+        onOk: () => navigateTabScreen(navigation, "Profile"),
+      });
       setGlobalLoading(false);
       return;
     }

@@ -1,6 +1,6 @@
 import React from "react";
 import { Image, StyleSheet, View } from "react-native";
-import { useRecoilValue } from "recoil/dist";
+import { useRecoilValue } from "recoil";
 import { memberInfoState } from "../../state/member/MemberState";
 
 const ProfileImage = () => {
