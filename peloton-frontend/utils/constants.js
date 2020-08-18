@@ -97,11 +97,13 @@ export const SAMPLE_SUBTITLE = [
   "당신만의 레이스를 \n달려보세요! 😆",
   "오늘도 힘차게 \n도전하는 당신! 😁",
   "오늘 날씨가 \n참 좋네요! 😝",
+  "친구들과 함께 해보아요! 😎",
 ];
 
 export const RACE_CATEGORY_TIME = "TIME";
 export const RACE_CATEGORY_STUDY = "STUDY";
 export const RACE_CATEGORY_PLAY = "PLAY";
+export const RACE_CATEGORY_EXERCISE = "EXERCISE";
 
 export const SERVER_BASE_URL = "https://peloton.ga";
 export const TOKEN_STORAGE = "@token_storage";

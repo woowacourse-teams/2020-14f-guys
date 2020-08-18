@@ -43,6 +43,37 @@ public enum RaceCategory {
         Collections.singletonList(new ImageUrl("TEST_STUDY_CERTIFICATION_IMAGE")),
         Arrays.asList(new MissionInstruction("스터디원끼리 모여서 점프샷 찍기"),
             new MissionInstruction("스터디 이름이 쓰여진 포스트잇 하나씩 들고 찍기"))
+    ),
+
+    PLAY(Arrays.asList(
+        new ImageUrl("https://14f-guys-image.s3.ap-northeast-2.amazonaws.com/race-thumbnail-image/thumbnail1.png"),
+        new ImageUrl("https://14f-guys-image.s3.ap-northeast-2.amazonaws.com/race-thumbnail-image/thumbnail2.jpg"),
+        new ImageUrl("https://14f-guys-image.s3.ap-northeast-2.amazonaws.com/race-thumbnail-image/thumbnail3.jpeg"),
+        new ImageUrl("https://14f-guys-image.s3.ap-northeast-2.amazonaws.com/race-thumbnail-image/thumbnail4.jpeg"),
+        new ImageUrl("https://14f-guys-image.s3.ap-northeast-2.amazonaws.com/race-thumbnail-image/thumbnail5.jpg"),
+        new ImageUrl("https://14f-guys-image.s3.ap-northeast-2.amazonaws.com/race-thumbnail-image/thumbnail6.jpg"),
+        new ImageUrl("https://14f-guys-image.s3.ap-northeast-2.amazonaws.com/race-thumbnail-image/thumbnail7.jpeg"),
+        new ImageUrl("https://14f-guys-image.s3.ap-northeast-2.amazonaws.com/race-thumbnail-image/thumbnail8.jpeg"),
+        new ImageUrl("https://14f-guys-image.s3.ap-northeast-2.amazonaws.com/race-thumbnail-image/thumbnail9.jpg")
+    ),
+        Collections.singletonList(new ImageUrl("TEST_STUDY_CERTIFICATION_IMAGE")),
+        Arrays.asList(new MissionInstruction("친구들과 함께 웃으면서 셀카 찍기!"),
+            new MissionInstruction("맛있는 음식과 함께 브이 하기!"))
+    ),
+    EXERCISE(Arrays.asList(
+        new ImageUrl("https://14f-guys-image.s3.ap-northeast-2.amazonaws.com/race-thumbnail-image/thumbnail1.png"),
+        new ImageUrl("https://14f-guys-image.s3.ap-northeast-2.amazonaws.com/race-thumbnail-image/thumbnail2.jpg"),
+        new ImageUrl("https://14f-guys-image.s3.ap-northeast-2.amazonaws.com/race-thumbnail-image/thumbnail3.jpeg"),
+        new ImageUrl("https://14f-guys-image.s3.ap-northeast-2.amazonaws.com/race-thumbnail-image/thumbnail4.jpeg"),
+        new ImageUrl("https://14f-guys-image.s3.ap-northeast-2.amazonaws.com/race-thumbnail-image/thumbnail5.jpg"),
+        new ImageUrl("https://14f-guys-image.s3.ap-northeast-2.amazonaws.com/race-thumbnail-image/thumbnail6.jpg"),
+        new ImageUrl("https://14f-guys-image.s3.ap-northeast-2.amazonaws.com/race-thumbnail-image/thumbnail7.jpeg"),
+        new ImageUrl("https://14f-guys-image.s3.ap-northeast-2.amazonaws.com/race-thumbnail-image/thumbnail8.jpeg"),
+        new ImageUrl("https://14f-guys-image.s3.ap-northeast-2.amazonaws.com/race-thumbnail-image/thumbnail9.jpg")
+    ),
+        Collections.singletonList(new ImageUrl("TEST_STUDY_CERTIFICATION_IMAGE")),
+        Arrays.asList(new MissionInstruction("운동 시작시간과 끝낸 시간 인증하기!"),
+            new MissionInstruction("자신이 가는 헬스장에서 날짜가 보이게 사진 찍기!"))
     );
 
     private final List<ImageUrl> thumbnails;

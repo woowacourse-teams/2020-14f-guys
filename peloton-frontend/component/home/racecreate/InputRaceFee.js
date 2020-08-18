@@ -60,7 +60,7 @@ const InputRaceFee = () => {
         },
       ]);
     } catch (e) {
-      alert(e.toString());
+      alert(e);
     }
     setGlobalLoading(false);
   };
