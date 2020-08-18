@@ -10,7 +10,7 @@ import {
   View,
 } from "react-native";
 import { COLOR } from "../../../utils/constants";
-import { useRecoilValue, useSetRecoilState } from "recoil";
+import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import { useNavigation } from "@react-navigation/core";
 import { MemberApi } from "../../../utils/api/MemberApi";
 import {
@@ -19,26 +19,30 @@ import {
 } from "../../../state/member/MemberState";
 
 const CashUpdate = () => {
-  const [input, setInput] = React.useState(5000);
   const [cash, setCash] = React.useState(5000);
-  const [isValid, setIsValid] = React.useState(true);
   const token = useRecoilValue(memberTokenState);
   const navigation = useNavigation();
-  const [memberInfo, setMemberInfo] = useSetRecoilState(memberInfoState);
+  const setMemberInfo = useSetRecoilState(memberInfoState);
 
-  const setCashWithValidate = (value) => {
+  const validateCash = (value) => {
     const onlyNumber = /^[0-9]+$/;
-    setInput(value);
-    if (!onlyNumber.test(value)) {
-      setIsValid(false);
-      return;
+    if (value.length === 0) {
+      return true;
     }
-    setIsValid(true);
-    setCash(value);
+    return onlyNumber.test(value);
+  };
+
+  const setCashWithoutPrettyFormat = (value) => {
+    const onlyNumberInput = value.replace(/\,/g, "");
+    setCash(onlyNumberInput);
+  };
+
+  const prettyPrint = (value) => {
+    return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
   };
 
   const requestChangeCash = async () => {
-    if (!isValid) {
+    if (validateCash(cash)) {
       Alert.alert("충전 금액을 다시 입력해주세요.");
       return;
     }
@@ -54,7 +58,7 @@ const CashUpdate = () => {
   };
 
   const ErrorMessage = () => {
-    return isValid ? null : (
+    return validateCash(cash) ? null : (
       <View>
         <Text style={styles.errorMessage}>
           금액을 천원단위로 입력해주세요😊
@@ -71,8 +75,8 @@ const CashUpdate = () => {
             <Text style={styles.chargeText}>충전 금액을 입력해주세요</Text>
             <TextInput
               style={styles.chargeInput}
-              onChangeText={(text) => setCashWithValidate(text)}
-              value={String(input)}
+              onChangeText={(text) => setCashWithoutPrettyFormat(text)}
+              value={prettyPrint(String(cash))}
               keyboardType={"number-pad"}
             />
             <ErrorMessage />
