@@ -6,32 +6,24 @@ import { memberInfoState } from "../../state/member/MemberState";
 const ProfileImage = () => {
   const memberInfo = useRecoilValue(memberInfoState);
   return (
-    <View style={styles.container}>
-      <Image
-        style={styles.profileImage}
-        source={{ uri: memberInfo.profile }}
-        defaultSource={require("../../assets/default-profile.jpg")}
-      />
-    </View>
+    <Image
+      style={styles.profileImage}
+      source={
+        memberInfo
+          ? { uri: memberInfo.profile }
+          : require("../../assets/default-profile.jpg")
+      }
+      defaultSource={require("../../assets/default-profile.jpg")}
+    />
   );
 };
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
   profileImage: {
     resizeMode: "cover",
-    width: 100,
-    height: 100,
-    borderRadius: 100 / 2,
-  },
-  profileEditButton: {
-    width: 30,
-    height: 30,
-    position: "absolute",
-    left: 30,
-    bottom: 30,
+    width: 125,
+    height: 125,
+    borderRadius: 125 / 2,
   },
 });
 

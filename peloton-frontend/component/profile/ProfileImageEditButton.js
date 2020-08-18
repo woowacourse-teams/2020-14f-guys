@@ -1,5 +1,5 @@
 import React from "react";
-import { Alert, Linking, TouchableOpacity } from "react-native";
+import { StyleSheet, Alert, Linking, TouchableOpacity } from "react-native";
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import * as ImagePicker from "expo-image-picker";
 
@@ -58,10 +58,20 @@ const ProfileImageEditButton = ({ children }) => {
   };
 
   return (
-    <TouchableOpacity onPress={pickAndChangeProfileImage}>
+    <TouchableOpacity
+      style={styles.profileImageEditButton}
+      onPress={pickAndChangeProfileImage}
+    >
       {children}
     </TouchableOpacity>
   );
 };
+
+const styles = StyleSheet.create({
+  profileImageEditButton: {
+    width: 125,
+    height: 125,
+  },
+});
 
 export default ProfileImageEditButton;
