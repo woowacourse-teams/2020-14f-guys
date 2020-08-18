@@ -5,7 +5,7 @@ import static org.assertj.core.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.BDDMockito.*;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.*;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -30,6 +30,7 @@ import org.springframework.restdocs.RestDocumentationContextProvider;
 import org.springframework.restdocs.RestDocumentationExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.bind.support.WebDataBinderFactory;
 import org.springframework.web.context.WebApplicationContext;
@@ -48,12 +49,7 @@ import com.woowacourse.pelotonbackend.member.application.MemberService;
 import com.woowacourse.pelotonbackend.member.domain.LoginFixture;
 import com.woowacourse.pelotonbackend.member.domain.Member;
 import com.woowacourse.pelotonbackend.member.domain.MemberFixture;
-import com.woowacourse.pelotonbackend.member.presentation.dto.MemberCashUpdateRequest;
-import com.woowacourse.pelotonbackend.member.presentation.dto.MemberCreateRequest;
-import com.woowacourse.pelotonbackend.member.presentation.dto.MemberNameUpdateRequest;
-import com.woowacourse.pelotonbackend.member.presentation.dto.MemberProfileResponse;
-import com.woowacourse.pelotonbackend.member.presentation.dto.MemberResponse;
-import com.woowacourse.pelotonbackend.member.presentation.dto.MemberResponses;
+import com.woowacourse.pelotonbackend.member.presentation.dto.*;
 import com.woowacourse.pelotonbackend.support.BearerAuthInterceptor;
 
 @ExtendWith(RestDocumentationExtension.class)
@@ -126,6 +122,25 @@ public class MemberControllerTest {
         final byte[] contentAsByteArray = mvcResult.getResponse().getContentAsByteArray();
         final MemberResponse memberResponse = objectMapper.readValue(contentAsByteArray, MemberResponse.class);
         assertThat(memberResponse).isEqualToComparingFieldByField(expectedResponse);
+    }
+
+    @DisplayName("아이디로 회원을 조회한다")
+    @Test
+    void findMemberById() throws Exception {
+        final MemberResponse expectedResponse = memberResponse();
+        given(bearerAuthInterceptor.preHandle(any(HttpServletRequest.class), any(HttpServletResponse.class),
+            any(HandlerMethod.class))).willReturn(true);
+        given(argumentResolver.resolveArgument(any(MethodParameter.class), any(ModelAndViewContainer.class),
+            any(NativeWebRequest.class), any(WebDataBinderFactory.class))).willReturn(expectedResponse);
+        given(argumentResolver.supportsParameter(any())).willReturn(true);
+        given(memberService.findMember(MEMBER_ID)).willReturn(expectedResponse);
+
+        final MvcResult mvcResult = mockMvc.perform(get(RESOURCE_URL + "/{id}", memberResponse.getId())
+            .header(HttpHeaders.AUTHORIZATION, LoginFixture.getTokenHeader())
+            .accept(MediaType.APPLICATION_JSON))
+            .andExpect(status().isOk())
+            .andDo(MemberDocumentation.getMemberById())
+            .andReturn();
     }
 
     @DisplayName("모든 회원을 조회한다")
@@ -232,7 +247,7 @@ public class MemberControllerTest {
         given(memberService.updateProfileImage(anyLong(), any(MultipartFile.class)))
             .willReturn(MemberFixture.memberProfileUpdated());
 
-        mockMvc.perform(multipart(RESOURCE_URL + "/profile")
+        mockMvc.perform(MockMvcRequestBuilders.multipart(RESOURCE_URL + "/profile")
             .file("profile_image", createMockMultiPart().getBytes())
             .header(HttpHeaders.AUTHORIZATION, LoginFixture.getTokenHeader())
         )
@@ -254,7 +269,7 @@ public class MemberControllerTest {
         given(memberService.updateProfileImage(anyLong(), any())).willReturn(
             new MemberProfileResponse(BASIC_PROFILE_URL));
 
-        mockMvc.perform(multipart(RESOURCE_URL + "/profile")
+        mockMvc.perform(MockMvcRequestBuilders.multipart(RESOURCE_URL + "/profile")
             .file("TEST", null)
             .header(HttpHeaders.AUTHORIZATION, LoginFixture.getTokenHeader())
         )
