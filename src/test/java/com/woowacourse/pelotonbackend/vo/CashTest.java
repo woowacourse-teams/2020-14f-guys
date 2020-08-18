@@ -11,18 +11,18 @@ class CashTest {
 
     @ParameterizedTest
     @CsvSource(value = {"1000,1000,2000", "0,2000,2000"},delimiter =',')
-    void plusTest(BigDecimal cash, BigDecimal that, BigDecimal result) {
+    void plusTest(final BigDecimal cash, final BigDecimal value, final BigDecimal result) {
         final Cash origin = new Cash(cash);
-        final Cash plusMoney = new Cash(that);
+        final Cash plusMoney = new Cash(value);
 
         assertThat(origin.plus(plusMoney)).isEqualTo(new Cash(result));
     }
 
     @ParameterizedTest
     @CsvSource(value = {"1000,3000,-2000","5000,2000,3000"})
-    void minusTest(BigDecimal cash, BigDecimal that, BigDecimal result) {
+    void minusTest(final BigDecimal cash, final BigDecimal value, final BigDecimal result) {
         final Cash origin = new Cash(cash);
-        final Cash minusMoney = new Cash(that);
+        final Cash minusMoney = new Cash(value);
 
         assertThat(origin.minus(minusMoney)).isEqualTo(new Cash(result));
     }

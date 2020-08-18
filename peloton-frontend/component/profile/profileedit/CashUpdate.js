@@ -10,14 +10,13 @@ import {
   View,
 } from "react-native";
 import { COLOR } from "../../../utils/constants";
-import { useRecoilValue } from "recoil";
+import { useRecoilValue, useSetRecoilState } from "recoil";
 import { useNavigation } from "@react-navigation/core";
 import { MemberApi } from "../../../utils/api/MemberApi";
 import {
   memberInfoState,
   memberTokenState,
 } from "../../../state/member/MemberState";
-import { useRecoilState } from "recoil/dist";
 
 const CashUpdate = () => {
   const [input, setInput] = React.useState(5000);
@@ -25,17 +24,17 @@ const CashUpdate = () => {
   const [isValid, setIsValid] = React.useState(true);
   const token = useRecoilValue(memberTokenState);
   const navigation = useNavigation();
-  const [memberInfo, setMemberInfo] = useRecoilState(memberInfoState);
+  const [memberInfo, setMemberInfo] = useSetRecoilState(memberInfoState);
 
-  const setCashWithValidate = (input) => {
+  const setCashWithValidate = (value) => {
     const onlyNumber = /^[0-9]+$/;
-    setInput(input);
-    if (!onlyNumber.test(input)) {
+    setInput(value);
+    if (!onlyNumber.test(value)) {
       setIsValid(false);
       return;
     }
     setIsValid(true);
-    setCash(input);
+    setCash(value);
   };
 
   const requestChangeCash = async () => {
@@ -57,7 +56,9 @@ const CashUpdate = () => {
   const ErrorMessage = () => {
     return isValid ? null : (
       <View>
-        <Text style={styles.errorMessage}>금액만 입력해주세요 : ) </Text>
+        <Text style={styles.errorMessage}>
+          금액을 천원단위로 입력해주세요😊
+        </Text>
       </View>
     );
   };

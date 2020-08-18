@@ -200,7 +200,7 @@ public class MemberControllerTest {
     @DisplayName("잘못된 CashUpdatedRequest에 대해서 예외를 반환한다.")
     @ParameterizedTest
     @ValueSource(longs = {-1, -1000})
-    void updateNotValidCash(long badValue) throws Exception {
+    void updateNotValidCash(final long badValue) throws Exception {
         final MemberResponse expectedResponse = memberResponse();
         given(bearerAuthInterceptor.preHandle(any(HttpServletRequest.class), any(HttpServletResponse.class),
             any(HandlerMethod.class))).willReturn(true);

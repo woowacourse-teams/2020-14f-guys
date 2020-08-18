@@ -62,24 +62,24 @@ public class Member {
             .build();
     }
 
-    public Member plusCash(final Cash that) {
+    public Member plusCash(final Cash value) {
         return this.toBuilder()
-            .cash(cash.plus(that))
+            .cash(cash.plus(value))
             .build();
     }
 
-    public Member minusCash(final Cash that) {
-        if(isNotEnoughMoney(that)) {
+    public Member minusCash(final Cash value) {
+        if(isNotEnoughMoney(value)) {
             throw new MoneyInvalidException();
         }
 
         return this.toBuilder()
-            .cash(cash.minus(that))
+            .cash(cash.minus(value))
             .build();
     }
 
-    private boolean isNotEnoughMoney(final Cash that) {
-        final Cash calculatedMoney = cash.minus(that);
+    private boolean isNotEnoughMoney(final Cash value) {
+        final Cash calculatedMoney = cash.minus(value);
         return !calculatedMoney.isGreaterOrEqualThan(BigDecimal.ZERO);
     }
 

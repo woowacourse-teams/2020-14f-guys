@@ -15,6 +15,6 @@ import lombok.Getter;
 @Builder
 @Getter
 public class MemberCashUpdateRequest {
-    @Valid
+    @Valid @NotNull
     private final Cash cash;
 }
