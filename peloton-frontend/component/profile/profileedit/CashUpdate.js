@@ -42,7 +42,7 @@ const CashUpdate = () => {
   };
 
   const requestChangeCash = async () => {
-    if (validateCash(cash)) {
+    if (!validateCash(cash)) {
       Alert.alert("충전 금액을 다시 입력해주세요.");
       return;
     }
