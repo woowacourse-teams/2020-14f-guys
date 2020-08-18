@@ -1,25 +1,53 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Alert, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import Axios from "axios";
 import { useRecoilValue } from "recoil";
-import { COLOR, SERVER_BASE_URL } from "../../../utils/constants";
-import { memberTokenState } from "../../../state/member/MemberState";
+import {
+  COLOR,
+  SERVER_BASE_URL,
+  TOKEN_STORAGE,
+} from "../../../utils/constants";
+import {
+  memberInfoState,
+  memberTokenState,
+} from "../../../state/member/MemberState";
+import { MemberApi } from "../../../utils/api/MemberApi";
+import { navigateWithoutHistory } from "../../../utils/util";
+import AsyncStorage from "@react-native-community/async-storage";
+import { useResetRecoilState, useSetRecoilState } from "recoil";
+import { loadingState } from "../../../state/loading/LoadingState";
+import { raceInfoState } from "../../../state/race/RaceState";
+import { raceResponseState } from "../../../state/race/ResponseState";
+import { ridersInfoState } from "../../../state/rider/RiderState";
 
 const UnregisterButtonContainer = () => {
   const navigation = useNavigation();
   const token = useRecoilValue(memberTokenState);
+  const setIsLoading = useSetRecoilState(loadingState);
+  const resetMemberTokenState = useResetRecoilState(memberTokenState);
+  const resetMemberInfoState = useResetRecoilState(memberInfoState);
+  const resetRaceCreateInfoState = useResetRecoilState(memberTokenState);
+  const resetRaceInfoState = useResetRecoilState(raceInfoState);
+  const resetRaceResponseState = useResetRecoilState(raceResponseState);
+  const resetRidersInfoState = useResetRecoilState(ridersInfoState);
 
-  const requestUnregister = () => {
-    Axios.delete(`${SERVER_BASE_URL}/api/members`, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
-    navigation.navigate("Login");
+  const requestUnregister = async () => {
+    setIsLoading(true);
+    await MemberApi.delete(token);
+    await AsyncStorage.removeItem(TOKEN_STORAGE);
+    navigateWithoutHistory(navigation, "Login");
+    setIsLoading(false);
+    resetMemberTokenState();
+    resetMemberInfoState();
+    resetRaceCreateInfoState();
+    resetRaceInfoState();
+    resetRaceResponseState();
+    resetRidersInfoState();
   };
-  const createTwoButtonAlert = () =>
-    Alert.alert(
+
+  const createTwoButtonAlert = async () =>
+    await Alert.alert(
       "Unregister",
       "정말로 탈퇴하시겠습니까?",
       [
@@ -31,7 +59,7 @@ const UnregisterButtonContainer = () => {
         },
         { text: "Yes", onPress: requestUnregister },
       ],
-      { cancelable: false }
+      { cancelable: false },
     );
 
   return (

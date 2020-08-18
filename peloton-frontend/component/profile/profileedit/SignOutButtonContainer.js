@@ -1,21 +1,40 @@
 import React from "react";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import AsyncStorage from "@react-native-community/async-storage";
-import { useResetRecoilState } from "recoil";
 import { useNavigation } from "@react-navigation/core";
-
 import { navigateWithoutHistory } from "../../../utils/util";
 import { COLOR, TOKEN_STORAGE } from "../../../utils/constants";
-import { memberTokenState } from "../../../state/member/MemberState";
+import { useResetRecoilState, useSetRecoilState } from "recoil";
+import { loadingState } from "../../../state/loading/LoadingState";
+import {
+  memberInfoState,
+  memberTokenState,
+} from "../../../state/member/MemberState";
+import { raceInfoState } from "../../../state/race/RaceState";
+import { raceResponseState } from "../../../state/race/ResponseState";
+import { ridersInfoState } from "../../../state/rider/RiderState";
 
 const SignOutButtonContainer = () => {
   const navigation = useNavigation();
-  const resetTokenState = useResetRecoilState(memberTokenState);
+  const setIsLoading = useSetRecoilState(loadingState);
+  const resetMemberTokenState = useResetRecoilState(memberTokenState);
+  const resetMemberInfoState = useResetRecoilState(memberInfoState);
+  const resetRaceCreateInfoState = useResetRecoilState(memberTokenState);
+  const resetRaceInfoState = useResetRecoilState(raceInfoState);
+  const resetRaceResponseState = useResetRecoilState(raceResponseState);
+  const resetRidersInfoState = useResetRecoilState(ridersInfoState);
 
   const onSignOut = async () => {
+    setIsLoading(true);
     await AsyncStorage.removeItem(TOKEN_STORAGE);
-    resetTokenState();
     navigateWithoutHistory(navigation, "Login");
+    setIsLoading(false);
+    resetMemberTokenState();
+    resetMemberInfoState();
+    resetRaceCreateInfoState();
+    resetRaceInfoState();
+    resetRaceResponseState();
+    resetRidersInfoState();
   };
 
   return (

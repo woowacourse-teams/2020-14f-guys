@@ -64,4 +64,18 @@ export const MemberApi = {
       console.log(error);
     }
   },
+  delete: async (token) => {
+    try {
+      await Axios({
+        method: "DELETE",
+        baseURL: SERVER_BASE_URL,
+        url: "/api/members",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  },
 };
