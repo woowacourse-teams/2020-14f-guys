@@ -149,12 +149,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
-  paymentText: {
-    color: COLOR.WHITE,
-    fontSize: 15,
-    fontWeight: "600",
-    textAlign: "center",
-  },
 });
 
 export const raceShareLink = (id) => {

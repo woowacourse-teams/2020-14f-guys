@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useCallback, useEffect } from "react";
 import { ScrollView, StyleSheet } from "react-native";
 import RaceDetailInfo from "./RaceDetailInfo";
 import RaceCertificationImages from "./RaceCertificationImages";
@@ -16,6 +16,7 @@ import { ridersInfoState } from "../../../state/rider/RiderState";
 import { QueryApi } from "../../../utils/api/QueryApi";
 import LoadingIndicator from "../../../utils/LoadingIndicator";
 import { certificationState } from "../../../state/certification/CertificationState";
+import { useFocusEffect } from "@react-navigation/core";
 
 const RaceDetail = ({ route }) => {
   const newRaceId = route.params.id;
