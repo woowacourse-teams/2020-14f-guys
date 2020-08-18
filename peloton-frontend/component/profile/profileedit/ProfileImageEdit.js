@@ -2,14 +2,14 @@ import React from "react";
 import { StyleSheet, View } from "react-native";
 import ProfileImageEditButton from "../ProfileImageEditButton";
 import ProfileImage from "../ProfileImage";
-import ProfileImageEditIcon from "./ProfileImageEditIcon";
+import CameraIcon from "./CameraIcon";
 
 const ProfileImageEdit = () => {
   return (
     <View style={styles.imageContainer}>
       <ProfileImageEditButton>
         <ProfileImage />
-        <ProfileImageEditIcon />
+        <CameraIcon />
       </ProfileImageEditButton>
     </View>
   );

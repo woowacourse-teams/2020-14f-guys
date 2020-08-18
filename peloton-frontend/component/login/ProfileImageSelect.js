@@ -3,8 +3,7 @@ import { Image, StyleSheet, View } from "react-native";
 import ProfileImageEditButton from "../profile/ProfileImageEditButton";
 import { useRecoilValue } from "recoil";
 import { memberInfoState } from "../../state/member/MemberState";
-import ProfileImageEditIcon from "../profile/profileedit/ProfileImageEditIcon";
-import { COLOR } from "../../utils/constants";
+import CameraIcon from "../profile/profileedit/CameraIcon";
 
 const ProfileImageSelect = () => {
   const memberInfo = useRecoilValue(memberInfoState);
@@ -21,7 +20,7 @@ const ProfileImageSelect = () => {
           }
           defaultSource={require("../../assets/default-profile.jpg")}
         />
-        <ProfileImageEditIcon />
+        <CameraIcon />
       </ProfileImageEditButton>
     </View>
   );
@@ -29,24 +28,13 @@ const ProfileImageSelect = () => {
 
 const styles = StyleSheet.create({
   container: {
-    height: 250,
+    paddingBottom: 130,
+    minHeight: 120,
   },
   profileImage: {
     height: 120,
     width: 120,
     borderRadius: 60,
-  },
-  cameraIcon: {
-    opacity: 0.7,
-    alignItems: "center",
-    justifyContent: "center",
-    width: 30,
-    height: 30,
-    borderRadius: 15,
-    backgroundColor: COLOR.WHITE,
-    position: "absolute",
-    top: 85,
-    left: 85,
   },
 });
 

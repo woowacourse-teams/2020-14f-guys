@@ -38,7 +38,8 @@ class LoginServiceTest {
 
     @BeforeEach
     void setUp() {
-        loginService = new LoginService(kakaoAPIService, memberService, jwtTokenProvider, randomGenerator);
+        loginService = new LoginService(kakaoAPIService, memberService, jwtTokenProvider, randomGenerator,
+            BASIC_PROFILE_URL);
     }
 
     @DisplayName("CodeUrl을 요청하면 kakaoAPI에서 CodeUrl을 받아서 반환한다.")

@@ -3,7 +3,7 @@ import { StyleSheet, View } from "react-native";
 import { Entypo } from "@expo/vector-icons";
 import { COLOR } from "../../../utils/constants";
 
-const ProfileImageEditIcon = () => {
+const CameraIcon = () => {
   return (
     <View style={styles.cameraIcon}>
       <Entypo name="camera" size={24} color="black" />
@@ -21,9 +21,9 @@ const styles = StyleSheet.create({
     borderRadius: 15,
     backgroundColor: COLOR.WHITE,
     position: "absolute",
-    top: 70,
-    left: 70,
+    bottom: 0,
+    right: 0,
   },
 });
 
-export default ProfileImageEditIcon;
+export default CameraIcon;

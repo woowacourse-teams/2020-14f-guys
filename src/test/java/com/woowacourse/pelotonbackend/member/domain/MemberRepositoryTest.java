@@ -8,6 +8,8 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import javax.validation.ConstraintViolationException;
+
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +17,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.TestExecutionListeners;
 
 import com.woowacourse.pelotonbackend.DataInitializeExecutionListener;
+import com.woowacourse.pelotonbackend.vo.ImageUrl;
 
 @SpringBootTest
 @TestExecutionListeners(
@@ -37,6 +40,32 @@ class MemberRepositoryTest {
             () -> assertThat(persistMember.getCreatedAt()).isNotNull(),
             () -> assertThat(persistMember.getUpdatedAt()).isNotNull()
         );
+    }
+
+    @DisplayName("Profile image의 url이 null인 회원을 저장하면 예외가 발생한다.")
+    @Test
+    void saveMemberWithNullProfile_ThrowsException() {
+        final Member member = createWithoutId(KAKAO_ID, EMAIL, NAME)
+            .toBuilder()
+            .profile(null)
+            .build();
+
+        assertThatThrownBy(() -> memberRepository.save(member))
+            .isInstanceOf(ConstraintViolationException.class)
+            .hasMessage("profile: 널이어서는 안됩니다");
+    }
+
+    @DisplayName("Profile image의 url이 null인 회원을 저장하면 예외가 발생한다.")
+    @Test
+    void saveMemberWithNullProfileUrl_ThrowsException() {
+        final Member member = createWithoutId(KAKAO_ID, EMAIL, NAME)
+            .toBuilder()
+            .profile(new ImageUrl(null))
+            .build();
+
+        assertThatThrownBy(() -> memberRepository.save(member))
+            .isInstanceOf(ConstraintViolationException.class)
+            .hasMessage("profile.baseImageUrl: 공백일 수 없습니다");
     }
 
     @DisplayName("모든 회원들을 리스트로 반환한다.")
@@ -80,16 +109,5 @@ class MemberRepositoryTest {
             .orElseThrow(AssertionError::new);
 
         assertThat(persistMember).isEqualToIgnoringGivenFields(member, "createdAt", "updatedAt");
-    }
-
-    @DisplayName("Profile image가 null인 회원도 저장되는지 확인한다")
-    @Test
-    void profileNullMemberCanSave() {
-        final Member member = createWithoutId(KAKAO_ID, EMAIL, NAME)
-            .toBuilder()
-            .profile(null)
-            .build();
-
-        assertThat(memberRepository.save(member).getId()).isNotNull();
     }
 }

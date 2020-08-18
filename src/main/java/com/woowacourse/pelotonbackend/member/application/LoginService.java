@@ -1,5 +1,8 @@
 package com.woowacourse.pelotonbackend.member.application;
 
+import java.util.Optional;
+
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -14,10 +17,7 @@ import com.woowacourse.pelotonbackend.support.RandomGenerator;
 import com.woowacourse.pelotonbackend.support.dto.JwtTokenResponse;
 import com.woowacourse.pelotonbackend.vo.Cash;
 import com.woowacourse.pelotonbackend.vo.ImageUrl;
-import lombok.AccessLevel;
-import lombok.RequiredArgsConstructor;
 
-@RequiredArgsConstructor(access = AccessLevel.PACKAGE)
 @Service
 @Transactional
 public class LoginService {
@@ -28,6 +28,20 @@ public class LoginService {
     private final MemberService memberService;
     private final JwtTokenProvider jwtTokenProvider;
     private final RandomGenerator randomGenerator;
+    private final String basicProfileUrl;
+
+    public LoginService(
+        final LoginAPIService<KakaoTokenResponse, KakaoUserResponse> kakaoAPIService,
+        final MemberService memberService,
+        final JwtTokenProvider jwtTokenProvider,
+        final RandomGenerator randomGenerator,
+        @Value("${cloud.aws.s3.basic-profile-url}") final String basicProfileUrl) {
+        this.kakaoAPIService = kakaoAPIService;
+        this.memberService = memberService;
+        this.jwtTokenProvider = jwtTokenProvider;
+        this.randomGenerator = randomGenerator;
+        this.basicProfileUrl = basicProfileUrl;
+    }
 
     public String createCodeUrl() {
         return kakaoAPIService.getCodeUrl();
@@ -45,14 +59,16 @@ public class LoginService {
             return JwtTokenResponse.of(jwtTokenProvider.createToken(memberResponse.getKakaoId().toString()),
                 NOT_CREATED);
         }
+
         final MemberCreateRequest memberCreateRequest = MemberCreateRequest.builder()
             .email(kakaoUserResponse.getEmail())
             .cash(Cash.initial())
             .kakaoId(kakaoUserResponse.getId())
             .name(kakaoUserResponse.getNickname() + randomGenerator.getRandomString())
-            .profile(new ImageUrl(kakaoUserResponse.getProfileImage()))
+            .profile(new ImageUrl(Optional.ofNullable(kakaoUserResponse.getProfileImage()).orElse(basicProfileUrl)))
             .role(Role.MEMBER)
             .build();
+
         return JwtTokenResponse.of(
             jwtTokenProvider.createToken(
                 memberService.createMember(memberCreateRequest).getKakaoId().toString()), CREATED);

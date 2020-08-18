@@ -28,8 +28,6 @@ import lombok.AllArgsConstructor;
 @Service
 @Transactional
 public class MemberService {
-    private static final String BASIC_URL = "https://14f-guys-image.s3.ap-northeast-2.amazonaws.com/basic.profile.image.png";
-
     private final MemberRepository memberRepository;
     private final UploadService uploadService;
 
@@ -46,13 +44,6 @@ public class MemberService {
         return MemberResponse.from(member);
     }
 
-    public MemberResponse findByKakaoId(final Long kakaoId) {
-        final Member member = memberRepository.findByKakaoId(kakaoId)
-            .orElseThrow(
-                () -> new MemberNotFoundException(String.format("Member(member kakaoId = %d) does not exist", kakaoId)));
-        return MemberResponse.from(member);
-    }
-
     @Transactional(readOnly = true)
     public MemberResponses findAll() {
         final List<Member> members = memberRepository.findAll();
@@ -65,6 +56,15 @@ public class MemberService {
         final List<Member> members = memberRepository.findAllById(ids);
 
         return MemberResponses.from(members);
+    }
+
+    @Transactional(readOnly = true)
+    public MemberResponse findByKakaoId(final Long kakaoId) {
+        final Member member = memberRepository.findByKakaoId(kakaoId)
+            .orElseThrow(
+                () -> new MemberNotFoundException(
+                    String.format("Member(member kakaoId = %d) does not exist", kakaoId)));
+        return MemberResponse.from(member);
     }
 
     @Transactional(readOnly = true)
@@ -94,8 +94,19 @@ public class MemberService {
         memberRepository.save(updatedMember);
     }
 
-    public void deleteById(final Long id) {
-        memberRepository.deleteById(id);
+    public MemberProfileResponse updateProfileImage(final Long memberId, final MultipartFile file) {
+        final Member member = findMemberById(memberId);
+
+        if (Objects.isNull(file)) {
+            return new MemberProfileResponse(member.getProfile().getBaseImageUrl());
+        }
+
+        final String changedProfileUrl = uploadService.uploadImage(file, "member.profile.image/");
+        final Member updatedMember = member.changeProfile(new ImageUrl(changedProfileUrl));
+
+        memberRepository.save(updatedMember);
+
+        return new MemberProfileResponse(changedProfileUrl);
     }
 
     private Member findMemberById(final Long id) {
@@ -103,13 +114,7 @@ public class MemberService {
             .orElseThrow(() -> new MemberNotFoundException(id));
     }
 
-    public MemberProfileResponse updateProfileImage(final Long memberId, final MultipartFile file) {
-        final Member member = findMemberById(memberId);
-        final String changedProfileUrl = Objects.isNull(file) ? BASIC_URL : uploadService.uploadImage(file, "member.profile.image/");
-        final Member updatedMember = member.changeProfile(new ImageUrl(changedProfileUrl));
-
-        memberRepository.save(updatedMember);
-
-        return new MemberProfileResponse(changedProfileUrl);
+    public void deleteById(final Long id) {
+        memberRepository.deleteById(id);
     }
 }

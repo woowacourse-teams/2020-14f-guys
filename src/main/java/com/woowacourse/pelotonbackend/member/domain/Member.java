@@ -33,6 +33,7 @@ public class Member {
     @NotNull
     private final Long kakaoId;
 
+    @NotNull @Valid
     @Embedded(prefix = "PROFILE_", onEmpty = Embedded.OnEmpty.USE_EMPTY)
     private final ImageUrl profile;
 

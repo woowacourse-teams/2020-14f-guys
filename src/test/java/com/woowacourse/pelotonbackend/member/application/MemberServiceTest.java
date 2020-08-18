@@ -182,17 +182,15 @@ class MemberServiceTest {
         assertThat(response.getImageUrl()).contains(UPLOAD_SERVER_URL);
     }
 
-    @DisplayName("프로필의 바디가 null인 경우 기본 이미지를 등록한다.")
+    @DisplayName("변경되는 프로필 파일이 null일 경우 기존 프로필 사진 URL을 반환한다")
     @Test
     void updateProfileBasic() {
         final Member originMember = MemberFixture.createWithId(MEMBER_ID);
-        final Member updatedMember = MemberFixture.memberUpdatedBasicProfile(MEMBER_ID);
         given(memberRepository.findById(MEMBER_ID)).willReturn(Optional.of(originMember));
-        given(memberRepository.save(any(Member.class))).willReturn(updatedMember);
 
         final MemberProfileResponse response = memberService.updateProfileImage(MEMBER_ID, null);
-        assertThat(response.getImageUrl()).isEqualTo(
-            String.format("%s/%s", UPLOAD_SERVER_URL, BASIC_PROFILE_FILE_NAME));
+
+        assertThat(response.getImageUrl()).isEqualTo(originMember.getProfile().getBaseImageUrl());
     }
 
     @DisplayName("특정 회원을 삭제한다")

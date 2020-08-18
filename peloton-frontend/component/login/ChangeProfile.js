@@ -17,7 +17,7 @@ import NicknameInput from "./NicknameInput";
 import { navigateWithoutHistory } from "../../utils/util";
 import LoadingIndicator from "../../utils/LoadingIndicator";
 import { loadingState } from "../../state/loading/LoadingState";
-import { memberInfoState, memberTokenState } from "../../state/member/MemberState";
+import { memberInfoState, memberTokenState, } from "../../state/member/MemberState";
 import { MemberApi } from "../../utils/api/MemberApi";
 
 const ChangeProfile = () => {
@@ -77,8 +77,6 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   title: {
-    width: 150,
-    height: 41,
     fontSize: 28,
     fontWeight: "100",
     fontStyle: "normal",
@@ -90,9 +88,6 @@ const styles = StyleSheet.create({
   body: {
     flex: 7,
     alignItems: "center",
-    borderStyle: "solid",
-    borderBottomWidth: 2,
-    borderColor: COLOR.BLUE5,
   },
 });
 
