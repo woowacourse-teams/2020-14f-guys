@@ -34,7 +34,7 @@ public class RaceCreateRequest {
     @NotBlank
     private final String description;
 
-    @Valid
+    @NotNull @Valid
     private final DateDuration raceDuration;
 
     @NotNull
@@ -43,7 +43,7 @@ public class RaceCreateRequest {
     @NotNull
     private final List<DayOfWeek> days;
 
-    @Valid
+    @NotNull @Valid
     private final TimeDuration certificationAvailableDuration;
 
     @Valid

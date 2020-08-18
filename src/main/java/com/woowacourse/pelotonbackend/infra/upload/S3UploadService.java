@@ -1,9 +1,6 @@
 package com.woowacourse.pelotonbackend.infra.upload;
 
 import java.io.IOException;
-import java.nio.charset.StandardCharsets;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 
 import javax.annotation.PostConstruct;
 

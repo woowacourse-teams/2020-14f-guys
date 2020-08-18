@@ -1,8 +1,10 @@
 package com.woowacourse.pelotonbackend.mission.domain;
 
+import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -19,17 +21,14 @@ import com.woowacourse.pelotonbackend.mission.presentation.dto.MissionUpdateRequ
 
 public class MissionFixture {
     public static final Long TEST_MISSION_ID = 1L;
-    public static final LocalDateTime START_TIME = LocalDateTime.parse(LocalDateTime.of(2021, 1, 1, 9, 0).format(
-        DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS")));
-    public static final LocalDateTime END_TIME = LocalDateTime.parse(LocalDateTime.of(2021, 1, 31, 12, 0).format(
-        DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS")));
+    public static final LocalDateTime START_TIME = LocalDateTime.parse(LocalDateTime.now().plusYears(2L).format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS")));
+    public static final LocalDateTime END_TIME = LocalDateTime.parse(LocalDateTime.now().plusYears(3L).format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS")));
     public static final DateTimeDuration MISSION_DURATION = new DateTimeDuration(START_TIME, END_TIME);
-    public static final LocalDateTime START_TIME_UPDATED = LocalDateTime.parse(
-        LocalDateTime.of(2023, 9, 1, 9, 0).format(
-            DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS")));
-    public static final LocalDateTime END_TIME_UPDATED = LocalDateTime.parse(
-        LocalDateTime.of(2023, 9, 30, 12, 0).format(
-            DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS")));
+    private static final DateTimeDuration MISSION_UTC_DURATION = new DateTimeDuration(
+        LocalDateTime.parse(LocalDateTime.ofInstant(Instant.now(), ZoneOffset.UTC).format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS"))),
+        LocalDateTime.parse(LocalDateTime.ofInstant(Instant.now(), ZoneOffset.UTC).plusHours(9L).format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS"))));
+    public static final LocalDateTime START_TIME_UPDATED = LocalDateTime.parse(LocalDateTime.now().plusYears(9L).format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS")));
+    public static final LocalDateTime END_TIME_UPDATED = LocalDateTime.parse(LocalDateTime.now().plusYears(10L).format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS")));
     public static final DateTimeDuration MISSION_DURATION_UPDATED = new DateTimeDuration(START_TIME_UPDATED,
         END_TIME_UPDATED);
     public static final MissionInstruction MISSION_INSTRUCTION = new MissionInstruction("다같이 손을 잡고 사진을 찍는다.");
@@ -116,6 +115,14 @@ public class MissionFixture {
 
     public static MissionCreateRequest badMockCreateRequest() {
         return MissionCreateRequest.builder()
+            .raceId(RACE_ID)
+            .build();
+    }
+
+    public static MissionCreateRequest mockUTCCreateRequest() {
+        return MissionCreateRequest.builder()
+            .missionDuration(MISSION_UTC_DURATION)
+            .missionInstruction(MISSION_INSTRUCTION)
             .raceId(RACE_ID)
             .build();
     }

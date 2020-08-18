@@ -1,0 +1,78 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+
+    <changeSet author="sika" id="20200818">
+        <modifyDataType columnName="CREATED_AT"
+                        schemaName="PUBLIC"
+                        newDataType="DATETIME"
+                        tableName="member"/>
+        <modifyDataType columnName="UPDATED_AT"
+                        schemaName="PUBLIC"
+                        newDataType="DATETIME"
+                        tableName="member"/>
+
+        <modifyDataType columnName="CREATED_AT"
+                        schemaName="PUBLIC"
+                        newDataType="DATETIME"
+                        tableName="race"/>
+        <modifyDataType columnName="UPDATED_AT"
+                        schemaName="PUBLIC"
+                        newDataType="DATETIME"
+                        tableName="race"/>
+        <modifyDataType columnName="START_DATE"
+                        schemaName="PUBLIC"
+                        newDataType="DATETIME"
+                        tableName="race"/>
+        <modifyDataType columnName="END_DATE"
+                        schemaName="PUBLIC"
+                        newDataType="DATETIME"
+                        tableName="race"/>
+
+        <modifyDataType columnName="CREATED_AT"
+                        schemaName="PUBLIC"
+                        newDataType="DATETIME"
+                        tableName="rider"/>
+        <modifyDataType columnName="UPDATED_AT"
+                        schemaName="PUBLIC"
+                        newDataType="DATETIME"
+                        tableName="rider"/>
+
+        <modifyDataType columnName="CREATED_AT"
+                        schemaName="PUBLIC"
+                        newDataType="DATETIME"
+                        tableName="mission"/>
+        <modifyDataType columnName="UPDATED_AT"
+                        schemaName="PUBLIC"
+                        newDataType="DATETIME"
+                        tableName="mission"/>
+        <modifyDataType columnName="START_TIME"
+                        schemaName="PUBLIC"
+                        newDataType="DATETIME"
+                        tableName="mission"/>
+        <modifyDataType columnName="END_TIME"
+                        schemaName="PUBLIC"
+                        newDataType="DATETIME"
+                        tableName="mission"/>
+
+        <modifyDataType columnName="CREATED_AT"
+                        schemaName="PUBLIC"
+                        newDataType="DATETIME"
+                        tableName="certification"/>
+        <modifyDataType columnName="UPDATED_AT"
+                        schemaName="PUBLIC"
+                        newDataType="DATETIME"
+                        tableName="certification"/>
+
+        <modifyDataType columnName="CREATED_AT"
+                        schemaName="PUBLIC"
+                        newDataType="DATETIME"
+                        tableName="report"/>
+        <modifyDataType columnName="UPDATED_AT"
+                        schemaName="PUBLIC"
+                        newDataType="DATETIME"
+                        tableName="report"/>
+    </changeSet>
+
+</databaseChangeLog>

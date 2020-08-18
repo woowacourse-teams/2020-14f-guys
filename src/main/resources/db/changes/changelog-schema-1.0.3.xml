@@ -1,0 +1,78 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+
+    <changeSet author="sika" id="20200817">
+        <dropDefaultValue  columnDataType="TIMESTAMP"
+                           schemaName="PUBLIC"
+                           columnName="CREATED_AT"
+                           tableName="member"/>
+        <dropDefaultValue  columnDataType="TIMESTAMP"
+                           schemaName="PUBLIC"
+                           columnName="UPDATED_AT"
+                           tableName="member"/>
+
+        <dropDefaultValue  columnDataType="TIMESTAMP"
+                           schemaName="PUBLIC"
+                           columnName="CREATED_AT"
+                           tableName="race"/>
+        <dropDefaultValue  columnDataType="TIMESTAMP"
+                           schemaName="PUBLIC"
+                           columnName="UPDATED_AT"
+                           tableName="race"/>
+        <dropDefaultValue  columnDataType="TIMESTAMP"
+                           schemaName="PUBLIC"
+                           columnName="START_DATE"
+                           tableName="race"/>
+        <dropDefaultValue  columnDataType="TIMESTAMP"
+                           schemaName="PUBLIC"
+                           columnName="END_DATE"
+                           tableName="race"/>
+
+        <dropDefaultValue  columnDataType="TIMESTAMP"
+                           schemaName="PUBLIC"
+                           columnName="CREATED_AT"
+                           tableName="rider"/>
+        <dropDefaultValue  columnDataType="TIMESTAMP"
+                           schemaName="PUBLIC"
+                           columnName="UPDATED_AT"
+                           tableName="rider"/>
+
+        <dropDefaultValue  columnDataType="TIMESTAMP"
+                           schemaName="PUBLIC"
+                           columnName="CREATED_AT"
+                           tableName="mission"/>
+        <dropDefaultValue  columnDataType="TIMESTAMP"
+                           schemaName="PUBLIC"
+                           columnName="UPDATED_AT"
+                           tableName="mission"/>
+        <dropDefaultValue  columnDataType="TIMESTAMP"
+                           schemaName="PUBLIC"
+                           columnName="START_TIME"
+                           tableName="mission"/>
+        <dropDefaultValue  columnDataType="TIMESTAMP"
+                           schemaName="PUBLIC"
+                           columnName="END_TIME"
+                           tableName="mission"/>
+
+        <dropDefaultValue  columnDataType="TIMESTAMP"
+                           schemaName="PUBLIC"
+                           columnName="CREATED_AT"
+                           tableName="certification"/>
+        <dropDefaultValue  columnDataType="TIMESTAMP"
+                           schemaName="PUBLIC"
+                           columnName="UPDATED_AT"
+                           tableName="certification"/>
+
+        <dropDefaultValue  columnDataType="TIMESTAMP"
+                           schemaName="PUBLIC"
+                           columnName="CREATED_AT"
+                           tableName="report"/>
+        <dropDefaultValue  columnDataType="TIMESTAMP"
+                           schemaName="PUBLIC"
+                           columnName="UPDATED_AT"
+                           tableName="report"/>
+    </changeSet>
+
+</databaseChangeLog>

@@ -3,8 +3,7 @@ package com.woowacourse.pelotonbackend.race.domain;
 import java.beans.ConstructorProperties;
 import java.time.LocalDate;
 
-import javax.validation.constraints.FutureOrPresent;
-
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.databind.PropertyNamingStrategy;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
@@ -18,12 +17,10 @@ import lombok.Value;
 @Value
 @JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class)
 public class DateDuration {
-    @FutureOrPresent
     @JsonSerialize(using = LocalDateSerializer.class)
     @JsonDeserialize(using = LocalDateDeserializer.class)
     private final LocalDate startDate;
 
-    @FutureOrPresent
     @JsonSerialize(using = LocalDateSerializer.class)
     @JsonDeserialize(using = LocalDateDeserializer.class)
     private final LocalDate endDate;

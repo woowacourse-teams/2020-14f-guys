@@ -3,20 +3,12 @@ package com.woowacourse.pelotonbackend.race.presentation.dto;
 import static com.woowacourse.pelotonbackend.race.domain.RaceFixture.*;
 import static org.assertj.core.api.Assertions.*;
 
-import java.math.BigDecimal;
-import java.time.LocalDate;
-
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.context.SpringBootTest;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.woowacourse.pelotonbackend.race.domain.DateDuration;
-import com.woowacourse.pelotonbackend.race.domain.RaceCategory;
 import com.woowacourse.pelotonbackend.race.domain.RaceFixture;
-import com.woowacourse.pelotonbackend.vo.Cash;
 
 class RaceDtoTest {
     private final ObjectMapper objectMapper = new ObjectMapper();

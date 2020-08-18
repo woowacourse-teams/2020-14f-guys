@@ -10,7 +10,6 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.woowacourse.pelotonbackend.race.domain.Race;
 import com.woowacourse.pelotonbackend.race.domain.RaceFixture;
-import com.woowacourse.pelotonbackend.race.presentation.dto.RaceUpdateRequest;
 
 class RaceUpdateRequestTest {
     private final ObjectMapper objectMapper = new ObjectMapper();

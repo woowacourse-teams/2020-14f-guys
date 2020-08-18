@@ -98,6 +98,20 @@ class MissionControllerTest {
             .andExpect(status().isBadRequest());
     }
 
+    @DisplayName("UTC 기준으로 요청(서울 기준-9시간)이 와도 정상적으로 응답한다.")
+    @Test
+    void createWithUTCTimeRequest() throws Exception {
+        given(bearerAuthInterceptor.preHandle(any(HttpServletRequest.class), any(HttpServletResponse.class),
+            any(HandlerMethod.class))).willReturn(true);
+
+        mockMvc.perform(post(MISSION_API_URL)
+            .header(HttpHeaders.AUTHORIZATION, LoginFixture.getTokenHeader())
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(objectMapper.writeValueAsBytes(MissionFixture.mockUTCCreateRequest()))
+        )
+            .andExpect(status().isCreated());
+    }
+
     @DisplayName("미션 조회 요청에 정상적으로 응답한다.")
     @Test
     void retrieve() throws Exception {

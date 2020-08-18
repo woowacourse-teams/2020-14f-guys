@@ -1,5 +1,8 @@
 package com.woowacourse.pelotonbackend.mission.presentation.dto;
 
+import java.beans.ConstructorProperties;
+
+import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 
 import org.springframework.data.jdbc.core.mapping.AggregateReference;
@@ -14,15 +17,15 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 
-@AllArgsConstructor(access = AccessLevel.PRIVATE)
+@AllArgsConstructor(access = AccessLevel.PRIVATE, onConstructor_ = @ConstructorProperties({"missionDuration", "missionInstruction", "raceId"}))
 @Builder
 @Getter
 @JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class)
 public class MissionCreateRequest {
-    @NotNull
+    @NotNull @Valid
     private final DateTimeDuration missionDuration;
 
-    @NotNull
+    @NotNull @Valid
     private final MissionInstruction missionInstruction;
 
     @NotNull

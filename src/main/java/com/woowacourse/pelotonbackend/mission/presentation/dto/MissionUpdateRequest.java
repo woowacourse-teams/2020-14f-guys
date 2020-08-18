@@ -19,10 +19,10 @@ import lombok.Getter;
 @Getter
 @JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class)
 public class MissionUpdateRequest {
-    @Valid
+    @NotNull @Valid
     private final DateTimeDuration missionDuration;
 
-    @Valid
+    @NotNull @Valid
     private final MissionInstruction missionInstruction;
 
     @NotNull

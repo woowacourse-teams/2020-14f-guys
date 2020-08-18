@@ -2,7 +2,6 @@ package com.woowacourse.pelotonbackend.infra.login.dto;
 
 import static com.woowacourse.pelotonbackend.member.domain.LoginFixture.*;
 import static org.assertj.core.api.AssertionsForClassTypes.*;
-import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

@@ -2,7 +2,6 @@ package com.woowacourse.pelotonbackend.member.presentation;
 
 import static io.restassured.RestAssured.*;
 import static org.assertj.core.api.Assertions.*;
-import static org.springframework.test.web.client.match.MockRestRequestMatchers.*;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;

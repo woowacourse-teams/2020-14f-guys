@@ -1,6 +1,8 @@
 package com.woowacourse.pelotonbackend.rider.domain;
 
+import java.time.Instant;
 import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -19,7 +21,9 @@ public class RiderFixture {
     public static final Long TEST_MEMBER_ID = 1L;
     public static final Long TEST_CHANGED_RACE_ID = 8L;
     public static final Long TEST_CHANGED_MEMBER_ID = 11L;
-    public static final LocalDateTime TEST_CREATED_DATE_TIME = LocalDateTime.parse(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS")));
+    public static final LocalDateTime TEST_CREATED_DATE_TIME =
+        LocalDateTime.parse(LocalDateTime.ofInstant(Instant.now(), ZoneOffset.UTC)
+            .format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS")));
     public static final int RIDER_NUMBER = 3;
 
     public static RiderCreateRequest createMockRequest() {
