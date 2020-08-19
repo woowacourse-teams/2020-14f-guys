@@ -42,14 +42,6 @@ class LoginServiceTest {
             BASIC_PROFILE_URL);
     }
 
-    @DisplayName("CodeUrl을 요청하면 kakaoAPI에서 CodeUrl을 받아서 반환한다.")
-    @Test
-    void createCodeUrlTest() {
-        when(kakaoAPIService.getCodeUrl()).thenReturn(createMockCodeUrl());
-
-        assertThat(loginService.createCodeUrl()).isEqualTo(createMockCodeUrl());
-    }
-
     @DisplayName("Code로 JwtToken을 생성을 요청하면 정상적으로 반환한다.")
     @Test
     void createJwtTokenUrlTest() {

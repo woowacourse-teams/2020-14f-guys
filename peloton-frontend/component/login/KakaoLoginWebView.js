@@ -8,6 +8,9 @@ import { navigateWithoutHistory } from "../../utils/util";
 import WebViewCloseButton from "./WebViewCloseButton";
 import { memberTokenState } from "../../state/member/MemberState";
 
+const KAKAO_LOGIN_API_URI =
+  "https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=23756df6ba3513c3b269a71d468aed45&redirect_uri=https://peloton.ga/api/login/token";
+
 const KakaoLoginWebView = ({ toggleModal }) => {
   const navigation = useNavigation();
   const setToken = useSetRecoilState(memberTokenState);
@@ -58,7 +61,7 @@ const KakaoLoginWebView = ({ toggleModal }) => {
       <View style={styles.webview}>
         <WebView
           useWebKit={true}
-          source={{ uri: `${SERVER_BASE_URL}/api/login` }}
+          source={{ uri: KAKAO_LOGIN_API_URI }}
           scalesPageToFit
           startInLoadingState={true}
           incognito={true}

@@ -21,13 +21,6 @@ import lombok.RequiredArgsConstructor;
 public class LoginController {
     private final LoginService loginService;
 
-    @GetMapping
-    public ResponseEntity<Void> redirectLoginPage(final HttpServletResponse response) throws IOException {
-        String url = loginService.createCodeUrl();
-        response.sendRedirect(url);
-        return ResponseEntity.ok().build();
-    }
-
     @GetMapping("/token")
     public ResponseEntity<Void> redirectTokenPage(@RequestParam final String code,
         final HttpServletResponse response) throws IOException {

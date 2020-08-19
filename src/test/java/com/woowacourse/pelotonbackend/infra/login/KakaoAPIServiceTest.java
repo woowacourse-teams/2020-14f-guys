@@ -49,7 +49,7 @@ class KakaoAPIServiceTest {
         mockWebServer = new MockWebServer();
         mockServerUrl = mockWebServer.url("/").toString();
         kakaoAPIService = new KakaoAPIService(mockServerUrl, mockServerUrl, SERVER_URI, CLIENT_ID_VALUE,
-            CLIENT_SECRET_VALUE, RESPONSE_TYPE_VALUE, GRANT_TYPE_VALUE);
+            CLIENT_SECRET_VALUE, GRANT_TYPE_VALUE);
 
         tokenResponse = new MockResponse()
             .addHeader("Content-Type", MediaType.APPLICATION_JSON_VALUE)
@@ -80,20 +80,6 @@ class KakaoAPIServiceTest {
     @AfterEach
     void shutdown() throws IOException {
         mockWebServer.shutdown();
-    }
-
-    @DisplayName("Redirect 될 로그인 페이지 Url을 리턴한다.")
-    @Test
-    void getCodeUrlTest() {
-        final String expectedUri = new DefaultUriBuilderFactory().builder()
-            .path(mockServerUrl + AUTHORIZE_PATH)
-            .queryParam(RESPONSE_TYPE, RESPONSE_TYPE_VALUE)
-            .queryParam(CLIENT_ID, CLIENT_ID_VALUE)
-            .queryParam(REDIRECT_URI, SERVER_URI + REDIRECT_PATH)
-            .build()
-            .toString();
-
-        assertThat(kakaoAPIService.getCodeUrl()).isEqualTo(expectedUri);
     }
 
     @DisplayName("Redirect 될 토큰 페이지 Url을 리턴한다.")

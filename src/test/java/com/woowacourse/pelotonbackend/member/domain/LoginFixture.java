@@ -20,13 +20,7 @@ public class LoginFixture {
     public static final String SERVER_URI = "http://localhost:8080";
     public static final String CLIENT_ID_VALUE = "1231234";
     public static final String CLIENT_SECRET_VALUE = "SECRET";
-    public static final String RESPONSE_TYPE_VALUE = "RESPONSE";
     public static final String GRANT_TYPE_VALUE = "code";
-    public static final String AUTHORIZE_PATH = "/oauth/authorize";
-    public static final String RESPONSE_TYPE = "response_type";
-    public static final String CLIENT_ID = "client_id";
-    public static final String REDIRECT_URI = "redirect_uri";
-    public static final String REDIRECT_PATH = "/api/login/token";
     public static final String OAUTH_TOKEN_PATH = "/oauth/token";
     public static final String LOGIN_CHECK_PATH = "/api/login/check";
     public static final String ACCESS_TOKEN = "access_token";
@@ -85,16 +79,6 @@ public class LoginFixture {
             .role(Role.MEMBER)
             .id(KAKAO_ID)
             .build();
-    }
-
-    public static String createMockCodeUrl() {
-        return new DefaultUriBuilderFactory().builder()
-            .path(URL + AUTHORIZE_PATH)
-            .queryParam(RESPONSE_TYPE, RESPONSE_TYPE_VALUE)
-            .queryParam(CLIENT_ID, CLIENT_ID_VALUE)
-            .queryParam(REDIRECT_URI, SERVER_URI + REDIRECT_PATH)
-            .build()
-            .toString();
     }
 
     public static String getTokenHeader() {

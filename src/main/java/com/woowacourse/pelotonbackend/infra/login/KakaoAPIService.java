@@ -15,8 +15,6 @@ import reactor.core.publisher.Mono;
 @Component
 @Transactional
 public class KakaoAPIService implements LoginAPIService<KakaoTokenResponse, KakaoUserResponse> {
-    private static final String AUTHORIZE_PATH = "/oauth/authorize";
-    private static final String RESPONSE_TYPE = "response_type";
     private static final String CLIENT_ID = "client_id";
     private static final String REDIRECT_URI = "redirect_uri";
     private static final String REDIRECT_PATH = "/api/login/token";
@@ -37,7 +35,6 @@ public class KakaoAPIService implements LoginAPIService<KakaoTokenResponse, Kaka
     private final String serverUri;
     private final String clientIdValue;
     private final String clientSecretValue;
-    private final String responseTypeValue;
     private final String grantTypeValue;
 
     public KakaoAPIService(@Value("${secrets.kakao.authorizeUri}") final String authorizeUri,
@@ -45,26 +42,13 @@ public class KakaoAPIService implements LoginAPIService<KakaoTokenResponse, Kaka
         @Value("${server.uri}") final String serverUri,
         @Value("${secrets.kakao.clientId}") final String clientIdValue,
         @Value("${secrets.kakao.clientSecret}") final String clientSecretValue,
-        @Value("${secrets.kakao.responseType}") final String responseTypeValue,
         @Value("${secrets.kakao.grantType}") final String grantTypeValue) {
         this.authorizeUri = authorizeUri;
         this.apiUri = apiUri;
         this.serverUri = serverUri;
         this.clientIdValue = clientIdValue;
         this.clientSecretValue = clientSecretValue;
-        this.responseTypeValue = responseTypeValue;
         this.grantTypeValue = grantTypeValue;
-    }
-
-    @Override
-    public String getCodeUrl() {
-        return new DefaultUriBuilderFactory().builder()
-            .path(authorizeUri + AUTHORIZE_PATH)
-            .queryParam(RESPONSE_TYPE, responseTypeValue)
-            .queryParam(CLIENT_ID, clientIdValue)
-            .queryParam(REDIRECT_URI, serverUri + REDIRECT_PATH)
-            .build()
-            .toString();
     }
 
     @Override
