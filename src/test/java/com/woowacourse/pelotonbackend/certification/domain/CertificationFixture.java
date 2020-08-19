@@ -1,5 +1,7 @@
 package com.woowacourse.pelotonbackend.certification.domain;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 import java.util.Base64;
 import java.util.List;
@@ -12,11 +14,7 @@ import org.springframework.data.jdbc.core.mapping.AggregateReference;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockMultipartFile;
 
-import com.woowacourse.pelotonbackend.certification.presentation.dto.CertificationCreateRequest;
-import com.woowacourse.pelotonbackend.certification.presentation.dto.CertificationDescriptionUpdateRequest;
-import com.woowacourse.pelotonbackend.certification.presentation.dto.CertificationResponse;
-import com.woowacourse.pelotonbackend.certification.presentation.dto.CertificationResponses;
-import com.woowacourse.pelotonbackend.certification.presentation.dto.CertificationStatusUpdateRequest;
+import com.woowacourse.pelotonbackend.certification.presentation.dto.*;
 import com.woowacourse.pelotonbackend.vo.ImageUrl;
 
 public class CertificationFixture {
@@ -32,6 +30,8 @@ public class CertificationFixture {
     public static final ImageUrl TEST_CERTIFICATION_FILE_URL = new ImageUrl(
         "https://pbs.twimg.com/media/DeCmgVAUwAYOc-W.jpg");
     public static final String TEST_CERTIFICATION_MULTIPART_NAME = "certification_image";
+    public static final LocalDateTime TEST_CREATED_AT = LocalDateTime.parse(LocalDateTime.now().toString(),
+        DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS"));
 
     public static Certification createCertificationWithoutId() {
         return Certification.builder()
@@ -51,6 +51,7 @@ public class CertificationFixture {
             .riderId(AggregateReference.to(TEST_RIDER_ID))
             .missionId(AggregateReference.to(TEST_MISSION_ID))
             .image(TEST_CERTIFICATION_FILE_URL)
+            .createdAt(TEST_CREATED_AT)
             .build();
     }
 
@@ -108,6 +109,7 @@ public class CertificationFixture {
             .riderId(TEST_RIDER_ID)
             .description(TEST_CERTIFICATION_DESCRIPTION)
             .status(TEST_CERTIFICATION_STATUS)
+            .createdAt(TEST_CREATED_AT)
             .build();
     }
 

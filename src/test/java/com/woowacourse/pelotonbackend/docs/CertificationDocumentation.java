@@ -10,7 +10,6 @@ import static org.springframework.restdocs.request.RequestDocumentation.*;
 
 import org.springframework.http.HttpHeaders;
 import org.springframework.restdocs.mockmvc.RestDocumentationResultHandler;
-import org.springframework.test.web.servlet.ResultHandler;
 
 public class CertificationDocumentation {
     public static RestDocumentationResultHandler createCertification() {
@@ -78,7 +77,8 @@ public class CertificationDocumentation {
                 fieldWithPath("status").type(STRING).description("인증 상태(성공,실패,신고)"),
                 fieldWithPath("mission_id").type(NUMBER).description("인증한 미션에 대한 아이디"),
                 fieldWithPath("rider_id").type(NUMBER).description("인증한 라이더의 아이디"),
-                fieldWithPath("description").type(STRING).description("인증에 대한 상세 설명")
+                fieldWithPath("description").type(STRING).description("인증에 대한 상세 설명"),
+                fieldWithPath("created_at").type(STRING).description("인증 게시 시간")
             )
         );
     }

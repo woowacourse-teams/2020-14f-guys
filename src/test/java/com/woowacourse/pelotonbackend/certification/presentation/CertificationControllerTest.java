@@ -177,6 +177,7 @@ class CertificationControllerTest {
             .andExpect(jsonPath("mission_id").value(expected.getMissionId()))
             .andExpect(jsonPath("rider_id").value(expected.getRiderId()))
             .andExpect(jsonPath("description").value(expected.getDescription()))
+            .andExpect(jsonPath("created_at").value(expected.getCreatedAt().toString()+"Z"))
             .andDo(CertificationDocumentation.getCertification());
     }
 

@@ -21,27 +21,11 @@ class CertificationResponseTest {
             + "\"status\":\"SUCCESS\","
             + "\"description\":\"좋은 인증이다..\","
             + "\"mission_id\":1,"
-            + "\"rider_id\":1"
+            + "\"rider_id\":1,"
+            + "\"created_at\":\""+CertificationFixture.TEST_CREATED_AT+"Z\""
             + "}";
 
         final CertificationResponse response = CertificationFixture.createMockCertificationResponse();
         assertThat(objectMapper.writeValueAsString(response)).isEqualTo(responseBody);
-    }
-
-    @DisplayName("인증사진 응답을 Deserialize 할 수 있다.")
-    @Test
-    void Deserialize() throws JsonProcessingException {
-        final String responseBody = "{"
-            + "\"id\":1,"
-            + "\"image\":\"https://pbs.twimg.com/media/DeCmgVAUwAYOc-W.jpg\","
-            + "\"status\":\"SUCCESS\","
-            + "\"mission_id\":1,"
-            + "\"rider_id\":1,"
-            + "\"description\":\"좋은 인증이다..\""
-            + "}";
-
-        final CertificationResponse response = CertificationFixture.createMockCertificationResponse();
-        assertThat(objectMapper.readValue(responseBody, CertificationResponse.class))
-            .isEqualToComparingFieldByField(response);
     }
 }
