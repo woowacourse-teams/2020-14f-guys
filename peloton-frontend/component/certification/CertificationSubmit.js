@@ -57,14 +57,18 @@ const CertificationSubmit = ({ route }) => {
     formData.append("description", description);
     formData.append("riderId", raceMission.rider.id);
     formData.append("missionId", raceMission.mission.id);
-    const httpMethod = isFirst
+    const certificationCreateOrUpdateRequest = isFirst
       ? CertificationApi.post
       : CertificationApi.update;
     const certificationId = raceMission.certification
       ? raceMission.certification.id
       : null;
     try {
-      await httpMethod(token, formData, certificationId);
+      await certificationCreateOrUpdateRequest(
+        token,
+        formData,
+        certificationId,
+      );
       alert("인증 완료되었습니다");
       setPhotoUri(raceMission.race.certification_example);
       navigateWithoutHistory(navigation, "CertificationHome");

@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useState } from "react";
 import { FlatList, StyleSheet, Text, View } from "react-native";
 import { useRecoilState, useRecoilValue } from "recoil";
 import { useFocusEffect } from "@react-navigation/core";
@@ -18,8 +18,12 @@ const Certification = () => {
     useCallback(() => {
       const intervalId = setInterval(() => setCurrentTime(new Date()), 1000);
       (async () => {
-        const { upcoming_missions } = await QueryApi.getMissions(token);
-        setCertifications(upcoming_missions);
+        try {
+          const { upcoming_missions } = await QueryApi.getMissions(token);
+          setCertifications(upcoming_missions);
+        } catch (e) {
+          alert(e.response.data.message);
+        }
       })();
       return () => {
         clearInterval(intervalId);
@@ -39,7 +43,7 @@ const Certification = () => {
               currentTime={currentTime}
             />
           )}
-          keyExtractor={(item) => String.valueOf()(item.mission.id)}
+          keyExtractor={(item) => item.mission.id.toString()}
           showsVerticalScrollIndicator={false}
         />
       ) : (
