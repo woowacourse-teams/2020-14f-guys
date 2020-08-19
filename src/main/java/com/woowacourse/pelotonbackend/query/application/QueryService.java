@@ -16,10 +16,12 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.woowacourse.pelotonbackend.certification.domain.Certification;
 import com.woowacourse.pelotonbackend.certification.domain.CertificationRepository;
+import com.woowacourse.pelotonbackend.common.exception.RaceNotFoundException;
 import com.woowacourse.pelotonbackend.member.presentation.dto.MemberResponse;
 import com.woowacourse.pelotonbackend.mission.domain.Mission;
 import com.woowacourse.pelotonbackend.mission.domain.MissionRepository;
 import com.woowacourse.pelotonbackend.query.presentation.dto.RaceCertificationsResponse;
+import com.woowacourse.pelotonbackend.query.presentation.dto.RaceDetailResponse;
 import com.woowacourse.pelotonbackend.query.presentation.dto.UpcomingMissionResponse;
 import com.woowacourse.pelotonbackend.query.presentation.dto.UpcomingMissionResponses;
 import com.woowacourse.pelotonbackend.race.domain.Race;
@@ -105,5 +107,12 @@ public class QueryService {
 
         return certificationRepository.findByMissionIds(missionIds, PageRequest.of(0, Integer.MAX_VALUE))
             .getContent();
+    }
+
+    public RaceDetailResponse findRaceDetail(final Long raceId) {
+        final Race race = raceRepository.findById(raceId).orElseThrow(() -> new RaceNotFoundException(raceId));
+        final List<Mission> missions = missionRepository.findByRaceId(raceId);
+
+        return RaceDetailResponse.of(race, missions);
     }
 }

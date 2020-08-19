@@ -53,9 +53,11 @@ import com.woowacourse.pelotonbackend.member.domain.LoginFixture;
 import com.woowacourse.pelotonbackend.member.domain.MemberFixture;
 import com.woowacourse.pelotonbackend.member.presentation.LoginMemberArgumentResolver;
 import com.woowacourse.pelotonbackend.member.presentation.dto.MemberResponse;
+import com.woowacourse.pelotonbackend.mission.domain.Mission;
 import com.woowacourse.pelotonbackend.mission.domain.MissionFixture;
 import com.woowacourse.pelotonbackend.query.application.QueryService;
 import com.woowacourse.pelotonbackend.query.presentation.dto.RaceCertificationsResponse;
+import com.woowacourse.pelotonbackend.query.presentation.dto.RaceDetailResponse;
 import com.woowacourse.pelotonbackend.query.presentation.dto.UpcomingMissionResponse;
 import com.woowacourse.pelotonbackend.query.presentation.dto.UpcomingMissionResponses;
 import com.woowacourse.pelotonbackend.race.domain.Race;
@@ -199,5 +201,32 @@ class QueryControllerTest {
 
         final UpcomingMissionResponses responses = objectMapper.readValue(content, UpcomingMissionResponses.class);
         assertThat(responses).usingRecursiveComparison().isEqualTo(expectedResponses);
+    }
+
+    @DisplayName("레이스의 아이디로 레이스 상세정보를 조회한다.")
+    @Test
+    void findRaceDetail() throws Exception {
+        final Race race = createWithId(TEST_RACE_ID);
+        final List<Mission> missions = MissionFixture.createMissionsWithRaceId(TEST_RACE_ID);
+        final RaceDetailResponse response = RaceDetailResponse.of(race, missions);
+
+        when(queryService.findRaceDetail(anyLong())).thenReturn(response);
+        when(bearerAuthInterceptor.preHandle(any(HttpServletRequest.class), any(HttpServletResponse.class),
+            any(HandlerMethod.class))).thenReturn(true);
+
+        final MvcResult mvcResult = mockMvc.perform(get("/api/queries/races/{raceId}/detail", TEST_RACE_ID)
+            .header(HttpHeaders.AUTHORIZATION, LoginFixture.getTokenHeader())
+            .accept(MediaType.APPLICATION_JSON)
+        )
+            .andExpect(status().isOk())
+            .andReturn();
+
+        final byte[] content = mvcResult.getResponse().getContentAsByteArray();
+        final RaceDetailResponse actualResponse = objectMapper.readValue(content, RaceDetailResponse.class);
+
+        assertAll(
+            () -> assertThat(actualResponse).isEqualToComparingOnlyGivenFields(race, "id", "title", "description", "thumbnail", "certificationExample", "category", "entranceFee", "raceDuration"),
+            () -> assertThat(actualResponse).isEqualToComparingOnlyGivenFields(missions.get(0),"missionDuration")
+        );
     }
 }

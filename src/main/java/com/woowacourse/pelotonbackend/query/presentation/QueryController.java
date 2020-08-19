@@ -8,8 +8,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.woowacourse.pelotonbackend.member.presentation.dto.MemberResponse;
-import com.woowacourse.pelotonbackend.query.presentation.dto.RaceCertificationsResponse;
 import com.woowacourse.pelotonbackend.query.application.QueryService;
+import com.woowacourse.pelotonbackend.query.presentation.dto.RaceCertificationsResponse;
+import com.woowacourse.pelotonbackend.query.presentation.dto.RaceDetailResponse;
 import com.woowacourse.pelotonbackend.query.presentation.dto.UpcomingMissionResponses;
 import com.woowacourse.pelotonbackend.race.presentation.dto.RaceResponses;
 import com.woowacourse.pelotonbackend.support.annotation.LoginMember;
@@ -38,5 +39,12 @@ public class QueryController {
         @LoginMember final MemberResponse loginMember) {
 
         return ResponseEntity.ok(queryService.retrieveUpcomingMissionsBy(loginMember));
+    }
+
+    @GetMapping("/races/{raceId}/detail")
+    public ResponseEntity<RaceDetailResponse> findRaceDetail(
+        @PathVariable final Long raceId) {
+
+        return ResponseEntity.ok(queryService.findRaceDetail(raceId));
     }
 }
