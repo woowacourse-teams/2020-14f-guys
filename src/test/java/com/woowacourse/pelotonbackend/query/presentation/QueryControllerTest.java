@@ -219,6 +219,7 @@ class QueryControllerTest {
             .accept(MediaType.APPLICATION_JSON)
         )
             .andExpect(status().isOk())
+            .andDo(QueryDocumentation.getRaceDetail())
             .andReturn();
 
         final byte[] content = mvcResult.getResponse().getContentAsByteArray();
