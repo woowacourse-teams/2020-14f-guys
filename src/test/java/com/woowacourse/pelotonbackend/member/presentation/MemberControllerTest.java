@@ -29,7 +29,6 @@ import org.springframework.restdocs.RestDocumentationContextProvider;
 import org.springframework.restdocs.RestDocumentationExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.bind.support.WebDataBinderFactory;
 import org.springframework.web.context.WebApplicationContext;
@@ -250,7 +249,7 @@ public class MemberControllerTest {
         given(memberService.updateProfileImage(anyLong(), any(MultipartFile.class)))
             .willReturn(MemberFixture.memberProfileUpdated());
 
-        mockMvc.perform(MockMvcRequestBuilders.multipart(RESOURCE_URL + "/profile")
+        mockMvc.perform(fileUpload(RESOURCE_URL + "/profile")
             .file("profile_image", createMockMultiPart().getBytes())
             .header(HttpHeaders.AUTHORIZATION, LoginFixture.getTokenHeader())
         )
@@ -272,7 +271,7 @@ public class MemberControllerTest {
         given(memberService.updateProfileImage(anyLong(), any())).willReturn(
             new MemberProfileResponse(BASIC_PROFILE_URL));
 
-        mockMvc.perform(MockMvcRequestBuilders.multipart(RESOURCE_URL + "/profile")
+        mockMvc.perform(fileUpload(RESOURCE_URL + "/profile")
             .file("TEST", null)
             .header(HttpHeaders.AUTHORIZATION, LoginFixture.getTokenHeader())
         )
