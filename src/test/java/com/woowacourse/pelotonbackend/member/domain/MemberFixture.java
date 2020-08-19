@@ -80,6 +80,18 @@ public class MemberFixture {
             .build();
     }
 
+    public static Member createWithId(final Long id, final String name) {
+        return Member.builder()
+            .id(id)
+            .kakaoId(KAKAO_ID)
+            .profile(PROFILE)
+            .email(EMAIL)
+            .name(name)
+            .cash(CASH)
+            .role(ROLE)
+            .build();
+    }
+
     public static Member createWithInfo(final Long id, final Long kakaoId, final String email, final String name) {
         return Member.builder()
             .id(id)
