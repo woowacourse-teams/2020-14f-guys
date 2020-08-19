@@ -260,8 +260,13 @@ operation::member/get-success[snippets='http-request,http-response,request-heade
 
 [[resources-member-get-fail]]
 ==== Fail
+
 operation::member/get-fail[snippets='http-request,http-response,request-headers,response-fields']
 
+[[resources-member-get-by-id-success]]
+==== Success
+
+operation::member/get-by-id-success[snippets='http-request,http-response,request-headers,path-parameters,response-fields']
 
 [[resources-member-get-all]]
 === Get All Members

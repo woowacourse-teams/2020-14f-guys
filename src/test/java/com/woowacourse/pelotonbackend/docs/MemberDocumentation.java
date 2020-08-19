@@ -18,12 +18,12 @@ public class MemberDocumentation {
             getDocumentRequest(),
             getDocumentResponse(),
             requestFields(
-              fieldWithPath("kakao_id").type(NUMBER).description("kakao Id"),
-              fieldWithPath("profile").type(STRING).description("profile Image Url"),
-              fieldWithPath("name").type(STRING).description("member name"),
-              fieldWithPath("email").type(STRING).attributes(getEmailFormat()).description("member email"),
-              fieldWithPath("cash").type(STRING).description("member cash"),
-              fieldWithPath("role").type(STRING).attributes(getMemberRoleFormat()).description("member role")
+                fieldWithPath("kakao_id").type(NUMBER).description("kakao Id"),
+                fieldWithPath("profile").type(STRING).description("profile Image Url"),
+                fieldWithPath("name").type(STRING).description("member name"),
+                fieldWithPath("email").type(STRING).attributes(getEmailFormat()).description("member email"),
+                fieldWithPath("cash").type(STRING).description("member cash"),
+                fieldWithPath("role").type(STRING).attributes(getMemberRoleFormat()).description("member role")
             ),
             responseHeaders(
                 headerWithName(HttpHeaders.LOCATION).description("Resource의 Location 헤더")
@@ -171,6 +171,32 @@ public class MemberDocumentation {
                 headerWithName(HttpHeaders.ACCEPT).description("Accept 헤더")
             ),
             getErrorResponseFields()
+        );
+    }
+
+    public static RestDocumentationResultHandler getMemberById() {
+        return document("member/get-by-id-success",
+            getDocumentRequest(),
+            getDocumentResponse(),
+            requestHeaders(
+                headerWithName(HttpHeaders.AUTHORIZATION).description("사용자 인증 Access Token 헤더"),
+                headerWithName(HttpHeaders.ACCEPT).description("Accept 헤더")
+            ),
+            pathParameters(
+                parameterWithName("id").description("Member id")
+            ),
+            responseHeaders(
+                headerWithName(HttpHeaders.CONTENT_TYPE).description("Content-Type 헤더")
+            ),
+            responseFields(
+                fieldWithPath("id").type(NUMBER).description("Member id"),
+                fieldWithPath("kakao_id").type(NUMBER).description("Member kakao id"),
+                subsectionWithPath("profile").type(STRING).description("Member profile image url"),
+                fieldWithPath("name").type(STRING).description("Member name"),
+                fieldWithPath("email").type(STRING).attributes(getEmailFormat()).description("Member email"),
+                subsectionWithPath("cash").type(STRING).description("Member cash"),
+                fieldWithPath("role").type(STRING).attributes(getMemberRoleFormat()).description("Member role")
+            )
         );
     }
 }
