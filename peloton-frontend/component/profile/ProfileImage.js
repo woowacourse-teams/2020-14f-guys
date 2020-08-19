@@ -23,7 +23,7 @@ const styles = StyleSheet.create({
     resizeMode: "cover",
     width: 125,
     height: 125,
-    borderRadius: 125 / 2,
+    borderRadius: 63,
   },
 });
 
