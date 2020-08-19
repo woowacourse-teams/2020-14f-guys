@@ -20,25 +20,29 @@ const RaceCreateUnit = ({
   const [raceCreateInfo, setRaceCreateInfo] = useRecoilState(raceCreateInfoState);
   const [isShowPicker, setIsShowPicker] = useState(false);
 
-  const onPickDate = (pickedDate) => {
-    let formattedDate = DateFormatter.yyyyMMdd(pickedDate);
-    const currentDate = DateFormatter.yyyyMMdd(new Date());
+  const convertISOFormatDate = (dateTime) => {
+    return DateFormatter.yyyyMMdd(new Date(dateTime.toISOString()));
+  };
 
-    if (formattedDate < currentDate) {
+  const onPickDate = (pickedDateTime) => {
+    let formattedPickedDate = convertISOFormatDate(pickedDateTime);
+    const currentFormattedSystemDate = convertISOFormatDate(new Date());
+
+    if (formattedPickedDate < currentFormattedSystemDate) {
       alert("현재보다 이전 날짜를 선택할 수 없습니다!");
-      formattedDate = currentDate;
+      formattedPickedDate = currentFormattedSystemDate;
     }
 
     setRaceCreateInfo((info) => ({
       ...info,
-      [fieldName]: formattedDate,
+      [fieldName]: formattedPickedDate,
     }));
     setIsShowPicker(false);
   };
 
-  const onPickTime = (pickedTime) => {
-    const hours = pickedTime.getHours();
-    const minutes = pickedTime.getMinutes();
+  const onPickTime = (pickedDate) => {
+    let hours = pickedDate.getUTCHours();
+    const minutes = pickedDate.getUTCMinutes();
 
     if (hours < 0 || hours > 24) {
       alert("시간은 0~24 사이의 숫자여야 합니다.");
@@ -70,12 +74,56 @@ const RaceCreateUnit = ({
     }));
   };
 
+  const convertTimeInput = (value) => {
+    const timezoneOffsetHours = parseInt(new Date().getTimezoneOffset() / 60);
+    const timezoneOffsetMinutes = new Date().getTimezoneOffset() % 60;
+    let hours = value.split(":")[0] - timezoneOffsetHours;
+    let minutes = value.split(":")[1] - timezoneOffsetMinutes;
+    if (minutes > 60) {
+      hours++;
+      minutes -= 60;
+    }
+    if (minutes < 0) {
+      hours--;
+      minutes += 60;
+    }
+    if (hours >= 24) {
+      hours -= 24;
+    }
+    if (hours < 0) {
+      hours += 24;
+    }
+    hours = hours < 12 ? `0${hours}` : hours;
+    minutes = minutes < 10 ? `0${minutes}` : minutes;
+    return value && `${hours}시 ${minutes}분`;
+  };
+
+  const convertDateInput = (value) => {
+    const currentFormattedSystemDate = convertISOFormatDate(new Date());
+    const currentDate = DateFormatter.yyyyMMdd(new Date());
+    if (currentFormattedSystemDate !== currentDate) {
+      const diff =
+        parseInt(currentDate.substring(8)) -
+        parseInt(currentFormattedSystemDate.substring(8));
+
+      return (
+        value &&
+        `${value.substring(0, 8) + (parseInt(value.substring(8)) + diff)}`
+      );
+    }
+    return value;
+  };
+
   const inputValue = () => {
     const value = raceCreateInfo[fieldName];
 
-    return type === RaceCreateUnitType.TIME
-      ? value && value.substring(0, 2) + "시 " + value.substring(3, 5) + "분"
-      : value;
+    if (type === RaceCreateUnitType.TIME) {
+      return convertTimeInput(value);
+    }
+    if (type === RaceCreateUnitType.DATE) {
+      return convertDateInput(value);
+    }
+    return value;
   };
 
   return (
