@@ -24,12 +24,24 @@ public class Cash {
         return new Cash(BigDecimal.ZERO);
     }
 
+    public static Cash of(final long value) {
+        return new Cash(BigDecimal.valueOf(value));
+    }
+
+    public static Cash of(final double value) {
+        return new Cash(BigDecimal.valueOf(value));
+    }
+
     public Cash plus(final Cash cash) {
         return new Cash(this.cash.add(cash.cash));
     }
 
     public Cash minus(final Cash cash) {
         return new Cash(this.cash.subtract(cash.cash));
+    }
+
+    public Cash multiply(final Cash cash) {
+        return new Cash(this.cash.multiply(cash.getCash()));
     }
 
     public boolean isGreaterOrEqualThan(final BigDecimal value) {

@@ -4,7 +4,12 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 import java.util.Base64;
+import java.util.Collection;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
+import java.util.stream.LongStream;
+import java.util.stream.Stream;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -19,6 +24,7 @@ import com.woowacourse.pelotonbackend.certification.presentation.dto.Certificati
 import com.woowacourse.pelotonbackend.certification.presentation.dto.CertificationResponse;
 import com.woowacourse.pelotonbackend.certification.presentation.dto.CertificationResponses;
 import com.woowacourse.pelotonbackend.certification.presentation.dto.CertificationStatusUpdateRequest;
+import com.woowacourse.pelotonbackend.query.presentation.dto.RaceCertificationsResponse;
 import com.woowacourse.pelotonbackend.vo.ImageUrl;
 
 public class CertificationFixture {
@@ -174,5 +180,33 @@ public class CertificationFixture {
         );
 
         return new PageImpl<>(mockCertifications, request, 4);
+    }
+
+    public static RaceCertificationsResponse createMockRaceCertifications(final Map<Integer, Long> countToRiderId) {
+        final List<CertificationResponse> certifications = countToRiderId.entrySet().stream()
+            .map(entry -> createMockCertifications(entry.getKey(), entry.getValue()))
+            .flatMap(Collection::stream)
+            .collect(Collectors.toList());
+
+        return RaceCertificationsResponse.builder()
+            .certifications(new PageImpl<>(certifications))
+            .build();
+    }
+
+    private static List<CertificationResponse> createMockCertifications(final int count, final Long riderId) {
+        return LongStream.range(1, count + 1).
+            mapToObj(id -> createMockCertification(id, riderId))
+            .collect(Collectors.toList());
+    }
+
+    private static CertificationResponse createMockCertification(final Long id, final Long riderId) {
+        return CertificationResponse.builder()
+            .id(id)
+            .image(TEST_CERTIFICATION_FILE_URL)
+            .missionId(TEST_MISSION_ID)
+            .riderId(riderId)
+            .description(TEST_CERTIFICATION_DESCRIPTION)
+            .status(TEST_CERTIFICATION_STATUS)
+            .build();
     }
 }

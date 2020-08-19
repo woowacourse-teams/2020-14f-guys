@@ -71,6 +71,15 @@ public class RiderFixture {
             .build();
     }
 
+    public static Rider createRiderWithIdAndMemberId(final Long id) {
+        return Rider.builder()
+            .id(id)
+            .raceId(AggregateReference.to(TEST_RACE_ID))
+            .memberId(AggregateReference.to(id))
+            .createdAt(TEST_CREATED_DATE_TIME)
+            .build();
+    }
+
     public static Rider createRiderWithIdAndRaceId(final Long riderId, final Long raceId) {
         return Rider.builder()
             .id(riderId)
@@ -99,5 +108,11 @@ public class RiderFixture {
         return LongStream.range(1, 4)
             .mapToObj(RiderFixture::createRiderWithId)
             .collect(Collectors.collectingAndThen(Collectors.toList(), RiderResponses::of));
+    }
+
+    public static List<RiderResponse> createRidersInSameRaceByCount(final int count) {
+        return LongStream.range(1, count + 1)
+            .mapToObj(id -> RiderResponse.of(RiderFixture.createRiderWithIdAndMemberId(id)))
+            .collect((Collectors.toList()));
     }
 }
