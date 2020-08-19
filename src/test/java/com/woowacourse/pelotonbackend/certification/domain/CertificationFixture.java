@@ -14,8 +14,8 @@ import org.springframework.data.jdbc.core.mapping.AggregateReference;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockMultipartFile;
 
-import com.woowacourse.pelotonbackend.certification.presentation.dto.CertificationCreateRequest;
 import com.woowacourse.pelotonbackend.certification.presentation.dto.CertificationDescriptionUpdateRequest;
+import com.woowacourse.pelotonbackend.certification.presentation.dto.CertificationRequest;
 import com.woowacourse.pelotonbackend.certification.presentation.dto.CertificationResponse;
 import com.woowacourse.pelotonbackend.certification.presentation.dto.CertificationResponses;
 import com.woowacourse.pelotonbackend.certification.presentation.dto.CertificationStatusUpdateRequest;
@@ -23,16 +23,24 @@ import com.woowacourse.pelotonbackend.vo.ImageUrl;
 
 public class CertificationFixture {
     public static final CertificationStatus TEST_CERTIFICATION_STATUS = CertificationStatus.SUCCESS;
-    public static final CertificationStatus TEST_UPDATE_CERTIFICATION_STATUS = CertificationStatus.REPORTED;
+    public static final CertificationStatus TEST_UPDATED_CERTIFICATION_STATUS = CertificationStatus.REPORTED;
     public static final String TEST_CERTIFICATION_DESCRIPTION = "좋은 인증이다..";
     public static final String TEST_UPDATED_CERTIFICATION_DESCRIPTION = "과연.. 좋은 인증..일까아?";
     public static final Long TEST_RIDER_ID = 1L;
+    public static final Long TEST_UPDATED_RIDER_ID = 2L;
     public static final Long TEST_MISSION_ID = 1L;
+    public static final Long TEST_UPDATED_MISSION_ID = 2L;
     public static final Long TEST_CERTIFICATION_ID = 1L;
     public static final byte[] TEST_CERTIFICATION_FILE = Base64.getEncoder().encode("Sample File".getBytes());
+    public static final byte[] TEST_UPDATED_CERTIFICATION_FILE = Base64.getEncoder()
+        .encode("Sample File Updated".getBytes());
     public static final String TEST_CERTIFICATION_FILE_NAME = "SampleFile.jpeg";
+    public static final String TEST_UPDATED_CERTIFICATION_FILE_NAME = "SampleFileUpdated.jpeg";
     public static final ImageUrl TEST_CERTIFICATION_FILE_URL = new ImageUrl(
         "https://pbs.twimg.com/media/DeCmgVAUwAYOc-W.jpg");
+    public static final ImageUrl TEST_UPDATED_CERTIFICATION_FILE_URL = new ImageUrl(
+        "https://lh3.googleusercontent.com/proxy/bAAFnEewpHmJqBSSHxSht7ZqN4tRXNm_IFsJDQEEEgBFDsxbZsFhIXbh2myOfSvOTYx0vWgskLDansgUDJ6sGoH6xAplaO3ORwxuKRk3EjxCfuE-jgPjMbGaT-dZE2Oz32Q3QLnR5iju8HES-PgpvL6kWUfVevaaAsMJS79FqAH-E85xyhFqIAoc6hDv5bm6WBPRL7jWW-4jVOZYev9R4Zq_n11j5sJKnaYBEUxy_6sbqxW46iFKVnv2JkPtvvsxfppiv6gNt8Y4Lft2ru4Fq8eCVOlaWq6W8RVk0Y9ubkXDDqapPSy1CdAjl7V6rCE1aA"
+    );
     public static final String TEST_CERTIFICATION_MULTIPART_NAME = "certification_image";
     public static final LocalDateTime TEST_CREATED_AT = LocalDateTime.parse(LocalDateTime.now()
         .format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS")));
@@ -59,6 +67,17 @@ public class CertificationFixture {
             .build();
     }
 
+    public static Certification updatedCertification() {
+        return Certification.builder()
+            .id(TEST_CERTIFICATION_ID)
+            .status(TEST_UPDATED_CERTIFICATION_STATUS)
+            .description(TEST_UPDATED_CERTIFICATION_DESCRIPTION)
+            .riderId(AggregateReference.to(TEST_UPDATED_RIDER_ID))
+            .missionId(AggregateReference.to(TEST_UPDATED_MISSION_ID))
+            .image(TEST_UPDATED_CERTIFICATION_FILE_URL)
+            .build();
+    }
+
     public static Certification createDescriptionUpdatedCertification() {
         return createCertificationWithId().toBuilder()
             .description(TEST_UPDATED_CERTIFICATION_DESCRIPTION)
@@ -67,7 +86,7 @@ public class CertificationFixture {
 
     public static Certification createStatusUpdatedCertification() {
         return createCertificationWithId().toBuilder()
-            .status(TEST_UPDATE_CERTIFICATION_STATUS)
+            .status(TEST_UPDATED_CERTIFICATION_STATUS)
             .build();
     }
 
@@ -79,12 +98,12 @@ public class CertificationFixture {
 
     public static CertificationStatusUpdateRequest createStatusUpdateRequest() {
         return CertificationStatusUpdateRequest.builder()
-            .status(TEST_UPDATE_CERTIFICATION_STATUS)
+            .status(TEST_UPDATED_CERTIFICATION_STATUS)
             .build();
     }
 
-    public static CertificationCreateRequest createMockCertificationRequest() {
-        return CertificationCreateRequest.builder()
+    public static CertificationRequest createMockCertificationRequest() {
+        return CertificationRequest.builder()
             .status(TEST_CERTIFICATION_STATUS)
             .description(TEST_CERTIFICATION_DESCRIPTION)
             .riderId(TEST_RIDER_ID)
@@ -92,8 +111,8 @@ public class CertificationFixture {
             .build();
     }
 
-    public static CertificationCreateRequest createBadMockCertificationRequest() {
-        return CertificationCreateRequest.builder()
+    public static CertificationRequest createBadMockCertificationRequest() {
+        return CertificationRequest.builder()
             .status(TEST_CERTIFICATION_STATUS)
             .description(TEST_CERTIFICATION_DESCRIPTION)
             .riderId(TEST_RIDER_ID)
@@ -103,6 +122,20 @@ public class CertificationFixture {
     public static MockMultipartFile createMockCertificationMultipartFile() {
         return new MockMultipartFile(TEST_CERTIFICATION_MULTIPART_NAME, TEST_CERTIFICATION_FILE_NAME,
             MediaType.IMAGE_JPEG_VALUE, TEST_CERTIFICATION_FILE);
+    }
+
+    public static CertificationRequest updateMockCertificationRequest() {
+        return CertificationRequest.builder()
+            .status(TEST_UPDATED_CERTIFICATION_STATUS)
+            .description(TEST_UPDATED_CERTIFICATION_DESCRIPTION)
+            .riderId(TEST_UPDATED_RIDER_ID)
+            .missionId(TEST_UPDATED_MISSION_ID)
+            .build();
+    }
+
+    public static MockMultipartFile updateMockCertificationMultipartFile() {
+        return new MockMultipartFile(TEST_CERTIFICATION_MULTIPART_NAME, TEST_UPDATED_CERTIFICATION_FILE_NAME,
+            MediaType.IMAGE_JPEG_VALUE, TEST_UPDATED_CERTIFICATION_FILE);
     }
 
     public static CertificationResponse createMockCertificationResponse() {

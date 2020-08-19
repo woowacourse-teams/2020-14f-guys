@@ -26,6 +26,7 @@ public class CertificationAcceptanceTest extends AcceptanceTest {
      * When: Rider가 Mission에 인증을 요청한다.(Certification 생성 요청)
      * Then: 새로운 Certification 생성된다.
      */
+    // TODO: 인수테스트 작성하기
     @TestFactory
     public Stream<DynamicTest> certificationTest() {
         final JwtTokenResponse tokenResponse = loginMember(

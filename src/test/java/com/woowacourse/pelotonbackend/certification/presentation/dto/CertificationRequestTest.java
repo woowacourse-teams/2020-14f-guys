@@ -9,7 +9,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.woowacourse.pelotonbackend.certification.domain.CertificationFixture;
 
-class CertificationCreateRequestTest {
+class CertificationRequestTest {
     private final ObjectMapper objectMapper = new ObjectMapper();
 
     @DisplayName("인증 생성 Dto가 정상적으로 Serialize된다.")
@@ -22,7 +22,7 @@ class CertificationCreateRequestTest {
             + "\"missionId\":1"
             + "}";
 
-        final CertificationCreateRequest request = CertificationFixture.createMockCertificationRequest();
+        final CertificationRequest request = CertificationFixture.createMockCertificationRequest();
         assertThat(objectMapper.writeValueAsString(request)).isEqualTo(requestBody);
     }
 
@@ -36,7 +36,7 @@ class CertificationCreateRequestTest {
             + "\"missionId\":1"
             + "}";
 
-        final CertificationCreateRequest request = CertificationFixture.createMockCertificationRequest();
-        assertThat(objectMapper.readValue(requestBody, CertificationCreateRequest.class)).isEqualToComparingFieldByField(request);
+        final CertificationRequest request = CertificationFixture.createMockCertificationRequest();
+        assertThat(objectMapper.readValue(requestBody, CertificationRequest.class)).isEqualToComparingFieldByField(request);
     }
 }

@@ -220,6 +220,10 @@ operation::certification/get-not-found[snippets='http-request,http-response,path
 ==== Find certifications by rider id
 operation::certification/get-certification-riderId[snippets='http-request,http-response,path-parameters,request-headers,response-headers,response-fields,request-parameters']
 
+[[resources-certification-update]]
+==== Update certification
+operation::certification/update-success[snippets='http-request,http-response,path-parameters,request-headers,request-parts,response-headers']
+
 [[resources-certification-update-description]]
 ==== Update description
 operation::certification/update-description[snippets='http-request,http-response,path-parameters,request-headers,response-headers,request-fields']

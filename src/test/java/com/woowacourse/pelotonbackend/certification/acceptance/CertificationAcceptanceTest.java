@@ -9,7 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 
 import com.woowacourse.pelotonbackend.certification.domain.CertificationFixture;
-import com.woowacourse.pelotonbackend.certification.presentation.dto.CertificationCreateRequest;
+import com.woowacourse.pelotonbackend.certification.presentation.dto.CertificationRequest;
 import com.woowacourse.pelotonbackend.certification.presentation.dto.CertificationDescriptionUpdateRequest;
 import com.woowacourse.pelotonbackend.certification.presentation.dto.CertificationResponse;
 import com.woowacourse.pelotonbackend.certification.presentation.dto.CertificationStatusUpdateRequest;
@@ -53,7 +53,7 @@ public class CertificationAcceptanceTest extends AcceptanceTest {
     void manageCertification() {
         final JwtTokenResponse token = loginMember(
             MemberFixture.createRequest(MemberFixture.KAKAO_ID, MemberFixture.EMAIL, MemberFixture.NAME));
-        final CertificationCreateRequest createRequest = CertificationFixture.createMockCertificationRequest();
+        final CertificationRequest createRequest = CertificationFixture.createMockCertificationRequest();
         final CertificationDescriptionUpdateRequest descriptionUpdateRequest = CertificationFixture.createDescriptionUpdateRequest();
         final CertificationStatusUpdateRequest statusUpdateRequest = CertificationFixture.createStatusUpdateRequest();
 
@@ -78,7 +78,7 @@ public class CertificationAcceptanceTest extends AcceptanceTest {
     }
 
     private void createDuplicatedCertification(final JwtTokenResponse token,
-        final CertificationCreateRequest createRequest) {
+        final CertificationRequest createRequest) {
 
         final ErrorResponse errorResponse = given()
             .header(createTokenHeader(token))
@@ -105,7 +105,7 @@ public class CertificationAcceptanceTest extends AcceptanceTest {
 
     private String fetchCreateCertification(
         final JwtTokenResponse token,
-        final CertificationCreateRequest createRequest) {
+        final CertificationRequest createRequest) {
         return given()
             .header(createTokenHeader(token))
             .contentType(MediaType.MULTIPART_FORM_DATA_VALUE)
