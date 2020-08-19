@@ -31,18 +31,18 @@ import InputBox from "../home/racecreate/InputBox";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 
 const CertificationSubmit = ({ route }) => {
-  const raceCertifications = useRecoilValue(raceMissionState);
+  const raceMissions = useRecoilValue(raceMissionState);
   const setIsLoading = useSetRecoilState(loadingState);
   const token = useRecoilValue(memberTokenState);
   const navigation = useNavigation();
   const linkTo = useLinkTo();
   const [description, setDescription] = useState();
 
-  const { index } = route.params;
-  const raceCertification = raceCertifications[index];
-  const defaultPhotoUri = raceCertification.certification
-    ? raceCertification.certification.image
-    : raceCertification.race.certification_example;
+  const { index, isFirst } = route.params;
+  const raceMission = raceMissions[index];
+  const defaultPhotoUri = raceMission.certification
+    ? raceMission.certification.image
+    : raceMission.race.certification_example;
   const [photoUri, setPhotoUri] = useState(defaultPhotoUri);
 
   const submitCertification = async () => {
@@ -55,14 +55,18 @@ const CertificationSubmit = ({ route }) => {
     });
     formData.append("status", "SUCCESS");
     formData.append("description", description);
-    formData.append("riderId", raceCertification.rider.id);
-    formData.append("missionId", raceCertification.mission.id);
+    formData.append("riderId", raceMission.rider.id);
+    formData.append("missionId", raceMission.mission.id);
+    const httpMethod = isFirst ? CertificationApi.post : CertificationApi.put;
+    const certificationId = raceMission.certification
+      ? raceMission.certification.id
+      : null;
     try {
-      await CertificationApi.post(token, formData);
+      await httpMethod(token, formData, certificationId);
       alert("인증 완료되었습니다");
-      setPhotoUri(raceCertification.race.certification_example);
+      setPhotoUri(raceMission.race.certification_example);
       navigateWithoutHistory(navigation, "CertificationHome");
-      linkTo(`/home/races/detail/${raceCertification.race.id}`);
+      linkTo(`/home/races/detail/${raceMission.race.id}`);
     } catch (e) {
       alert(e.response.data.message);
     }
@@ -93,7 +97,7 @@ const CertificationSubmit = ({ route }) => {
   };
 
   const isNotExample = () =>
-    photoUri !== raceCertification.race.certification_example;
+    photoUri !== raceMission.race.certification_example;
 
   return (
     <LoadingIndicator>
@@ -124,7 +128,7 @@ const CertificationSubmit = ({ route }) => {
             </TouchableOpacity>
             <View style={styles.instructionContainer}>
               <Text style={styles.instruction}>
-                {raceCertification.mission.mission_instruction}
+                {raceMission.mission.mission_instruction}
               </Text>
             </View>
 

@@ -3,10 +3,7 @@ import { FlatList, StyleSheet, Text, View } from "react-native";
 import { useRecoilState, useRecoilValue } from "recoil";
 import { useFocusEffect } from "@react-navigation/core";
 
-import {
-  raceMissionFixture,
-  raceMissionState,
-} from "../../state/certification/RaceMissionState";
+import { raceMissionState } from "../../state/certification/RaceMissionState";
 import CertificationItem from "./CertificationItem";
 import { COLOR } from "../../utils/constants";
 import { QueryApi } from "../../utils/api/QueryApi";
@@ -17,17 +14,13 @@ const Certification = () => {
   const [currentTime, setCurrentTime] = useState(new Date());
   const token = useRecoilValue(memberTokenState);
 
-  useEffect(() => {
-    (async () => {
-      const { upcoming_missions } = await QueryApi.getMissions(token);
-      console.log(upcoming_missions);
-      setCertifications(upcoming_missions);
-    })();
-  }, []);
-
   useFocusEffect(
     useCallback(() => {
       const intervalId = setInterval(() => setCurrentTime(new Date()), 1000);
+      (async () => {
+        const { upcoming_missions } = await QueryApi.getMissions(token);
+        setCertifications(upcoming_missions);
+      })();
       return () => {
         clearInterval(intervalId);
       };

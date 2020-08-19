@@ -16,4 +16,17 @@ export const CertificationApi = {
     );
     return headers;
   },
+  put: async (token, formData, id) => {
+    const { headers } = await Axios.put(
+      `${SERVER_BASE_URL}/api/certifications/${id}`,
+      formData,
+      {
+        headers: {
+          ContentType: "multipart/form-data",
+          Authorization: `Bearer ${token}`,
+        },
+      },
+    );
+    return headers;
+  },
 };
