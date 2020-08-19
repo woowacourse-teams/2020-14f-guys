@@ -12,7 +12,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.ConstraintViolationException;
-import javax.validation.Valid;
 
 import org.apache.http.HttpHeaders;
 import org.junit.jupiter.api.BeforeEach;
@@ -141,6 +140,10 @@ public class MemberControllerTest {
             .andExpect(status().isOk())
             .andDo(MemberDocumentation.getMemberById())
             .andReturn();
+
+        final byte[] contentAsByteArray = mvcResult.getResponse().getContentAsByteArray();
+        final MemberResponse memberResponse = objectMapper.readValue(contentAsByteArray, MemberResponse.class);
+        assertThat(memberResponse).isEqualToComparingFieldByField(expectedResponse);
     }
 
     @DisplayName("모든 회원을 조회한다")

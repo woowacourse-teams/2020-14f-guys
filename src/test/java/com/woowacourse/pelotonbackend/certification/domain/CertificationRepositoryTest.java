@@ -87,7 +87,7 @@ class CertificationRepositoryTest {
             () -> assertThat(certifications.getTotalPages()).isEqualTo(1),
             () -> assertThat(certifications.getContent()).hasSize(1),
             () -> assertThat(certifications.getContent().get(0))
-                .isEqualToIgnoringGivenFields(certification, "id")
+                .isEqualToIgnoringGivenFields(certification, "id", "createdAt", "updatedAt")
         );
     }
 
@@ -140,7 +140,7 @@ class CertificationRepositoryTest {
         assertThat(result.getTotalElements()).isEqualTo(certifications.size());
         assertThat(result.getContent())
             .usingRecursiveFieldByFieldElementComparator()
-            .usingElementComparatorIgnoringFields("id")
+            .usingElementComparatorIgnoringFields("id", "createdAt", "updatedAt")
             .isEqualTo(certifications);
     }
 }
