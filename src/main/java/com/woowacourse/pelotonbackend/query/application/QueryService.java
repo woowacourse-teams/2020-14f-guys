@@ -1,5 +1,6 @@
 package com.woowacourse.pelotonbackend.query.application;
 
+import java.time.DayOfWeek;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
@@ -113,6 +114,16 @@ public class QueryService {
         final Race race = raceRepository.findById(raceId).orElseThrow(() -> new RaceNotFoundException(raceId));
         final List<Mission> missions = missionRepository.findByRaceId(raceId);
 
-        return RaceDetailResponse.of(race, missions);
+        final List<DayOfWeek> days = extractDaysOfWeekFrom(missions);
+
+        return RaceDetailResponse.of(race, missions.get(0).getMissionDuration(), days);
+    }
+
+    private List<DayOfWeek> extractDaysOfWeekFrom(final List<Mission> missions) {
+        return missions.stream()
+            .map(mission -> mission.getMissionDuration().getStartTime())
+            .map(LocalDateTime::getDayOfWeek)
+            .distinct()
+            .collect(Collectors.toList());
     }
 }

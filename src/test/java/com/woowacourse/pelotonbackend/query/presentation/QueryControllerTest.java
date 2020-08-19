@@ -10,6 +10,7 @@ import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuild
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
+import java.time.DayOfWeek;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -53,7 +54,6 @@ import com.woowacourse.pelotonbackend.member.domain.LoginFixture;
 import com.woowacourse.pelotonbackend.member.domain.MemberFixture;
 import com.woowacourse.pelotonbackend.member.presentation.LoginMemberArgumentResolver;
 import com.woowacourse.pelotonbackend.member.presentation.dto.MemberResponse;
-import com.woowacourse.pelotonbackend.mission.domain.Mission;
 import com.woowacourse.pelotonbackend.mission.domain.MissionFixture;
 import com.woowacourse.pelotonbackend.query.application.QueryService;
 import com.woowacourse.pelotonbackend.query.presentation.dto.RaceCertificationsResponse;
@@ -207,8 +207,8 @@ class QueryControllerTest {
     @Test
     void findRaceDetail() throws Exception {
         final Race race = createWithId(TEST_RACE_ID);
-        final List<Mission> missions = MissionFixture.createMissionsWithRaceId(TEST_RACE_ID);
-        final RaceDetailResponse response = RaceDetailResponse.of(race, missions);
+        final List<DayOfWeek> days =  Arrays.asList(DayOfWeek.MONDAY, DayOfWeek.WEDNESDAY, DayOfWeek.FRIDAY);
+        final RaceDetailResponse response = RaceDetailResponse.of(race, MissionFixture.MISSION_DURATION, days);
 
         when(queryService.findRaceDetail(anyLong())).thenReturn(response);
         when(bearerAuthInterceptor.preHandle(any(HttpServletRequest.class), any(HttpServletResponse.class),
@@ -226,7 +226,8 @@ class QueryControllerTest {
 
         assertAll(
             () -> assertThat(actualResponse).isEqualToComparingOnlyGivenFields(race, "id", "title", "description", "thumbnail", "certificationExample", "category", "entranceFee", "raceDuration"),
-            () -> assertThat(actualResponse).isEqualToComparingOnlyGivenFields(missions.get(0),"missionDuration")
+            () -> assertThat(actualResponse.getMissionDuration()).isEqualTo(MissionFixture.MISSION_DURATION),
+            () -> assertThat(actualResponse.getDays()).isEqualTo(days)
         );
     }
 }

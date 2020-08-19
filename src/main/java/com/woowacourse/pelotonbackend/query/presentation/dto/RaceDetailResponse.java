@@ -2,13 +2,11 @@ package com.woowacourse.pelotonbackend.query.presentation.dto;
 
 import java.beans.ConstructorProperties;
 import java.time.DayOfWeek;
-import java.util.Arrays;
 import java.util.List;
 
 import com.fasterxml.jackson.databind.PropertyNamingStrategy;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import com.woowacourse.pelotonbackend.mission.domain.DateTimeDuration;
-import com.woowacourse.pelotonbackend.mission.domain.Mission;
 import com.woowacourse.pelotonbackend.race.domain.DateDuration;
 import com.woowacourse.pelotonbackend.race.domain.Race;
 import com.woowacourse.pelotonbackend.race.domain.RaceCategory;
@@ -47,7 +45,8 @@ public class RaceDetailResponse {
 
     private final DateTimeDuration missionDuration;
 
-    public static RaceDetailResponse of(final Race race, final List<Mission> missions) {
+    public static RaceDetailResponse of(final Race race, final DateTimeDuration missionDuration,
+        final List<DayOfWeek> days) {
         return builder()
             .id(race.getId())
             .title(race.getTitle())
@@ -56,9 +55,9 @@ public class RaceDetailResponse {
             .certificationExample(race.getCertificationExample())
             .category(race.getCategory())
             .entranceFee(race.getEntranceFee())
-            .days(Arrays.asList(DayOfWeek.MONDAY, DayOfWeek.WEDNESDAY))
+            .days(days)
             .raceDuration(race.getRaceDuration())
-            .missionDuration(missions.get(0).getMissionDuration())
+            .missionDuration(missionDuration)
             .build();
     }
 }
