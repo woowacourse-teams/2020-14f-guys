@@ -2,7 +2,6 @@ import React from "react";
 import { Share, StyleSheet, TouchableOpacity } from "react-native";
 import { EvilIcons } from "@expo/vector-icons";
 import { useRecoilValue } from "recoil";
-
 import { COLOR } from "../../../utils/constants";
 import { raceInfoState } from "../../../state/race/RaceState";
 import { raceShareLink } from "./RaceDeepLinkPage";

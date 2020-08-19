@@ -30,7 +30,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   memberContainer: {
-    flex: 9,
+    flex: 1,
     backgroundColor: COLOR.RED,
     alignItems: "center",
   },
@@ -39,7 +39,7 @@ const styles = StyleSheet.create({
     width: "120%",
   },
   raceContainer: {
-    flex: 11,
+    flex: 1,
   },
 });
 

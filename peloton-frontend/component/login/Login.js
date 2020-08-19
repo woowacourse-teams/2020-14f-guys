@@ -1,5 +1,11 @@
 import React, { useState } from "react";
-import { Modal, SafeAreaView, StyleSheet, TouchableOpacity, View } from "react-native";
+import {
+  Modal,
+  SafeAreaView,
+  StyleSheet,
+  TouchableOpacity,
+  View,
+} from "react-native";
 import KakaoLoginWebView from "./KakaoLoginWebView";
 import LoginTitle from "./LoginTitle";
 import * as AppleAuthentication from "expo-apple-authentication";
@@ -11,7 +17,10 @@ import { useNavigation } from "@react-navigation/core";
 import LoadingIndicator from "../../utils/LoadingIndicator";
 import { loadingState } from "../../state/loading/LoadingState";
 import { navigateWithoutHistory } from "../../utils/util";
-import { memberInfoState, memberTokenState } from "../../state/member/MemberState";
+import {
+  memberInfoState,
+  memberTokenState,
+} from "../../state/member/MemberState";
 import { MemberApi } from "../../utils/api/MemberApi";
 
 const AnimatedAppleButton = animated(

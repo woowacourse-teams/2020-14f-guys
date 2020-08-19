@@ -7,7 +7,7 @@ import CameraIcon from "./CameraIcon";
 const ProfileImageEdit = () => {
   return (
     <View style={styles.imageContainer}>
-      <ProfileImageEditButton>
+      <ProfileImageEditButton directUpdate={true}>
         <ProfileImage />
         <CameraIcon />
       </ProfileImageEditButton>

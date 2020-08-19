@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Keyboard,
   KeyboardAvoidingView,
@@ -17,15 +17,28 @@ import NicknameInput from "./NicknameInput";
 import { navigateWithoutHistory } from "../../utils/util";
 import LoadingIndicator from "../../utils/LoadingIndicator";
 import { loadingState } from "../../state/loading/LoadingState";
-import { memberInfoState, memberTokenState, } from "../../state/member/MemberState";
+import {
+  memberInfoState,
+  memberTokenState,
+} from "../../state/member/MemberState";
 import { MemberApi } from "../../utils/api/MemberApi";
 
 const ChangeProfile = () => {
+  const navigation = useNavigation();
   const token = useRecoilValue(memberTokenState);
   const [memberInfo, setMemberInfo] = useRecoilState(memberInfoState);
-  const navigation = useNavigation();
   const [userInput, setUserInput] = useState("");
   const setIsLoading = useSetRecoilState(loadingState);
+
+  useEffect(() => {
+    const fetchMemberInfo = async () => {
+      setIsLoading(true);
+      const newMemberInfo = await MemberApi.get(token);
+      setMemberInfo(newMemberInfo);
+      setIsLoading(false);
+    };
+    fetchMemberInfo();
+  }, []);
 
   const onSubmit = async () => {
     Keyboard.dismiss();
@@ -37,6 +50,13 @@ const ChangeProfile = () => {
         ...memberInfo,
         name: userInput,
       });
+      const formData = new FormData();
+      formData.append("profile_image", {
+        uri: memberInfo.profile,
+        type: "image/jpeg",
+        name: memberInfo.profile.substring(9),
+      });
+      await MemberApi.postProfile(token, formData);
       navigateWithoutHistory(navigation, "ApplicationNavigationRoot");
     } catch (error) {
       console.log(error);
