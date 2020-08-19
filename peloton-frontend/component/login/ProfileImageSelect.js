@@ -1,8 +1,6 @@
 import React from "react";
-import { Image, StyleSheet, View } from "react-native";
+import { StyleSheet, View } from "react-native";
 import ProfileImageEditButton from "../profile/ProfileImageEditButton";
-import { useRecoilValue } from "recoil";
-import { memberInfoState } from "../../state/member/MemberState";
 import CameraIcon from "../profile/profileedit/CameraIcon";
 import ProfileImage from "../profile/ProfileImage";
 
