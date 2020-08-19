@@ -198,7 +198,7 @@ class CertificationControllerTest {
             .andDo(CertificationDocumentation.getBadCertification());
     }
 
-    @DisplayName("정상 update request에 대한 수정")
+    @DisplayName("정상적인 요청에 대해 Certification을 수정한다")
     @Test
     void update() throws Exception {
         given(certificationService.update(any(MultipartFile.class), any(CertificationRequest.class),
