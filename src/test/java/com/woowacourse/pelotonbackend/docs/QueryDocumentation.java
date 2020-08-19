@@ -135,10 +135,10 @@ public class QueryDocumentation {
                 fieldWithPath("days").type(ARRAY).description("Mission 수행 요일"),
                 fieldWithPath("mission_duration").type(OBJECT).description("Mission 시간"),
                 fieldWithPath("mission_duration.start_time").type(STRING)
-                    .attributes(getDateFormat())
+                    .attributes(getTimeFormat())
                     .description("Mission 시작 시각"),
                 fieldWithPath("mission_duration.end_time").type(STRING)
-                    .attributes(getDateFormat())
+                    .attributes(getTimeFormat())
                     .description("Mission 종료 시각"),
                 fieldWithPath("category").type(STRING).attributes(getRaceCategoryFormat()).description("Race 종류"),
                 fieldWithPath("entrance_fee").type(STRING).description("레이스 입장료")

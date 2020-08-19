@@ -2,10 +2,12 @@ package com.woowacourse.pelotonbackend.query.presentation.dto;
 
 import java.beans.ConstructorProperties;
 import java.time.DayOfWeek;
+import java.time.LocalTime;
 import java.util.List;
 
 import com.fasterxml.jackson.databind.PropertyNamingStrategy;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
+import com.woowacourse.pelotonbackend.certification.domain.TimeDuration;
 import com.woowacourse.pelotonbackend.mission.domain.DateTimeDuration;
 import com.woowacourse.pelotonbackend.race.domain.DateDuration;
 import com.woowacourse.pelotonbackend.race.domain.Race;
@@ -43,7 +45,7 @@ public class RaceDetailResponse {
 
     private final DateDuration raceDuration;
 
-    private final DateTimeDuration missionDuration;
+    private final TimeDuration missionDuration;
 
     public static RaceDetailResponse of(final Race race, final DateTimeDuration missionDuration,
         final List<DayOfWeek> days) {
@@ -57,7 +59,14 @@ public class RaceDetailResponse {
             .entranceFee(race.getEntranceFee())
             .days(days)
             .raceDuration(race.getRaceDuration())
-            .missionDuration(missionDuration)
+            .missionDuration(toTimeDuration(missionDuration))
             .build();
+    }
+
+    private static TimeDuration toTimeDuration(final DateTimeDuration missionDuration) {
+        final LocalTime startTime = missionDuration.getStartTime().toLocalTime();
+        final LocalTime endTime = missionDuration.getEndTime().toLocalTime();
+
+        return new TimeDuration(startTime, endTime);
     }
 }

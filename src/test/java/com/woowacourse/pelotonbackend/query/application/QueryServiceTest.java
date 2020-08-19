@@ -33,6 +33,7 @@ import org.springframework.data.jdbc.core.mapping.AggregateReference;
 import com.woowacourse.pelotonbackend.certification.domain.Certification;
 import com.woowacourse.pelotonbackend.certification.domain.CertificationFixture;
 import com.woowacourse.pelotonbackend.certification.domain.CertificationRepository;
+import com.woowacourse.pelotonbackend.certification.domain.TimeDuration;
 import com.woowacourse.pelotonbackend.certification.presentation.dto.CertificationResponse;
 import com.woowacourse.pelotonbackend.member.domain.MemberFixture;
 import com.woowacourse.pelotonbackend.mission.domain.Mission;
@@ -205,7 +206,7 @@ class QueryServiceTest {
 
         assertAll(
             () -> assertThat(raceDetail).isEqualToComparingOnlyGivenFields(race, "id", "title", "description", "thumbnail", "certificationExample", "category", "entranceFee", "raceDuration"),
-            () -> assertThat(raceDetail).isEqualToComparingOnlyGivenFields(missions.get(0),"missionDuration"),
+            () -> assertThat(raceDetail.getMissionDuration()).isEqualTo(new TimeDuration(START_TIME.toLocalTime(), END_TIME.toLocalTime())),
             () -> assertThat(raceDetail.getDays()).isEqualTo(Arrays.asList(MISSION_DURATION.getStartTime().getDayOfWeek()))
         );
     }

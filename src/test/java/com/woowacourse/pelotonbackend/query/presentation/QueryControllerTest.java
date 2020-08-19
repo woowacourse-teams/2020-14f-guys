@@ -46,6 +46,7 @@ import org.springframework.web.method.support.ModelAndViewContainer;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.woowacourse.pelotonbackend.certification.domain.Certification;
 import com.woowacourse.pelotonbackend.certification.domain.CertificationFixture;
+import com.woowacourse.pelotonbackend.certification.domain.TimeDuration;
 import com.woowacourse.pelotonbackend.common.ErrorCode;
 import com.woowacourse.pelotonbackend.common.exception.RaceNotFoundException;
 import com.woowacourse.pelotonbackend.common.exception.TokenInvalidException;
@@ -150,7 +151,7 @@ class QueryControllerTest {
         when(bearerAuthInterceptor.preHandle(any(HttpServletRequest.class), any(HttpServletResponse.class),
             any(HandlerMethod.class))).thenReturn(true);
 
-        mockMvc.perform(get("/api/queries/races/{raceId}/certifications", RaceFixture.TEST_RACE_ID)
+        mockMvc.perform(get("/api/queries/races/{raceId}/certifications", TEST_RACE_ID)
             .header(HttpHeaders.AUTHORIZATION, LoginFixture.getTokenHeader())
             .accept(MediaType.APPLICATION_JSON)
         )
@@ -162,11 +163,11 @@ class QueryControllerTest {
     @Test
     void findCertificationByNotExistRaceId() throws Exception {
         when(queryService.findCertificationsByRaceId(anyLong(), any(Pageable.class)))
-            .thenThrow(new RaceNotFoundException(RaceFixture.TEST_RACE_ID));
+            .thenThrow(new RaceNotFoundException(TEST_RACE_ID));
         when(bearerAuthInterceptor.preHandle(any(HttpServletRequest.class), any(HttpServletResponse.class),
             any(HandlerMethod.class))).thenReturn(true);
 
-        mockMvc.perform(get("/api/queries/races/{raceId}/certifications", RaceFixture.TEST_RACE_ID)
+        mockMvc.perform(get("/api/queries/races/{raceId}/certifications", TEST_RACE_ID)
             .header(HttpHeaders.AUTHORIZATION, LoginFixture.getTokenHeader())
             .accept(MediaType.APPLICATION_JSON)
         )
@@ -225,9 +226,11 @@ class QueryControllerTest {
         final byte[] content = mvcResult.getResponse().getContentAsByteArray();
         final RaceDetailResponse actualResponse = objectMapper.readValue(content, RaceDetailResponse.class);
 
+        final TimeDuration expectedTimeDuration = new TimeDuration(MissionFixture.START_TIME.toLocalTime(),
+            MissionFixture.END_TIME.toLocalTime());
         assertAll(
             () -> assertThat(actualResponse).isEqualToComparingOnlyGivenFields(race, "id", "title", "description", "thumbnail", "certificationExample", "category", "entranceFee", "raceDuration"),
-            () -> assertThat(actualResponse.getMissionDuration()).isEqualTo(MissionFixture.MISSION_DURATION),
+            () -> assertThat(actualResponse.getMissionDuration()).isEqualTo(expectedTimeDuration),
             () -> assertThat(actualResponse.getDays()).isEqualTo(days)
         );
     }
