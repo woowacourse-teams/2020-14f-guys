@@ -16,9 +16,9 @@ export const CertificationApi = {
     );
     return headers;
   },
-  put: async (token, formData, id) => {
-    const { headers } = await Axios.put(
-      `${SERVER_BASE_URL}/api/certifications/${id}`,
+  update: async (token, formData, id) => {
+    const { headers } = await Axios.post(
+      `${SERVER_BASE_URL}/api/certifications/update/${id}`,
       formData,
       {
         headers: {

@@ -57,7 +57,9 @@ const CertificationSubmit = ({ route }) => {
     formData.append("description", description);
     formData.append("riderId", raceMission.rider.id);
     formData.append("missionId", raceMission.mission.id);
-    const httpMethod = isFirst ? CertificationApi.post : CertificationApi.put;
+    const httpMethod = isFirst
+      ? CertificationApi.post
+      : CertificationApi.update;
     const certificationId = raceMission.certification
       ? raceMission.certification.id
       : null;
