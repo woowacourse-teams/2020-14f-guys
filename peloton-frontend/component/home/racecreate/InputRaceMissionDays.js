@@ -1,10 +1,10 @@
 import React from "react";
 import { useNavigation } from "@react-navigation/native";
-import { useRecoilValue, useSetRecoilState } from "recoil";
+import { useRecoilValue } from "recoil";
 
 import RaceCreateView from "./RaceCreateView";
 import RaceCreateUnit from "./RaceCreateUnit";
-import { DAYS, RaceCreateUnitType } from "../../../utils/constants";
+import { RaceCreateUnitType } from "../../../utils/constants";
 import { raceCreateInfoState } from "../../../state/race/RaceState";
 
 const InputRaceMissionDays = () => {

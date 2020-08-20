@@ -16,7 +16,7 @@ const InputRaceMissionTime = () => {
   } = useRecoilValue(raceCreateInfoState);
   const navigation = useNavigation();
 
-  const navigateToInputFee = async () => {
+  const navigateToInputFee = () => {
     if (!mission_start_time || !mission_end_time) {
       alert("인증 시작, 마감 시간을 선택해주세요");
       return;

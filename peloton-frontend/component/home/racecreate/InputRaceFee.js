@@ -29,13 +29,14 @@ import { RiderApi } from "../../../utils/api/RiderApi";
 
 const InputRaceFee = () => {
   // eslint-disable-next-line prettier/prettier
-  const { title, description, start_date, end_date, category, entrance_fee, mission_start_time, mission_end_time, days } = useRecoilValue(
-    raceCreateInfoState);
+  const {title, description, start_date, end_date, category, entrance_fee, mission_start_time, mission_end_time} = useRecoilValue(raceCreateInfoState);
   const resetRaceCreateInfo = useResetRecoilState(raceCreateInfoState);
   const [loading, setGlobalLoading] = useRecoilState(loadingState);
   const token = useRecoilValue(memberTokenState);
   const [memberInfo, setMemberInfo] = useRecoilState(memberInfoState);
-  const setDays = useSetRecoilState(raceCreateInfoState);
+  const [{ days }, setDaysInRaceCreateInfo] = useSetRecoilState(
+    raceCreateInfoState,
+  );
 
   const navigation = useNavigation();
 
@@ -81,9 +82,7 @@ const InputRaceFee = () => {
 
   const calculateDays = (daysOffset) => {
     if (daysOffset === 1) {
-      return days.map(
-        (day) => DAYS[DAYS.indexOf(day) === 6 ? 0 : DAYS.indexOf(day) + 1]
-      );
+      return days.map((day) => DAYS[(DAYS.indexOf(day) + 1) % 7]);
     } else if (daysOffset === -1) {
       return days.map(
         (day) => DAYS[DAYS.indexOf(day) === 0 ? 6 : DAYS.indexOf(day) - 1]
@@ -164,7 +163,7 @@ const InputRaceFee = () => {
       return;
     }
 
-    setDays((prev) => ({
+    setDaysInRaceCreateInfo((prev) => ({
       ...prev,
       days: newDays,
     }));
