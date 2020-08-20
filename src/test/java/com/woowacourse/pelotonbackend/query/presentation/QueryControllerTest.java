@@ -121,7 +121,7 @@ class QueryControllerTest {
 
         assertAll(
             () -> assertThat(responseBody.getRaceResponses().get(0))
-                .isEqualToComparingFieldByField(RaceFixture.retrieveResponse()),
+                .isEqualToComparingFieldByField(RaceFixture.retrieveFinishedResponse()),
             () -> assertThat(responseBody.getRaceResponses()).hasSize(4)
         );
     }

@@ -30,6 +30,6 @@ class RaceRetrieveResponseTest {
             + "\"entrance_fee\":\"20000\""
             + "}";
 
-        assertThat(objectMapper.writeValueAsString(RaceFixture.retrieveResponse())).isEqualTo(responseBody);
+        assertThat(objectMapper.writeValueAsString(RaceFixture.retrieveFinishedResponse())).isEqualTo(responseBody);
     }
 }

@@ -30,8 +30,10 @@ public class RaceFixture {
     public static final BigDecimal TEST_MONEY_AMOUNT = new BigDecimal(20000);
     public static final BigDecimal TEST_CHANGED_MONEY_AMOUNT = new BigDecimal(25000);
     public static final LocalDate TEST_START_TIME = LocalDate.now().plusDays(1L);
+    public static final LocalDate TEST_START_TIME_PAST = LocalDate.now().minusDays(2L);
     public static final LocalDate TEST_CHANGED_START_TIME = LocalDate.now().plusDays(2L);
     public static final LocalDate TEST_END_TIME = LocalDate.now().plusDays(2L);
+    public static final LocalDate TEST_END_TIME_PAST = LocalDate.now().minusDays(1L);
     public static final LocalDate TEST_CHANGED_END_TIME = LocalDate.now().plusDays(3L);
     public static final RaceCategory TEST_CATEGORY = RaceCategory.TIME;
     public static final RaceCategory TEST_CHANGED_CATEGORY = RaceCategory.STUDY;
@@ -48,6 +50,19 @@ public class RaceFixture {
             .entranceFee(new Cash(TEST_MONEY_AMOUNT))
             .category(TEST_CATEGORY)
             .raceDuration(new DateDuration(TEST_START_TIME, TEST_END_TIME))
+            .description(TEST_DESCRIPTION)
+            .certificationExample(TEST_CERTIFICATION_URL)
+            .thumbnail(TEST_THUMBNAIL_URL)
+            .build();
+    }
+
+    public static Race createWithIdAndPast(final Long id) {
+        return Race.builder()
+            .id(id)
+            .title(TEST_TITLE)
+            .entranceFee(new Cash(TEST_MONEY_AMOUNT))
+            .category(TEST_CATEGORY)
+            .raceDuration(new DateDuration(TEST_START_TIME_PAST, TEST_END_TIME_PAST))
             .description(TEST_DESCRIPTION)
             .certificationExample(TEST_CERTIFICATION_URL)
             .thumbnail(TEST_THUMBNAIL_URL)
@@ -98,7 +113,11 @@ public class RaceFixture {
             .build();
     }
 
-    public static RaceResponse retrieveResponse() {
+    public static RaceResponse retrieveFinishedResponse() {
+        return RaceResponse.of(createWithIdAndPast(TEST_RACE_ID));
+    }
+
+    public static RaceResponse retrieveNotFinishedResponse() {
         return RaceResponse.of(createWithId(TEST_RACE_ID));
     }
 

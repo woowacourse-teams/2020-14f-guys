@@ -1,6 +1,7 @@
 package com.woowacourse.pelotonbackend.calculation;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.data.jdbc.core.convert.EntityRowMapper;
 import org.springframework.data.jdbc.core.convert.JdbcConverter;
@@ -11,11 +12,10 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcOperations;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 
 import com.woowacourse.pelotonbackend.certification.domain.Calculations;
-import com.woowacourse.pelotonbackend.certification.domain.Certification;
 
 public class CalculationRepositoryCustomImpl implements CalculationRepositoryCustom {
     private final NamedParameterJdbcOperations jdbcOperations;
-    private final EntityRowMapper<Certification> rowMapper;
+    private final EntityRowMapper<Calculation> rowMapper;
 
     @SuppressWarnings("unchecked")
     public CalculationRepositoryCustomImpl(
@@ -25,27 +25,27 @@ public class CalculationRepositoryCustomImpl implements CalculationRepositoryCus
 
         this.jdbcOperations = jdbcOperations;
         this.rowMapper = new EntityRowMapper<>(
-            (RelationalPersistentEntity<Certification>)mappingContext.getRequiredPersistentEntity(Certification.class),
+            (RelationalPersistentEntity<Calculation>)mappingContext.getRequiredPersistentEntity(Calculation.class),
             jdbcConverter
         );
     }
 
     @Override
-    public Calculations findAllByRaceId(final Long raceId) {
+    public Optional<Calculations> findAllByRaceId(final Long raceId) {
         final SqlParameterSource parameterSource = new MapSqlParameterSource()
             .addValue("raceId", raceId);
 
-        final List<Calculation> results = this.jdbcOperations.queryForList(this.findAllByRaceIdSql(),
-            parameterSource, Calculation.class);
-        // TODO: 2020/08/20
-        return Calculations.of(results);
+        final List<Calculation> results = this.jdbcOperations.query(this.findAllByRaceIdSql(),
+            parameterSource, rowMapper);
+
+        return results.size() == 0 ? Optional.empty() : Optional.of(Calculations.of(results));
     }
 
     private String findAllByRaceIdSql() {
         return new StringBuilder()
             .append("SELECT CALCULATION.ID AS ID, CALCULATION.RIDER_ID AS RIDER_ID")
             .append(", CALCULATION.RACE_ID AS RACE_ID, CALCULATION.IS_CALCULATED AS IS_CALCULATED")
-            .append(", CALCULATION.PRIZE AS PRIZE, CALCULATION.CREATED_AT AS CREATED_AT")
+            .append(", CALCULATION.CASH AS CASH, CALCULATION.CREATED_AT AS CREATED_AT")
             .append(", CALCULATION.UPDATED_AT AS UPDATED_AT")
             .append(" FROM CALCULATION")
             .append(" WHERE RACE_ID=:raceId")

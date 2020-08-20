@@ -8,6 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.woowacourse.pelotonbackend.certification.domain.Calculations;
 import com.woowacourse.pelotonbackend.certification.presentation.dto.CertificationResponse;
+import com.woowacourse.pelotonbackend.common.exception.CalculationNotFoundException;
 import com.woowacourse.pelotonbackend.common.exception.RaceNotFinishedException;
 import com.woowacourse.pelotonbackend.common.exception.UnAuthenticatedException;
 import com.woowacourse.pelotonbackend.member.application.MemberService;
@@ -30,32 +31,55 @@ public class CalculationService {
     private final QueryService queryService;
     private final RaceService raceService;
 
-    public CalculationResponses calculate(final MemberResponse memberResponse, final Long raceId, final Long riderId) {
+    @Transactional(readOnly = true)
+    public CalculationResponses retrieve(final MemberResponse memberResponse, final Long raceId, final Long riderId) {
         final List<RiderResponse> riders = riderService.retrieveByRaceId(raceId).getRiderResponses();
         final RaceResponse race = raceService.retrieve(raceId);
-        if (isValidMember(memberResponse, raceId, riders)) {
-            throw new UnAuthenticatedException(memberResponse.getId());
-        }
-        if(race.getRaceDuration().raceNotEnd()) {
-            throw new RaceNotFinishedException(raceId);
-        }
+        validateMember(memberResponse, riderId, riders);
+        validateRaceEndDate(raceId, race);
 
-        Calculations calculations = calculationRepository.findAllByRaceId(raceId);
-        if (calculations.isEmpty()) {
-            final List<CertificationResponse> certifications = queryService.findCertificationsByRaceId(raceId,
-                PageRequest.of(0, Integer.MAX_VALUE)).getCertifications().getContent();
 
-            calculations = Calculations.create(certifications, riders, race);
-        }
-        memberService.chargeCash(memberResponse.getId(),
-            MemberCashUpdateRequest.builder().cash(calculations.receivePrize(riderId)).build());
+        final Calculations results = calculationRepository.findAllByRaceId(raceId)
+            .orElseThrow(() -> new CalculationNotFoundException(raceId));
 
-        return CalculationResponses.of(calculationRepository.saveAll(calculations.getCalculations()));
+        return CalculationResponses.of(results);
     }
 
-    private boolean isValidMember(final MemberResponse memberResponse, final Long raceId,
+    public void calculate(final MemberResponse memberResponse, final Long raceId, final Long riderId) {
+        final List<RiderResponse> riders = riderService.retrieveByRaceId(raceId).getRiderResponses();
+        final RaceResponse race = raceService.retrieve(raceId);
+        validateMember(memberResponse, riderId, riders);
+        validateRaceEndDate(raceId, race);
+
+        final List<CertificationResponse> certifications = queryService.findCertificationsByRaceId(raceId,
+            PageRequest.of(0, Integer.MAX_VALUE)).getCertifications().getContent();
+        final Calculations calculations = calculationRepository.findAllByRaceId(raceId)
+            .orElse(Calculations.create(certifications, riders, race));
+
+        memberService.chargeCash(memberResponse.getId(),
+            MemberCashUpdateRequest.builder().cash(calculations.receivePrize(riderId)).build());
+        calculationRepository.saveAll(calculations.getCalculations());
+    }
+
+    private void validateMember(final MemberResponse memberResponse, final Long riderId,
         final List<RiderResponse> riders) {
-        return riders.stream()
-            .noneMatch(rider -> rider.getId().equals(raceId) && rider.getMemberId().equals(memberResponse.getId()));
+
+        final boolean validRider = riders.stream()
+            .anyMatch(rider -> rider.getId().equals(riderId));
+        if (!validRider) {
+            throw new UnAuthenticatedException(riderId);
+        }
+
+        final boolean validMember = riders.stream()
+            .anyMatch(rider -> rider.getMemberId().equals(memberResponse.getId()));
+        if (!validMember) {
+            throw new UnAuthenticatedException(memberResponse.getId());
+        }
+    }
+
+    private void validateRaceEndDate(final Long raceId, final RaceResponse race) {
+        if (race.getRaceDuration().raceNotEnd()) {
+            throw new RaceNotFinishedException(raceId);
+        }
     }
 }

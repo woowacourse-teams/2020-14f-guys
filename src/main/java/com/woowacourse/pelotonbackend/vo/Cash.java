@@ -47,4 +47,8 @@ public class Cash {
     public boolean isGreaterOrEqualThan(final BigDecimal value) {
         return this.cash.intValue() >= value.intValue();
     }
+
+    public Cash ceiling() {
+        return Cash.of((this.cash.intValue() / 100) * 100);
+    }
 }

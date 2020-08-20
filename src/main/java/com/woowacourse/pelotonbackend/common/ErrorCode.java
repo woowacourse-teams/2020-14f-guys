@@ -10,12 +10,14 @@ public enum ErrorCode {
     UNEXPECTED(500, "서버에서 알 수 없는 예외가 발생했어요.😂 조금만 기다려주세요."),
 
     INVALID_VALIDATE(400, "입력이 이상해요.😅"),
-    CALCULATION_DUPLICATE(400, "이미 정산 받은 회원이에요!😂"),
     UN_AUTHENTICATE(403, "권한이 없습니다.😂"),
 
     MEMBER_NOT_FOUND(404, "해당 회원을 찾을 수 없어요.😂"),
     MEMBER_DUPLICATE(400, "이미 가입한 회원이에요.😀"),
     MEMBER_ID_INVALID(400, "잘못된 회원 아이디에요.😂"),
+
+    CALCULATION_DUPLICATE(400, "이미 정산 받은 회원이에요!😂"),
+    CALCULATION_NOT_FOUND(404, "아직 정산이 완료되지 않았습니다."),
 
     REPORT_NOT_FOUND(404, "해당 신고를 찾을 수 없어요.😂"),
     REPORT_DUPLICATE(400, "이미 신고 되었어요!😀"),

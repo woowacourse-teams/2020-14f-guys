@@ -22,5 +22,7 @@ public class DataInitializeExecutionListener implements TestExecutionListener {
         jdbcTemplate.execute("alter table CERTIFICATION alter column ID restart with 1");
         jdbcTemplate.execute("truncate table MISSION");
         jdbcTemplate.execute("alter table MISSION alter column ID restart with 1");
+        jdbcTemplate.execute("truncate table CALCULATION");
+        jdbcTemplate.execute("alter table CALCULATION alter column ID restart with 1");
     }
 }
