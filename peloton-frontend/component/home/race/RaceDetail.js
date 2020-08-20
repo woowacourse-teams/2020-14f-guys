@@ -1,21 +1,20 @@
-import React, { useCallback, useEffect } from "react";
+import React, { useEffect } from "react";
 import { ScrollView, StyleSheet } from "react-native";
 import RaceDetailInfo from "./RaceDetailInfo";
 import RaceCertificationImages from "./RaceCertificationImages";
 import RaceSpec from "./RaceSpec";
-import { useRecoilValue, useSetRecoilState } from "recoil";
+import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import { loadingState } from "../../../state/loading/LoadingState";
 import { COLOR } from "../../../utils/constants";
-import { useRecoilState } from "recoil";
 import { memberTokenState } from "../../../state/member/MemberState";
 import { raceInfoState } from "../../../state/race/RaceState";
-import { RaceApi } from "../../../utils/api/RaceApi";
 import LinkCopyButton from "./LinkCopyButton";
 import { RiderApi } from "../../../utils/api/RiderApi";
 import { ridersInfoState } from "../../../state/rider/RiderState";
 import { QueryApi } from "../../../utils/api/QueryApi";
 import LoadingIndicator from "../../../utils/LoadingIndicator";
 import { certificationsState } from "../../../state/certification/CertificationState";
+import { RaceApi } from "../../../utils/api/RaceApi";
 
 const RaceDetail = ({ route }) => {
   const raceId = route.params.id;

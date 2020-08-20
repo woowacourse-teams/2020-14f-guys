@@ -23,7 +23,7 @@ const RaceItems = () => {
         itemWidth={250}
         renderItem={_renderItems}
         hasParallaxImages={true}
-        loop={true}
+        loop={false}
       />
     </View>
   );

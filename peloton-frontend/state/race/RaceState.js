@@ -23,9 +23,14 @@ export const raceInfoState = atom({
     certification_example: null,
     description: null,
     entrance_fee: null,
+    days: null,
     race_duration: {
       start_date: null,
       end_date: null,
+    },
+    mission_duration: {
+      start_time: null,
+      end_time: null,
     },
     thumbnail: null,
     title: null,
