@@ -558,3 +558,21 @@ operation::queries/get-upcoming-missions[snippets='http-request,http-response,re
 [[resource-query-race-detail]]
 ==== Success
 operation::queries/get-race-detail[snippets='http-request,http-response,request-headers,response-fields']
+
+[[resources-calculations]]
+== Calculation
+
+[[resources-create-calculation]]
+=== Create Calculation
+
+[[resources-create-calculation-success]]
+==== Success
+operation::calculation/create-success[snippets='http-request,http-response,path-parameters,request-headers,response-headers']
+
+
+[[resources-get-calculation]]
+=== Get Calculations
+
+[[resources-get-calculation-success]]
+==== Success
+operation::calculation/get-success[snippets='http-request,http-response,path-parameters,request-headers,response-fields']

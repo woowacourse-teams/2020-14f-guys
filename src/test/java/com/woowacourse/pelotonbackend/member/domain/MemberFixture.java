@@ -32,6 +32,7 @@ public class MemberFixture {
     public static final Long MEMBER_ID = 1L;
     public static final Long MEMBER_ID2 = 2L;
     public static final Long MEMBER_ID3 = 3L;
+    public static final Long WRONG_MEMBER_ID = 10L;
     public static final Long KAKAO_ID = 1L;
     public static final Long KAKAO_ID2 = 2L;
     public static final Long KAKAO_ID3 = 3L;
@@ -135,6 +136,18 @@ public class MemberFixture {
     public static MemberResponse memberResponse() {
         return MemberResponse.builder()
             .id(MEMBER_ID)
+            .kakaoId(KAKAO_ID)
+            .profile(PROFILE)
+            .email(EMAIL)
+            .name(NAME)
+            .cash(CASH)
+            .role(ROLE)
+            .build();
+    }
+
+    public static MemberResponse memberResponse(final Long id) {
+        return MemberResponse.builder()
+            .id(id)
             .kakaoId(KAKAO_ID)
             .profile(PROFILE)
             .email(EMAIL)

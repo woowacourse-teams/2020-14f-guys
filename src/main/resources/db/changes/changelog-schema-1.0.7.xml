@@ -1,0 +1,33 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+    <changeSet author="kyle" id="20200820">
+        <createTable tableName="CALCULATION">
+            <column name="ID" type="BIGINT" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="RIDER_ID" type="BIGINT">
+                <constraints unique="true" nullable="false"/>
+            </column>
+            <column name="RACE_ID" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="IS_CALCULATED" type="BOOLEAN"/>
+            <column name="PRIZE" type="NUMBER">
+                <constraints nullable="false"/>
+            </column>
+            <column defaultValueComputed="CURRENT_TIMESTAMP" name="CREATED_AT" type="TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+            <column defaultValueComputed="CURRENT_TIMESTAMP" name="UPDATED_AT" type="TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <renameColumn
+                columnDataType="NUMBER"
+                newColumnName="CASH"
+                oldColumnName="PRIZE"
+                tableName="CALCULATION"/>
+    </changeSet>
+</databaseChangeLog>

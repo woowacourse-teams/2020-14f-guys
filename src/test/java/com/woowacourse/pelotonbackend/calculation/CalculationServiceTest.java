@@ -1,25 +1,35 @@
 package com.woowacourse.pelotonbackend.calculation;
 
+import static org.assertj.core.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
-import java.math.BigDecimal;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.function.Predicate;
 
-import org.assertj.core.util.Lists;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import com.woowacourse.pelotonbackend.certification.domain.CertificationFixture;
+import com.woowacourse.pelotonbackend.common.exception.CalculationNotFoundException;
+import com.woowacourse.pelotonbackend.common.exception.RaceNotFinishedException;
+import com.woowacourse.pelotonbackend.common.exception.UnAuthenticatedException;
 import com.woowacourse.pelotonbackend.member.application.MemberService;
 import com.woowacourse.pelotonbackend.member.domain.MemberFixture;
-import com.woowacourse.pelotonbackend.member.presentation.dto.MemberResponses;
+import com.woowacourse.pelotonbackend.member.presentation.dto.MemberResponse;
 import com.woowacourse.pelotonbackend.query.application.QueryService;
 import com.woowacourse.pelotonbackend.race.application.RaceService;
-import com.woowacourse.pelotonbackend.race.presentation.dto.RaceResponse;
+import com.woowacourse.pelotonbackend.race.domain.RaceFixture;
 import com.woowacourse.pelotonbackend.rider.application.RiderService;
 import com.woowacourse.pelotonbackend.rider.domain.RiderFixture;
+import com.woowacourse.pelotonbackend.rider.presentation.dto.RiderResponses;
 import com.woowacourse.pelotonbackend.vo.Cash;
 
 @ExtendWith(MockitoExtension.class)
@@ -37,25 +47,115 @@ class CalculationServiceTest {
 
     private CalculationService calculationService;
 
+    private final Map<Integer, Long> countToRiderId = new LinkedHashMap<>();
+    private MemberResponse memberResponse;
+
     @BeforeEach
     void setUp() {
         calculationService = new CalculationService(calculationRepository, memberService, riderService, queryService,
             raceService);
+        countToRiderId.put(5, 1L);
+        countToRiderId.put(4, 2L);
+        countToRiderId.put(3, 3L);
+        countToRiderId.put(2, 4L);
+        countToRiderId.put(0, 5L);
+        memberResponse = MemberFixture.memberResponse();
     }
 
     @Test
-    void calculation() {
-        // when(calculationRepository.findAllByRaceId(anyLong())).thenReturn(Lists.emptyList());
-        // when(riderService.retrieveByRaceId(anyLong())).thenReturn(RiderFixture.createRidersInSameRaceByCount(5));
-        // when(queryService.findCertificationsByRaceId(anyLong(), any())).thenReturn(
-        //     CertificationFixture.createMockRaceCertifications());
-        // when(memberService.findAllById(anyList())).thenReturn(
-        //     MemberResponses.from(Lists.newArrayList(MemberFixture.createWithId(1L, "지건"), MemberFixture.createWithId(2L, "텟카이"),
-        //         MemberFixture.createWithId(3L, "람각"), MemberFixture.createWithId(4L, "오예"),
-        //         MemberFixture.createWithId(5L, "범"))));
-        // when(raceService.retrieve(anyLong())).thenReturn(
-        //     RaceResponse.builder().entranceFee(new Cash(BigDecimal.valueOf(10000))).build());
-        //
-        // final CalculationResponses response = calculationService.calculate(null, 1L, 1L);
+    void create() {
+        when(riderService.retrieveByRaceId(anyLong())).thenReturn(
+            new RiderResponses(RiderFixture.createRidersInSameRaceByCount(5)));
+        when(queryService.findCertificationsByRaceId(anyLong(), any())).thenReturn(
+            CertificationFixture.createMockRaceCertifications(countToRiderId));
+        when(raceService.retrieve(anyLong())).thenReturn(RaceFixture.retrieveFinishedResponse());
+
+        calculationService.calculate(MemberFixture.memberResponse(), RaceFixture.TEST_RACE_ID,
+            RiderFixture.TEST_RIDER_ID);
+
+        verify(memberService).chargeCash(anyLong(), any());
+        verify(calculationRepository).saveAll(any());
+    }
+
+    @Test
+    void retrieve() {
+        when(riderService.retrieveByRaceId(anyLong())).thenReturn(
+            new RiderResponses(RiderFixture.createRidersInSameRaceByCount(5)));
+        when(raceService.retrieve(anyLong())).thenReturn(RaceFixture.retrieveFinishedResponse());
+        when(calculationRepository.findAllByRaceId(anyLong())).thenReturn(
+            Optional.of(CalculationFixture.createCalculations(5, RiderFixture.TEST_RIDER_ID)));
+
+        final List<CalculationResponse> results = calculationService.retrieve(
+            memberResponse, RaceFixture.TEST_RACE_ID, RiderFixture.TEST_RIDER_ID).getCalculationResponses();
+
+        assertAll(
+            () -> assertThat(results).extracting(CalculationResponse::getRaceId)
+                .allMatch(Predicate.isEqual(RaceFixture.TEST_RACE_ID)),
+            () -> assertThat(results).extracting(CalculationResponse::getRiderId)
+                .containsExactlyElementsOf(countToRiderId.values()),
+            () -> assertThat(results).allMatch(
+                calculationResponse -> calculationResponse.isCalculated() == calculationResponse.getRiderId()
+                    .equals(RiderFixture.TEST_RIDER_ID)),
+            () -> assertThat(results).extracting(CalculationResponse::getPrize).containsExactly(
+                Cash.of(10000),
+                Cash.of(10000),
+                Cash.of(10000),
+                Cash.of(10000),
+                Cash.of(10000)
+            ));
+    }
+
+    @DisplayName("라이더 아이디가 비정상적인 값이 입력되었을 때")
+    @Test
+    void invalidRiderRetrieve() {
+        when(riderService.retrieveByRaceId(anyLong())).thenReturn(
+            new RiderResponses(RiderFixture.createRidersInSameRaceByCount(5)));
+        when(raceService.retrieve(anyLong())).thenReturn(RaceFixture.retrieveFinishedResponse());
+
+        assertThatThrownBy(
+            () -> calculationService.retrieve(memberResponse, RaceFixture.TEST_RACE_ID, RiderFixture.WRONG_RIDER_ID))
+            .isInstanceOf(UnAuthenticatedException.class)
+            .hasMessage(String.format("회원 id : %d 는 권한이 없습니다.", RiderFixture.WRONG_RIDER_ID));
+    }
+
+    @DisplayName("회원의 아이디가 비정상적인 값이 입력되었을 때")
+    @Test
+    void invalidMemberRetrieve() {
+        when(riderService.retrieveByRaceId(anyLong())).thenReturn(
+            new RiderResponses(RiderFixture.createRidersInSameRaceByCount(5)));
+        when(raceService.retrieve(anyLong())).thenReturn(RaceFixture.retrieveFinishedResponse());
+
+        final MemberResponse memberResponse = MemberFixture.memberResponse(MemberFixture.WRONG_MEMBER_ID);
+        assertThatThrownBy(
+            () -> calculationService.retrieve(memberResponse, RaceFixture.TEST_RACE_ID, RiderFixture.TEST_RIDER_ID))
+            .isInstanceOf(UnAuthenticatedException.class)
+            .hasMessage(String.format("회원 id : %d 는 권한이 없습니다.", this.memberResponse.getId()));
+    }
+
+    @DisplayName("레이스가 아직 종료되지 않은 경우 예외를 반환한다.")
+    @Test
+    void notFinishedRaceRetrieve() {
+        when(riderService.retrieveByRaceId(anyLong())).thenReturn(
+            new RiderResponses(RiderFixture.createRidersInSameRaceByCount(5)));
+        when(raceService.retrieve(anyLong())).thenReturn(RaceFixture.retrieveNotFinishedResponse());
+
+        assertThatThrownBy(
+            () -> calculationService.retrieve(memberResponse, RaceFixture.TEST_RACE_ID, RiderFixture.TEST_RIDER_ID))
+            .isInstanceOf(RaceNotFinishedException.class)
+            .hasMessage(String.format("레이스 id : %d가 아직 진행중이에요!", RaceFixture.TEST_RACE_ID));
+    }
+
+    @DisplayName("정산되지 않은 결과를 조회할 때 예외를 반환한다.")
+    @Test
+    void notFoundCalculation() {
+        when(riderService.retrieveByRaceId(anyLong())).thenReturn(
+            new RiderResponses(RiderFixture.createRidersInSameRaceByCount(5)));
+        when(raceService.retrieve(anyLong())).thenReturn(RaceFixture.retrieveFinishedResponse());
+        when(calculationRepository.findAllByRaceId(anyLong())).thenReturn(Optional.empty());
+
+        assertThatThrownBy(
+            () -> calculationService.retrieve(memberResponse, RaceFixture.TEST_RACE_ID, RiderFixture.TEST_RIDER_ID))
+            .isInstanceOf(CalculationNotFoundException.class)
+            .hasMessage(String.format("Calculation(race id = %d) does not exist)", RaceFixture.TEST_RACE_ID));
     }
 }

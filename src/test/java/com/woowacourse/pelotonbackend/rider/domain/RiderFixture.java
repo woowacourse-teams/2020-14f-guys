@@ -18,6 +18,7 @@ import com.woowacourse.pelotonbackend.rider.presentation.dto.RiderUpdateRequest;
 public class RiderFixture {
     public static final Long TEST_RIDER_ID = 1L;
     public static final Long TEST_RIDER_ID2 = 2L;
+    public static final Long WRONG_RIDER_ID = 6L;
     public static final Long TEST_RACE_ID = 1L;
     public static final Long TEST_MEMBER_ID = 1L;
     public static final Long TEST_CHANGED_RACE_ID = 8L;
@@ -112,7 +113,7 @@ public class RiderFixture {
 
     public static List<RiderResponse> createRidersInSameRaceByCount(final int count) {
         return LongStream.range(1, count + 1)
-            .mapToObj(id -> RiderResponse.of(RiderFixture.createRiderWithIdAndMemberId(id)))
+            .mapToObj(id -> RiderResponse.of(createRiderWithIdAndMemberId(id)))
             .collect((Collectors.toList()));
     }
 }

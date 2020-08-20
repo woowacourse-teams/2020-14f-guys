@@ -41,11 +41,18 @@ public class Calculations {
                 .raceId(AggregateReference.to(race.getId()))
                 .riderId(AggregateReference.to(entry.getKey()))
                 .isCalculated(false)
-                .prize(totalFee.multiply(new Cash(BigDecimal.valueOf(entry.getValue() / totalCertificationCount))))
+                .prize(calculatePrize(totalCertificationCount, entry.getValue(), totalFee))
                 .build())
             .collect(Collectors.toList());
 
         return new Calculations(calculationRequest);
+    }
+
+    private static Cash calculatePrize(final long totalCertificationCount, final Long certificationCount,
+        final Cash totalFee) {
+
+        final Cash result = totalFee.multiply(Cash.of((double)certificationCount / totalCertificationCount));
+        return result.ceiling();
     }
 
     private static int getTotalCertificationCount(final Map<Long, Long> riderToCertificationCount) {
