@@ -66,7 +66,7 @@ public class QueryService {
         final List<Rider> riders = riderRepository.findRidersByMemberId(member.getId());
         final List<Race> races = retrieveRacesByRiderIds(riders);
         final List<Mission> missions = retrieveUpcomingMissionsByRaceIds(races);
-        final List<Certification> certifications = retrieveCertificationByMissionIds(missions);
+        final List<Certification> certifications = retrieveCertificationByMissionIdsAndRiderIds(missions, riders);
 
         final Map<Long, Rider> raceIdToRider = riders.stream()
             .collect(Collectors.toMap(rider -> rider.getRaceId().getId(), Function.identity()));
@@ -101,13 +101,18 @@ public class QueryService {
             LocalDateTime.ofInstant(Instant.now(), ZoneOffset.UTC));
     }
 
-    private List<Certification> retrieveCertificationByMissionIds(final List<Mission> missions) {
+    private List<Certification> retrieveCertificationByMissionIdsAndRiderIds(final List<Mission> missions,
+        final List<Rider> riders) {
+
         final List<Long> missionIds = missions.stream()
             .map(Mission::getId)
             .collect(Collectors.toList());
+        final List<Long> riderIds = riders.stream()
+            .map(Rider::getId)
+            .collect(Collectors.toList());
 
-        return certificationRepository.findByMissionIds(missionIds, PageRequest.of(0, Integer.MAX_VALUE))
-            .getContent();
+        return certificationRepository.findByMissionIdsAndRiderIds(missionIds, riderIds,
+            PageRequest.of(0, Integer.MAX_VALUE)).getContent();
     }
 
     public RaceDetailResponse findRaceDetail(final Long raceId) {

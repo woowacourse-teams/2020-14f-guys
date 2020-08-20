@@ -39,7 +39,7 @@ public class CertificationFixture {
     public static final ImageUrl TEST_CERTIFICATION_FILE_URL = new ImageUrl(
         "https://pbs.twimg.com/media/DeCmgVAUwAYOc-W.jpg");
     public static final ImageUrl TEST_UPDATED_CERTIFICATION_FILE_URL = new ImageUrl(
-        "https://lh3.googleusercontent.com/proxy/bAAFnEewpHmJqBSSHxSht7ZqN4tRXNm_IFsJDQEEEgBFDsxbZsFhIXbh2myOfSvOTYx0vWgskLDansgUDJ6sGoH6xAplaO3ORwxuKRk3EjxCfuE-jgPjMbGaT-dZE2Oz32Q3QLnR5iju8HES-PgpvL6kWUfVevaaAsMJS79FqAH-E85xyhFqIAoc6hDv5bm6WBPRL7jWW-4jVOZYev9R4Zq_n11j5sJKnaYBEUxy_6sbqxW46iFKVnv2JkPtvvsxfppiv6gNt8Y4Lft2ru4Fq8eCVOlaWq6W8RVk0Y9ubkXDDqapPSy1CdAjl7V6rCE1aA"
+        "https://lh3.googleusercontent.com/proxy/bAAFnEewpHmJqBSSHxSht7ZqN4tR.jpg"
     );
     public static final String TEST_CERTIFICATION_MULTIPART_NAME = "certification_image";
     public static final LocalDateTime TEST_CREATED_AT = LocalDateTime.parse(LocalDateTime.now()

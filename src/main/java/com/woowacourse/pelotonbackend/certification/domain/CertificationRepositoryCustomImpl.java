@@ -63,6 +63,23 @@ public class CertificationRepositoryCustomImpl implements CertificationRepositor
     }
 
     @Override
+    public Page<Certification> findByMissionIdsAndRiderIds(final List<Long> missionIds, final List<Long> riderIds,
+        final Pageable pageable) {
+
+        final SqlParameterSource parameterSource = new MapSqlParameterSource()
+            .addValue("missionIds", missionIds)
+            .addValue("riderIds", riderIds)
+            .addValue("offset", pageable.getOffset())
+            .addValue("pageSize", pageable.getPageSize());
+
+        final List<Certification> certifications = this.jdbcOperations.query(
+            CertificationSql.findByMissionIdsAndRiderIds(), parameterSource, this.rowMapper);
+
+        return PageableExecutionUtils.getPage(certifications, pageable, () ->
+            this.jdbcOperations.queryForObject(CertificationSql.countByMissionIds(), parameterSource, Long.class));
+    }
+
+    @Override
     public boolean existsByRiderIdAndMissionId(final Long riderId, final Long missionId) {
         final SqlParameterSource parameterSource = new MapSqlParameterSource()
             .addValue("riderId", riderId)

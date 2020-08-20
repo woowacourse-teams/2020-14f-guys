@@ -140,6 +140,7 @@ class QueryServiceTest {
         final List<Mission> missions = upcomingMissionWithIds();
         final List<Rider> expectedRiders = Arrays.asList(createRiderWithIdAndRaceId(TEST_RIDER_ID, TEST_RACE_ID),
             createRiderWithIdAndRaceId(TEST_RIDER_ID2, TEST_RACE_ID2));
+        final List<Long> riderIds = expectedRiders.stream().map(Rider::getId).collect(Collectors.toList());
         when(riderRepository.findRidersByMemberId(MEMBER_ID)).thenReturn(expectedRiders);
 
         final List<Long> raceIds = Arrays.asList(TEST_RACE_ID, TEST_RACE_ID2);
@@ -162,8 +163,8 @@ class QueryServiceTest {
             .build();
         final List<Certification> expectedCertifications = Collections.singletonList(
             expectedCertification);
-        when(certificationRepository.findByMissionIds(eq(certificationIds), any(Pageable.class)))
-            .thenReturn(new PageImpl<>(expectedCertifications));
+        when(certificationRepository.findByMissionIdsAndRiderIds(eq(certificationIds), eq(riderIds),
+            any(Pageable.class))).thenReturn(new PageImpl<>(expectedCertifications));
 
         final UpcomingMissionResponses responses = queryService.retrieveUpcomingMissionsBy(memberResponse());
 
@@ -187,7 +188,8 @@ class QueryServiceTest {
     @Test
     void findUpcomingByRaceIdsNoRider() {
         when(riderRepository.findRidersByMemberId(MEMBER_ID)).thenReturn(Collections.emptyList());
-        when(certificationRepository.findByMissionIds(anyList(), any(Pageable.class))).thenReturn(Page.empty());
+        when(certificationRepository.findByMissionIdsAndRiderIds(anyList(), anyList(), any(Pageable.class)))
+            .thenReturn(Page.empty());
 
         final UpcomingMissionResponses responses = queryService.retrieveUpcomingMissionsBy(memberResponse());
 
@@ -205,9 +207,12 @@ class QueryServiceTest {
         final RaceDetailResponse raceDetail = queryService.findRaceDetail(TEST_RACE_ID);
 
         assertAll(
-            () -> assertThat(raceDetail).isEqualToComparingOnlyGivenFields(race, "id", "title", "description", "thumbnail", "certificationExample", "category", "entranceFee", "raceDuration"),
-            () -> assertThat(raceDetail.getMissionDuration()).isEqualTo(new TimeDuration(START_TIME.toLocalTime(), END_TIME.toLocalTime())),
-            () -> assertThat(raceDetail.getDays()).isEqualTo(Arrays.asList(MISSION_DURATION.getStartTime().getDayOfWeek()))
+            () -> assertThat(raceDetail).isEqualToComparingOnlyGivenFields(race, "id", "title", "description",
+                "thumbnail", "certificationExample", "category", "entranceFee", "raceDuration"),
+            () -> assertThat(raceDetail.getMissionDuration()).isEqualTo(
+                new TimeDuration(START_TIME.toLocalTime(), END_TIME.toLocalTime())),
+            () -> assertThat(raceDetail.getDays()).isEqualTo(
+                Arrays.asList(MISSION_DURATION.getStartTime().getDayOfWeek()))
         );
     }
 }
