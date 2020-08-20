@@ -111,7 +111,8 @@ public class QueryService {
     }
 
     public RaceDetailResponse findRaceDetail(final Long raceId) {
-        final Race race = raceRepository.findById(raceId).orElseThrow(() -> new RaceNotFoundException(raceId));
+        final Race race = raceRepository.findById(raceId)
+            .orElseThrow(() -> new RaceNotFoundException(raceId));
         final List<Mission> missions = missionRepository.findByRaceId(raceId);
 
         final List<DayOfWeek> days = extractDaysOfWeekFrom(missions);
