@@ -21,7 +21,7 @@ const RaceCreateUnit = ({
   const [isShowPicker, setIsShowPicker] = useState(false);
 
   const convertISOFormatDate = (dateTime) => {
-    return DateFormatter.yyyyMMdd(new Date(dateTime.toISOString()));
+    return dateTime.toISOString().split("T")[0];
   };
 
   const onPickDate = (pickedDateTime) => {
