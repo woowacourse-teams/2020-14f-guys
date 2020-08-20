@@ -59,7 +59,7 @@ const ChangeProfile = () => {
       await MemberApi.postProfile(token, formData);
       navigateWithoutHistory(navigation, "ApplicationNavigationRoot");
     } catch (error) {
-      console.log(error.response.data.code);
+      console.log(error.response.data.message);
     }
     setIsLoading(false);
   };

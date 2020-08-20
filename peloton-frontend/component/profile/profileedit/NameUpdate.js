@@ -34,7 +34,7 @@ const NameUpdate = () => {
       navigation.navigate("ProfileEdit");
     } catch (error) {
       alert(error.response.data.code);
-      console.log(error.response.data.code);
+      console.log(error.response.data.message);
     }
     setIsLoading(false);
   };

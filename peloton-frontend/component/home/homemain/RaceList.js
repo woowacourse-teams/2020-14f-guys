@@ -21,7 +21,7 @@ const RaceList = () => {
         setRaces(race_responses);
       } catch (error) {
         alert(error.response.data.code);
-        console.log(error.response.data.code);
+        console.log(error.response.data.message);
         setRaces([]);
       }
     };

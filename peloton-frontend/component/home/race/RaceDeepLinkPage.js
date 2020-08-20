@@ -69,7 +69,7 @@ const RedirectPage = ({ route }) => {
       setMemberInfo(newMemberInfo);
       navigateToRaceDetail();
     } catch (error) {
-      console.log(error.response.data.code);
+      console.log(error.response.data.message);
     }
     setLoadingState(false);
   };
@@ -121,7 +121,7 @@ const RedirectPage = ({ route }) => {
         }
       } catch (error) {
         alert(error.response.data.code);
-        console.log(error.response.data.code);
+        console.log(error.response.data.message);
         navigateWithoutHistory(navigation, "Home");
       }
     };

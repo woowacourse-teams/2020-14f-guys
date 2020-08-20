@@ -93,7 +93,7 @@ const InputRaceFee = () => {
       setMemberInfo(newMemberInfo);
       await createRaceRequest();
     } catch (e) {
-      console.log(e.response.data.code);
+      console.log(e.response.data.message);
     }
   };
 

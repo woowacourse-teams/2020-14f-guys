@@ -54,7 +54,7 @@ export const MemberApi = {
         baseURL: SERVER_BASE_URL,
         url: "/api/members/name",
         headers: {
-          Authorization: `Bearer ${token}asdasd`,
+          Authorization: `Bearer ${token}`,
         },
         data: {
           name,
