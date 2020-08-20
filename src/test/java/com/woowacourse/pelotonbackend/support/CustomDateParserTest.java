@@ -1,15 +1,22 @@
 package com.woowacourse.pelotonbackend.support;
 
 import static org.assertj.core.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 import java.time.DayOfWeek;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Stream;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 
 import com.woowacourse.pelotonbackend.certification.domain.TimeDuration;
 import com.woowacourse.pelotonbackend.mission.domain.DateTimeDuration;
@@ -48,15 +55,30 @@ public class CustomDateParserTest {
     }
 
     @DisplayName("날짜들과 시간 구간이 주어졌을 때, 둘을 합쳐서 날짜+시간의 구간이 나오는지 테스트")
-    @Test
-    void dateToDuration() {
+    @ParameterizedTest
+    @MethodSource("generateTimes")
+    void dateToDuration(LocalTime startTime, LocalTime endTime) {
         List<LocalDate> dates = MissionFixture.datesFixture();
-        TimeDuration timeDuration = MissionFixture.timeDurationFixture();
 
-        List<DateTimeDuration> expected = MissionFixture.dateTimeDurationsFixture();
+        List<DateTimeDuration> results = dateParser.convertDateToDuration(dates, new TimeDuration(startTime, endTime));
 
-        List<DateTimeDuration> results = dateParser.convertDateToDuration(dates, timeDuration);
+        assertAll(
+            () -> assertThat(results).extracting(dateTime -> dateTime.getStartTime().toLocalDate())
+            .containsExactlyInAnyOrderElementsOf(dates),
+            () -> assertThat(results).extracting(dateTime -> dateTime.getStartTime().toLocalTime())
+                .containsOnly(startTime),
+            () -> assertThat(results).extracting(dateTime -> dateTime.getEndTime().toLocalTime())
+                .containsOnly(endTime)
+            );
+    }
 
-        assertThat(results).isEqualTo(expected);
+    private static Stream<Arguments> generateTimes() {
+        return Stream.of(
+            Arguments.of(LocalTime.of(7, 0), LocalTime.of(9, 30)),
+            Arguments.of(LocalTime.of(23, 0), LocalTime.of(23, 5)),
+            Arguments.of(LocalTime.of(1, 0), LocalTime.of(23, 30)),
+            Arguments.of(LocalTime.of(23, 0), LocalTime.of(1, 30)),
+            Arguments.of(LocalTime.of(23, 0), LocalTime.of(22, 30))
+        );
     }
 }
