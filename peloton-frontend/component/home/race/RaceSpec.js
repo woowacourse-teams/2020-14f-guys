@@ -36,9 +36,12 @@ const RaceSpec = ({
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingTop: 30,
-    paddingBottom: 10,
-    paddingHorizontal: 30,
+    padding: 30,
+    paddingTop: 40,
+    margin: 20,
+    borderWidth: 1,
+    borderColor: COLOR.GRAY5,
+    borderRadius: 20,
   },
   border: {
     borderWidth: 1,

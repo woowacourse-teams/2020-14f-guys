@@ -18,20 +18,13 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     overflow: "hidden",
-    borderBottomEndRadius: 70,
-    shadowColor: "rgba(27, 28, 32, 0.3)",
-    shadowOffset: {
-      width: 3,
-      height: 20,
-    },
-    shadowRadius: 30,
-    shadowOpacity: 1,
   },
   image: {
     height: 200,
   },
   raceInfoText: {
-    padding: 20,
+    paddingHorizontal: 30,
+    paddingTop: 25,
     backgroundColor: COLOR.WHITE,
   },
   title: {

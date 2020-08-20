@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { ScrollView, StyleSheet, View } from "react-native";
+import { ScrollView, StyleSheet } from "react-native";
 import RaceDetailInfo from "./RaceDetailInfo";
 import RaceCertificationImages from "./RaceCertificationImages";
 import RaceSpec from "./RaceSpec";
@@ -14,6 +14,7 @@ import { QueryApi } from "../../../utils/api/QueryApi";
 import LoadingIndicator from "../../../utils/LoadingIndicator";
 import { certificationsState } from "../../../state/certification/CertificationState";
 import { RaceApi } from "../../../utils/api/RaceApi";
+import { COLOR } from "../../../utils/constants";
 
 const RaceDetail = ({ route }) => {
   const raceId = route.params.id;
@@ -76,16 +77,7 @@ const RaceDetail = ({ route }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-  },
-  cardContainer: {
-    paddingRight: 30,
-    shadowColor: "rgba(27, 28, 32, 0.1)",
-    shadowOffset: {
-      width: 0,
-      height: 5,
-    },
-    shadowRadius: 10,
-    shadowOpacity: 1,
+    backgroundColor: COLOR.WHITE,
   },
 });
 
