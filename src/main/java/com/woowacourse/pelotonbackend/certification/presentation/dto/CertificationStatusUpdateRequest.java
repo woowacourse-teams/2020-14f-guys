@@ -6,6 +6,7 @@ import javax.validation.constraints.NotNull;
 
 import com.fasterxml.jackson.databind.PropertyNamingStrategy;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
+import com.woowacourse.pelotonbackend.certification.domain.Certification;
 import com.woowacourse.pelotonbackend.certification.domain.CertificationStatus;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -19,4 +20,10 @@ import lombok.Getter;
 public class CertificationStatusUpdateRequest {
     @NotNull
     private final CertificationStatus status;
+
+    public Certification getUpdatedCertification(final Certification certification) {
+        return certification.toBuilder()
+            .status(status)
+            .build();
+    }
 }

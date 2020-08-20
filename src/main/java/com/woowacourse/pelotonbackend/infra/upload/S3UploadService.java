@@ -45,7 +45,6 @@ public class S3UploadService implements UploadService {
         try {
             requestToUpload(file, key);
         } catch (SdkClientException | IOException e) {
-            e.printStackTrace();
             throw new UploadFailureException(e);
         }
 

@@ -1,7 +1,5 @@
 package com.woowacourse.pelotonbackend.certification.application;
 
-import javax.validation.constraints.NotNull;
-
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -10,14 +8,13 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.woowacourse.pelotonbackend.certification.domain.Certification;
 import com.woowacourse.pelotonbackend.certification.domain.CertificationRepository;
-import com.woowacourse.pelotonbackend.certification.presentation.dto.CertificationCreateRequest;
 import com.woowacourse.pelotonbackend.certification.presentation.dto.CertificationDescriptionUpdateRequest;
+import com.woowacourse.pelotonbackend.certification.presentation.dto.CertificationRequest;
 import com.woowacourse.pelotonbackend.certification.presentation.dto.CertificationResponse;
 import com.woowacourse.pelotonbackend.certification.presentation.dto.CertificationResponses;
 import com.woowacourse.pelotonbackend.certification.presentation.dto.CertificationStatusUpdateRequest;
 import com.woowacourse.pelotonbackend.common.exception.CertificationDuplicatedException;
 import com.woowacourse.pelotonbackend.common.exception.CertificationNotFoundException;
-import com.woowacourse.pelotonbackend.common.exception.RiderDuplicatedException;
 import com.woowacourse.pelotonbackend.infra.upload.UploadService;
 import lombok.RequiredArgsConstructor;
 
@@ -25,22 +22,22 @@ import lombok.RequiredArgsConstructor;
 @Service
 @Transactional
 public class CertificationService {
+    private static final String CERTIFICATION_IMAGE_PATH_PREFIX = "certification.image/";
+
     private final CertificationRepository certificationRepository;
     private final UploadService uploadService;
 
-    public Long create(final MultipartFile file, final CertificationCreateRequest certificationCreateRequest) {
-        final String imageUrl = uploadService.uploadImage(file, "certification.image/");
-        final Long riderId = certificationCreateRequest.getRiderId();
-        final Long missionId = certificationCreateRequest.getMissionId();
-
-        final boolean isCertificationAlreadyExists = certificationRepository
-            .existsByRiderIdAndMissionId(riderId, missionId);
-
+    public Long create(final MultipartFile file, final CertificationRequest certificationRequest) {
+        final Long riderId = certificationRequest.getRiderId();
+        final Long missionId = certificationRequest.getMissionId();
+        final boolean isCertificationAlreadyExists = certificationRepository.existsByRiderIdAndMissionId(riderId,
+            missionId);
         if (isCertificationAlreadyExists) {
             throw new CertificationDuplicatedException(riderId, missionId);
         }
 
-        final Certification certification = certificationCreateRequest.toCertification(imageUrl);
+        final String imageUrl = uploadService.uploadImage(file, CERTIFICATION_IMAGE_PATH_PREFIX);
+        final Certification certification = certificationRequest.toCertification(imageUrl);
         final Certification persistCertification = certificationRepository.save(certification);
 
         return persistCertification.getId();
@@ -60,17 +57,27 @@ public class CertificationService {
         return CertificationResponses.of(certifications);
     }
 
+    public Long update(final MultipartFile file, final CertificationRequest certificationRequest, final Long id) {
+        final Certification certification = findById(id);
+
+        final String imageUrl = uploadService.uploadImage(file, CERTIFICATION_IMAGE_PATH_PREFIX);
+        final Certification updatedCertification = certificationRequest.toUpdatedCertification(certification, imageUrl);
+        final Certification persistCertification = certificationRepository.save(updatedCertification);
+
+        return persistCertification.getId();
+    }
+
     public Long updateDescription(final Long id, final CertificationDescriptionUpdateRequest request) {
-        final Certification certification = this.findById(id);
-        final Certification updated = certification.updateDescription(request);
+        final Certification certification = findById(id);
+        final Certification updated = request.getUpdatedCertification(certification);
         final Certification updatedCertification = certificationRepository.save(updated);
 
         return updatedCertification.getId();
     }
 
     public Long updateStatus(final Long id, final CertificationStatusUpdateRequest request) {
-        final Certification certification = this.findById(id);
-        final Certification updated = certification.updateStatus(request);
+        final Certification certification = findById(id);
+        final Certification updated = request.getUpdatedCertification(certification);
         final Certification updatedCertification = certificationRepository.save(updated);
 
         return updatedCertification.getId();

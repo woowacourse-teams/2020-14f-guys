@@ -19,20 +19,21 @@ const CertificationItem = ({ item, index, currentTime }) => {
 
   useEffect(() => {
     const startLeftTime = missionStartTime - currentTime;
-    // TODO: 타임존 해결
-    // new Date("2020-08-13T19:46:54.725+09:00") - currentTime) / 1000 / 3600
-    // new Date("2020-08-13T19:46:54.725") - currentTime) / 1000 / 3600
     if (startLeftTime > 0) {
       setLeftTime(startLeftTime);
       setCertificationType(CERTIFICATION_TYPE.WAIT);
     } else {
+      if (item.certification) {
+        setCertificationType(CERTIFICATION_TYPE.DONE);
+      } else {
+        setCertificationType(CERTIFICATION_TYPE.AVAILABLE);
+      }
       setLeftTime(missionEndTime - currentTime);
-      setCertificationType(CERTIFICATION_TYPE.AVAILABLE);
     }
   }, [currentTime]);
 
-  const navigateToCertificate = () => {
-    navigation.navigate("CertificationSubmit", { index });
+  const navigateToCertificate = (isFirst) => {
+    navigation.navigate("CertificationSubmit", { index, isFirst });
   };
 
   const timeForm = () => {
@@ -42,7 +43,9 @@ const CertificationItem = ({ item, index, currentTime }) => {
 
   const onSelect = () => {
     if (certificationType === CERTIFICATION_TYPE.AVAILABLE) {
-      return navigateToCertificate();
+      return navigateToCertificate(true);
+    } else if (certificationType === CERTIFICATION_TYPE.DONE) {
+      return navigateToCertificate(false);
     } else if (certificationType === CERTIFICATION_TYPE.WAIT) {
       return () => {};
     }
@@ -87,7 +90,9 @@ const CertificationItem = ({ item, index, currentTime }) => {
           backgroundColor: certificationType.color,
         }}
       >
-        <Text style={styles.itemTitle}>{item.race.title}</Text>
+        <Text style={styles.itemTitle} numberOfLines={2}>
+          {item.race.title}
+        </Text>
         <Text style={styles.itemSubtitle}>{timeForm()}</Text>
       </View>
       <View
@@ -124,6 +129,7 @@ const styles = StyleSheet.create({
     fontSize: 15,
   },
   certificationInfo: {
+    maxWidth: 250,
     backgroundColor: COLOR.DARK_GRAY6,
     position: "absolute",
     bottom: 25,

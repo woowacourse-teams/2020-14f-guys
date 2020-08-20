@@ -137,9 +137,17 @@ export const CERTIFICATION_TYPE = {
     backgroundColor: "#111",
     message: "인증 가능",
   },
+  DONE: {
+    activeOpacity: 0.7,
+    blurRadius: 0,
+    color: "rgba(52,199,89,0.3)",
+    typeColor: "rgba(52,199,89,0.7)",
+    backgroundColor: "#111",
+    message: "인증 완료",
+  },
   WAIT: {
     activeOpacity: 1,
-    blurRadius: 10,
+    blurRadius: 3,
     color: "#444",
     typeColor: "#444",
     backgroundColor: "#666",

@@ -17,7 +17,8 @@ public class CertificationDocumentation {
             getDocumentRequest(),
             getDocumentResponse(),
             requestHeaders(
-                headerWithName(HttpHeaders.AUTHORIZATION).description("사용자 인증 토큰")
+                headerWithName(HttpHeaders.AUTHORIZATION).description("사용자 인증 토큰"),
+                headerWithName(HttpHeaders.CONTENT_TYPE).description("Content-Type 헤더")
             ),
             requestParts(
                 partWithName("certification_image").description("인증 사진")
@@ -128,6 +129,32 @@ public class CertificationDocumentation {
         );
     }
 
+    public static RestDocumentationResultHandler updateCertification() {
+        return document("certification/update-success",
+            getDocumentRequest(),
+            getDocumentResponse(),
+            requestHeaders(
+                headerWithName(HttpHeaders.AUTHORIZATION).description("사용자 인증 토큰"),
+                headerWithName(HttpHeaders.CONTENT_TYPE).description("Content-Type 헤더")
+            ),
+            requestParts(
+                partWithName("certification_image").description("인증 사진")
+            ),
+            pathParameters(
+                parameterWithName("id").description("인증 ID")
+            ),
+            requestParameters(
+                parameterWithName("status").description("인증 성공 여부"),
+                parameterWithName("description").description("인증 세부내용").optional(),
+                parameterWithName("riderId").description("인증 라이더 ID"),
+                parameterWithName("missionId").description("미션 ID")
+            ),
+            responseHeaders(
+                headerWithName("Location").description("생성된 리소스 정보")
+            )
+        );
+    }
+
     public static RestDocumentationResultHandler updateDescription() {
         return document("certification/update-description",
             getDocumentRequest(),
@@ -187,8 +214,7 @@ public class CertificationDocumentation {
             getDocumentResponse(),
             requestHeaders(
                 headerWithName(HttpHeaders.AUTHORIZATION).description("사용자 인증 토큰"),
-                headerWithName(HttpHeaders.CONTENT_TYPE).description("Content-Type 헤더"),
-                headerWithName(HttpHeaders.ACCEPT).description("Accept 헤더")
+                headerWithName(HttpHeaders.CONTENT_TYPE).description("Content-Type 헤더")
             ),
             requestParts(
                 partWithName("certification_image").description("인증 사진")

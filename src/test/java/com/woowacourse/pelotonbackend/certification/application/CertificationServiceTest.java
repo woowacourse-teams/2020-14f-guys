@@ -8,6 +8,8 @@ import static org.mockito.BDDMockito.*;
 
 import java.util.Optional;
 
+import javax.validation.constraints.NotBlank;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -22,7 +24,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.woowacourse.pelotonbackend.certification.domain.Certification;
 import com.woowacourse.pelotonbackend.certification.domain.CertificationRepository;
-import com.woowacourse.pelotonbackend.certification.presentation.dto.CertificationCreateRequest;
+import com.woowacourse.pelotonbackend.certification.presentation.dto.CertificationRequest;
 import com.woowacourse.pelotonbackend.certification.presentation.dto.CertificationResponse;
 import com.woowacourse.pelotonbackend.certification.presentation.dto.CertificationResponses;
 import com.woowacourse.pelotonbackend.common.exception.CertificationDuplicatedException;
@@ -39,27 +41,23 @@ class CertificationServiceTest {
     private UploadService uploadService;
 
     private MultipartFile multipartFile;
-    private CertificationCreateRequest certificationCreateRequest;
+    private CertificationRequest certificationRequest;
 
     @BeforeEach
     void setUp() {
         certificationService = new CertificationService(certificationRepository, uploadService);
         multipartFile = createMockCertificationMultipartFile();
-        certificationCreateRequest = createMockCertificationRequest();
+        certificationRequest = createMockCertificationRequest();
     }
 
     @DisplayName("Certification 생성 시 아이디를 반환하는지 확인")
     @Test
     void create() {
         given(certificationRepository.save(createCertificationWithoutId())).willReturn(createCertificationWithId());
-        given(uploadService.uploadImage(multipartFile, CERTIFICATION_IMAGE_PATH)).willReturn(
-            TEST_CERTIFICATION_FILE_URL.getBaseImageUrl());
+        given(uploadService.uploadImage(multipartFile, CERTIFICATION_IMAGE_PATH))
+            .willReturn(TEST_CERTIFICATION_FILE_URL.getBaseImageUrl());
 
-        assertAll(
-            () -> assertThat(
-                certificationService.create(multipartFile, certificationCreateRequest))
-                .isEqualTo(TEST_CERTIFICATION_ID)
-        );
+        assertThat(certificationService.create(multipartFile, certificationRequest)).isEqualTo(TEST_CERTIFICATION_ID);
     }
 
     @DisplayName("Certification 중복 생성 시 예외를 반환한다.")
@@ -71,8 +69,8 @@ class CertificationServiceTest {
         given(uploadService.uploadImage(multipartFile, CERTIFICATION_IMAGE_PATH)).willReturn(
             TEST_CERTIFICATION_FILE_URL.getBaseImageUrl());
 
-        certificationService.create(multipartFile, certificationCreateRequest);
-        assertThatThrownBy(() -> certificationService.create(multipartFile, certificationCreateRequest))
+        certificationService.create(multipartFile, certificationRequest);
+        assertThatThrownBy(() -> certificationService.create(multipartFile, certificationRequest))
             .isInstanceOf(CertificationDuplicatedException.class)
             .hasMessage("Certification(rider id: %d, mission id: %d) already exists!", TEST_RIDER_ID, TEST_MISSION_ID);
     }
@@ -96,7 +94,8 @@ class CertificationServiceTest {
     @Test
     void retrieveByRiderId() {
         final PageRequest page = PageRequest.of(0, 1, Sort.Direction.DESC, "status");
-        given(certificationRepository.findByRiderId(anyLong(), any(Pageable.class))).willReturn(createMockPagedCertifications(page));
+        given(certificationRepository.findByRiderId(anyLong(), any(Pageable.class))).willReturn(
+            createMockPagedCertifications(page));
         final CertificationResponses certificationResponses = certificationService.retrieveByRiderId(TEST_RIDER_ID,
             page);
 
@@ -109,12 +108,30 @@ class CertificationServiceTest {
         );
     }
 
+    @DisplayName("Certification을 수정한다.")
+    @Test
+    void update() {
+        final Certification createdCertification = createCertificationWithId();
+        final CertificationRequest updateRequest = updateMockCertificationRequest();
+        given(certificationRepository.findById(createdCertification.getId()))
+            .willReturn(Optional.of(createdCertification));
+        final String imageUrl = TEST_UPDATED_CERTIFICATION_FILE_URL.getBaseImageUrl();
+        given(uploadService.uploadImage(updateMockCertificationMultipartFile(), CERTIFICATION_IMAGE_PATH))
+            .willReturn(imageUrl);
+        given(certificationRepository.save(updateRequest.toUpdatedCertification(createdCertification, imageUrl)))
+            .willReturn(updatedCertification());
+
+        assertThat(certificationService.update(multipartFile, certificationRequest, createdCertification.getId()))
+            .isEqualTo(TEST_CERTIFICATION_ID);
+    }
+
     @DisplayName("인증 사진의 상세 설명을 수정한다.")
     @Test
     void updateDescription() {
         final Certification expectedCertification = createCertificationWithId();
         given(certificationRepository.findById(anyLong())).willReturn(Optional.of(expectedCertification));
-        given(certificationRepository.save(any(Certification.class))).willReturn(createDescriptionUpdatedCertification());
+        given(certificationRepository.save(any(Certification.class))).willReturn(
+            createDescriptionUpdatedCertification());
         final Long updatedCertificationId = certificationService.updateDescription(TEST_CERTIFICATION_ID,
             createDescriptionUpdateRequest());
 

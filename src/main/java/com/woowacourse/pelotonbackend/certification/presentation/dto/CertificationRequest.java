@@ -2,7 +2,6 @@ package com.woowacourse.pelotonbackend.certification.presentation.dto;
 
 import java.beans.ConstructorProperties;
 
-import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
 import org.springframework.data.jdbc.core.mapping.AggregateReference;
@@ -14,10 +13,10 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 
-@AllArgsConstructor(onConstructor_ = @ConstructorProperties({"status","description","riderId","missionId"}))
+@AllArgsConstructor(onConstructor_ = @ConstructorProperties({"status", "description", "riderId", "missionId"}))
 @Builder
 @Getter
-public class CertificationCreateRequest {
+public class CertificationRequest {
     @NotNull
     private final CertificationStatus status;
 
@@ -31,11 +30,21 @@ public class CertificationCreateRequest {
 
     public Certification toCertification(final String imageUrl) {
         return Certification.builder()
-            .status(this.status)
-            .description(this.description)
-            .riderId(AggregateReference.to(this.riderId))
-            .missionId(AggregateReference.to(this.missionId))
+            .status(status)
+            .description(description)
+            .riderId(AggregateReference.to(riderId))
+            .missionId(AggregateReference.to(missionId))
             .image(new ImageUrl(imageUrl))
+            .build();
+    }
+
+    public Certification toUpdatedCertification(final Certification certification, final String imageUrl) {
+        return certification.toBuilder()
+            .status(status)
+            .description(description)
+            .image(new ImageUrl(imageUrl))
+            .missionId(AggregateReference.to(missionId))
+            .riderId(AggregateReference.to(riderId))
             .build();
     }
 }

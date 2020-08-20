@@ -6,6 +6,7 @@ import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.*;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.delete;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.patch;
+import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.fileUpload;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -38,7 +39,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.woowacourse.pelotonbackend.certification.application.CertificationService;
-import com.woowacourse.pelotonbackend.certification.presentation.dto.CertificationCreateRequest;
+import com.woowacourse.pelotonbackend.certification.presentation.dto.CertificationRequest;
 import com.woowacourse.pelotonbackend.certification.presentation.dto.CertificationResponse;
 import com.woowacourse.pelotonbackend.common.ErrorCode;
 import com.woowacourse.pelotonbackend.common.exception.CertificationDuplicatedException;
@@ -82,16 +83,16 @@ class CertificationControllerTest {
     @DisplayName("정상 request에 대한 생성")
     @Test
     void create() throws Exception {
-        given(certificationService.create(any(MultipartFile.class), any(CertificationCreateRequest.class)))
+        given(certificationService.create(any(MultipartFile.class), any(CertificationRequest.class)))
             .willReturn(TEST_CERTIFICATION_ID);
         given(authInterceptor.preHandle(any(HttpServletRequest.class), any(HttpServletResponse.class),
             any(HandlerMethod.class))).willReturn(true);
-        given(argumentResolver.supportsParameter(any())).willCallRealMethod();
+        given(argumentResolver.supportsParameter(any(MethodParameter.class))).willReturn(false).willReturn(true);
         given(argumentResolver.resolveArgument(any(MethodParameter.class), any(ModelAndViewContainer.class),
             any(NativeWebRequest.class), any(WebDataBinderFactory.class))).willReturn(MemberFixture.memberResponse());
 
         mockMvc.perform(
-            multipart("/api/certifications", TEST_RIDER_ID, TEST_MISSION_ID)
+            multipart("/api/certifications")
                 .file(createMockCertificationMultipartFile())
                 .header(HttpHeaders.AUTHORIZATION, LoginFixture.getTokenHeader())
                 .contentType(MediaType.MULTIPART_FORM_DATA_VALUE)
@@ -108,8 +109,8 @@ class CertificationControllerTest {
     @DisplayName("비정상 request에 대한 생성")
     @Test
     void createWithBadRequest() throws Exception {
-        final CertificationCreateRequest badRequest = createBadMockCertificationRequest();
-        given(certificationService.create(any(MultipartFile.class), any(CertificationCreateRequest.class)))
+        final CertificationRequest badRequest = createBadMockCertificationRequest();
+        given(certificationService.create(any(MultipartFile.class), any(CertificationRequest.class)))
             .willReturn(TEST_CERTIFICATION_ID);
         given(authInterceptor.preHandle(any(HttpServletRequest.class), any(HttpServletResponse.class),
             any(HandlerMethod.class))).willReturn(true);
@@ -136,20 +137,19 @@ class CertificationControllerTest {
     @DisplayName("중복 reqeuest시 예외를 반환한다.")
     @Test
     void createDuplicatedRequest() throws Exception {
-        given(certificationService.create(any(MultipartFile.class), any(CertificationCreateRequest.class)))
+        given(certificationService.create(any(MultipartFile.class), any(CertificationRequest.class)))
             .willThrow(new CertificationDuplicatedException(TEST_RIDER_ID, TEST_MISSION_ID));
         given(authInterceptor.preHandle(any(HttpServletRequest.class), any(HttpServletResponse.class),
             any(HandlerMethod.class))).willReturn(true);
-        given(argumentResolver.supportsParameter(any())).willCallRealMethod();
+        given(argumentResolver.supportsParameter(any(MethodParameter.class))).willReturn(false).willReturn(true);
         given(argumentResolver.resolveArgument(any(MethodParameter.class), any(ModelAndViewContainer.class),
             any(NativeWebRequest.class), any(WebDataBinderFactory.class))).willReturn(MemberFixture.memberResponse());
 
         mockMvc.perform(
-            multipart("/api/certifications", TEST_RIDER_ID, TEST_MISSION_ID)
+            fileUpload("/api/certifications")
                 .file(createMockCertificationMultipartFile())
                 .header(HttpHeaders.AUTHORIZATION, LoginFixture.getTokenHeader())
                 .contentType(MediaType.MULTIPART_FORM_DATA_VALUE)
-                .accept(MediaType.APPLICATION_JSON)
                 .param("status", TEST_CERTIFICATION_STATUS.name())
                 .param("description", TEST_CERTIFICATION_DESCRIPTION)
                 .param("riderId", TEST_RIDER_ID.toString())
@@ -196,6 +196,32 @@ class CertificationControllerTest {
             .andExpect(status().isNotFound())
             .andExpect(jsonPath("code").value(ErrorCode.CERTIFICATION_NOT_FOUND.getCode()))
             .andDo(CertificationDocumentation.getBadCertification());
+    }
+
+    @DisplayName("정상적인 요청에 대해 Certification을 수정한다")
+    @Test
+    void update() throws Exception {
+        given(certificationService.update(any(MultipartFile.class), any(CertificationRequest.class),
+            eq(TEST_CERTIFICATION_ID))).willReturn(TEST_CERTIFICATION_ID);
+        given(authInterceptor.preHandle(any(HttpServletRequest.class), any(HttpServletResponse.class),
+            any(HandlerMethod.class))).willReturn(true);
+        given(argumentResolver.supportsParameter(any(MethodParameter.class))).willReturn(false).willReturn(true);
+        given(argumentResolver.resolveArgument(any(MethodParameter.class), any(ModelAndViewContainer.class),
+            any(NativeWebRequest.class), any(WebDataBinderFactory.class))).willReturn(MemberFixture.memberResponse());
+
+        mockMvc.perform(
+            fileUpload("/api/certifications/update/{id}", TEST_CERTIFICATION_ID)
+                .file(updateMockCertificationMultipartFile())
+                .header(HttpHeaders.AUTHORIZATION, LoginFixture.getTokenHeader())
+                .contentType(MediaType.MULTIPART_FORM_DATA_VALUE)
+                .param("status", TEST_UPDATED_CERTIFICATION_STATUS.name())
+                .param("description", TEST_UPDATED_CERTIFICATION_DESCRIPTION)
+                .param("riderId", TEST_UPDATED_RIDER_ID.toString())
+                .param("missionId", TEST_UPDATED_MISSION_ID.toString()))
+            .andExpect(status().isOk())
+            .andExpect(
+                header().stringValues("location", String.format("/api/certifications/%d", TEST_CERTIFICATION_ID)))
+            .andDo(CertificationDocumentation.updateCertification());
     }
 
     @DisplayName("참여자가 인증한 사진을 불러온다.")

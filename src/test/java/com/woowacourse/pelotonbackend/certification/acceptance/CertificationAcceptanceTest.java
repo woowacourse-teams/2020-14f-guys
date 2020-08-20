@@ -9,8 +9,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 
 import com.woowacourse.pelotonbackend.certification.domain.CertificationFixture;
-import com.woowacourse.pelotonbackend.certification.presentation.dto.CertificationCreateRequest;
 import com.woowacourse.pelotonbackend.certification.presentation.dto.CertificationDescriptionUpdateRequest;
+import com.woowacourse.pelotonbackend.certification.presentation.dto.CertificationRequest;
 import com.woowacourse.pelotonbackend.certification.presentation.dto.CertificationResponse;
 import com.woowacourse.pelotonbackend.certification.presentation.dto.CertificationStatusUpdateRequest;
 import com.woowacourse.pelotonbackend.common.ErrorCode;
@@ -34,8 +34,7 @@ public class CertificationAcceptanceTest extends AcceptanceTest {
      * Given: Certification가 존재한다.
      * When: Certification을 조회한다.
      * Then: Certification을 반환한다.
-     *
-     *
+     *     *
      * Given: Certification의 상세 설명을 업데이트한다.
      * When: Certification을 조회한다.
      * Then: 업데이트된 Certification이 반환된다.
@@ -44,6 +43,10 @@ public class CertificationAcceptanceTest extends AcceptanceTest {
      * When: Certification을 조회한다.
      * Then: 업데이트된 Certification이 반환된다.
      *
+     * Given: Certification을 업데이트한다.
+     * When: Certification을 조회한다.
+     * Then: 업데이트된 Certification이 반환된다.
+
      * Given: Certification를 삭제한다.
      * When: Certification을 조회한다.
      * Then: Certification이 조회되지 않는다.
@@ -53,32 +56,39 @@ public class CertificationAcceptanceTest extends AcceptanceTest {
     void manageCertification() {
         final JwtTokenResponse token = loginMember(
             MemberFixture.createRequest(MemberFixture.KAKAO_ID, MemberFixture.EMAIL, MemberFixture.NAME));
-        final CertificationCreateRequest createRequest = CertificationFixture.createMockCertificationRequest();
+        final CertificationRequest createRequest = CertificationFixture.createMockCertificationRequest();
+        final CertificationRequest updateCertificationRequest = updateMockCertificationRequest();
         final CertificationDescriptionUpdateRequest descriptionUpdateRequest = CertificationFixture.createDescriptionUpdateRequest();
         final CertificationStatusUpdateRequest statusUpdateRequest = CertificationFixture.createStatusUpdateRequest();
 
         final String resource = fetchCreateCertification(token, createRequest);
         final CertificationResponse response = fetchRetrieveCertification(token, resource);
-        assertThat(createRequest).isEqualToIgnoringGivenFields(response, "id", "createdAt", "updatedAt","description");
+        assertThat(createRequest).isEqualToIgnoringGivenFields(response, "id", "createdAt", "updatedAt", "description");
 
         createDuplicatedCertification(token, createRequest);
 
         fetchUpdateDescriptionCertification(token, descriptionUpdateRequest);
         final CertificationResponse descriptionUpdated = fetchRetrieveCertification(token, resource);
-        assertThat(response).isEqualToIgnoringGivenFields(descriptionUpdated,"updatedAt", "description");
+        assertThat(response).isEqualToIgnoringGivenFields(descriptionUpdated, "updatedAt", "description");
         assertThat(descriptionUpdated.getDescription()).isEqualTo(descriptionUpdated.getDescription());
 
         fetchUpdateStatusCertification(token, statusUpdateRequest);
         final CertificationResponse statusUpdated = fetchRetrieveCertification(token, resource);
-        assertThat(statusUpdated).isEqualToIgnoringGivenFields(descriptionUpdated,"updatedAt", "status");
+        assertThat(statusUpdated).isEqualToIgnoringGivenFields(descriptionUpdated, "updatedAt", "status");
         assertThat(statusUpdated.getStatus().name()).isEqualTo(statusUpdateRequest.getStatus().name());
+
+        fetchUpdateCertification(token, updateCertificationRequest);
+        final CertificationResponse updatedCertification = fetchRetrieveCertification(token, resource);
+        assertThat(updatedCertification).isEqualToComparingOnlyGivenFields(updateCertificationRequest,
+            "status", "riderId", "missionId");
+        assertThat(updatedCertification.getImage()).isNotEqualTo(response.getImage());
 
         fetchDeleteCertification(token, resource);
         fetchCertificationNotFound(token, resource);
     }
 
     private void createDuplicatedCertification(final JwtTokenResponse token,
-        final CertificationCreateRequest createRequest) {
+        final CertificationRequest createRequest) {
 
         final ErrorResponse errorResponse = given()
             .header(createTokenHeader(token))
@@ -97,7 +107,8 @@ public class CertificationAcceptanceTest extends AcceptanceTest {
             .extract()
             .as(ErrorResponse.class);
 
-        assertThat(errorResponse).extracting(ErrorResponse::getCode).isEqualTo(ErrorCode.CERTIFICATION_DUPLICATE.getCode());
+        assertThat(errorResponse).extracting(ErrorResponse::getCode)
+            .isEqualTo(ErrorCode.CERTIFICATION_DUPLICATE.getCode());
         assertThat(errorResponse).extracting(ErrorResponse::getMessage)
             .isEqualTo(String.format("Certification(rider id: %d, mission id: %d) already exists!",
                 createRequest.getRiderId(), createRequest.getMissionId()));
@@ -105,7 +116,7 @@ public class CertificationAcceptanceTest extends AcceptanceTest {
 
     private String fetchCreateCertification(
         final JwtTokenResponse token,
-        final CertificationCreateRequest createRequest) {
+        final CertificationRequest createRequest) {
         return given()
             .header(createTokenHeader(token))
             .contentType(MediaType.MULTIPART_FORM_DATA_VALUE)
@@ -167,6 +178,22 @@ public class CertificationAcceptanceTest extends AcceptanceTest {
             .statusCode(HttpStatus.OK.value())
             .extract()
             .header("Location");
+    }
+
+    private void fetchUpdateCertification(final JwtTokenResponse token, final CertificationRequest request) {
+        given()
+            .header(createTokenHeader(token))
+            .contentType(MediaType.MULTIPART_FORM_DATA_VALUE)
+            .multiPart("certification_image", TEST_UPDATED_CERTIFICATION_FILE_NAME,
+                TEST_UPDATED_CERTIFICATION_FILE, MediaType.IMAGE_JPEG_VALUE)
+            .param("status", request.getStatus())
+            .param("description", request.getDescription())
+            .param("riderId", request.getRiderId())
+            .param("missionId", request.getMissionId())
+            .when()
+            .post("/api/certifications/update/1")
+            .then()
+            .statusCode(HttpStatus.OK.value());
     }
 
     private void fetchDeleteCertification(final JwtTokenResponse token, final String resource) {

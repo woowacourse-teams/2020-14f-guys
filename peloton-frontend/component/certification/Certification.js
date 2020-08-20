@@ -1,27 +1,30 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useState } from "react";
 import { FlatList, StyleSheet, Text, View } from "react-native";
-import { useRecoilState } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
 import { useFocusEffect } from "@react-navigation/core";
 
-import {
-  raceMissionFixture,
-  raceMissionState,
-} from "../../state/certification/RaceMissionState";
+import { raceMissionState } from "../../state/certification/RaceMissionState";
 import CertificationItem from "./CertificationItem";
 import { COLOR } from "../../utils/constants";
+import { QueryApi } from "../../utils/api/QueryApi";
+import { memberTokenState } from "../../state/member/MemberState";
 
 const Certification = () => {
   const [certifications, setCertifications] = useRecoilState(raceMissionState);
   const [currentTime, setCurrentTime] = useState(new Date());
-
-  useEffect(() => {
-    // TODO: 미션 정보 받아오는 부분이 여기 들어가야함
-    setCertifications(raceMissionFixture);
-  }, []);
+  const token = useRecoilValue(memberTokenState);
 
   useFocusEffect(
     useCallback(() => {
       const intervalId = setInterval(() => setCurrentTime(new Date()), 1000);
+      (async () => {
+        try {
+          const { upcoming_missions } = await QueryApi.getMissions(token);
+          setCertifications(upcoming_missions);
+        } catch (e) {
+          alert(e.response.data.message);
+        }
+      })();
       return () => {
         clearInterval(intervalId);
       };
@@ -40,7 +43,7 @@ const Certification = () => {
               currentTime={currentTime}
             />
           )}
-          keyExtractor={(item) => String.valueOf()(item.mission.id)}
+          keyExtractor={(item) => item.mission.id.toString()}
           showsVerticalScrollIndicator={false}
         />
       ) : (
