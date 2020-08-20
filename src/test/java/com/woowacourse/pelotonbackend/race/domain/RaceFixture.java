@@ -113,6 +113,10 @@ public class RaceFixture {
             .build();
     }
 
+    public static RaceResponse retrieveResponse() {
+        return RaceResponse.of(createWithId(TEST_RACE_ID));
+    }
+
     public static RaceResponse retrieveFinishedResponse() {
         return RaceResponse.of(createWithIdAndPast(TEST_RACE_ID));
     }

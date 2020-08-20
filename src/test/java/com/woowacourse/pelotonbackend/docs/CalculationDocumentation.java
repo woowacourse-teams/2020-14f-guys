@@ -32,6 +32,21 @@ public class CalculationDocumentation {
         );
     }
 
+    public static RestDocumentationResultHandler createDuplicatedCalculation() {
+        return document("calculation/create-fail",
+            getDocumentRequest(),
+            getDocumentResponse(),
+            requestHeaders(
+                headerWithName(HttpHeaders.AUTHORIZATION).description("사용자 인증 토큰")
+            ),
+            pathParameters(
+                parameterWithName("raceId").description("정산하고자 하는 레이스의 아이디"),
+                parameterWithName("riderId").description("정산받고자 하는 라이더의 아이디")
+            ),
+            getErrorResponseFields()
+        );
+    }
+
     public static RestDocumentationResultHandler retrieve() {
         return document("calculation/get-success",
             getDocumentRequest(),
@@ -51,6 +66,66 @@ public class CalculationDocumentation {
                 fieldWithPath("calculationResponses[].created_at").type(STRING).attributes(getDateTimeFormat()).description("정산 날짜"),
                 fieldWithPath("calculationResponses[].calculated").type(BOOLEAN).description("정산 여부")
             )
+        );
+    }
+
+    public static RestDocumentationResultHandler retrieveBadMember() {
+        return document("calculation/get-fail-by-member",
+            getDocumentRequest(),
+            getDocumentResponse(),
+            requestHeaders(
+                headerWithName(HttpHeaders.AUTHORIZATION).description("사용자 인증 토큰")
+            ),
+            pathParameters(
+                parameterWithName("raceId").description("정산하고자 하는 레이스의 아이디"),
+                parameterWithName("riderId").description("정산받고자 하는 라이더의 아이디")
+            ),
+            getErrorResponseFields()
+        );
+    }
+
+    public static RestDocumentationResultHandler retrieveBadRider() {
+        return document("calculation/get-fail-by-rider-id",
+            getDocumentRequest(),
+            getDocumentResponse(),
+            requestHeaders(
+                headerWithName(HttpHeaders.AUTHORIZATION).description("사용자 인증 토큰")
+            ),
+            pathParameters(
+                parameterWithName("raceId").description("정산하고자 하는 레이스의 아이디"),
+                parameterWithName("riderId").description("정산받고자 하는 라이더의 아이디")
+            ),
+            getErrorResponseFields()
+        );
+    }
+
+    public static RestDocumentationResultHandler retrieveNotFinishedRace() {
+        return document("calculation/get-fail-not-finished",
+            getDocumentRequest(),
+            getDocumentResponse(),
+            requestHeaders(
+                headerWithName(HttpHeaders.AUTHORIZATION).description("사용자 인증 토큰")
+            ),
+            pathParameters(
+                parameterWithName("raceId").description("정산하고자 하는 레이스의 아이디"),
+                parameterWithName("riderId").description("정산받고자 하는 라이더의 아이디")
+            ),
+            getErrorResponseFields()
+        );
+    }
+
+    public static RestDocumentationResultHandler retrieveNotFound() {
+        return document("calculation/get-fail-not-found",
+            getDocumentRequest(),
+            getDocumentResponse(),
+            requestHeaders(
+                headerWithName(HttpHeaders.AUTHORIZATION).description("사용자 인증 토큰")
+            ),
+            pathParameters(
+                parameterWithName("raceId").description("정산하고자 하는 레이스의 아이디"),
+                parameterWithName("riderId").description("정산받고자 하는 라이더의 아이디")
+            ),
+            getErrorResponseFields()
         );
     }
 }

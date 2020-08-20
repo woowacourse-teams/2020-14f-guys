@@ -30,7 +30,7 @@ class RaceDtoTest {
             + "\"entrance_fee\":\"20000\""
             + "}";
 
-        assertThat(objectMapper.writeValueAsString(RaceFixture.retrieveFinishedResponse())).isEqualTo(responseBody);
+        assertThat(objectMapper.writeValueAsString(RaceFixture.retrieveResponse())).isEqualTo(responseBody);
     }
 
     @DisplayName("RaceUpdateRequest가 올바르게 Deserialize되는 지 확인한다.")

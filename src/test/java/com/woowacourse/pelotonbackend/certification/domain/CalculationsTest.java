@@ -58,7 +58,7 @@ class CalculationsTest {
         emptyCertifications = CertificationFixture.createMockRaceCertifications(emptyToRiderId)
             .getCertifications()
             .getContent();
-        race = RaceFixture.retrieveFinishedResponse();
+        race = RaceFixture.retrieveResponse();
 
         calculations1 = Calculations.create(certifications, riders, race);
         calculations2 = Calculations.create(emptyCertifications, riders, race);

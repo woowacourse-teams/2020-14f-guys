@@ -46,7 +46,7 @@ public class RaceAcceptanceTest extends AcceptanceTest {
         final JwtTokenResponse tokenResponse = loginMember(
             MemberFixture.createRequest(MemberFixture.KAKAO_ID, MemberFixture.EMAIL, MemberFixture.NAME));
         final String raceLocation = createRace(tokenResponse);
-        retrieveRaceAndCompareTo(raceLocation, RaceFixture.retrieveFinishedResponse(), tokenResponse);
+        retrieveRaceAndCompareTo(raceLocation, RaceFixture.retrieveResponse(), tokenResponse);
 
         updateRace(raceLocation, tokenResponse);
         retrieveRaceAndCompareTo(raceLocation, RaceFixture.retrieveUpdatedResponse(), tokenResponse);
