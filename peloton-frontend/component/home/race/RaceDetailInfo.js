@@ -18,8 +18,14 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     overflow: "hidden",
-    borderBottomEndRadius: 15,
-    borderBottomStartRadius: 15,
+    borderBottomEndRadius: 70,
+    shadowColor: "rgba(27, 28, 32, 0.3)",
+    shadowOffset: {
+      width: 3,
+      height: 20,
+    },
+    shadowRadius: 30,
+    shadowOpacity: 1,
   },
   image: {
     height: 200,
@@ -30,8 +36,8 @@ const styles = StyleSheet.create({
   },
   title: {
     color: COLOR.BLACK,
-    fontWeight: "900",
-    fontSize: 17,
+    fontWeight: "600",
+    fontSize: 25,
     justifyContent: "center",
     paddingBottom: 10,
   },

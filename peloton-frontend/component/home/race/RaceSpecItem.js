@@ -2,11 +2,11 @@ import { StyleSheet, Text, View } from "react-native";
 import React from "react";
 import { COLOR } from "../../../utils/constants";
 
-const RaceSpecItem = ({ itemKey, value, border, valueStyle }) => {
+const RaceSpecItem = ({ itemKey, value, border, keyStyle, valueStyle }) => {
   return (
     <View style={styles.container}>
       <View style={styles.itemBox}>
-        <Text style={styles.key}>{itemKey}</Text>
+        <Text style={[styles.key, keyStyle]}>{itemKey}</Text>
         <Text style={[styles.value, valueStyle]}>{value}</Text>
       </View>
       {border && <View style={styles.border} />}
@@ -19,23 +19,22 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   itemBox: {
-    flexDirection: "row",
     marginBottom: 15,
   },
   key: {
-    fontSize: 18,
-    lineHeight: 21,
-    color: COLOR.BLACK,
+    fontSize: 12,
+    lineHeight: 18,
+    color: COLOR.GRAY8,
     flex: 4,
   },
   value: {
     fontSize: 18,
     lineHeight: 21,
-    color: COLOR.GRAY1,
+    color: COLOR.GRAY7,
     flex: 9,
   },
   border: {
-    borderWidth: 1,
+    borderBottomWidth: 1,
     borderColor: COLOR.GRAY5,
     marginTop: 10,
     marginBottom: 25,

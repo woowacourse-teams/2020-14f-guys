@@ -34,7 +34,7 @@ const RaceCertificationImages = () => {
 
 const styles = StyleSheet.create({
   container: {
-    height: 600,
+    height: 400,
   },
 });
 

@@ -1,11 +1,5 @@
 import React from "react";
-import {
-  Clipboard,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
-} from "react-native";
+import { Clipboard, StyleSheet, Text, TouchableOpacity, View, } from "react-native";
 import { Feather } from "@expo/vector-icons";
 import { COLOR } from "../../../utils/constants";
 import { raceShareLink } from "./RaceDeepLinkPage";
@@ -33,13 +27,13 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   copyButton: {
-    width: 125,
-    height: 50,
+    paddingVertical: 10,
+    paddingHorizontal: 25,
     flexDirection: "row",
     justifyContent: "center",
     alignItems: "center",
     backgroundColor: COLOR.BLUE3,
-    borderRadius: 15,
+    borderRadius: 30,
   },
   copyText: {
     color: COLOR.WHITE,

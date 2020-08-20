@@ -1,11 +1,10 @@
 import React, { useEffect } from "react";
-import { ScrollView, StyleSheet } from "react-native";
+import { ScrollView, StyleSheet, View } from "react-native";
 import RaceDetailInfo from "./RaceDetailInfo";
 import RaceCertificationImages from "./RaceCertificationImages";
 import RaceSpec from "./RaceSpec";
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import { loadingState } from "../../../state/loading/LoadingState";
-import { COLOR } from "../../../utils/constants";
 import { memberTokenState } from "../../../state/member/MemberState";
 import { raceInfoState } from "../../../state/race/RaceState";
 import LinkCopyButton from "./LinkCopyButton";
@@ -62,7 +61,9 @@ const RaceDetail = ({ route }) => {
           description={raceInfo.description}
         />
         <RaceSpec
+          days={raceInfo.days}
           raceDuration={raceInfo.race_duration}
+          missionDuration={raceInfo.mission_duration}
           cash={raceInfo.entrance_fee}
           riderCount={ridersInfo.length}
         />
@@ -75,7 +76,16 @@ const RaceDetail = ({ route }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: COLOR.WHITE,
+  },
+  cardContainer: {
+    paddingRight: 30,
+    shadowColor: "rgba(27, 28, 32, 0.1)",
+    shadowOffset: {
+      width: 0,
+      height: 5,
+    },
+    shadowRadius: 10,
+    shadowOpacity: 1,
   },
 });
 
