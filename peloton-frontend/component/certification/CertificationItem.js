@@ -90,7 +90,9 @@ const CertificationItem = ({ item, index, currentTime }) => {
           backgroundColor: certificationType.color,
         }}
       >
-        <Text style={styles.itemTitle}>{item.race.title}</Text>
+        <Text style={styles.itemTitle} numberOfLines={2}>
+          {item.race.title}
+        </Text>
         <Text style={styles.itemSubtitle}>{timeForm()}</Text>
       </View>
       <View
@@ -127,6 +129,7 @@ const styles = StyleSheet.create({
     fontSize: 15,
   },
   certificationInfo: {
+    maxWidth: 250,
     backgroundColor: COLOR.DARK_GRAY6,
     position: "absolute",
     bottom: 25,
