@@ -107,7 +107,7 @@ class RaceControllerTest {
         given(bearerAuthInterceptor.preHandle(any(HttpServletRequest.class), any(HttpServletResponse.class),
             any(HandlerMethod.class))).willReturn(true);
         final Long raceId = 11L;
-        given(raceService.retrieve(raceId)).willReturn(RaceFixture.retrieveFinishedResponse());
+        given(raceService.retrieve(raceId)).willReturn(RaceFixture.retrieveResponse());
 
         final MvcResult result = mockMvc.perform(get(RACE_API_URL + "/{id}", raceId)
             .header(HttpHeaders.AUTHORIZATION, LoginFixture.getTokenHeader())
@@ -120,7 +120,7 @@ class RaceControllerTest {
         final RaceResponse responseBody = objectMapper.readValue(contentBytes,
             RaceResponse.class);
 
-        assertThat(responseBody).isEqualToComparingFieldByField(RaceFixture.retrieveFinishedResponse());
+        assertThat(responseBody).isEqualToComparingFieldByField(RaceFixture.retrieveResponse());
     }
 
     @DisplayName("잘못된 레이스 조회 요청에 Bad Request로 응답한다.")

@@ -46,7 +46,7 @@ public class RiderServiceTest {
     @Test
     void createTest() {
         given(riderRepository.save(any())).willReturn(RiderFixture.createMockRider());
-        given(raceService.retrieve(anyLong())).willReturn(RaceFixture.retrieveFinishedResponse());
+        given(raceService.retrieve(anyLong())).willReturn(RaceFixture.retrieveResponse());
         riderService.create(MemberFixture.memberResponse(), RiderFixture.createMockRequest());
         verify(riderRepository).save(any());
     }
@@ -108,7 +108,7 @@ public class RiderServiceTest {
         given(riderRepository.existsByMemberIdAndRaceID(memberResponse.getId(),
             riderCreateRequest.getRaceId())).willReturn(false, true);
         given(riderRepository.save(any(Rider.class))).willReturn(expectedRider);
-        given(raceService.retrieve(anyLong())).willReturn(RaceFixture.retrieveFinishedResponse());
+        given(raceService.retrieve(anyLong())).willReturn(RaceFixture.retrieveResponse());
         riderService.create(memberResponse, riderCreateRequest);
 
         assertThatThrownBy(() -> riderService.create(memberResponse, riderCreateRequest))

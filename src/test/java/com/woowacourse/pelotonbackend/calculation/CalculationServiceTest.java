@@ -110,7 +110,7 @@ class CalculationServiceTest {
     void invalidRiderRetrieve() {
         when(riderService.retrieveByRaceId(anyLong())).thenReturn(
             new RiderResponses(RiderFixture.createRidersInSameRaceByCount(5)));
-        when(raceService.retrieve(anyLong())).thenReturn(RaceFixture.retrieveFinishedResponse());
+        when(raceService.retrieve(anyLong())).thenReturn(RaceFixture.retrieveResponse());
 
         assertThatThrownBy(
             () -> calculationService.retrieve(memberResponse, RaceFixture.TEST_RACE_ID, RiderFixture.WRONG_RIDER_ID))
@@ -123,13 +123,13 @@ class CalculationServiceTest {
     void invalidMemberRetrieve() {
         when(riderService.retrieveByRaceId(anyLong())).thenReturn(
             new RiderResponses(RiderFixture.createRidersInSameRaceByCount(5)));
-        when(raceService.retrieve(anyLong())).thenReturn(RaceFixture.retrieveFinishedResponse());
+        when(raceService.retrieve(anyLong())).thenReturn(RaceFixture.retrieveResponse());
 
         final MemberResponse memberResponse = MemberFixture.memberResponse(MemberFixture.WRONG_MEMBER_ID);
         assertThatThrownBy(
             () -> calculationService.retrieve(memberResponse, RaceFixture.TEST_RACE_ID, RiderFixture.TEST_RIDER_ID))
             .isInstanceOf(UnAuthenticatedException.class)
-            .hasMessage(String.format("회원 id : %d 는 권한이 없습니다.", this.memberResponse.getId()));
+            .hasMessage(String.format("회원 id : %d 는 권한이 없습니다.", memberResponse.getId()));
     }
 
     @DisplayName("레이스가 아직 종료되지 않은 경우 예외를 반환한다.")

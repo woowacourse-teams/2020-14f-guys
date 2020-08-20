@@ -22,7 +22,6 @@ import com.woowacourse.pelotonbackend.rider.presentation.dto.RiderResponse;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
-@Transactional
 @Service
 public class CalculationService {
     private final CalculationRepository calculationRepository;
@@ -31,20 +30,7 @@ public class CalculationService {
     private final QueryService queryService;
     private final RaceService raceService;
 
-    @Transactional(readOnly = true)
-    public CalculationResponses retrieve(final MemberResponse memberResponse, final Long raceId, final Long riderId) {
-        final List<RiderResponse> riders = riderService.retrieveByRaceId(raceId).getRiderResponses();
-        final RaceResponse race = raceService.retrieve(raceId);
-        validateMember(memberResponse, riderId, riders);
-        validateRaceEndDate(raceId, race);
-
-
-        final Calculations results = calculationRepository.findAllByRaceId(raceId)
-            .orElseThrow(() -> new CalculationNotFoundException(raceId));
-
-        return CalculationResponses.of(results);
-    }
-
+    @Transactional
     public void calculate(final MemberResponse memberResponse, final Long raceId, final Long riderId) {
         final List<RiderResponse> riders = riderService.retrieveByRaceId(raceId).getRiderResponses();
         final RaceResponse race = raceService.retrieve(raceId);
@@ -59,6 +45,19 @@ public class CalculationService {
         memberService.chargeCash(memberResponse.getId(),
             MemberCashUpdateRequest.builder().cash(calculations.receivePrize(riderId)).build());
         calculationRepository.saveAll(calculations.getCalculations());
+    }
+
+    @Transactional(readOnly = true)
+    public CalculationResponses retrieve(final MemberResponse memberResponse, final Long raceId, final Long riderId) {
+        final List<RiderResponse> riders = riderService.retrieveByRaceId(raceId).getRiderResponses();
+        final RaceResponse race = raceService.retrieve(raceId);
+        validateMember(memberResponse, riderId, riders);
+        validateRaceEndDate(raceId, race);
+
+        final Calculations results = calculationRepository.findAllByRaceId(raceId)
+            .orElseThrow(() -> new CalculationNotFoundException(raceId));
+
+        return CalculationResponses.of(results);
     }
 
     private void validateMember(final MemberResponse memberResponse, final Long riderId,
