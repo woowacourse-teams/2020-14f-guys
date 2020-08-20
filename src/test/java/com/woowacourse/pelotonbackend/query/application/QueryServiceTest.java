@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -32,11 +33,13 @@ import org.springframework.data.jdbc.core.mapping.AggregateReference;
 import com.woowacourse.pelotonbackend.certification.domain.Certification;
 import com.woowacourse.pelotonbackend.certification.domain.CertificationFixture;
 import com.woowacourse.pelotonbackend.certification.domain.CertificationRepository;
+import com.woowacourse.pelotonbackend.certification.domain.TimeDuration;
 import com.woowacourse.pelotonbackend.certification.presentation.dto.CertificationResponse;
 import com.woowacourse.pelotonbackend.member.domain.MemberFixture;
 import com.woowacourse.pelotonbackend.mission.domain.Mission;
 import com.woowacourse.pelotonbackend.mission.domain.MissionFixture;
 import com.woowacourse.pelotonbackend.mission.domain.MissionRepository;
+import com.woowacourse.pelotonbackend.query.presentation.dto.RaceDetailResponse;
 import com.woowacourse.pelotonbackend.query.presentation.dto.UpcomingMissionResponses;
 import com.woowacourse.pelotonbackend.race.domain.Race;
 import com.woowacourse.pelotonbackend.race.domain.RaceFixture;
@@ -189,5 +192,22 @@ class QueryServiceTest {
         final UpcomingMissionResponses responses = queryService.retrieveUpcomingMissionsBy(memberResponse());
 
         assertThat(responses.getUpcomingMissions()).hasSize(0);
+    }
+
+    @DisplayName("레이스 id로 레이스 상세정보를 조회한다")
+    @Test
+    void findRaceDetail() {
+        final Race race = RaceFixture.createWithId(TEST_RACE_ID);
+        final List<Mission> missions = MissionFixture.createMissionsWithRaceId(TEST_RACE_ID);
+        when(raceRepository.findById(TEST_RACE_ID)).thenReturn(Optional.of(race));
+        when(missionRepository.findByRaceId(TEST_RACE_ID)).thenReturn(missions);
+
+        final RaceDetailResponse raceDetail = queryService.findRaceDetail(TEST_RACE_ID);
+
+        assertAll(
+            () -> assertThat(raceDetail).isEqualToComparingOnlyGivenFields(race, "id", "title", "description", "thumbnail", "certificationExample", "category", "entranceFee", "raceDuration"),
+            () -> assertThat(raceDetail.getMissionDuration()).isEqualTo(new TimeDuration(START_TIME.toLocalTime(), END_TIME.toLocalTime())),
+            () -> assertThat(raceDetail.getDays()).isEqualTo(Arrays.asList(MISSION_DURATION.getStartTime().getDayOfWeek()))
+        );
     }
 }

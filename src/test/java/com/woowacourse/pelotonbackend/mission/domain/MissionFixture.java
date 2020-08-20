@@ -223,4 +223,10 @@ public class MissionFixture {
             RaceFixture.createWithId(RaceFixture.TEST_RACE_ID),
             CertificationFixture.createCertificationWithId());
     }
+
+    public static List<Mission> createMissionsWithRaceId(final Long raceId) {
+        return createMissionsWithId(Arrays.asList(4L, 5L, 6L)).stream()
+            .map(mission -> mission.toBuilder().raceId(AggregateReference.to(raceId)).build())
+            .collect(Collectors.toList());
+    }
 }

@@ -107,4 +107,42 @@ public class QueryDocumentation {
             )
         );
     }
+
+    public static RestDocumentationResultHandler getRaceDetail() {
+        return document("queries/get-race-detail",
+            getDocumentRequest(),
+            getDocumentResponse(),
+            requestHeaders(
+                headerWithName(HttpHeaders.AUTHORIZATION).description("인증 토큰"),
+                headerWithName(HttpHeaders.ACCEPT).description("Accept 헤더")
+            ),
+            pathParameters(
+                parameterWithName("raceId").description("Race ID")
+            ),
+            responseFields(
+                fieldWithPath("id").type(NUMBER).description("Race Id"),
+                fieldWithPath("title").type(STRING).description("레이스 제목"),
+                fieldWithPath("description").type(STRING).description("레이스 상세내용"),
+                fieldWithPath("thumbnail").type(STRING).description("썸네일 이미지"),
+                fieldWithPath("certification_example").type(STRING).description("인증 예시 이미지"),
+                fieldWithPath("race_duration").type(OBJECT).description("Race 기간"),
+                fieldWithPath("race_duration.start_date").type(STRING)
+                    .attributes(getDateFormat())
+                    .description("Race 시작 날짜"),
+                fieldWithPath("race_duration.end_date").type(STRING)
+                    .attributes(getDateFormat())
+                    .description("Race 종료 날짜"),
+                fieldWithPath("days").type(ARRAY).description("Mission 수행 요일"),
+                fieldWithPath("mission_duration").type(OBJECT).description("Mission 시간"),
+                fieldWithPath("mission_duration.start_time").type(STRING)
+                    .attributes(getTimeFormat())
+                    .description("Mission 시작 시각"),
+                fieldWithPath("mission_duration.end_time").type(STRING)
+                    .attributes(getTimeFormat())
+                    .description("Mission 종료 시각"),
+                fieldWithPath("category").type(STRING).attributes(getRaceCategoryFormat()).description("Race 종류"),
+                fieldWithPath("entrance_fee").type(STRING).description("레이스 입장료")
+            )
+        );
+    }
 }
