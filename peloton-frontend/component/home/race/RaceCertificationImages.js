@@ -13,8 +13,6 @@ const RaceCertificationImages = () => {
       style={styles.container}
       loop={true}
       showsPagination={true}
-      autoplay
-      autoplayTimeout={2.5}
       key={certifications ? certifications.length : 1}
     >
       {certifications && certifications.length > 0 ? (
