@@ -14,7 +14,11 @@ import org.springframework.data.jdbc.core.mapping.AggregateReference;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockMultipartFile;
 
-import com.woowacourse.pelotonbackend.certification.presentation.dto.*;
+import com.woowacourse.pelotonbackend.certification.presentation.dto.CertificationCreateRequest;
+import com.woowacourse.pelotonbackend.certification.presentation.dto.CertificationDescriptionUpdateRequest;
+import com.woowacourse.pelotonbackend.certification.presentation.dto.CertificationResponse;
+import com.woowacourse.pelotonbackend.certification.presentation.dto.CertificationResponses;
+import com.woowacourse.pelotonbackend.certification.presentation.dto.CertificationStatusUpdateRequest;
 import com.woowacourse.pelotonbackend.vo.ImageUrl;
 
 public class CertificationFixture {
@@ -30,8 +34,8 @@ public class CertificationFixture {
     public static final ImageUrl TEST_CERTIFICATION_FILE_URL = new ImageUrl(
         "https://pbs.twimg.com/media/DeCmgVAUwAYOc-W.jpg");
     public static final String TEST_CERTIFICATION_MULTIPART_NAME = "certification_image";
-    public static final LocalDateTime TEST_CREATED_AT = LocalDateTime.parse(LocalDateTime.now().toString(),
-        DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS"));
+    public static final LocalDateTime TEST_CREATED_AT = LocalDateTime.parse(LocalDateTime.now()
+        .format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS")));
 
     public static Certification createCertificationWithoutId() {
         return Certification.builder()
