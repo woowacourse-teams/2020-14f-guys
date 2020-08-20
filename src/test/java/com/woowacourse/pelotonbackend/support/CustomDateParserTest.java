@@ -5,7 +5,6 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import java.time.DayOfWeek;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.Arrays;
 import java.util.List;
@@ -45,10 +44,10 @@ public class CustomDateParserTest {
     @Test
     void dayToDate() {
         final List<DayOfWeek> days = Arrays.asList(DayOfWeek.MONDAY, DayOfWeek.SUNDAY, DayOfWeek.TUESDAY);
-        final LocalDate startTime = LocalDate.of(2020, 8, 1);
-        final LocalDate endTime = LocalDate.of(2020, 8, 31);
+        final LocalDate startDate = LocalDate.of(2020, 8, 1);
+        final LocalDate endDate = LocalDate.of(2020, 8, 31);
 
-        final List<LocalDate> resultDates = dateParser.convertDayToDate(new DateDuration(startTime, endTime), days);
+        final List<LocalDate> resultDates = dateParser.convertDayToDate(new DateDuration(startDate, endDate), days);
 
         assertThat(resultDates.stream().map(LocalDate::getDayOfMonth))
             .containsExactly(2, 3, 4, 9, 10, 11, 16, 17, 18, 23, 24, 25, 30, 31);
@@ -64,12 +63,12 @@ public class CustomDateParserTest {
 
         assertAll(
             () -> assertThat(results).extracting(dateTime -> dateTime.getStartTime().toLocalDate())
-            .containsExactlyInAnyOrderElementsOf(dates),
+                .containsExactlyInAnyOrderElementsOf(dates),
             () -> assertThat(results).extracting(dateTime -> dateTime.getStartTime().toLocalTime())
                 .containsOnly(startTime),
             () -> assertThat(results).extracting(dateTime -> dateTime.getEndTime().toLocalTime())
                 .containsOnly(endTime)
-            );
+        );
     }
 
     private static Stream<Arguments> generateTimes() {

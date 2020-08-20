@@ -21,11 +21,11 @@ public class CustomDateParser {
     private static final int A_DAY_IN_MINUTES = 1440;
 
     public List<LocalDate> convertDayToDate(final DateDuration dateDuration, final List<DayOfWeek> days) {
-        final LocalDate startTime = dateDuration.getStartDate();
-        final LocalDate endTime = dateDuration.getEndDate();
+        final LocalDate startDate = dateDuration.getStartDate();
+        final LocalDate endDate = dateDuration.getEndDate();
         final List<LocalDate> resultDates = new ArrayList<>();
 
-        for (LocalDate date = startTime; date.isBefore(endTime) || date.isEqual(endTime); date = date.plusDays(1L)) {
+        for (LocalDate date = startDate; date.isBefore(endDate) || date.isEqual(endDate); date = date.plusDays(1L)) {
             if (days.contains(date.getDayOfWeek())) {
                 resultDates.add(date);
             }
