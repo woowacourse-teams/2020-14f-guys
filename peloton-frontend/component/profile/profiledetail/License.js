@@ -1,14 +1,151 @@
 import React from "react";
-import { ScrollView, StyleSheet, Text } from "react-native";
+import { ScrollView, StyleSheet } from "react-native";
+import LicenseTitle from "./LicenseTitle";
+import LicenseBody from "./LicenseBody";
+import RepositoryName from "./RepositoryName";
+import RepositoryUrl from "./RepositoryUrl";
+import RepositoryLicense from "./RepositoryLicense";
+import RepositoryOwner from "./RepositoryOwner";
 
 const License = () => {
-  new Date();
   return (
-    <ScrollView>
-      <Text style={styles.container}>
-        {`
-Apache License
+    <ScrollView style={styles.container}>
+      <LicenseTitle>OSS Notice | Peloton</LicenseTitle>
+      <LicenseBody>{`
+MIT License
 
+Copyright 2020 woowacourse-teams-14f-guys.
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+
+The following sets forth attribution notices for third party software that may be contained in this application.
+      `}</LicenseBody>
+
+      <RepositoryName>babel</RepositoryName>
+      <RepositoryUrl>https://github.com/babel/babel</RepositoryUrl>
+      <RepositoryOwner>
+        (c) 2014-present Sebastian McKenzie and other contributors
+      </RepositoryOwner>
+      <RepositoryLicense>MIT License</RepositoryLicense>
+
+      <RepositoryName>react</RepositoryName>
+      <RepositoryUrl>https://github.com/facebook/react</RepositoryUrl>
+      <RepositoryOwner>
+        (c) 2018 Facebook, Inc. and its affiliates.
+      </RepositoryOwner>
+      <RepositoryLicense>MIT License</RepositoryLicense>
+
+      <RepositoryName>react-native</RepositoryName>
+      <RepositoryUrl>https://github.com/facebook/react-native</RepositoryUrl>
+      <RepositoryOwner>
+        (c) 2018 Facebook, Inc. and its affiliates.
+      </RepositoryOwner>
+      <RepositoryLicense>MIT License</RepositoryLicense>
+
+      <RepositoryName>react-native-masked-view</RepositoryName>
+      <RepositoryUrl>
+        https://github.com/react-native-community/react-native-masked-view
+      </RepositoryUrl>
+      <RepositoryOwner>2020 react-native-community</RepositoryOwner>
+      <RepositoryLicense>MIT License</RepositoryLicense>
+
+      <RepositoryName>react-navigation</RepositoryName>
+      <RepositoryUrl>
+        https://github.com/react-navigation/react-navigation
+      </RepositoryUrl>
+      <RepositoryOwner>2020 react-navigation</RepositoryOwner>
+      <RepositoryLicense>MIT License</RepositoryLicense>
+
+      <RepositoryName>axios</RepositoryName>
+      <RepositoryUrl>https://github.com/axios/axios</RepositoryUrl>
+      <RepositoryOwner>(c) 2014-present Matt Zabriskie</RepositoryOwner>
+      <RepositoryLicense>MIT License</RepositoryLicense>
+
+      <RepositoryName>expo</RepositoryName>
+      <RepositoryUrl>https://github.com/expo/expo</RepositoryUrl>
+      <RepositoryOwner>
+        (c) 2015-present 650 Industries, Inc. (aka Expo)
+      </RepositoryOwner>
+      <RepositoryLicense>MIT License</RepositoryLicense>
+
+      <RepositoryName>react-native-gesture-handler</RepositoryName>
+      <RepositoryUrl>
+        https://github.com/software-mansion/react-native-gesture-handler
+      </RepositoryUrl>
+      <RepositoryOwner>(c) 2016 Krzysztof Magiera</RepositoryOwner>
+      <RepositoryLicense>MIT License</RepositoryLicense>
+
+      <RepositoryName>react-native-reanimated</RepositoryName>
+      <RepositoryUrl>
+        https://github.com/software-mansion/react-native-reanimated
+      </RepositoryUrl>
+      <RepositoryOwner>(c) 2016 Krzysztof Magiera</RepositoryOwner>
+      <RepositoryLicense>MIT License</RepositoryLicense>
+
+      <RepositoryName>react-native-screens</RepositoryName>
+      <RepositoryUrl>
+        https://github.com/software-mansion/react-native-screens
+      </RepositoryUrl>
+      <RepositoryOwner>(c) 2016 Krzysztof Magiera</RepositoryOwner>
+      <RepositoryLicense>MIT License</RepositoryLicense>
+
+      <RepositoryName>react-native-safe-area-context</RepositoryName>
+      <RepositoryUrl>
+        https://github.com/th3rdwave/react-native-safe-area-context
+      </RepositoryUrl>
+      <RepositoryOwner>(c) 2019 Th3rd Wave</RepositoryOwner>
+      <RepositoryLicense>MIT License</RepositoryLicense>
+
+      <RepositoryName>react-native-web</RepositoryName>
+      <RepositoryUrl>https://github.com/necolas/react-native-web</RepositoryUrl>
+      <RepositoryOwner>
+        (c) 2015-present, Nicolas Gallagher. and Facebook, Inc.
+      </RepositoryOwner>
+
+      <RepositoryName>Recoil</RepositoryName>
+      <RepositoryUrl>
+        https://github.com/facebookexperimental/Recoil
+      </RepositoryUrl>
+      <RepositoryOwner>(c) Facebook, Inc. and its affiliates.</RepositoryOwner>
+      <RepositoryLicense>MIT License</RepositoryLicense>
+
+      <RepositoryName>Kakao Login-REST API</RepositoryName>
+      <RepositoryUrl>
+        https://developers.kakao.com/docs/latest/ko/kakaologin/rest-api
+      </RepositoryUrl>
+      <RepositoryOwner>(c) 2014-present Kakao Corp.</RepositoryOwner>
+      <RepositoryLicense>Apache License 2.0</RepositoryLicense>
+
+      <LicenseTitle>MIT License</LicenseTitle>
+      <LicenseBody>{`
+Copyright (c)  
+
+Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+      `}</LicenseBody>
+      <LicenseTitle>Apache License</LicenseTitle>
+      <LicenseBody>
+        {`
 Version 2.0, January 2004
 
 http://www.apache.org/licenses/
@@ -74,7 +211,21 @@ distributed under the License is distributed on an "AS IS" BASIS,
 WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.`}
-      </Text>
+      </LicenseBody>
+
+      <LicenseTitle>Apple MIT License</LicenseTitle>
+      <LicenseBody>{`
+Copyright: Copyright (c) 2006 by Apple Computer, Inc., All Rights Reserved.
+
+IMPORTANT: This Apple software is supplied to you by Apple Computer, Inc. ("Apple") in consideration of your agreement to the following terms, and your use, installation, modification or redistribution of this Apple software constitutes acceptance of these terms. If you do not agree with these terms, please do not use, install, modify or redistribute this Apple software.
+
+In consideration of your agreement to abide by the following terms, and subject to these terms, Apple grants you a personal, non-exclusive license, under Apple's copyrights in this original Apple software (the "Apple Software"), to use, reproduce, modify and redistribute the Apple Software, with or without modifications, in source and/or binary forms; provided that if you redistribute the Apple Software in its entirety and without modifications, you must retain this notice and the following text and disclaimers in all such redistributions of the Apple Software. Neither the name, trademarks, service marks or logos of Apple Computer, Inc. may be used to endorse or promote products derived from the Apple Software without specific prior written permission from Apple. Except as expressly stated in this notice, no other rights or licenses, express or implied, are granted by Apple herein, including but not limited to any patent rights that may be infringed by your derivative works or by other works in which the Apple Software may be incorporated.
+
+The Apple Software is provided by Apple on an "AS IS" basis. APPLE MAKES NO WARRANTIES, EXPRESS OR IMPLIED, INCLUDING WITHOUT LIMITATION THE IMPLIED WARRANTIES OF NON-INFRINGEMENT, MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE, REGARDING THE APPLE SOFTWARE OR ITS USE AND OPERATION ALONE OR IN COMBINATION WITH YOUR PRODUCTS.
+
+IN NO EVENT SHALL APPLE BE LIABLE FOR ANY SPECIAL, INDIRECT, INCIDENTAL OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) ARISING IN ANY WAY OUT OF THE USE, REPRODUCTION, MODIFICATION AND/OR DISTRIBUTION OF THE APPLE SOFTWARE, HOWEVER CAUSED AND WHETHER UNDER THEORY OF CONTRACT, TORT (INCLUDING NEGLIGENCE), STRICT LIABILITY OR OTHERWISE, EVEN IF APPLE HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+      `}</LicenseBody>
     </ScrollView>
   );
 };

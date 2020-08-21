@@ -18,11 +18,11 @@ const AnnouncementItem = ({ children }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    marginLeft: 16,
   },
   title: {
     fontSize: 30,
     marginVertical: 30,
-    marginLeft: 16,
   },
 });
 
