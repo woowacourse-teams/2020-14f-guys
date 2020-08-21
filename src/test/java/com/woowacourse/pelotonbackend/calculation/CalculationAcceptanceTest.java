@@ -1,26 +1,23 @@
 package com.woowacourse.pelotonbackend.calculation;
 
-import java.util.HashMap;
+import static org.assertj.core.api.Assertions.*;
+
 import java.util.List;
-import java.util.Map;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 
 import com.woowacourse.pelotonbackend.certification.domain.CertificationFixture;
-import com.woowacourse.pelotonbackend.certification.presentation.dto.CertificationCreateRequest;
+import com.woowacourse.pelotonbackend.certification.presentation.dto.CertificationRequest;
 import com.woowacourse.pelotonbackend.member.domain.MemberFixture;
 import com.woowacourse.pelotonbackend.member.presentation.dto.MemberCreateRequest;
-import com.woowacourse.pelotonbackend.member.presentation.dto.MemberResponse;
-import com.woowacourse.pelotonbackend.member.presentation.dto.MemberResponses;
 import com.woowacourse.pelotonbackend.mission.domain.MissionFixture;
 import com.woowacourse.pelotonbackend.mission.presentation.dto.MissionCreateRequest;
 import com.woowacourse.pelotonbackend.race.domain.RaceFixture;
 import com.woowacourse.pelotonbackend.race.presentation.dto.RaceCreateRequest;
 import com.woowacourse.pelotonbackend.rider.domain.RiderFixture;
 import com.woowacourse.pelotonbackend.rider.presentation.dto.RiderCreateRequest;
-import com.woowacourse.pelotonbackend.rider.presentation.dto.RiderResponse;
 import com.woowacourse.pelotonbackend.support.AcceptanceTest;
 import com.woowacourse.pelotonbackend.support.dto.JwtTokenResponse;
 
@@ -45,33 +42,26 @@ class CalculationAcceptanceTest extends AcceptanceTest {
 
         final List<JwtTokenResponse> tokenResponses = loginMembers(memberCreateRequests);
         final JwtTokenResponse representToken = tokenResponses.get(0);
-        final MemberResponses members = findAllMembers(representToken);
-        final MemberResponse representMember = members.getResponses().get(0);
 
         final long raceId = createRace(raceCreateRequest, representToken);
         final MissionCreateRequest missionCreateRequest = MissionFixture.mockCreateRequestByRaceId(raceId);
         createRiders(tokenResponses, riderCreateRequest);
-        final List<RiderResponse> riders = findAllRiders(raceId, representToken);
 
-        Map<Long, Integer> riderIdToCount = new HashMap<>();
-        riderIdToCount.put(1L, 3);
-        riderIdToCount.put(2L, 2);
-        riderIdToCount.put(3L, 1);
         createMission(representToken, missionCreateRequest);
         createMission(representToken, missionCreateRequest);
         createMission(representToken, missionCreateRequest);
-        final List<CertificationCreateRequest> certificationCreateRequests =
-            CertificationFixture.createMockCertificationRequestByRiderIdAndCount(riderIdToCount);
+        final List<CertificationRequest> certificationCreateRequests =
+            CertificationFixture.createMockCertificationRequestByRiderIdAndCount(
+                CertificationFixture.createRiderToCount());
 
         createCertifications(representToken, certificationCreateRequests);
 
         createCalculation(representToken, raceId, 1L);
         retrieveCalculation(representToken, raceId, 1L);
-        // TODO: 2020/08/21 DTO테스트
     }
 
-    private CalculationResponses retrieveCalculation(final JwtTokenResponse tokenResponse, final long raceId, final long riderId) {
-        return given()
+    private void retrieveCalculation(final JwtTokenResponse tokenResponse, final long raceId, final long riderId) {
+        final CalculationResponses responses = given()
             .header(createTokenHeader(tokenResponse))
             .accept(MediaType.APPLICATION_JSON_VALUE)
             .when()
@@ -80,6 +70,11 @@ class CalculationAcceptanceTest extends AcceptanceTest {
             .log().all()
             .statusCode(HttpStatus.OK.value())
             .extract().as(CalculationResponses.class);
+
+        assertThat(responses.getCalculationResponses())
+            .usingRecursiveFieldByFieldElementComparator()
+            .usingElementComparatorIgnoringFields("createdAt")
+            .isEqualTo(CalculationFixture.createAcceptanceResponses());
     }
 
     private void createCalculation(final JwtTokenResponse tokenResponse, final long raceId, final long riderId) {

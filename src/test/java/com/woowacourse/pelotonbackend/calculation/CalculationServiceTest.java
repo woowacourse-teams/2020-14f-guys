@@ -47,18 +47,18 @@ class CalculationServiceTest {
 
     private CalculationService calculationService;
 
-    private final Map<Integer, Long> countToRiderId = new LinkedHashMap<>();
+    private final Map<Long, Integer> countToRiderId = new LinkedHashMap<>();
     private MemberResponse memberResponse;
 
     @BeforeEach
     void setUp() {
         calculationService = new CalculationService(calculationRepository, memberService, riderService, queryService,
             raceService);
-        countToRiderId.put(5, 1L);
-        countToRiderId.put(4, 2L);
-        countToRiderId.put(3, 3L);
-        countToRiderId.put(2, 4L);
-        countToRiderId.put(0, 5L);
+        countToRiderId.put(1L, 5);
+        countToRiderId.put(2L, 4);
+        countToRiderId.put(3L, 3);
+        countToRiderId.put(4L, 2);
+        countToRiderId.put(5L, 0);
         memberResponse = MemberFixture.memberResponse();
     }
 
@@ -92,7 +92,7 @@ class CalculationServiceTest {
             () -> assertThat(results).extracting(CalculationResponse::getRaceId)
                 .allMatch(Predicate.isEqual(RaceFixture.TEST_RACE_ID)),
             () -> assertThat(results).extracting(CalculationResponse::getRiderId)
-                .containsExactlyElementsOf(countToRiderId.values()),
+                .containsExactlyElementsOf(countToRiderId.keySet()),
             () -> assertThat(results).allMatch(
                 calculationResponse -> calculationResponse.isCalculated() == calculationResponse.getRiderId()
                     .equals(RiderFixture.TEST_RIDER_ID)),

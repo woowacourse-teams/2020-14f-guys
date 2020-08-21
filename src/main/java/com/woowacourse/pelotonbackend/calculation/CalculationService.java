@@ -6,7 +6,6 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.woowacourse.pelotonbackend.certification.domain.Calculations;
 import com.woowacourse.pelotonbackend.certification.presentation.dto.CertificationResponse;
 import com.woowacourse.pelotonbackend.common.exception.CalculationNotFoundException;
 import com.woowacourse.pelotonbackend.common.exception.RaceNotFinishedException;

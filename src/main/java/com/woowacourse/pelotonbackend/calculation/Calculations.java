@@ -1,6 +1,5 @@
-package com.woowacourse.pelotonbackend.certification.domain;
+package com.woowacourse.pelotonbackend.calculation;
 
-import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -8,7 +7,6 @@ import java.util.stream.Collectors;
 
 import org.springframework.data.jdbc.core.mapping.AggregateReference;
 
-import com.woowacourse.pelotonbackend.calculation.Calculation;
 import com.woowacourse.pelotonbackend.certification.presentation.dto.CertificationResponse;
 import com.woowacourse.pelotonbackend.common.exception.RiderInvalidException;
 import com.woowacourse.pelotonbackend.race.presentation.dto.RaceResponse;
@@ -52,7 +50,7 @@ public class Calculations {
         final Cash totalFee) {
 
         final Cash result = totalFee.multiply(Cash.of((double)certificationCount / totalCertificationCount));
-        return result.ceiling();
+        return result.round();
     }
 
     private static int getTotalCertificationCount(final Map<Long, Long> riderToCertificationCount) {

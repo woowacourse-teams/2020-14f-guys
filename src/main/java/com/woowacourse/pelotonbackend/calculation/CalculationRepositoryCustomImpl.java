@@ -11,8 +11,6 @@ import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcOperations;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 
-import com.woowacourse.pelotonbackend.certification.domain.Calculations;
-
 public class CalculationRepositoryCustomImpl implements CalculationRepositoryCustom {
     private final NamedParameterJdbcOperations jdbcOperations;
     private final EntityRowMapper<Calculation> rowMapper;
