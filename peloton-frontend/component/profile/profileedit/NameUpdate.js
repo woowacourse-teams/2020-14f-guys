@@ -10,7 +10,10 @@ import {
 } from "react-native";
 import { COLOR } from "../../../utils/constants";
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
-import { memberInfoState, memberTokenState } from "../../../state/member/MemberState";
+import {
+  memberInfoState,
+  memberTokenState,
+} from "../../../state/member/MemberState";
 import { useNavigation } from "@react-navigation/core";
 import { MemberApi } from "../../../utils/api/MemberApi";
 import { loadingState } from "../../../state/loading/LoadingState";
@@ -30,8 +33,8 @@ const NameUpdate = () => {
       setMemberInfo(newMemberInfo);
       navigation.navigate("ProfileEdit");
     } catch (error) {
-      alert("에러가 발생했습니다.");
-      console.log(error);
+      alert(error.response.data.code);
+      console.log(error.response.data.message);
     }
     setIsLoading(false);
   };

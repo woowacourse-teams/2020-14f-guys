@@ -6,40 +6,40 @@ import lombok.Getter;
 @AllArgsConstructor
 @Getter
 public enum ErrorCode {
-    BUSINESS(500, "Server-001"),
-    UNEXPECTED(500, "Server-002"),
+    BUSINESS(500, "서버에서 문제가 생겼어요.🤣 조금만 기다려주세요."),
+    UNEXPECTED(500, "서버에서 알 수 없는 예외가 발생했어요.😂 조금만 기다려주세요."),
 
-    INVALID_VALIDATE(400, "Validation-001"),
+    INVALID_VALIDATE(400, "입력이 이상해요.😅"),
 
-    MEMBER_NOT_FOUND(404, "Member-001"),
-    MEMBER_DUPLICATE(400, "Member-002"),
-    MEMBER_ID_INVALID(400, "Member-003"),
+    MEMBER_NOT_FOUND(404, "해당 회원을 찾을 수 없어요.😂"),
+    MEMBER_DUPLICATE(400, "이미 가입한 회원이에요.😀"),
+    MEMBER_ID_INVALID(400, "잘못된 회원 아이디에요.😂"),
 
-    REPORT_NOT_FOUND(404, "Report-001"),
-    REPORT_DUPLICATE(400, "Report-002"),
-    REPORT_ID_INVALID(400, "Report-003"),
+    REPORT_NOT_FOUND(404, "해당 신고를 찾을 수 없어요.😂"),
+    REPORT_DUPLICATE(400, "이미 신고 되었어요!😀"),
+    REPORT_ID_INVALID(400, "잘못된 신고 아이디에요.😂"),
 
-    RACE_NOT_FOUND(404, "Race-001"),
-    RACE_DUPLICATE(400, "Race-002"),
-    RACE_ID_INVALID(400, "Race-003"),
+    RACE_NOT_FOUND(404, "해당 레이스를 찾을 수 없어요.😂"),
+    RACE_DUPLICATE(400, "이미 존재하는 레이스에요.😊"),
+    RACE_ID_INVALID(400, "잘못된 레이스 아이디에요.😂"),
 
-    MISSION_NOT_FOUND(404, "Mission-001"),
-    MISSION_DUPLICATE(400, "Mission-002"),
-    MISSION_ID_INVALID(400, "Mission-003"),
+    MISSION_NOT_FOUND(404, "미션을 찾을 수 없어요.😂"),
+    MISSION_DUPLICATE(400, "이미 존재하는 미션에요.😊"),
+    MISSION_ID_INVALID(400, "잘못된 미션 아이디에요.😂"),
 
-    RIDER_NOT_FOUND(404, "Rider-001"),
-    RIDER_DUPLICATE(400, "Rider-002"),
+    RIDER_NOT_FOUND(404,"해당 라이더를 찾을 수 없어요.😂"),
+    RIDER_DUPLICATE(400, "이미 참여한 레이스에요.😊"),
 
-    UN_AUTHORIZED(401, "Auth-001"),
-    TOKEN_EXPIRED(401, "Auth-002"),
-    INVALID_TOKEN(401, "Auth-003"),
+    UN_AUTHORIZED(401, "인증이 잘못되었어요.😂"),
+    TOKEN_EXPIRED(401, "토큰이 만료되었어요. 다시 로그인 해주세요.😂"),
+    INVALID_TOKEN(401, "잘못된 토큰이에요.😂"),
 
-    FILE_UPLOAD(400, "File-004"),
+    FILE_UPLOAD(400, "파일 형식이 잘못되었어요.!📁"),
 
-    CERTIFICATION_NOT_FOUND(404, "Certification-001"),
-    CERTIFICATION_DUPLICATE(400, "Certification-002"),
+    CERTIFICATION_NOT_FOUND(404, "인증 정보를 찾을 수 없어요.😂"),
+    CERTIFICATION_DUPLICATE(400, "이미 인증하셨어요.😀"),
 
-    MONEY_NOT_ENOUGH(400, "MONEY");
+    MONEY_NOT_ENOUGH(400, "캐쉬가 부족해요😂 충전해주세요.");
 
     private final int status;
     private final String code;

@@ -11,6 +11,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.http.HttpStatus;
 
+import com.woowacourse.pelotonbackend.common.ErrorCode;
 import com.woowacourse.pelotonbackend.common.ErrorResponse;
 import com.woowacourse.pelotonbackend.support.JwtTokenProvider;
 import io.restassured.RestAssured;
@@ -53,6 +54,6 @@ class LoginMemberArgumentResolverIntegrationTest {
             .extract()
             .body().as(ErrorResponse.class);
 
-        assertThat(errorResponse.getCode()).isEqualTo("Member-001");
+        assertThat(errorResponse.getCode()).isEqualTo(ErrorCode.MEMBER_NOT_FOUND.getCode());
     }
 }

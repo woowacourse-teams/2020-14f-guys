@@ -69,7 +69,7 @@ const RedirectPage = ({ route }) => {
       setMemberInfo(newMemberInfo);
       navigateToRaceDetail();
     } catch (error) {
-      console.log(error);
+      console.log(error.response.data.message);
     }
     setLoadingState(false);
   };
@@ -103,14 +103,14 @@ const RedirectPage = ({ route }) => {
         const newMemberInfo = await MemberApi.get(userToken);
         setMemberInfo(newMemberInfo);
       } catch (error) {
-        alert("사용자 정보를 찾을 수 없습니다. 다시 로그인 해주세요.");
+        alert(error.response.data.code);
         navigateWithoutHistory(navigation, "Login");
       }
       try {
         const newRaceInfo = await RaceApi.get(userToken, raceId);
         setRaceInfo(newRaceInfo);
       } catch (error) {
-        alert("올바르지 않은 경로입니다.");
+        alert(error.response.data.code);
         navigateWithoutHistory(navigation, "Home");
       }
       try {
@@ -120,8 +120,8 @@ const RedirectPage = ({ route }) => {
           navigateToRaceDetail();
         }
       } catch (error) {
-        alert("조회에 실패했습니다.");
-        console.log(error);
+        alert(error.response.data.code);
+        console.log(error.response.data.message);
         navigateWithoutHistory(navigation, "Home");
       }
     };

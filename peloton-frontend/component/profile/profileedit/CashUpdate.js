@@ -52,8 +52,8 @@ const CashUpdate = () => {
       setMemberInfo(response);
       navigation.navigate("ProfileEdit");
     } catch (error) {
-      Alert.alert("에러가 발생했습니다.");
-      console.log(error);
+      alert(error.response.data.code);
+      console.log(error.response.data.message);
     }
   };
 

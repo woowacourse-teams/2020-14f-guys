@@ -16,6 +16,25 @@ const ProfileImageEditButton = ({ children, directUpdate }) => {
   const [memberInfo, setMemberInfo] = useRecoilState(memberInfoState);
   const setIsLoading = useSetRecoilState(loadingState);
 
+  const requestChangeImage = async (selectedImage) => {
+    const formData = new FormData();
+    formData.append("profile_image", {
+      uri: selectedImage,
+      type: "image/jpeg",
+      name: selectedImage.substring(9),
+    });
+    try {
+      const profile = await MemberApi.postProfile(token, formData);
+      setMemberInfo({
+        ...memberInfo,
+        profile,
+      });
+    } catch (error) {
+      alert(error.response.data.code);
+    }
+    setIsLoading(false);
+  };
+
   const pickAndChangeProfileImage = async () => {
     setIsLoading(true);
     const hasCameraRollPermission = await getCameraRollPermission();
