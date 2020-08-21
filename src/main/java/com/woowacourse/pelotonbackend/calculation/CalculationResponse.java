@@ -16,12 +16,14 @@ import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.ToString;
 
 @Builder
 @Getter
 @AllArgsConstructor(access = AccessLevel.PRIVATE, onConstructor_ = @ConstructorProperties({"riderId", "raceId", "prize",
     "isCalculated", "createdAt"}))
 @JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class)
+@ToString
 public class CalculationResponse {
     private final Long riderId;
     private final Long raceId;

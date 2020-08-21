@@ -1,14 +1,13 @@
 package com.woowacourse.pelotonbackend.certification.domain;
 
-
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 import java.util.Base64;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 import java.util.stream.Collectors;
 import java.util.stream.LongStream;
 
@@ -20,13 +19,11 @@ import org.springframework.data.jdbc.core.mapping.AggregateReference;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockMultipartFile;
 
-
 import com.woowacourse.pelotonbackend.certification.presentation.dto.CertificationDescriptionUpdateRequest;
 import com.woowacourse.pelotonbackend.certification.presentation.dto.CertificationRequest;
 import com.woowacourse.pelotonbackend.certification.presentation.dto.CertificationResponse;
 import com.woowacourse.pelotonbackend.certification.presentation.dto.CertificationResponses;
 import com.woowacourse.pelotonbackend.certification.presentation.dto.CertificationStatusUpdateRequest;
-
 import com.woowacourse.pelotonbackend.query.presentation.dto.RaceCertificationsResponse;
 import com.woowacourse.pelotonbackend.vo.ImageUrl;
 
@@ -205,9 +202,9 @@ public class CertificationFixture {
         return new PageImpl<>(mockCertifications, request, 4);
     }
 
-    public static RaceCertificationsResponse createMockRaceCertifications(final Map<Integer, Long> countToRiderId) {
+    public static RaceCertificationsResponse createMockRaceCertifications(final Map<Long, Integer> countToRiderId) {
         final List<CertificationResponse> certifications = countToRiderId.entrySet().stream()
-            .map(entry -> createMockCertifications(entry.getKey(), entry.getValue()))
+            .map(entry -> createMockCertifications(entry.getValue(), entry.getKey()))
             .flatMap(Collection::stream)
             .collect(Collectors.toList());
 
@@ -231,5 +228,14 @@ public class CertificationFixture {
             .description(TEST_CERTIFICATION_DESCRIPTION)
             .status(TEST_CERTIFICATION_STATUS)
             .build();
+    }
+
+    public static Map<Long, Integer> createRiderToCount() {
+        Map<Long, Integer> riderIdToCount = new HashMap<>();
+        riderIdToCount.put(1L, 3);
+        riderIdToCount.put(2L, 2);
+        riderIdToCount.put(3L, 1);
+
+        return riderIdToCount;
     }
 }

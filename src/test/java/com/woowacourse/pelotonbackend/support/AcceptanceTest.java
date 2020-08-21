@@ -16,7 +16,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.TestExecutionListeners;
 
 import com.woowacourse.pelotonbackend.DataInitializeExecutionListener;
-import com.woowacourse.pelotonbackend.certification.presentation.dto.CertificationCreateRequest;
+import com.woowacourse.pelotonbackend.certification.presentation.dto.CertificationRequest;
 import com.woowacourse.pelotonbackend.member.presentation.dto.MemberCreateRequest;
 import com.woowacourse.pelotonbackend.member.presentation.dto.MemberResponse;
 import com.woowacourse.pelotonbackend.member.presentation.dto.MemberResponses;
@@ -174,7 +174,7 @@ public class AcceptanceTest {
             .as(RiderResponses.class).getRiderResponses();
     }
 
-    protected void createCertification(final JwtTokenResponse token, final CertificationCreateRequest createRequest) {
+    protected void createCertification(final JwtTokenResponse token, final CertificationRequest createRequest) {
         given()
             .header(createTokenHeader(token))
             .contentType(MediaType.MULTIPART_FORM_DATA_VALUE)
@@ -193,7 +193,7 @@ public class AcceptanceTest {
             .header("Location");
     }
 
-    protected void createCertifications(final JwtTokenResponse token, final List<CertificationCreateRequest> requests) {
+    protected void createCertifications(final JwtTokenResponse token, final List<CertificationRequest> requests) {
         requests.forEach(request -> createCertification(token, request));
     }
 }

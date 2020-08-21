@@ -129,6 +129,11 @@ public class RaceFixture {
         return RaceResponse.of(createWithId(TEST_RACE_ID));
     }
 
+    public static RaceResponse retrieveResponse(long entranceFee) {
+        return RaceResponse.of(createWithId(TEST_RACE_ID).toBuilder()
+            .entranceFee(Cash.of(entranceFee)).build());
+    }
+
     public static RaceResponse retrieveFinishedResponse() {
         return RaceResponse.of(createWithIdAndPast(TEST_RACE_ID));
     }

@@ -1,7 +1,6 @@
 package com.woowacourse.pelotonbackend.calculation;
 
 import static org.assertj.core.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.List;
 import java.util.Optional;
@@ -13,7 +12,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.TestExecutionListeners;
 
 import com.woowacourse.pelotonbackend.DataInitializeExecutionListener;
-import com.woowacourse.pelotonbackend.certification.domain.Calculations;
 import com.woowacourse.pelotonbackend.race.domain.RaceFixture;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)

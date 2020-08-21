@@ -4,13 +4,14 @@ import java.beans.ConstructorProperties;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import com.woowacourse.pelotonbackend.certification.domain.Calculations;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.ToString;
 
 @AllArgsConstructor(access = AccessLevel.PRIVATE, onConstructor_ = @ConstructorProperties({"calculationResponses"}))
 @Getter
+@ToString
 public class CalculationResponses {
     private final List<CalculationResponse> calculationResponses;
 
