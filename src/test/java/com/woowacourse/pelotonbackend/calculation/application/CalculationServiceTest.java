@@ -1,4 +1,4 @@
-package com.woowacourse.pelotonbackend.calculation;
+package com.woowacourse.pelotonbackend.calculation.application;
 
 import static org.assertj.core.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.*;
@@ -17,6 +17,10 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import com.woowacourse.pelotonbackend.calculation.application.CalculationService;
+import com.woowacourse.pelotonbackend.calculation.domain.CalculationFixture;
+import com.woowacourse.pelotonbackend.calculation.domain.CalculationRepository;
+import com.woowacourse.pelotonbackend.calculation.presentation.CalculationResponse;
 import com.woowacourse.pelotonbackend.certification.domain.CertificationFixture;
 import com.woowacourse.pelotonbackend.common.exception.CalculationNotFoundException;
 import com.woowacourse.pelotonbackend.common.exception.RaceNotFinishedException;
@@ -86,7 +90,7 @@ class CalculationServiceTest {
             Optional.of(CalculationFixture.createCalculations(5, RiderFixture.TEST_RIDER_ID)));
 
         final List<CalculationResponse> results = calculationService.retrieve(
-            memberResponse, RaceFixture.TEST_RACE_ID, RiderFixture.TEST_RIDER_ID).getCalculationResponses();
+            memberResponse, RaceFixture.TEST_RACE_ID).getCalculationResponses();
 
         assertAll(
             () -> assertThat(results).extracting(CalculationResponse::getRaceId)
@@ -105,19 +109,6 @@ class CalculationServiceTest {
             ));
     }
 
-    @DisplayName("라이더 아이디가 비정상적인 값이 입력되었을 때")
-    @Test
-    void invalidRiderRetrieve() {
-        when(riderService.retrieveByRaceId(anyLong())).thenReturn(
-            new RiderResponses(RiderFixture.createRidersInSameRaceByCount(5)));
-        when(raceService.retrieve(anyLong())).thenReturn(RaceFixture.retrieveResponse());
-
-        assertThatThrownBy(
-            () -> calculationService.retrieve(memberResponse, RaceFixture.TEST_RACE_ID, RiderFixture.WRONG_RIDER_ID))
-            .isInstanceOf(UnAuthenticatedException.class)
-            .hasMessage(String.format("회원 id : %d 는 권한이 없습니다.", RiderFixture.WRONG_RIDER_ID));
-    }
-
     @DisplayName("회원의 아이디가 비정상적인 값이 입력되었을 때")
     @Test
     void invalidMemberRetrieve() {
@@ -127,7 +118,7 @@ class CalculationServiceTest {
 
         final MemberResponse memberResponse = MemberFixture.memberResponse(MemberFixture.WRONG_MEMBER_ID);
         assertThatThrownBy(
-            () -> calculationService.retrieve(memberResponse, RaceFixture.TEST_RACE_ID, RiderFixture.TEST_RIDER_ID))
+            () -> calculationService.retrieve(memberResponse, RaceFixture.TEST_RACE_ID))
             .isInstanceOf(UnAuthenticatedException.class)
             .hasMessage(String.format("회원 id : %d 는 권한이 없습니다.", memberResponse.getId()));
     }
@@ -140,7 +131,7 @@ class CalculationServiceTest {
         when(raceService.retrieve(anyLong())).thenReturn(RaceFixture.retrieveNotFinishedResponse());
 
         assertThatThrownBy(
-            () -> calculationService.retrieve(memberResponse, RaceFixture.TEST_RACE_ID, RiderFixture.TEST_RIDER_ID))
+            () -> calculationService.retrieve(memberResponse, RaceFixture.TEST_RACE_ID))
             .isInstanceOf(RaceNotFinishedException.class)
             .hasMessage(String.format("레이스 id : %d가 아직 진행중이에요!", RaceFixture.TEST_RACE_ID));
     }
@@ -154,7 +145,7 @@ class CalculationServiceTest {
         when(calculationRepository.findAllByRaceId(anyLong())).thenReturn(Optional.empty());
 
         assertThatThrownBy(
-            () -> calculationService.retrieve(memberResponse, RaceFixture.TEST_RACE_ID, RiderFixture.TEST_RIDER_ID))
+            () -> calculationService.retrieve(memberResponse, RaceFixture.TEST_RACE_ID))
             .isInstanceOf(CalculationNotFoundException.class)
             .hasMessage(String.format("Calculation(race id = %d) does not exist)", RaceFixture.TEST_RACE_ID));
     }

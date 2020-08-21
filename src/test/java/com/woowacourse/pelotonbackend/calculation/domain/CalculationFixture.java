@@ -1,4 +1,4 @@
-package com.woowacourse.pelotonbackend.calculation;
+package com.woowacourse.pelotonbackend.calculation.domain;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -9,6 +9,8 @@ import java.util.stream.LongStream;
 import org.assertj.core.util.Lists;
 import org.springframework.data.jdbc.core.mapping.AggregateReference;
 
+import com.woowacourse.pelotonbackend.calculation.presentation.CalculationResponse;
+import com.woowacourse.pelotonbackend.calculation.presentation.CalculationResponses;
 import com.woowacourse.pelotonbackend.race.domain.RaceFixture;
 import com.woowacourse.pelotonbackend.vo.Cash;
 

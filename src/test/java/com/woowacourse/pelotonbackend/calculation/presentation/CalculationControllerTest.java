@@ -1,4 +1,4 @@
-package com.woowacourse.pelotonbackend.calculation;
+package com.woowacourse.pelotonbackend.calculation.presentation;
 
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.BDDMockito.*;
@@ -29,6 +29,9 @@ import org.springframework.web.filter.CharacterEncodingFilter;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.method.support.ModelAndViewContainer;
 
+import com.woowacourse.pelotonbackend.calculation.application.CalculationService;
+import com.woowacourse.pelotonbackend.calculation.domain.CalculationFixture;
+import com.woowacourse.pelotonbackend.calculation.presentation.CalculationController;
 import com.woowacourse.pelotonbackend.common.exception.CalculationNotFoundException;
 import com.woowacourse.pelotonbackend.common.exception.RaceNotFinishedException;
 import com.woowacourse.pelotonbackend.common.exception.RiderInvalidException;
@@ -112,11 +115,11 @@ class CalculationControllerTest {
         given(argumentResolver.supportsParameter(any())).willCallRealMethod();
         given(argumentResolver.resolveArgument(any(MethodParameter.class), any(ModelAndViewContainer.class),
             any(NativeWebRequest.class), any(WebDataBinderFactory.class))).willReturn(MemberFixture.memberResponse());
-        given(calculationService.retrieve(any(MemberResponse.class), anyLong(), anyLong()))
+        given(calculationService.retrieve(any(MemberResponse.class), anyLong()))
             .willReturn(CalculationFixture.createResponses(5, 3L));
 
         mockMvc.perform(
-            get("/api/calculations/races/{raceId}/riders/{riderId}", RaceFixture.TEST_RACE_ID, RiderFixture.TEST_RIDER_ID)
+            get("/api/calculations/races/{raceId}", RaceFixture.TEST_RACE_ID)
             .header(HttpHeaders.AUTHORIZATION, LoginFixture.getTokenHeader())
         )
             .andExpect(status().isOk())
@@ -131,11 +134,11 @@ class CalculationControllerTest {
         given(argumentResolver.supportsParameter(any())).willCallRealMethod();
         given(argumentResolver.resolveArgument(any(MethodParameter.class), any(ModelAndViewContainer.class),
             any(NativeWebRequest.class), any(WebDataBinderFactory.class))).willReturn(MemberFixture.memberResponse());
-        given(calculationService.retrieve(any(MemberResponse.class), anyLong(), anyLong()))
+        given(calculationService.retrieve(any(MemberResponse.class), anyLong()))
             .willThrow(new UnAuthenticatedException(MemberFixture.MEMBER_ID));
 
         mockMvc.perform(
-            get("/api/calculations/races/{raceId}/riders/{riderId}", RaceFixture.TEST_RACE_ID, RiderFixture.TEST_RIDER_ID)
+            get("/api/calculations/races/{raceId}", RaceFixture.TEST_RACE_ID)
             .header(HttpHeaders.AUTHORIZATION, LoginFixture.getTokenHeader())
         )
             .andExpect(status().isForbidden())
@@ -150,11 +153,11 @@ class CalculationControllerTest {
         given(argumentResolver.supportsParameter(any())).willCallRealMethod();
         given(argumentResolver.resolveArgument(any(MethodParameter.class), any(ModelAndViewContainer.class),
             any(NativeWebRequest.class), any(WebDataBinderFactory.class))).willReturn(MemberFixture.memberResponse());
-        given(calculationService.retrieve(any(MemberResponse.class), anyLong(), anyLong()))
+        given(calculationService.retrieve(any(MemberResponse.class), anyLong()))
             .willThrow(new UnAuthenticatedException(RiderFixture.TEST_RIDER_ID));
 
         mockMvc.perform(
-            get("/api/calculations/races/{raceId}/riders/{riderId}", RaceFixture.TEST_RACE_ID, RiderFixture.TEST_RIDER_ID)
+            get("/api/calculations/races/{raceId}", RaceFixture.TEST_RACE_ID)
                 .header(HttpHeaders.AUTHORIZATION, LoginFixture.getTokenHeader())
         )
             .andExpect(status().isForbidden())
@@ -169,11 +172,11 @@ class CalculationControllerTest {
         given(argumentResolver.supportsParameter(any())).willCallRealMethod();
         given(argumentResolver.resolveArgument(any(MethodParameter.class), any(ModelAndViewContainer.class),
             any(NativeWebRequest.class), any(WebDataBinderFactory.class))).willReturn(MemberFixture.memberResponse());
-        given(calculationService.retrieve(any(MemberResponse.class), anyLong(), anyLong()))
+        given(calculationService.retrieve(any(MemberResponse.class), anyLong()))
             .willThrow(new RaceNotFinishedException(RaceFixture.TEST_RACE_ID));
 
         mockMvc.perform(
-            get("/api/calculations/races/{raceId}/riders/{riderId}", RaceFixture.TEST_RACE_ID, RiderFixture.TEST_RIDER_ID)
+            get("/api/calculations/races/{raceId}", RaceFixture.TEST_RACE_ID)
                 .header(HttpHeaders.AUTHORIZATION, LoginFixture.getTokenHeader())
         )
             .andExpect(status().isBadRequest())
@@ -188,11 +191,11 @@ class CalculationControllerTest {
         given(argumentResolver.supportsParameter(any())).willCallRealMethod();
         given(argumentResolver.resolveArgument(any(MethodParameter.class), any(ModelAndViewContainer.class),
             any(NativeWebRequest.class), any(WebDataBinderFactory.class))).willReturn(MemberFixture.memberResponse());
-        given(calculationService.retrieve(any(MemberResponse.class), anyLong(), anyLong()))
+        given(calculationService.retrieve(any(MemberResponse.class), anyLong()))
             .willThrow(new CalculationNotFoundException(RaceFixture.TEST_RACE_ID));
 
         mockMvc.perform(
-            get("/api/calculations/races/{raceId}/riders/{riderId}", RaceFixture.TEST_RACE_ID, RiderFixture.TEST_RIDER_ID)
+            get("/api/calculations/races/{raceId}", RaceFixture.TEST_RACE_ID)
                 .header(HttpHeaders.AUTHORIZATION, LoginFixture.getTokenHeader())
         )
             .andExpect(status().isNotFound())

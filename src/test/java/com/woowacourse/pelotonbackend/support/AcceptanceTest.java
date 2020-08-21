@@ -20,10 +20,9 @@ import com.woowacourse.pelotonbackend.certification.presentation.dto.Certificati
 import com.woowacourse.pelotonbackend.member.presentation.dto.MemberCreateRequest;
 import com.woowacourse.pelotonbackend.member.presentation.dto.MemberResponse;
 import com.woowacourse.pelotonbackend.member.presentation.dto.MemberResponses;
+import com.woowacourse.pelotonbackend.mission.presentation.dto.MissionCreateRequest;
 import com.woowacourse.pelotonbackend.race.presentation.dto.RaceCreateRequest;
 import com.woowacourse.pelotonbackend.rider.presentation.dto.RiderCreateRequest;
-import com.woowacourse.pelotonbackend.rider.presentation.dto.RiderResponse;
-import com.woowacourse.pelotonbackend.rider.presentation.dto.RiderResponses;
 import com.woowacourse.pelotonbackend.support.dto.JwtTokenResponse;
 import io.restassured.RestAssured;
 import io.restassured.http.Header;
@@ -93,18 +92,6 @@ public class AcceptanceTest {
             .as(MemberResponse.class);
     }
 
-    protected MemberResponse findMember(final JwtTokenResponse tokenResponse) {
-        return given()
-            .header(createTokenHeader(tokenResponse))
-            .when()
-            .get(RESOURCE_URL)
-            .then()
-            .log().all()
-            .statusCode(HttpStatus.OK.value())
-            .extract()
-            .as(MemberResponse.class);
-    }
-
     protected MemberResponses findAllMembers(final JwtTokenResponse tokenResponse) {
         return given()
             .header(createTokenHeader(tokenResponse))
@@ -161,19 +148,6 @@ public class AcceptanceTest {
         tokenResponses.forEach(token -> createRider(token, riderCreateRequest));
     }
 
-    protected List<RiderResponse> findAllRiders(final Long raceId, final JwtTokenResponse tokenResponse) {
-        return given()
-            .header(createTokenHeader(tokenResponse))
-            .accept(MediaType.APPLICATION_JSON_VALUE)
-            .when()
-            .get("/api/riders/races/{id}", raceId)
-            .then()
-            .log().all()
-            .statusCode(HttpStatus.OK.value())
-            .extract()
-            .as(RiderResponses.class).getRiderResponses();
-    }
-
     protected void createCertification(final JwtTokenResponse token, final CertificationRequest createRequest) {
         given()
             .header(createTokenHeader(token))
@@ -195,5 +169,17 @@ public class AcceptanceTest {
 
     protected void createCertifications(final JwtTokenResponse token, final List<CertificationRequest> requests) {
         requests.forEach(request -> createCertification(token, request));
+    }
+
+    protected void createMission(final JwtTokenResponse tokenResponse, final MissionCreateRequest request) {
+        given()
+            .header(createTokenHeader(tokenResponse))
+            .contentType(MediaType.APPLICATION_JSON_VALUE)
+            .body(request)
+            .when()
+            .post("/api/missions")
+            .then()
+            .log().all()
+            .statusCode(HttpStatus.CREATED.value());
     }
 }

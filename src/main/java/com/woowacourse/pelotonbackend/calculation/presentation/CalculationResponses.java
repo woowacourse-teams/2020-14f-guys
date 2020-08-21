@@ -1,9 +1,11 @@
-package com.woowacourse.pelotonbackend.calculation;
+package com.woowacourse.pelotonbackend.calculation.presentation;
 
 import java.beans.ConstructorProperties;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import com.woowacourse.pelotonbackend.calculation.domain.Calculation;
+import com.woowacourse.pelotonbackend.calculation.domain.Calculations;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;

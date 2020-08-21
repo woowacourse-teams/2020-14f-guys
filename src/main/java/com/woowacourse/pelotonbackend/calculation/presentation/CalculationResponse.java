@@ -1,4 +1,4 @@
-package com.woowacourse.pelotonbackend.calculation;
+package com.woowacourse.pelotonbackend.calculation.presentation;
 
 import java.beans.ConstructorProperties;
 import java.time.LocalDateTime;
@@ -11,6 +11,7 @@ import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
+import com.woowacourse.pelotonbackend.calculation.domain.Calculation;
 import com.woowacourse.pelotonbackend.vo.Cash;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;

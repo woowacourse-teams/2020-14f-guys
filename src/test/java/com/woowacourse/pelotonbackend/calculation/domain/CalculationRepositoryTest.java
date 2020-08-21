@@ -1,4 +1,4 @@
-package com.woowacourse.pelotonbackend.calculation;
+package com.woowacourse.pelotonbackend.calculation.domain;
 
 import static org.assertj.core.api.Assertions.*;
 
@@ -12,6 +12,10 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.TestExecutionListeners;
 
 import com.woowacourse.pelotonbackend.DataInitializeExecutionListener;
+import com.woowacourse.pelotonbackend.calculation.domain.Calculation;
+import com.woowacourse.pelotonbackend.calculation.domain.CalculationFixture;
+import com.woowacourse.pelotonbackend.calculation.domain.CalculationRepository;
+import com.woowacourse.pelotonbackend.calculation.domain.Calculations;
 import com.woowacourse.pelotonbackend.race.domain.RaceFixture;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
