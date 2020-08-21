@@ -65,7 +65,7 @@ public class RiderAcceptanceTest extends AcceptanceTest {
         final MemberResponse memberResponse = memberResponses.getResponses().get(0);
         final List<String> resources = fetchCreateRiders(tokenResponses, riderCreateRequest);
         final MemberResponses membersAfterJoinRace = findAllMembers(tokenResponse);
-        final Cash expectedMoney = new Cash(BigDecimal.valueOf(30000L));
+        final Cash expectedMoney = Cash.of(30000L);
         assertThat(membersAfterJoinRace.getResponses().get(0).getCash()).isEqualTo(expectedMoney);
 
         final String resource = resources.get(0);
