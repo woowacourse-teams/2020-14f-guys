@@ -1,7 +1,7 @@
 import React from "react";
 import { StyleSheet, View } from "react-native";
 import RaceSpecItem from "./RaceSpecItem";
-import { COLOR } from "../../../utils/constants";
+import { COLOR, DAYS_IN_KOREAN } from "../../../utils/constants";
 
 const RaceSpec = ({
   days,
@@ -12,8 +12,13 @@ const RaceSpec = ({
 }) => {
   const startDate = raceDuration.start_date;
   const endDate = raceDuration.end_date;
-  const startTime = missionDuration.start_time;
-  const endTime = missionDuration.end_time;
+  const startTime = missionDuration.start_time
+    ? missionDuration.start_time.substring(0, 5)
+    : "";
+  const endTime = missionDuration.end_time
+    ? missionDuration.end_time.substring(0, 5)
+    : "";
+
   return (
     <View style={styles.container}>
       <RaceSpecItem
@@ -23,7 +28,7 @@ const RaceSpec = ({
       />
       <RaceSpecItem
         itemKey={"인증 주기"}
-        value={days ? days.join(", ") : ""}
+        value={days ? days.map((day) => DAYS_IN_KOREAN[day]).join(", ") : ""}
         border
       />
       <RaceSpecItem

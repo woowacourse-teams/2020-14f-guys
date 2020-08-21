@@ -130,6 +130,16 @@ export const DAYS = [
   "SUNDAY",
 ];
 
+export const DAYS_IN_KOREAN = {
+  MONDAY: "월",
+  TUESDAY: "화",
+  WEDNESDAY: "수",
+  THURSDAY: "목",
+  FRIDAY: "금",
+  SATURDAY: "토",
+  SUNDAY: "일",
+};
+
 export const CERTIFICATION_TYPE = {
   AVAILABLE: {
     activeOpacity: 0.7,
