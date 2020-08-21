@@ -584,10 +584,6 @@ operation::calculation/get-success[snippets='http-request,http-response,path-par
 ==== Fail Forbidden Member
 operation::calculation/get-fail-by-member[snippets='http-request,http-response,path-parameters,request-headers,response-fields']
 
-[[resources-get-calculation-fail-rider]]
-==== Fail : Forbidden Rider
-operation::calculation/get-fail-by-rider-id[snippets='http-request,http-response,path-parameters,request-headers,response-fields']
-
 [[resources-get-calculation-fail-race-not-finished]]
 ==== Fail : Race Not finished
 operation::calculation/get-fail-not-finished[snippets='http-request,http-response,path-parameters,request-headers,response-fields']
