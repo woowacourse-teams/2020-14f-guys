@@ -36,8 +36,16 @@ const RaceSpec = ({
         value={`${startTime} ~ ${endTime}`}
         border
       />
-      <RaceSpecItem itemKey={"모인 금액"} value={cash * riderCount} border />
-      <RaceSpecItem itemKey={"참가자 수"} value={riderCount} border={false} />
+      <RaceSpecItem
+        itemKey={"모인 금액"}
+        value={`${cash * riderCount}원`}
+        border
+      />
+      <RaceSpecItem
+        itemKey={"참가자 수"}
+        value={`${riderCount}명`}
+        border={false}
+      />
     </View>
   );
 };
