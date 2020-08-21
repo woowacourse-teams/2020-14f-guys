@@ -2,17 +2,16 @@ import React from "react";
 import { Text, View, StyleSheet } from "react-native";
 import { customDateTimeParser } from "../../utils/util";
 import CertificationStatus from "./CertificationStatus";
+import CertificationCreatedAt from "./CertificationCreatedAt";
 
-const CertificationInfo = ({ member, certification }) => {
+const CertificationInfo = ({ memberName, certification }) => {
   return (
     <View style={styles.container}>
       <View style={styles.memberProfileTextContainer}>
-        <Text style={styles.memberProfileText}>{member.name}</Text>
-        <Text style={styles.certificationDateText}>
-          {customDateTimeParser(certification.created_at)}
-        </Text>
+        <Text style={styles.memberProfileText}>{memberName}</Text>
+        <CertificationCreatedAt createdAt={certification.created_at} />
       </View>
-      <CertificationStatus certification={certification} />
+      <CertificationStatus status={certification.status} />
     </View>
   );
 };
@@ -27,10 +26,6 @@ const styles = StyleSheet.create({
   memberProfileText: {
     fontSize: 16,
     fontWeight: "bold",
-    marginVertical: 3,
-  },
-  certificationDateText: {
-    fontWeight: "200",
     marginVertical: 3,
   },
 });

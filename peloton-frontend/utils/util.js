@@ -46,7 +46,7 @@ export const alertNotEnoughCash = ({ onOk }) => {
         onPress: onOk,
       },
     ],
-    { cancelable: false },
+    { cancelable: false }
   );
 };
 
@@ -54,7 +54,7 @@ export const customDateTimeParser = (input) => {
   const date = new Date(input);
 
   return `${date.getFullYear()}년 ${date.getMonth()}월 ${date.getDay()}일 ${customHourParser(
-    date.getHours(),
+    date.getHours()
   )}시 ${customMinuteParser(date.getMinutes())}분`;
 };
 
@@ -62,18 +62,32 @@ export const customTimeParser = (input) => {
   const date = new Date(input);
 
   return `${customHourParser(date.getHours())}:${customMinuteParser(
-    date.getMinutes(),
+    date.getMinutes()
   )}`;
 };
 
 export const customHourParser = (hour) => {
-  return hour > 12
-    ? hour - 12 > 10
-      ? `오후 ${hour - 12}`
-      : `오후 0${hour - 12}`
-    : hour > 10
-    ? `오후 ${hour}`
-    : `오후 0${hour}`;
+  if (hour > 24 || hour < 0) {
+    return;
+  }
+
+  if (hour > 12) {
+    if (hour - 12 < 10) {
+      return `오후 0${hour - 12}`;
+    } else {
+      return `오후 ${hour - 12}`;
+    }
+  } else if (hour === 12) {
+    return `오후 ${hour}`;
+  } else {
+    if (hour === 0) {
+      return `오전 12`;
+    } else if (hour < 10) {
+      return `오전 0${hour}`;
+    } else {
+      return `오전 ${hour}`;
+    }
+  }
 };
 
 export const customMinuteParser = (minute) => {

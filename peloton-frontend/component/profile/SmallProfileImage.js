@@ -1,15 +1,11 @@
 import React from "react";
 import { Text, View, StyleSheet, Image } from "react-native";
 
-const SmallProfileImage = ({ member }) => {
+const SmallProfileImage = ({ uri }) => {
   return (
     <Image
       style={styles.memberProfileImage}
-      source={
-        member
-          ? { uri: member.profile }
-          : require("../../assets/default-profile.jpg")
-      }
+      source={uri ? { uri } : require("../../assets/default-profile.jpg")}
       defaultSource={require("../../assets/default-profile.jpg")}
     />
   );

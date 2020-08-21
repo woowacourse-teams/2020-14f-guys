@@ -2,25 +2,24 @@ import React from "react";
 import { Text, View, StyleSheet } from "react-native";
 import { COLOR } from "../../utils/constants";
 
-const CertificationStatus = ({ certification }) => {
+const CertificationStatus = ({ status }) => {
   return (
     <View style={styles.status}>
-      <Text style={styles.statusText}>{certification.status}</Text>
+      <Text style={styles.statusText}>{status}</Text>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
   status: {
-    width: 65,
-    height: 35,
-    borderRadius: 18,
+    paddingHorizontal: 5,
+    paddingVertical: 6,
+    borderRadius: 15,
     backgroundColor: COLOR.GREEN4,
-    justifyContent: "center",
-    alignItems: "center",
     right: 10,
-    bottom: 3,
+    bottom: 5,
     position: "absolute",
+    alignSelf: "flex-start",
   },
   statusText: {
     fontSize: 12,

@@ -29,7 +29,7 @@ import RaceJoinTitle from "./RaceJoinTitle";
 import RaceJoinBody from "./RaceJoinBody";
 
 const RaceDeepLinkPage = ({ route }) => {
-  const newRaceId = route.params.id;
+  const raceId = route.params.id;
   const setLoadingState = useSetRecoilState(loadingState);
   const [token, setToken] = useRecoilState(memberTokenState);
   const [memberInfo, setMemberInfo] = useRecoilState(memberInfoState);
@@ -54,11 +54,12 @@ const RaceDeepLinkPage = ({ route }) => {
   const payEntranceFee = async () => {
     setLoadingState(true);
     try {
-      await RiderApi.post(token, newRaceId);
+      await RiderApi.post(token, raceId);
       const newMemberInfo = await MemberApi.get(token);
       setMemberInfo(newMemberInfo);
-      navigateToRaceDetail(navigation, newRaceId);
+      navigateToRaceDetail(navigation, raceId);
     } catch (error) {
+      alert(error.response.data.code);
       console.log(error.response.data.message);
     }
     setLoadingState(false);
@@ -66,9 +67,10 @@ const RaceDeepLinkPage = ({ route }) => {
 
   useEffect(() => {
     setLoadingState(true);
-    if (!newRaceId) {
+    if (!raceId) {
       alert("정상적이지 않은 접근입니다.");
       navigateWithoutHistory(navigation, "Home");
+      setLoadingState(false);
       return;
     }
     const fetchRaceInfo = async () => {
@@ -78,15 +80,10 @@ const RaceDeepLinkPage = ({ route }) => {
         if (!userToken) {
           alert("로그인 먼저 해주세요.");
           navigateWithoutHistory(navigation, "Login");
+          setLoadingState(false);
           return;
         }
         setToken(userToken);
-      }
-      if (!newRaceId) {
-        alert("정상적이지 않은 접근입니다.");
-        navigateWithoutHistory(navigation, "Home");
-        setLoadingState(false);
-        return;
       }
       if (!userToken) {
         alert("로그인 먼저 해주세요.");
@@ -99,15 +96,17 @@ const RaceDeepLinkPage = ({ route }) => {
         setMemberInfo(newMemberInfo);
       } catch (error) {
         alert(error.response.data.code);
+        console.log(error.response.data.message);
         navigateWithoutHistory(navigation, "Login");
         setLoadingState(false);
         return;
       }
       try {
-        const newRaceInfo = await RaceApi.get(userToken, newRaceId);
+        const newRaceInfo = await RaceApi.get(userToken, raceId);
         setRaceInfo(newRaceInfo);
       } catch (error) {
         alert(error.response.data.code);
+        console.log(error.response.data.message);
         navigateWithoutHistory(navigation, "Home");
         setLoadingState(false);
         return;
@@ -115,10 +114,10 @@ const RaceDeepLinkPage = ({ route }) => {
       try {
         const { race_responses: races } = await QueryApi.getRaces(userToken);
         const filteredRaces = races.filter(
-          (item) => String(item.id) === String(newRaceId),
+          (item) => String(item.id) === String(raceId)
         );
         if (filteredRaces.length > 0) {
-          navigateToRaceDetail(navigation, newRaceId);
+          navigateToRaceDetail(navigation, raceId);
           return;
         }
       } catch (error) {

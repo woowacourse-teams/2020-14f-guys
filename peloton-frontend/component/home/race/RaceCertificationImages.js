@@ -3,10 +3,10 @@ import { StyleSheet } from "react-native";
 import Swiper from "react-native-swiper";
 import RaceCertificationImage from "./RaceCertificationImage";
 import { useRecoilValue } from "recoil/dist";
-import { certificationState } from "../../../state/certification/CertificationState";
+import { certificationsState } from "../../../state/certification/CertificationState";
 
 const RaceCertificationImages = () => {
-  const certifications = useRecoilValue(certificationState);
+  const certifications = useRecoilValue(certificationsState);
 
   return (
     <Swiper

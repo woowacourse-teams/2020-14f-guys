@@ -15,41 +15,40 @@ import { RiderApi } from "../../../utils/api/RiderApi";
 import { ridersInfoState } from "../../../state/rider/RiderState";
 import { QueryApi } from "../../../utils/api/QueryApi";
 import LoadingIndicator from "../../../utils/LoadingIndicator";
-import { certificationState } from "../../../state/certification/CertificationState";
-import { useFocusEffect } from "@react-navigation/core";
+import { certificationsState } from "../../../state/certification/CertificationState";
 
 const RaceDetail = ({ route }) => {
-  const newRaceId = route.params.id;
+  const raceId = route.params.id;
   const token = useRecoilValue(memberTokenState);
   const setIsLoading = useSetRecoilState(loadingState);
   const [raceInfo, setRaceInfo] = useRecoilState(raceInfoState);
   const [ridersInfo, setRidersInfo] = useRecoilState(ridersInfoState);
-  const [certificationInfo, setCertificationInfo] = useRecoilState(
-    certificationState,
+  const [certificationsInfo, setCertificationsInfo] = useRecoilState(
+    certificationsState
   );
 
   useEffect(() => {
     setIsLoading(true);
     const fetchRace = async () => {
-      if (!newRaceId) {
+      if (!raceId) {
         alert("잘못된 경로입니다.");
         setIsLoading(false);
         return;
       }
-      const race = await RaceApi.get(token, newRaceId);
+      const race = await RaceApi.get(token, raceId);
       const { rider_responses: riders } = await RiderApi.getInRace(
         token,
-        newRaceId,
+        raceId
       );
 
       const { certifications } = await QueryApi.getRaceCertifications(
         token,
-        newRaceId,
+        raceId
       );
 
       setRidersInfo(riders);
       setRaceInfo(race);
-      setCertificationInfo(certifications.content);
+      setCertificationsInfo(certifications.content);
       setIsLoading(false);
     };
     fetchRace();
@@ -58,7 +57,7 @@ const RaceDetail = ({ route }) => {
   return (
     <LoadingIndicator>
       <ScrollView style={styles.container}>
-        <RaceCertificationImages certifications={certificationInfo} />
+        <RaceCertificationImages />
         <RaceDetailInfo
           title={raceInfo.title}
           description={raceInfo.description}
@@ -68,7 +67,7 @@ const RaceDetail = ({ route }) => {
           cash={raceInfo.entrance_fee}
           riderCount={ridersInfo.length}
         />
-        <LinkCopyButton raceId={newRaceId} />
+        <LinkCopyButton raceId={raceId} />
       </ScrollView>
     </LoadingIndicator>
   );

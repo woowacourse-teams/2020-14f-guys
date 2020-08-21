@@ -13,6 +13,7 @@ import GoBackButton from "./race/GoBackButton";
 import InputRaceMissionTime from "./racecreate/InputRaceMissionTime";
 import InputRaceMissionDays from "./racecreate/InputRaceMissionDays";
 import CertificationDetail from "../certification/CertificationDetail";
+import ImageDetail from "../certification/ImageDetail";
 
 const HomeStack = createStackNavigator();
 
@@ -81,6 +82,11 @@ const HomeNavigationRoot = () => {
           headerTitle: false,
           headerLeft: () => <GoBackButton />,
         }}
+      />
+      <HomeStack.Screen
+        name="ImageDetail"
+        component={ImageDetail}
+        options={{ headerShown: true, title: "상세보기" }}
       />
     </HomeStack.Navigator>
   );

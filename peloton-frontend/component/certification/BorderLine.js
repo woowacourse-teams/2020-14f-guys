@@ -9,10 +9,10 @@ const BorderLine = () => {
 const styles = StyleSheet.create({
   border: {
     alignSelf: "center",
-    width: deviceWidth * 0.95,
+    width: "100%",
     borderBottomWidth: 1,
     borderColor: COLOR.GRAY3,
-    marginBottom: 15,
+    marginBottom: 5,
   },
 });
 

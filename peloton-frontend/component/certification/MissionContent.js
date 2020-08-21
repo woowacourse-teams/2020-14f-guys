@@ -7,13 +7,14 @@ const MissionContent = ({ mission }) => {
   return (
     <View style={styles.container}>
       <View style={styles.missionTitle}>
-        <Text style={styles.missionInstruction} numberOfLines={2}>
+        <Text style={styles.missionInstruction}>
           {mission.mission_instruction}
         </Text>
       </View>
       <View style={styles.missionDetail}>
+        <Text style={styles.descriptionTitle}>인증 가능 시간</Text>
         <Text style={styles.description}>
-          {customTimeParser(mission.mission_duration.start_time)} ~{" "}
+          {customTimeParser(mission.mission_duration.start_time)} {"~ "}
           {customTimeParser(mission.mission_duration.end_time)}
         </Text>
       </View>
@@ -28,7 +29,7 @@ const styles = StyleSheet.create({
   },
   missionInstruction: {
     marginTop: 10,
-    fontSize: 22,
+    fontSize: 20,
     fontWeight: "bold",
   },
   missionTitle: {
@@ -36,6 +37,10 @@ const styles = StyleSheet.create({
   },
   missionDetail: {
     marginTop: 10,
+  },
+  descriptionTitle: {
+    fontSize: 14,
+    fontWeight: "400",
   },
   description: {
     fontSize: 14,
