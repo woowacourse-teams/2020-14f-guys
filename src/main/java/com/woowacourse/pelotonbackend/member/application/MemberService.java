@@ -19,6 +19,7 @@ import com.woowacourse.pelotonbackend.member.presentation.dto.MemberNameUpdateRe
 import com.woowacourse.pelotonbackend.member.presentation.dto.MemberProfileResponse;
 import com.woowacourse.pelotonbackend.member.presentation.dto.MemberResponse;
 import com.woowacourse.pelotonbackend.member.presentation.dto.MemberResponses;
+import com.woowacourse.pelotonbackend.pendingcash.PendingCashService;
 import com.woowacourse.pelotonbackend.vo.Cash;
 import com.woowacourse.pelotonbackend.vo.ImageUrl;
 import lombok.AccessLevel;
@@ -29,6 +30,7 @@ import lombok.AllArgsConstructor;
 @Transactional
 public class MemberService {
     private final MemberRepository memberRepository;
+    private final PendingCashService pendingCashService;
     private final UploadService uploadService;
 
     public MemberResponse createMember(final @Valid MemberCreateRequest memberCreateRequest) {
@@ -80,12 +82,9 @@ public class MemberService {
         return MemberResponse.from(persist);
     }
 
-    public MemberResponse chargeCash(final Long id, final MemberCashUpdateRequest request) {
+    public void chargeCash(final Long id, final MemberCashUpdateRequest request) {
         final Member member = findMemberById(id);
-        final Member updatedMember = member.plusCash(request.getCash());
-        final Member persist = memberRepository.save(updatedMember);
-
-        return MemberResponse.from(persist);
+        pendingCashService.create(member.getId(), request.getCash());
     }
 
     public void minusCash(final Long id, final Cash cash) {
