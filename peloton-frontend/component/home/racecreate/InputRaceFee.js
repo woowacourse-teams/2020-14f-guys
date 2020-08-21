@@ -133,7 +133,6 @@ const InputRaceFee = () => {
       }
       availableDays.push(DAYS[tempDay]);
     }
-    console.log(availableDays);
     return availableDays;
   };
 
