@@ -14,6 +14,7 @@ import InputRaceMissionTime from "./racecreate/InputRaceMissionTime";
 import InputRaceMissionDays from "./racecreate/InputRaceMissionDays";
 import CertificationDetail from "../certification/CertificationDetail";
 import ImageDetail from "../certification/ImageDetail";
+import RaceCalculation from "./race/RaceCalculation";
 
 const HomeStack = createStackNavigator();
 
@@ -36,6 +37,14 @@ const HomeNavigationRoot = () => {
           headerTitle: false,
           headerLeft: () => <GoBackButton />,
           headerRight: () => <RaceShareButton />,
+        }}
+      />
+      <HomeStack.Screen
+        name="RaceCalculation"
+        component={RaceCalculation}
+        options={{
+          title: "레이스 정산",
+          headerLeft: () => <GoBackButton />,
         }}
       />
       <HomeStack.Screen
