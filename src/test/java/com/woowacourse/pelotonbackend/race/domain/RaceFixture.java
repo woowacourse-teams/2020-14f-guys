@@ -107,6 +107,18 @@ public class RaceFixture {
             .build();
     }
 
+    public static RaceCreateRequest createFinishedRequest() {
+        return RaceCreateRequest.builder()
+            .title(TEST_TITLE)
+            .description(TEST_DESCRIPTION)
+            .category(TEST_CATEGORY)
+            .entranceFee(new Cash(TEST_MONEY_AMOUNT))
+            .raceDuration(new DateDuration(TEST_START_TIME_PAST, TEST_END_TIME_PAST))
+            .days(Arrays.asList(DayOfWeek.MONDAY, DayOfWeek.SUNDAY, DayOfWeek.TUESDAY))
+            .certificationAvailableDuration(MissionFixture.timeDurationFixture())
+            .build();
+    }
+
     public static RaceCreateRequest createBadMockRequest() {
         return RaceCreateRequest.builder()
             .raceDuration(new DateDuration(TEST_START_TIME, TEST_END_TIME))

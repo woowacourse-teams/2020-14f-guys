@@ -1,5 +1,6 @@
 package com.woowacourse.pelotonbackend.support;
 
+import static com.woowacourse.pelotonbackend.certification.domain.CertificationFixture.*;
 import static com.woowacourse.pelotonbackend.member.domain.LoginFixture.*;
 import static com.woowacourse.pelotonbackend.member.domain.MemberFixture.*;
 
@@ -15,11 +16,14 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.TestExecutionListeners;
 
 import com.woowacourse.pelotonbackend.DataInitializeExecutionListener;
-import com.woowacourse.pelotonbackend.member.domain.MemberFixture;
+import com.woowacourse.pelotonbackend.certification.presentation.dto.CertificationCreateRequest;
 import com.woowacourse.pelotonbackend.member.presentation.dto.MemberCreateRequest;
 import com.woowacourse.pelotonbackend.member.presentation.dto.MemberResponse;
 import com.woowacourse.pelotonbackend.member.presentation.dto.MemberResponses;
 import com.woowacourse.pelotonbackend.race.presentation.dto.RaceCreateRequest;
+import com.woowacourse.pelotonbackend.rider.presentation.dto.RiderCreateRequest;
+import com.woowacourse.pelotonbackend.rider.presentation.dto.RiderResponse;
+import com.woowacourse.pelotonbackend.rider.presentation.dto.RiderResponses;
 import com.woowacourse.pelotonbackend.support.dto.JwtTokenResponse;
 import io.restassured.RestAssured;
 import io.restassured.http.Header;
@@ -46,14 +50,14 @@ public class AcceptanceTest {
     }
 
     protected JwtTokenResponse loginMember(final MemberCreateRequest request) {
-        requestCreate(request);
+        createMember(request);
 
         final String token = jwtTokenProvider.createToken(String.valueOf(request.getKakaoId()));
         return JwtTokenResponse.of(token, ADMIT);
     }
 
     protected List<JwtTokenResponse> loginMembers(final List<MemberCreateRequest> requests) {
-        requests.forEach(this::requestCreate);
+        requests.forEach(this::createMember);
 
         return requests.stream()
             .map(request -> JwtTokenResponse.of(jwtTokenProvider.createToken(String.valueOf(request.getKakaoId())),
@@ -61,7 +65,7 @@ public class AcceptanceTest {
             .collect(Collectors.toList());
     }
 
-    protected Long requestCreate(final MemberCreateRequest memberRequest) {
+    protected Long createMember(final MemberCreateRequest memberRequest) {
         final String header = given()
             .body(memberRequest)
             .contentType(MediaType.APPLICATION_JSON_VALUE)
@@ -77,9 +81,21 @@ public class AcceptanceTest {
         return resourceId;
     }
 
-    protected MemberResponse requestFind(final Long kakaoId) {
+    protected MemberResponse findMember(final Long kakaoId) {
         return given()
             .header(createTokenHeader(kakaoId))
+            .when()
+            .get(RESOURCE_URL)
+            .then()
+            .log().all()
+            .statusCode(HttpStatus.OK.value())
+            .extract()
+            .as(MemberResponse.class);
+    }
+
+    protected MemberResponse findMember(final JwtTokenResponse tokenResponse) {
+        return given()
+            .header(createTokenHeader(tokenResponse))
             .when()
             .get(RESOURCE_URL)
             .then()
@@ -93,7 +109,7 @@ public class AcceptanceTest {
         return given()
             .header(createTokenHeader(tokenResponse))
             .when()
-            .get(RESOURCE_URL+"/all")
+            .get(RESOURCE_URL + "/all")
             .then()
             .log().all()
             .statusCode(HttpStatus.OK.value())
@@ -109,8 +125,8 @@ public class AcceptanceTest {
         return new Header("Authorization", "Bearer " + tokenResponse.getAccessToken());
     }
 
-    protected void createRace(final RaceCreateRequest request, final JwtTokenResponse tokenResponse) {
-        given()
+    protected long createRace(final RaceCreateRequest request, final JwtTokenResponse tokenResponse) {
+        final String location = given()
             .header(createTokenHeader(tokenResponse))
             .contentType(MediaType.APPLICATION_JSON_VALUE)
             .body(request)
@@ -118,6 +134,66 @@ public class AcceptanceTest {
             .post("/api/races")
             .then()
             .log().all()
-            .statusCode(HttpStatus.CREATED.value());
+            .statusCode(HttpStatus.CREATED.value())
+            .extract().header("Location");
+        final String[] splitLocation = location.split("/");
+
+        return Long.parseLong(splitLocation[splitLocation.length - 1]);
+    }
+
+    private String createRider(JwtTokenResponse tokenResponse, RiderCreateRequest request) {
+        return given()
+            .header(createTokenHeader(tokenResponse))
+            .body(request)
+            .contentType(MediaType.APPLICATION_JSON_VALUE)
+            .when()
+            .post("/api/riders")
+            .then()
+            .log().all()
+            .statusCode(HttpStatus.CREATED.value())
+            .extract()
+            .header("Location");
+    }
+
+    protected void createRiders(final List<JwtTokenResponse> tokenResponses,
+        final RiderCreateRequest riderCreateRequest) {
+
+        tokenResponses.forEach(token -> createRider(token, riderCreateRequest));
+    }
+
+    protected List<RiderResponse> findAllRiders(final Long raceId, final JwtTokenResponse tokenResponse) {
+        return given()
+            .header(createTokenHeader(tokenResponse))
+            .accept(MediaType.APPLICATION_JSON_VALUE)
+            .when()
+            .get("/api/riders/races/{id}", raceId)
+            .then()
+            .log().all()
+            .statusCode(HttpStatus.OK.value())
+            .extract()
+            .as(RiderResponses.class).getRiderResponses();
+    }
+
+    protected void createCertification(final JwtTokenResponse token, final CertificationCreateRequest createRequest) {
+        given()
+            .header(createTokenHeader(token))
+            .contentType(MediaType.MULTIPART_FORM_DATA_VALUE)
+            .multiPart("certification_image", TEST_CERTIFICATION_FILE_NAME, TEST_CERTIFICATION_FILE,
+                MediaType.IMAGE_JPEG_VALUE)
+            .param("status", createRequest.getStatus())
+            .param("description", createRequest.getDescription())
+            .param("riderId", createRequest.getRiderId())
+            .param("missionId", createRequest.getMissionId())
+            .when()
+            .post("/api/certifications")
+            .then()
+            .log().all()
+            .statusCode(HttpStatus.CREATED.value())
+            .extract()
+            .header("Location");
+    }
+
+    protected void createCertifications(final JwtTokenResponse token, final List<CertificationCreateRequest> requests) {
+        requests.forEach(request -> createCertification(token, request));
     }
 }
