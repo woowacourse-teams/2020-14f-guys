@@ -1,5 +1,6 @@
 package com.woowacourse.pelotonbackend.calculation;
 
+import java.beans.ConstructorProperties;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -8,7 +9,7 @@ import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
-@AllArgsConstructor(access = AccessLevel.PRIVATE)
+@AllArgsConstructor(access = AccessLevel.PRIVATE, onConstructor_ = @ConstructorProperties({"calculationResponses"}))
 @Getter
 public class CalculationResponses {
     private final List<CalculationResponse> calculationResponses;
