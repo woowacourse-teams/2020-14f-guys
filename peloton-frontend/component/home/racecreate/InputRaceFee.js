@@ -29,12 +29,13 @@ import { RiderApi } from "../../../utils/api/RiderApi";
 
 const InputRaceFee = () => {
   // eslint-disable-next-line prettier/prettier
-  const {title, description, start_date, end_date, category, entrance_fee, mission_start_time, mission_end_time} = useRecoilValue(raceCreateInfoState);
+  const { title, description, start_date, end_date, category, entrance_fee, mission_start_time, mission_end_time } = useRecoilValue(
+    raceCreateInfoState);
   const resetRaceCreateInfo = useResetRecoilState(raceCreateInfoState);
   const [loading, setGlobalLoading] = useRecoilState(loadingState);
   const token = useRecoilValue(memberTokenState);
   const [memberInfo, setMemberInfo] = useRecoilState(memberInfoState);
-  const [{ days }, setDaysInRaceCreateInfo] = useSetRecoilState(
+  const [{ days }, setDaysInRaceCreateInfo] = useRecoilState(
     raceCreateInfoState,
   );
 
@@ -85,7 +86,7 @@ const InputRaceFee = () => {
       return days.map((day) => DAYS[(DAYS.indexOf(day) + 1) % 7]);
     } else if (daysOffset === -1) {
       return days.map(
-        (day) => DAYS[DAYS.indexOf(day) === 0 ? 6 : DAYS.indexOf(day) - 1]
+        (day) => DAYS[DAYS.indexOf(day) === 0 ? 6 : DAYS.indexOf(day) - 1],
       );
     }
     return days;
@@ -119,7 +120,7 @@ const InputRaceFee = () => {
 
   const calculateAvailableDays = () => {
     const startDateTime = new Date(
-      `${start_date}T${mission_start_time}Z`
+      `${start_date}T${mission_start_time}Z`,
     ).getTime();
     const endDateTime = new Date(`${end_date}T${mission_end_time}Z`).getTime();
 
@@ -132,7 +133,7 @@ const InputRaceFee = () => {
       }
       availableDays.push(DAYS[tempDay]);
     }
-
+    console.log(availableDays);
     return availableDays;
   };
 

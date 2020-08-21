@@ -11,7 +11,7 @@ const InputRaceMissionDays = () => {
   const { days } = useRecoilValue(raceCreateInfoState);
   const navigation = useNavigation();
 
-  const navigateToMissionTime = async () => {
+  const navigateToMissionTime = () => {
     if (days.length === 0) {
       alert("요일을 하나 이상 선택해주세요");
       return;

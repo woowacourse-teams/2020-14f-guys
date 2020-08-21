@@ -1,10 +1,10 @@
 import React from "react";
 import { useNavigation } from "@react-navigation/native";
-import { useRecoilValue, useSetRecoilState } from "recoil";
+import { useRecoilValue } from "recoil";
 
 import RaceCreateUnit from "./RaceCreateUnit";
 import RaceCreateView from "./RaceCreateView";
-import { DAYS, RaceCreateUnitType } from "../../../utils/constants";
+import { RaceCreateUnitType } from "../../../utils/constants";
 import { raceCreateInfoState } from "../../../state/race/RaceState";
 
 const InputRaceMissionTime = () => {
@@ -16,9 +16,13 @@ const InputRaceMissionTime = () => {
   } = useRecoilValue(raceCreateInfoState);
   const navigation = useNavigation();
 
-  const navigateToInputFee = () => {
+  const navigateToInputFee = async () => {
     if (!mission_start_time || !mission_end_time) {
       alert("인증 시작, 마감 시간을 선택해주세요");
+      return;
+    }
+    if (mission_start_time === mission_end_time) {
+      alert("미션 시작 시간과 마감 시간이 같을 수 없습니다.");
       return;
     }
     if (start_date === end_date && mission_start_time > mission_end_time) {

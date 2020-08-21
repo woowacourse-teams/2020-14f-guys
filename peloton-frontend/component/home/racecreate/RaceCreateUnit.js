@@ -97,7 +97,6 @@ const RaceCreateUnit = ({
   const convertDateInput = (value) => {
     const currentFormattedSystemDate = DateFormatter.UTCyyyyMMdd(new Date());
     const currentDate = DateFormatter.yyyyMMdd(new Date());
-    console.log(currentDate);
     if (currentFormattedSystemDate !== currentDate) {
       const diff =
         parseInt(currentDate.substring(8)) -
