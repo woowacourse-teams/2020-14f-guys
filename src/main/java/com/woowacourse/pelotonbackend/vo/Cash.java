@@ -51,9 +51,8 @@ public class Cash {
 
     public Cash round() {
         // TODO: 2020/08/21 반올림을 사용하면 100%를 초과하는 경우가 생길 수 있다.
-        final BigDecimal cash = this.cash.setScale(-2, BigDecimal.ROUND_HALF_UP);
-        final BigDecimal scaleUpCash = cash.setScale(0, BigDecimal.ROUND_HALF_UP);
+        final long cash = this.cash.setScale(-2, BigDecimal.ROUND_HALF_UP).longValue();
 
-        return new Cash(scaleUpCash);
+        return Cash.of(cash);
     }
 }
