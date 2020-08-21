@@ -89,18 +89,16 @@ const RaceCreateUnit = ({
     if (hours < 0) {
       hours += 24;
     }
-    hours = hours < 12 ? `0${hours}` : hours;
+    hours = hours < 10 ? `0${hours}` : hours;
     minutes = minutes < 10 ? `0${minutes}` : minutes;
     return value && `${hours}시 ${minutes}분`;
   };
 
   const convertDateInput = (value) => {
-    const currentFormattedSystemDate = DateFormatter.UTCyyyyMMdd(new Date());
-    const currentDate = DateFormatter.yyyyMMdd(new Date());
-    if (currentFormattedSystemDate !== currentDate) {
-      const diff =
-        parseInt(currentDate.substring(8)) -
-        parseInt(currentFormattedSystemDate.substring(8));
+    const currentUTCDate = new Date().getUTCDate();
+    const currentDate = new Date().getDate();
+    if (currentUTCDate !== currentDate) {
+      const diff = currentDate - currentUTCDate;
 
       return (
         value &&
