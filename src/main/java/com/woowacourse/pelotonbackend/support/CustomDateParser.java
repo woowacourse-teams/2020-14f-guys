@@ -17,7 +17,6 @@ import com.woowacourse.pelotonbackend.race.domain.DateDuration;
 
 @Component
 public class CustomDateParser {
-
     private static final int A_DAY_IN_MINUTES = 1440;
 
     public List<LocalDate> convertDayToDate(final DateDuration dateDuration, final List<DayOfWeek> days) {
