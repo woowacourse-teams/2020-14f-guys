@@ -82,20 +82,6 @@ public class CalculationDocumentation {
         );
     }
 
-    public static RestDocumentationResultHandler retrieveBadRider() {
-        return document("calculation/get-fail-by-rider-id",
-            getDocumentRequest(),
-            getDocumentResponse(),
-            requestHeaders(
-                headerWithName(HttpHeaders.AUTHORIZATION).description("사용자 인증 토큰")
-            ),
-            pathParameters(
-                parameterWithName("raceId").description("정산하고자 하는 레이스의 아이디")
-            ),
-            getErrorResponseFields()
-        );
-    }
-
     public static RestDocumentationResultHandler retrieveNotFinishedRace() {
         return document("calculation/get-fail-not-finished",
             getDocumentRequest(),

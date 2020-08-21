@@ -31,7 +31,6 @@ import org.springframework.web.method.support.ModelAndViewContainer;
 
 import com.woowacourse.pelotonbackend.calculation.application.CalculationService;
 import com.woowacourse.pelotonbackend.calculation.domain.CalculationFixture;
-import com.woowacourse.pelotonbackend.calculation.presentation.CalculationController;
 import com.woowacourse.pelotonbackend.common.exception.CalculationNotFoundException;
 import com.woowacourse.pelotonbackend.common.exception.RaceNotFinishedException;
 import com.woowacourse.pelotonbackend.common.exception.RiderInvalidException;
@@ -79,8 +78,9 @@ class CalculationControllerTest {
             any(NativeWebRequest.class), any(WebDataBinderFactory.class))).willReturn(MemberFixture.memberResponse());
 
         mockMvc.perform(
-            post("/api/calculations/races/{raceId}/riders/{riderId}", RaceFixture.TEST_RACE_ID, RiderFixture.TEST_RIDER_ID)
-            .header(HttpHeaders.AUTHORIZATION, LoginFixture.getTokenHeader())
+            post("/api/calculations/races/{raceId}/riders/{riderId}", RaceFixture.TEST_RACE_ID,
+                RiderFixture.TEST_RIDER_ID)
+                .header(HttpHeaders.AUTHORIZATION, LoginFixture.getTokenHeader())
         )
             .andExpect(status().isCreated())
             .andExpect(header().stringValues("Location",
@@ -97,11 +97,13 @@ class CalculationControllerTest {
         given(argumentResolver.supportsParameter(any())).willCallRealMethod();
         given(argumentResolver.resolveArgument(any(MethodParameter.class), any(ModelAndViewContainer.class),
             any(NativeWebRequest.class), any(WebDataBinderFactory.class))).willReturn(MemberFixture.memberResponse());
-        doThrow(new RiderInvalidException(RiderFixture.TEST_RIDER_ID)).when(calculationService).calculate(any(MemberResponse.class), anyLong(), anyLong());
+        doThrow(new RiderInvalidException(RiderFixture.TEST_RIDER_ID)).when(calculationService)
+            .calculate(any(MemberResponse.class), anyLong(), anyLong());
 
         mockMvc.perform(
-            post("/api/calculations/races/{raceId}/riders/{riderId}", RaceFixture.TEST_RACE_ID, RiderFixture.TEST_RIDER_ID)
-            .header(HttpHeaders.AUTHORIZATION, LoginFixture.getTokenHeader())
+            post("/api/calculations/races/{raceId}/riders/{riderId}", RaceFixture.TEST_RACE_ID,
+                RiderFixture.TEST_RIDER_ID)
+                .header(HttpHeaders.AUTHORIZATION, LoginFixture.getTokenHeader())
         )
             .andExpect(status().isBadRequest())
             .andDo(CalculationDocumentation.createDuplicatedCalculation());
@@ -120,7 +122,7 @@ class CalculationControllerTest {
 
         mockMvc.perform(
             get("/api/calculations/races/{raceId}", RaceFixture.TEST_RACE_ID)
-            .header(HttpHeaders.AUTHORIZATION, LoginFixture.getTokenHeader())
+                .header(HttpHeaders.AUTHORIZATION, LoginFixture.getTokenHeader())
         )
             .andExpect(status().isOk())
             .andDo(CalculationDocumentation.retrieve());
@@ -139,29 +141,10 @@ class CalculationControllerTest {
 
         mockMvc.perform(
             get("/api/calculations/races/{raceId}", RaceFixture.TEST_RACE_ID)
-            .header(HttpHeaders.AUTHORIZATION, LoginFixture.getTokenHeader())
-        )
-            .andExpect(status().isForbidden())
-            .andDo(CalculationDocumentation.retrieveBadMember());
-    }
-
-    @DisplayName("잘못된 라이더의 요청(레이스에 참여중인 라이더가 아닌 경우")
-    @Test
-    void retrieveWithBadRider() throws Exception {
-        given(bearerAuthInterceptor.preHandle(any(HttpServletRequest.class), any(HttpServletResponse.class),
-            any(HandlerMethod.class))).willReturn(true);
-        given(argumentResolver.supportsParameter(any())).willCallRealMethod();
-        given(argumentResolver.resolveArgument(any(MethodParameter.class), any(ModelAndViewContainer.class),
-            any(NativeWebRequest.class), any(WebDataBinderFactory.class))).willReturn(MemberFixture.memberResponse());
-        given(calculationService.retrieve(any(MemberResponse.class), anyLong()))
-            .willThrow(new UnAuthenticatedException(RiderFixture.TEST_RIDER_ID));
-
-        mockMvc.perform(
-            get("/api/calculations/races/{raceId}", RaceFixture.TEST_RACE_ID)
                 .header(HttpHeaders.AUTHORIZATION, LoginFixture.getTokenHeader())
         )
             .andExpect(status().isForbidden())
-            .andDo(CalculationDocumentation.retrieveBadRider());
+            .andDo(CalculationDocumentation.retrieveBadMember());
     }
 
     @DisplayName("끝나지 않은 레이스에 대해서 정산 결과를 조회할 때 예외를 반환")
