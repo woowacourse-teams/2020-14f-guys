@@ -21,7 +21,11 @@ const RaceSpec = ({
         value={`${startDate} ~ ${endDate}`}
         border
       />
-      <RaceSpecItem itemKey={"인증 주기"} value={days.join(", ")} border />
+      <RaceSpecItem
+        itemKey={"인증 주기"}
+        value={days ? days.join(", ") : ""}
+        border
+      />
       <RaceSpecItem
         itemKey={"인증 시간"}
         value={`${startTime} ~ ${endTime}`}

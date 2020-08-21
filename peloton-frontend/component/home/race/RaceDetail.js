@@ -34,23 +34,27 @@ const RaceDetail = ({ route }) => {
         setIsLoading(false);
         return;
       }
-      const race = await RaceApi.get(token, raceId);
-      const { rider_responses: riders } = await RiderApi.getInRace(
-        token,
-        raceId
-      );
+      try {
+        const race = await RaceApi.get(token, raceId);
+        const { rider_responses: riders } = await RiderApi.getInRace(
+          token,
+          raceId
+        );
 
-      const { certifications } = await QueryApi.getRaceCertifications(
-        token,
-        raceId
-      );
+        const { certifications } = await QueryApi.getRaceCertifications(
+          token,
+          raceId
+        );
 
-      setRidersInfo(riders);
-      setRaceInfo(race);
-      setCertificationsInfo(certifications.content);
-      setIsLoading(false);
+        setRidersInfo(riders);
+        setRaceInfo(race);
+        setCertificationsInfo(certifications.content);
+      } catch (e) {
+        console.log(e.response.data.message);
+      }
     };
     fetchRace();
+    setIsLoading(false);
   }, []);
 
   return (
