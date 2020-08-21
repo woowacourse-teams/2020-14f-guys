@@ -9,9 +9,10 @@ import {
   TouchableWithoutFeedback,
   View,
 } from "react-native";
-import { COLOR } from "../../../utils/constants";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import { useNavigation } from "@react-navigation/core";
+
+import { COLOR } from "../../../utils/constants";
 import { MemberApi } from "../../../utils/api/MemberApi";
 import {
   memberInfoState,
@@ -27,9 +28,14 @@ const CashUpdate = () => {
   const validateCash = (value) => {
     const onlyNumber = /^[0-9]+$/;
     if (value.length === 0) {
-      return true;
+      alert("금액을 입력해주세요.");
+      return false;
     }
-    return onlyNumber.test(value);
+    if (!onlyNumber.test(value)) {
+      alert("숫자를 입력해주세요.");
+      return false;
+    }
+    return true;
   };
 
   const setCashWithoutPrettyFormat = (value) => {
@@ -43,7 +49,6 @@ const CashUpdate = () => {
 
   const requestChangeCash = async () => {
     if (!validateCash(cash)) {
-      Alert.alert("충전 금액을 다시 입력해주세요.");
       return;
     }
     try {
@@ -57,21 +62,11 @@ const CashUpdate = () => {
     }
   };
 
-  const ErrorMessage = () => {
-    return validateCash(cash) ? null : (
-      <View>
-        <Text style={styles.errorMessage}>
-          금액을 천원단위로 입력해주세요😊
-        </Text>
-      </View>
-    );
-  };
-
   return (
     <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
       <View style={styles.container}>
         <View style={styles.chargeContainer}>
-          <View style={{ alignItems: "left", width: "100%" }}>
+          <View style={{ width: "100%" }}>
             <Text style={styles.chargeText}>충전 금액을 입력해주세요</Text>
             <TextInput
               style={styles.chargeInput}
@@ -79,7 +74,6 @@ const CashUpdate = () => {
               value={prettyPrint(String(cash))}
               keyboardType={"number-pad"}
             />
-            <ErrorMessage />
           </View>
         </View>
         <View style={styles.buttonContainer}>
@@ -103,18 +97,17 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   chargeText: {
-    marginLeft: "14%",
+    marginHorizontal: "14%",
     color: COLOR.GREEN3,
     fontWeight: "bold",
     fontSize: 20,
-    lineHeight: 21,
     letterSpacing: -0.36,
     marginBottom: 20,
   },
   errorMessage: {
     position: "absolute",
     marginTop: "3%",
-    marginLeft: "14%",
+    marginHorizontal: "14%",
     color: COLOR.RED,
     fontWeight: "bold",
     fontSize: 15,

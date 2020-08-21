@@ -8,11 +8,13 @@ import { memberInfoState } from "../../../state/member/MemberState";
 const ProfileDetail = () => {
   const memberInfo = useRecoilValue(memberInfoState);
 
+  console.log(memberInfo.profile);
+
   return (
     <View style={styles.container}>
       <View style={styles.memberContainer}>
         <ImageBackground
-          source={{ url: memberInfo.profile }}
+          source={{ uri: memberInfo.profile }}
           defaultSource={require("../../../assets/default-image-background.png")}
           style={styles.background}
           blurRadius={6}

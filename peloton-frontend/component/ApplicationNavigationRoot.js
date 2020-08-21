@@ -1,9 +1,9 @@
 import React from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import Certification from "./certification/Certification";
 import { MaterialIcons } from "@expo/vector-icons";
-import { View } from "react-native";
+import { View, Platform } from "react-native";
 
+import Certification from "./certification/Certification";
 import { COLOR } from "../utils/constants";
 import ProfileNavigationRoot from "./ProfileStackRoot";
 import CertificationNavigationRoot from "./certification/CertificationNavigationRoot";
@@ -23,12 +23,7 @@ const screenOptions = ({ route }) => ({
       iconName = "person";
     }
     return (
-      <View
-        style={{
-          paddingTop: 20,
-          paddingHorizontal: 20,
-        }}
-      >
+      <View style={Platform.OS === "ios" ? { marginTop: 25 } : null}>
         <MaterialIcons name={iconName} size={25} color={color} />
       </View>
     );
@@ -39,6 +34,10 @@ const tabBarOptions = {
   showLabel: false,
   activeTintColor: COLOR.LAVENDER,
   inactiveTintColor: COLOR.BLUE1,
+  style: {
+    justifyContent: "center",
+    alignItems: "center",
+  },
 };
 
 const ApplicationNavigationRoot = () => {
