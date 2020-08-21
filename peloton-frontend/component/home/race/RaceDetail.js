@@ -1,29 +1,32 @@
 import React, { useEffect } from "react";
-import { Alert, ScrollView, StyleSheet } from "react-native";
+import { Alert, ScrollView, StyleSheet, View } from "react-native";
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
+import { useNavigation } from "@react-navigation/core";
+
+import { COLOR } from "../../../utils/constants";
 import { loadingState } from "../../../state/loading/LoadingState";
 import { memberTokenState } from "../../../state/member/MemberState";
 import { raceInfoState } from "../../../state/race/RaceState";
-import { RiderApi } from "../../../utils/api/RiderApi";
 import { ridersInfoState } from "../../../state/rider/RiderState";
+import { certificationsState } from "../../../state/certification/CertificationState";
+import { RiderApi } from "../../../utils/api/RiderApi";
 import { QueryApi } from "../../../utils/api/QueryApi";
 import LoadingIndicator from "../../../utils/LoadingIndicator";
-import { certificationsState } from "../../../state/certification/CertificationState";
-import { COLOR } from "../../../utils/constants";
-import RaceCertificationImages from "./RaceCertificationImages";
-import RaceDetailInfo from "./RaceDetailInfo";
-import RaceSpec from "./RaceSpec";
 import LinkCopyButton from "./LinkCopyButton";
+import RaceDetailInfo from "./RaceDetailInfo";
+import RaceCertificationImages from "./RaceCertificationImages";
+import RaceSpec from "./RaceSpec";
+import { navigateWithHistory } from "../../../utils/util";
+import FullWidthButton from "./FullWidthButton";
 
 const RaceDetail = ({ route }) => {
   const raceId = route.params.id;
+  const navigation = useNavigation();
   const token = useRecoilValue(memberTokenState);
   const setIsLoading = useSetRecoilState(loadingState);
   const [raceInfo, setRaceInfo] = useRecoilState(raceInfoState);
   const [ridersInfo, setRidersInfo] = useRecoilState(ridersInfoState);
-  const [certificationsInfo, setCertificationsInfo] = useRecoilState(
-    certificationsState
-  );
+  const setCertificationsInfo = useSetRecoilState(certificationsState);
 
   useEffect(() => {
     setIsLoading(true);
@@ -56,6 +59,23 @@ const RaceDetail = ({ route }) => {
     setIsLoading(false);
   }, []);
 
+  const navigateToRaceCalculation = () => {
+    navigateWithHistory(navigation, [
+      {
+        name: "RaceDetail",
+        params: {
+          id: raceInfo.id,
+        },
+      },
+      {
+        name: "RaceCalculation",
+        params: {
+          id: raceInfo.id,
+        },
+      },
+    ]);
+  };
+
   return (
     <LoadingIndicator>
       <ScrollView style={styles.container}>
@@ -65,13 +85,20 @@ const RaceDetail = ({ route }) => {
           description={raceInfo.description}
         />
         <RaceSpec
-          days={raceInfo.days}
           raceDuration={raceInfo.race_duration}
-          missionDuration={raceInfo.mission_duration}
           cash={raceInfo.entrance_fee}
           riderCount={ridersInfo.length}
         />
-        <LinkCopyButton raceId={raceId} />
+        <View style={styles.linkButton}>
+          <LinkCopyButton raceId={raceId} />
+        </View>
+        <View style={styles.calculationButton}>
+          <FullWidthButton
+            color={COLOR.BLUE3}
+            children={"정산하기"}
+            onClick={navigateToRaceCalculation}
+          />
+        </View>
       </ScrollView>
     </LoadingIndicator>
   );
@@ -81,6 +108,14 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: COLOR.WHITE,
+  },
+  linkButton: {
+    marginBottom: 55,
+  },
+  calculationButton: {
+    position: "absolute",
+    bottom: 0,
+    backgroundColor: COLOR.RED,
   },
 });
 
