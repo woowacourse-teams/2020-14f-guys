@@ -26,6 +26,7 @@ const styles = StyleSheet.create({
     lineHeight: 18,
     color: COLOR.GRAY8,
     flex: 4,
+    marginBottom: 5,
   },
   value: {
     fontSize: 18,
