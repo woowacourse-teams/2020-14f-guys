@@ -1,4 +1,4 @@
-package com.woowacourse.pelotonbackend.calculation;
+package com.woowacourse.pelotonbackend.calculation.application;
 
 import java.util.List;
 
@@ -6,7 +6,9 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.woowacourse.pelotonbackend.certification.presentation.dto.CertificationResponse;
+import com.woowacourse.pelotonbackend.calculation.domain.CalculationRepository;
+import com.woowacourse.pelotonbackend.calculation.domain.Calculations;
+import com.woowacourse.pelotonbackend.calculation.presentation.CalculationResponses;
 import com.woowacourse.pelotonbackend.common.exception.CalculationNotFoundException;
 import com.woowacourse.pelotonbackend.common.exception.RaceNotFinishedException;
 import com.woowacourse.pelotonbackend.common.exception.UnAuthenticatedException;
@@ -33,13 +35,12 @@ public class CalculationService {
     public void calculate(final MemberResponse memberResponse, final Long raceId, final Long riderId) {
         final List<RiderResponse> riders = riderService.retrieveByRaceId(raceId).getRiderResponses();
         final RaceResponse race = raceService.retrieve(raceId);
-        validateMember(memberResponse, riderId, riders);
+        validate(memberResponse, riderId, riders);
         validateRaceEndDate(raceId, race);
 
-        final List<CertificationResponse> certifications = queryService.findCertificationsByRaceId(raceId,
-            PageRequest.of(0, Integer.MAX_VALUE)).getCertifications().getContent();
         final Calculations calculations = calculationRepository.findAllByRaceId(raceId)
-            .orElse(Calculations.create(certifications, riders, race));
+            .orElseGet(() -> Calculations.create(queryService.findCertificationsByRaceId(raceId,
+                PageRequest.of(0, Integer.MAX_VALUE)).getCertifications().getContent(), riders, race));
 
         memberService.chargeCash(memberResponse.getId(),
             MemberCashUpdateRequest.builder().cash(calculations.receivePrize(riderId)).build());
@@ -47,10 +48,10 @@ public class CalculationService {
     }
 
     @Transactional(readOnly = true)
-    public CalculationResponses retrieve(final MemberResponse memberResponse, final Long raceId, final Long riderId) {
+    public CalculationResponses retrieve(final MemberResponse memberResponse, final Long raceId) {
         final List<RiderResponse> riders = riderService.retrieveByRaceId(raceId).getRiderResponses();
         final RaceResponse race = raceService.retrieve(raceId);
-        validateMember(memberResponse, riderId, riders);
+        validateMember(memberResponse, riders);
         validateRaceEndDate(raceId, race);
 
         final Calculations results = calculationRepository.findAllByRaceId(raceId)
@@ -59,19 +60,25 @@ public class CalculationService {
         return CalculationResponses.of(results);
     }
 
-    private void validateMember(final MemberResponse memberResponse, final Long riderId,
+    private void validate(final MemberResponse memberResponse, final Long riderId,
         final List<RiderResponse> riders) {
+        validateRider(riderId, riders);
+        validateMember(memberResponse, riders);
+    }
 
-        final boolean validRider = riders.stream()
-            .anyMatch(rider -> rider.getId().equals(riderId));
-        if (!validRider) {
-            throw new UnAuthenticatedException(riderId);
-        }
-
+    private void validateMember(final MemberResponse memberResponse, final List<RiderResponse> riders) {
         final boolean validMember = riders.stream()
             .anyMatch(rider -> rider.getMemberId().equals(memberResponse.getId()));
         if (!validMember) {
             throw new UnAuthenticatedException(memberResponse.getId());
+        }
+    }
+
+    private void validateRider(final Long riderId, final List<RiderResponse> riders) {
+        final boolean validRider = riders.stream()
+            .anyMatch(rider -> rider.getId().equals(riderId));
+        if (!validRider) {
+            throw new UnAuthenticatedException(riderId);
         }
     }
 

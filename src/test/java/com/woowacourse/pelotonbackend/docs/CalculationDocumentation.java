@@ -55,8 +55,7 @@ public class CalculationDocumentation {
                 headerWithName(HttpHeaders.AUTHORIZATION).description("사용자 인증 토큰")
             ),
             pathParameters(
-                parameterWithName("raceId").description("정산하고자 하는 레이스의 아이디"),
-                parameterWithName("riderId").description("정산받고자 하는 라이더의 아이디")
+                parameterWithName("raceId").description("정산하고자 하는 레이스의 아이디")
             ),
             responseFields(
                 fieldWithPath("calculationResponses").type(ARRAY).description("정산 결과"),
@@ -77,8 +76,7 @@ public class CalculationDocumentation {
                 headerWithName(HttpHeaders.AUTHORIZATION).description("사용자 인증 토큰")
             ),
             pathParameters(
-                parameterWithName("raceId").description("정산하고자 하는 레이스의 아이디"),
-                parameterWithName("riderId").description("정산받고자 하는 라이더의 아이디")
+                parameterWithName("raceId").description("정산하고자 하는 레이스의 아이디")
             ),
             getErrorResponseFields()
         );
@@ -92,8 +90,7 @@ public class CalculationDocumentation {
                 headerWithName(HttpHeaders.AUTHORIZATION).description("사용자 인증 토큰")
             ),
             pathParameters(
-                parameterWithName("raceId").description("정산하고자 하는 레이스의 아이디"),
-                parameterWithName("riderId").description("정산받고자 하는 라이더의 아이디")
+                parameterWithName("raceId").description("정산하고자 하는 레이스의 아이디")
             ),
             getErrorResponseFields()
         );
@@ -107,8 +104,7 @@ public class CalculationDocumentation {
                 headerWithName(HttpHeaders.AUTHORIZATION).description("사용자 인증 토큰")
             ),
             pathParameters(
-                parameterWithName("raceId").description("정산하고자 하는 레이스의 아이디"),
-                parameterWithName("riderId").description("정산받고자 하는 라이더의 아이디")
+                parameterWithName("raceId").description("정산하고자 하는 레이스의 아이디")
             ),
             getErrorResponseFields()
         );
@@ -122,8 +118,7 @@ public class CalculationDocumentation {
                 headerWithName(HttpHeaders.AUTHORIZATION).description("사용자 인증 토큰")
             ),
             pathParameters(
-                parameterWithName("raceId").description("정산하고자 하는 레이스의 아이디"),
-                parameterWithName("riderId").description("정산받고자 하는 라이더의 아이디")
+                parameterWithName("raceId").description("정산하고자 하는 레이스의 아이디")
             ),
             getErrorResponseFields()
         );

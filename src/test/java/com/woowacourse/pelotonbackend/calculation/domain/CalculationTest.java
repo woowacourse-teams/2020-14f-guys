@@ -1,4 +1,4 @@
-package com.woowacourse.pelotonbackend.calculation;
+package com.woowacourse.pelotonbackend.calculation.domain;
 
 import static org.assertj.core.api.Assertions.*;
 

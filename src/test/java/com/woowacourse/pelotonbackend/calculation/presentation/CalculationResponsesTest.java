@@ -1,4 +1,4 @@
-package com.woowacourse.pelotonbackend.calculation;
+package com.woowacourse.pelotonbackend.calculation.presentation;
 
 import static org.assertj.core.api.Assertions.*;
 
@@ -7,6 +7,8 @@ import org.junit.jupiter.api.Test;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.woowacourse.pelotonbackend.calculation.domain.CalculationFixture;
+import com.woowacourse.pelotonbackend.calculation.presentation.CalculationResponses;
 
 class CalculationResponsesTest {
     private final ObjectMapper objectMapper = new ObjectMapper();
@@ -21,7 +23,7 @@ class CalculationResponsesTest {
             + "\"race_id\":1,"
             + "\"prize\":\"10000\","
             + "\"calculated\":true,"
-            + "\"created_at\":\""+CalculationFixture.CREATED_AT+"Z\""
+            + "\"created_at\":\""+ CalculationFixture.CREATED_AT+"Z\""
             + "},"
             + "{"
             + "\"rider_id\":2,"

@@ -1,4 +1,4 @@
-package com.woowacourse.pelotonbackend.calculation;
+package com.woowacourse.pelotonbackend.calculation.domain;
 
 import java.util.List;
 import java.util.Optional;

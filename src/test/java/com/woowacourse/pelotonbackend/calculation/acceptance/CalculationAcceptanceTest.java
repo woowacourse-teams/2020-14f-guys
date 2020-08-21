@@ -1,4 +1,4 @@
-package com.woowacourse.pelotonbackend.calculation;
+package com.woowacourse.pelotonbackend.calculation.acceptance;
 
 import static org.assertj.core.api.Assertions.*;
 
@@ -8,6 +8,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 
+import com.woowacourse.pelotonbackend.calculation.domain.CalculationFixture;
+import com.woowacourse.pelotonbackend.calculation.presentation.CalculationResponses;
 import com.woowacourse.pelotonbackend.certification.domain.CertificationFixture;
 import com.woowacourse.pelotonbackend.certification.presentation.dto.CertificationRequest;
 import com.woowacourse.pelotonbackend.member.domain.MemberFixture;
@@ -65,7 +67,7 @@ class CalculationAcceptanceTest extends AcceptanceTest {
             .header(createTokenHeader(tokenResponse))
             .accept(MediaType.APPLICATION_JSON_VALUE)
             .when()
-            .get("/api/calculations/races/{raceId}/riders/{riderId}", raceId, riderId)
+            .get("/api/calculations/races/{raceId}", raceId)
             .then()
             .log().all()
             .statusCode(HttpStatus.OK.value())
@@ -87,17 +89,5 @@ class CalculationAcceptanceTest extends AcceptanceTest {
             .log().all()
             .statusCode(HttpStatus.CREATED.value())
             .header("Location", String.format("/api/calculations/races/%d/riders/%d", raceId, riderId));
-    }
-
-    private void createMission(final JwtTokenResponse tokenResponse, final MissionCreateRequest request) {
-        given()
-            .header(createTokenHeader(tokenResponse))
-            .contentType(MediaType.APPLICATION_JSON_VALUE)
-            .body(request)
-            .when()
-            .post("/api/missions")
-            .then()
-            .log().all()
-            .statusCode(HttpStatus.CREATED.value());
     }
 }

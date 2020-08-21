@@ -1,4 +1,4 @@
-package com.woowacourse.pelotonbackend.certification.domain;
+package com.woowacourse.pelotonbackend.calculation.domain;
 
 import static org.assertj.core.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.*;
@@ -18,8 +18,9 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 import org.springframework.data.jdbc.core.mapping.AggregateReference;
 
-import com.woowacourse.pelotonbackend.calculation.Calculation;
-import com.woowacourse.pelotonbackend.calculation.Calculations;
+import com.woowacourse.pelotonbackend.calculation.domain.Calculation;
+import com.woowacourse.pelotonbackend.calculation.domain.Calculations;
+import com.woowacourse.pelotonbackend.certification.domain.CertificationFixture;
 import com.woowacourse.pelotonbackend.certification.presentation.dto.CertificationResponse;
 import com.woowacourse.pelotonbackend.race.domain.RaceFixture;
 import com.woowacourse.pelotonbackend.race.presentation.dto.RaceResponse;

@@ -1,4 +1,4 @@
-package com.woowacourse.pelotonbackend.calculation;
+package com.woowacourse.pelotonbackend.calculation.presentation;
 
 import static org.assertj.core.api.Assertions.*;
 
@@ -7,6 +7,8 @@ import org.junit.jupiter.api.Test;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.woowacourse.pelotonbackend.calculation.domain.CalculationFixture;
+import com.woowacourse.pelotonbackend.calculation.presentation.CalculationResponse;
 import com.woowacourse.pelotonbackend.rider.domain.RiderFixture;
 
 class CalculationResponseTest {
@@ -20,7 +22,7 @@ class CalculationResponseTest {
             + "\"race_id\":1,"
             + "\"prize\":\"10000\","
             + "\"calculated\":false,"
-            + "\"created_at\":\""+CalculationFixture.CREATED_AT+"Z\""
+            + "\"created_at\":\""+ CalculationFixture.CREATED_AT+"Z\""
             + "}";
 
         final CalculationResponse response = CalculationFixture.createCalculationResponse(
