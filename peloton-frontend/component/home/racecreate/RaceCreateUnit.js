@@ -20,13 +20,9 @@ const RaceCreateUnit = ({
   const [raceCreateInfo, setRaceCreateInfo] = useRecoilState(raceCreateInfoState);
   const [isShowPicker, setIsShowPicker] = useState(false);
 
-  const convertISOFormatDate = (dateTime) => {
-    return dateTime.toISOString().split("T")[0];
-  };
-
   const onPickDate = (pickedDateTime) => {
-    let formattedPickedDate = convertISOFormatDate(pickedDateTime);
-    const currentFormattedSystemDate = convertISOFormatDate(new Date());
+    let formattedPickedDate = DateFormatter.UTCyyyyMMdd(pickedDateTime);
+    const currentFormattedSystemDate = DateFormatter.UTCyyyyMMdd(new Date());
 
     if (formattedPickedDate < currentFormattedSystemDate) {
       alert("현재보다 이전 날짜를 선택할 수 없습니다!");
@@ -99,8 +95,9 @@ const RaceCreateUnit = ({
   };
 
   const convertDateInput = (value) => {
-    const currentFormattedSystemDate = convertISOFormatDate(new Date());
+    const currentFormattedSystemDate = DateFormatter.UTCyyyyMMdd(new Date());
     const currentDate = DateFormatter.yyyyMMdd(new Date());
+    console.log(currentDate);
     if (currentFormattedSystemDate !== currentDate) {
       const diff =
         parseInt(currentDate.substring(8)) -
@@ -108,7 +105,7 @@ const RaceCreateUnit = ({
 
       return (
         value &&
-        `${value.substring(0, 8) + (parseInt(value.substring(8)) + diff)}`
+        `${value.substring(0, 8)}${parseInt(value.substring(8)) + diff}`
       );
     }
     return value;
