@@ -40,7 +40,7 @@ public class Member {
     @NotBlank
     private final String name;
 
-    @NotBlank @Email
+    @Email
     private final String email;
 
     @Embedded.Empty @Valid
