@@ -592,3 +592,10 @@ operation::calculation/get-fail-not-finished[snippets='http-request,http-respons
 ==== Fail : Calculation Not Found
 operation::calculation/get-fail-not-found[snippets='http-request,http-response,path-parameters,request-headers,response-fields']
 
+[[resources-queries-race-acievement]]
+=== Get Race Achievement
+
+[[resource-query-race-achievement]]
+==== Success
+operation::queries/get-race-achievement[snippets='http-request,http-response,path-parameters,request-headers,response-fields']
+

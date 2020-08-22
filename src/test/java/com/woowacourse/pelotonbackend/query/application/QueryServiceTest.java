@@ -13,6 +13,7 @@ import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
 
+import org.assertj.core.util.Lists;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -34,11 +35,10 @@ import com.woowacourse.pelotonbackend.certification.presentation.dto.Certificati
 import com.woowacourse.pelotonbackend.member.domain.Member;
 import com.woowacourse.pelotonbackend.member.domain.MemberFixture;
 import com.woowacourse.pelotonbackend.member.domain.MemberRepository;
-import com.woowacourse.pelotonbackend.member.presentation.dto.MemberResponse;
-import com.woowacourse.pelotonbackend.member.presentation.dto.MemberResponses;
 import com.woowacourse.pelotonbackend.mission.domain.Mission;
 import com.woowacourse.pelotonbackend.mission.domain.MissionFixture;
 import com.woowacourse.pelotonbackend.mission.domain.MissionRepository;
+import com.woowacourse.pelotonbackend.query.presentation.dto.RaceAchievementRate;
 import com.woowacourse.pelotonbackend.query.presentation.dto.RaceDetailResponse;
 import com.woowacourse.pelotonbackend.query.presentation.dto.UpcomingMissionResponses;
 import com.woowacourse.pelotonbackend.race.domain.Race;
@@ -235,16 +235,20 @@ class QueryServiceTest {
 
         when(riderRepository.findRidersByRaceId(anyLong())).thenReturn(riders);
         when(missionRepository.findByRaceId(anyLong())).thenReturn(missions);
-
         when(certificationRepository.findByMissionIds(anyList(), any())).thenReturn(certifications);
-
         when(memberRepository.findAllById(anyList())).thenReturn(members);
 
-        final Map<MemberResponse, Double> responses = queryService.findRaceAchievement(TEST_RACE_ID)
-            .getRaceAchievement();
+        final List<RaceAchievementRate> responses = queryService.findRaceAchievement(TEST_RACE_ID)
+            .getRaceAchievementRates();
 
-        assertThat(responses).hasSize(5);
-        assertThat(responses).containsOnlyKeys(MemberResponses.from(members).getResponses());
-        assertThat(responses).containsValues(60.0, 40.0, 20.0, 0.0, 100.0);
+        assertThat(responses)
+            .usingRecursiveFieldByFieldElementComparator()
+            .isEqualTo(Lists.newArrayList(
+                RaceAchievementRate.of(members.get(0), 60.0),
+                RaceAchievementRate.of(members.get(1), 40.0),
+                RaceAchievementRate.of(members.get(2), 20.0),
+                RaceAchievementRate.of(members.get(3), 0.0),
+                RaceAchievementRate.of(members.get(4), 100.0)
+            ));
     }
 }

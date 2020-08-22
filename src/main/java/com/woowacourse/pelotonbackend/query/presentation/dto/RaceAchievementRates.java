@@ -1,11 +1,13 @@
-package com.woowacourse.pelotonbackend.query.domain;
+package com.woowacourse.pelotonbackend.query.presentation.dto;
 
+import java.beans.ConstructorProperties;
 import java.math.BigDecimal;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
+import com.fasterxml.jackson.databind.PropertyNamingStrategy;
+import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import com.woowacourse.pelotonbackend.certification.domain.Certification;
 import com.woowacourse.pelotonbackend.common.exception.MemberNotFoundException;
 import com.woowacourse.pelotonbackend.common.exception.MissionCountInvalidException;
@@ -16,18 +18,21 @@ import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
-@AllArgsConstructor(access = AccessLevel.PRIVATE)
+@AllArgsConstructor(access = AccessLevel.PRIVATE, onConstructor_ = @ConstructorProperties({"raceAchievementRates"}))
 @Getter
-public class RaceAchievementRate {
-    private final Map<Member, Double> raceAchievement;
+@JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class)
+public class RaceAchievementRates {
+    private final List<RaceAchievementRate> raceAchievementRates;
 
-    public static RaceAchievementRate create(final List<Rider> riders, final List<Mission> missions,
+    public static RaceAchievementRates create(final List<Rider> riders, final List<Mission> missions,
         final List<Certification> certifications, final List<Member> members) {
 
-        return new RaceAchievementRate(riders.stream()
-            .collect(Collectors.toMap(
-                rider -> getMemberByRider(members, rider),
-                rider -> getAchievementRate(certifications, rider, missions.size()))));
+        final List<RaceAchievementRate> result = riders.stream()
+            .map(rider -> RaceAchievementRate.of(getMemberByRider(members, rider),
+                getAchievementRate(certifications, rider, missions.size())))
+            .collect(Collectors.toList());
+
+        return new RaceAchievementRates(result);
     }
 
     private static Member getMemberByRider(final List<Member> members, final Rider rider) {

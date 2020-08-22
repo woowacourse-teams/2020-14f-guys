@@ -145,4 +145,24 @@ public class QueryDocumentation {
             )
         );
     }
+
+    public static RestDocumentationResultHandler getRaceAchievement() {
+        return document("queries/get-race-achievement",
+            getDocumentRequest(),
+            getDocumentResponse(),
+            requestHeaders(
+                headerWithName(HttpHeaders.AUTHORIZATION).description("인증 토큰"),
+                headerWithName(HttpHeaders.ACCEPT).description("Accept 헤더")
+            ),
+            pathParameters(
+                parameterWithName("raceId").description("Race ID")
+            ),
+            responseFields(
+                fieldWithPath("race_achievement_rates").type(ARRAY).description("Member 별 성취율 목록"),
+                fieldWithPath("race_achievement_rates[].id").type(NUMBER).description("Member Id"),
+                fieldWithPath("race_achievement_rates[].name").type(STRING).description("Member 이름"),
+                fieldWithPath("race_achievement_rates[].achievement").type(NUMBER).description("Member의 성취율")
+            )
+        );
+    }
 }
