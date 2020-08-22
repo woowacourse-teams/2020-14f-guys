@@ -1,13 +1,13 @@
 import React from "react";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
-import { useRecoilState } from "recoil";
+import { useRecoilValue } from "recoil";
 import { useNavigation } from "@react-navigation/core";
 import { memberInfoState } from "../../../state/member/MemberState";
 import { AntDesign } from "@expo/vector-icons";
 import { COLOR } from "../../../utils/constants";
 
 const ProfileEditInfo = () => {
-  const [memberInfo, setMemberInfo] = useRecoilState(memberInfoState);
+  const memberInfo = useRecoilValue(memberInfoState);
   const navigation = useNavigation();
 
   return (

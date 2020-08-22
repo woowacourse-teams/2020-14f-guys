@@ -10,7 +10,10 @@ import { navigateWithoutHistory } from "../../../utils/util";
 import AsyncStorage from "@react-native-community/async-storage";
 import { useNavigation } from "@react-navigation/core";
 import { MemberApi } from "../../../utils/api/MemberApi";
-import { memberInfoState, memberTokenState } from "../../../state/member/MemberState";
+import {
+  memberInfoState,
+  memberTokenState,
+} from "../../../state/member/MemberState";
 import LoadingIndicator from "../../../utils/LoadingIndicator";
 
 const Home = () => {
@@ -52,10 +55,6 @@ const Home = () => {
 };
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: COLOR.WHITE,
-  },
   raceTitle: {
     flex: 1,
     minHeight: 280,

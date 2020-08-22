@@ -1,13 +1,9 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { Alert, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { useNavigation } from "@react-navigation/native";
-import Axios from "axios";
 import { useRecoilValue } from "recoil";
-import {
-  COLOR,
-  SERVER_BASE_URL,
-  TOKEN_STORAGE,
-} from "../../../utils/constants";
+
+import { COLOR, TOKEN_STORAGE } from "../../../utils/constants";
 import {
   memberInfoState,
   memberTokenState,
