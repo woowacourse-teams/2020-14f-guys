@@ -8,6 +8,7 @@ import org.springframework.data.jdbc.core.mapping.AggregateReference;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.woowacourse.pelotonbackend.common.exception.MissionNotCreatedException;
 import com.woowacourse.pelotonbackend.common.exception.MissionNotFoundException;
 import com.woowacourse.pelotonbackend.mission.domain.DateTimeDuration;
 import com.woowacourse.pelotonbackend.mission.domain.Mission;
@@ -32,6 +33,10 @@ public class MissionService {
 
     public void createFromRace(final long raceId, final RaceCreateRequest request) {
         final List<LocalDate> missionDates = dateParser.convertDayToDate(request.getRaceDuration(), request.getDays());
+        if (missionDates.size() == 0) {
+            throw new MissionNotCreatedException(request.getRaceDuration(), request.getDays());
+        }
+
         final List<DateTimeDuration> dateTimeDurations =
             dateParser.convertDateToDuration(missionDates, request.getCertificationAvailableDuration());
         final List<Mission> missions = createMissions(raceId, request.getCategory(), dateTimeDurations);

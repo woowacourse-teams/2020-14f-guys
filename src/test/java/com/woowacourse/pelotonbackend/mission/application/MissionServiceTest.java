@@ -1,11 +1,14 @@
 package com.woowacourse.pelotonbackend.mission.application;
 
+import static com.woowacourse.pelotonbackend.race.domain.RaceFixture.*;
 import static org.assertj.core.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.BDDMockito.*;
 
+import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -18,6 +21,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.data.jdbc.core.mapping.AggregateReference;
 
+import com.woowacourse.pelotonbackend.common.exception.MissionNotCreatedException;
 import com.woowacourse.pelotonbackend.common.exception.MissionNotFoundException;
 import com.woowacourse.pelotonbackend.mission.domain.DateTimeDuration;
 import com.woowacourse.pelotonbackend.mission.domain.Mission;
@@ -28,6 +32,7 @@ import com.woowacourse.pelotonbackend.mission.presentation.dto.MissionResponses;
 import com.woowacourse.pelotonbackend.race.domain.DateDuration;
 import com.woowacourse.pelotonbackend.race.domain.RaceCategory;
 import com.woowacourse.pelotonbackend.race.domain.RaceFixture;
+import com.woowacourse.pelotonbackend.race.presentation.dto.RaceCreateRequest;
 import com.woowacourse.pelotonbackend.support.CustomDateParser;
 import com.woowacourse.pelotonbackend.support.RandomGenerator;
 
@@ -51,6 +56,7 @@ class MissionServiceTest {
         missionService = new MissionService(missionRepository, dateParser, randomGenerator);
     }
 
+    @DisplayName("미션을 생성한다.")
     @Test
     void createMissionFromRace() {
         List<LocalDate> dates = MissionFixture.datesFixture();
@@ -65,12 +71,12 @@ class MissionServiceTest {
         List<Mission> expectedToSave = dateTimeDurations.stream()
             .map(dateTimeDuration -> Mission.builder()
                 .missionInstruction(RaceCategory.TIME.getMissionInstructions().get(MISSION_INSTRUCTION_INDEX))
-                .raceId(AggregateReference.to(RaceFixture.TEST_RACE_ID))
+                .raceId(AggregateReference.to(TEST_RACE_ID))
                 .missionDuration(dateTimeDuration)
                 .build())
             .collect(Collectors.toList());
 
-        missionService.createFromRace(RaceFixture.TEST_RACE_ID, RaceFixture.createMockRequest());
+        missionService.createFromRace(TEST_RACE_ID, RaceFixture.createMockRequest());
         verify(missionRepository).saveAll(expectedToSave);
     }
 
@@ -83,6 +89,27 @@ class MissionServiceTest {
         Long missionId = missionService.createFromRace(MissionFixture.mockCreateRequest());
 
         assertThat(missionId).isEqualTo(savedMission.getId());
+    }
+
+    /**
+     * 2020/08/22 SAT
+     */
+    @DisplayName("레이스 기간중에 해당되는 요일이 없을 시 예외를 던진다.")
+    @Test
+    void noMissionDatesThrowError() {
+        final LocalDate date = LocalDate.of(2020, 8, 22);
+        given(dateParser.convertDayToDate(new DateDuration(date, date), Collections.singletonList(DayOfWeek.MONDAY)))
+            .willReturn(Collections.emptyList());
+
+        final RaceCreateRequest request = RaceCreateRequest.builder()
+            .raceDuration(new DateDuration(date, date))
+            .days(Collections.singletonList(DayOfWeek.MONDAY))
+            .build();
+
+        assertThatThrownBy(() -> missionService.createFromRace(TEST_RACE_ID, request))
+            .isInstanceOf(MissionNotCreatedException.class)
+            .hasMessage(String.format("레이스 기간 %s에 %s 요일들이 포함되지 않습니다.",
+                new DateDuration(date, date), Collections.singletonList(DayOfWeek.MONDAY)));
     }
 
     @DisplayName("미션을 정상적으로 조회한다.")

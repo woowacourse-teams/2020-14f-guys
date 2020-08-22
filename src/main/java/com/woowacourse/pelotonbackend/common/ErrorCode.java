@@ -26,6 +26,7 @@ public enum ErrorCode {
     MISSION_NOT_FOUND(404, "미션을 찾을 수 없어요.😂"),
     MISSION_DUPLICATE(400, "이미 존재하는 미션에요.😊"),
     MISSION_ID_INVALID(400, "잘못된 미션 아이디에요.😂"),
+    MISSION_NOT_CREATED(400, "레이스 기간에 해당하는 요일이 없어요.😂"),
 
     RIDER_NOT_FOUND(404,"해당 라이더를 찾을 수 없어요.😂"),
     RIDER_DUPLICATE(400, "이미 참여한 레이스에요.😊"),
