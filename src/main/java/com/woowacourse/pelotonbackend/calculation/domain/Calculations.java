@@ -3,7 +3,6 @@ package com.woowacourse.pelotonbackend.calculation.domain;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import org.springframework.data.jdbc.core.mapping.AggregateReference;
@@ -33,7 +32,7 @@ public class Calculations {
 
         final Map<Long, Long> riderToCertificationCount = collectCertificationCountPerRider(certifications, riders);
         final long totalCertificationCount = getTotalCertificationCount(riderToCertificationCount);
-        final Cash totalFee = race.getEntranceFee().multiply(Cash.of(riders.size()));
+        final Cash totalFee = race.getEntranceFee().multiply(riders.size());
 
         final List<Calculation> calculationRequest = riderToCertificationCount.entrySet().stream()
             .map(entry -> Calculation.builder()
@@ -47,10 +46,35 @@ public class Calculations {
         return new Calculations(calculationRequest);
     }
 
+    public Calculation receivePrize(final Long riderId) {
+        final Calculation calculation = calculations.stream()
+            .filter(item -> Objects.equals(item.getRiderId().getId(), riderId))
+            .findAny()
+            .orElseThrow(() -> new RiderInvalidException(riderId));
+
+        return calculation.receivePrize();
+    }
+
+    public Calculations replaceCalculatedItem(final Calculation receivedCalculation) {
+        final Calculation originCalculation = calculations.stream()
+            .filter(item -> item.getRaceId().equals(receivedCalculation.getRaceId())
+                && item.getRiderId().equals(receivedCalculation.getRiderId()))
+            .findAny()
+            .get();
+
+        final int index = calculations.indexOf(originCalculation);
+        calculations.remove(originCalculation);
+        calculations.add(index, receivedCalculation);
+
+        return Calculations.of(calculations);
+    }
+
     private static Cash calculatePrize(final long totalCertificationCount, final Long certificationCount,
         final Cash totalFee) {
 
-        final Cash result = totalFee.multiply(Cash.of((double)certificationCount / totalCertificationCount));
+        final Cash certificationRatio = Cash.of(certificationCount).divide(totalCertificationCount);
+        final Cash result = totalFee.multiply(certificationRatio);
+
         return result.round();
     }
 
@@ -66,28 +90,11 @@ public class Calculations {
     private static Map<Long, Long> collectCertificationCountPerRider(final List<CertificationResponse> certifications,
         final List<RiderResponse> riders) {
 
-        final List<Long> riderIds = riders.stream()
-            .map(RiderResponse::getId)
-            .collect(Collectors.toList());
+        final Map<Long, Long> certificationCountPerRider = certifications.stream()
+            .collect(Collectors.groupingBy(CertificationResponse::getRiderId, Collectors.counting()));
 
-        return riderIds.stream()
-            .collect(Collectors.toMap(Function.identity(), riderId -> countCertificationsPerRider(certifications, riderId)));
-    }
-
-    private static long countCertificationsPerRider(final List<CertificationResponse> certifications, final Long riderId) {
-        return certifications.stream()
-            .filter(certification -> certification.getRiderId().equals(riderId))
-            .count();
-    }
-
-    public Cash receivePrize(final Long riderId) {
-        final Calculation calculation = calculations.stream()
-            .filter(item -> Objects.equals(item.getRiderId().getId(), riderId))
-            .findAny()
-            .orElseThrow(() -> new RiderInvalidException(riderId));
-        calculation.receivePrize();
-
-        return calculation.getPrize();
+        return riders.stream()
+            .collect(Collectors.toMap(RiderResponse::getId, rider -> certificationCountPerRider.getOrDefault(rider.getId(), 0L)));
     }
 
     public int size() {

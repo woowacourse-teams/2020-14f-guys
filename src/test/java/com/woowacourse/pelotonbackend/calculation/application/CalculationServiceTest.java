@@ -17,12 +17,12 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import com.woowacourse.pelotonbackend.calculation.application.CalculationService;
 import com.woowacourse.pelotonbackend.calculation.domain.CalculationFixture;
 import com.woowacourse.pelotonbackend.calculation.domain.CalculationRepository;
 import com.woowacourse.pelotonbackend.calculation.presentation.CalculationResponse;
 import com.woowacourse.pelotonbackend.certification.domain.CertificationFixture;
 import com.woowacourse.pelotonbackend.common.exception.CalculationNotFoundException;
+import com.woowacourse.pelotonbackend.common.exception.DuplicateCalculationException;
 import com.woowacourse.pelotonbackend.common.exception.RaceNotFinishedException;
 import com.woowacourse.pelotonbackend.common.exception.UnAuthenticatedException;
 import com.woowacourse.pelotonbackend.member.application.MemberService;
@@ -74,8 +74,7 @@ class CalculationServiceTest {
             CertificationFixture.createMockRaceCertifications(countToRiderId));
         when(raceService.retrieve(anyLong())).thenReturn(RaceFixture.retrieveFinishedResponse());
 
-        calculationService.calculate(MemberFixture.memberResponse(), RaceFixture.TEST_RACE_ID,
-            RiderFixture.TEST_RIDER_ID);
+        calculationService.calculate(MemberFixture.memberResponse(), RaceFixture.TEST_RACE_ID);
 
         verify(memberService).chargeCash(anyLong(), any());
         verify(calculationRepository).saveAll(any());
@@ -148,5 +147,17 @@ class CalculationServiceTest {
             () -> calculationService.retrieve(memberResponse, RaceFixture.TEST_RACE_ID))
             .isInstanceOf(CalculationNotFoundException.class)
             .hasMessage(String.format("Calculation(race id = %d) does not exist)", RaceFixture.TEST_RACE_ID));
+    }
+
+    @DisplayName("이미 정산된 회원이 다시 정산을 요청하면 예외를 반환한다.")
+    @Test
+    void duplicateCalculation() {
+        when(riderService.retrieveByRaceId(anyLong())).thenReturn(
+            new RiderResponses(RiderFixture.createRidersInSameRaceByCount(5)));
+        when(raceService.retrieve(anyLong())).thenReturn(RaceFixture.retrieveFinishedResponse());
+        when(calculationRepository.findAllByRaceId(anyLong())).thenReturn(Optional.of(CalculationFixture.createCalculations(3,RiderFixture.TEST_RIDER_ID)));
+
+        assertThatThrownBy(() -> calculationService.calculate(MemberFixture.memberResponse(), RaceFixture.TEST_RACE_ID))
+            .isInstanceOf(DuplicateCalculationException.class);
     }
 }

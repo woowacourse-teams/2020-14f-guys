@@ -2,11 +2,13 @@
 <databaseChangeLog xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
                    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
-    <changeSet author="kyle" id="20200820">
-        <renameColumn
-                      columnDataType="NUMBER"
-                      newColumnName="CASH"
-                      oldColumnName="PRIZE"
-                      tableName="CALCULATION"/>
+    <changeSet author="kyle" id="20200822">
+        <dropDefaultValue  columnDataType="TIMESTAMP"
+                           columnName="CREATED_AT"
+                           tableName="CALCULATION"/>
+        <dropDefaultValue  columnDataType="TIMESTAMP"
+                           columnName="UPDATED_AT"
+                           tableName="CALCULATION"/>
     </changeSet>
+
 </databaseChangeLog>

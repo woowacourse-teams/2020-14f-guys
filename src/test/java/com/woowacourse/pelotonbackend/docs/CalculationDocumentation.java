@@ -10,8 +10,6 @@ import static org.springframework.restdocs.request.RequestDocumentation.*;
 
 import org.springframework.http.HttpHeaders;
 import org.springframework.restdocs.mockmvc.RestDocumentationResultHandler;
-import org.springframework.restdocs.payload.JsonFieldType;
-import org.springframework.test.web.servlet.ResultHandler;
 
 public class CalculationDocumentation {
 
@@ -23,8 +21,7 @@ public class CalculationDocumentation {
                 headerWithName(HttpHeaders.AUTHORIZATION).description("사용자 인증 토큰")
             ),
             pathParameters(
-                parameterWithName("raceId").description("정산하고자 하는 레이스의 아이디"),
-                parameterWithName("riderId").description("정산받고자 하는 라이더의 아이디")
+                parameterWithName("raceId").description("정산하고자 하는 레이스의 아이디")
             ),
             responseHeaders(
                 headerWithName("Location").description("생성된 정산의 리소스")
@@ -40,8 +37,7 @@ public class CalculationDocumentation {
                 headerWithName(HttpHeaders.AUTHORIZATION).description("사용자 인증 토큰")
             ),
             pathParameters(
-                parameterWithName("raceId").description("정산하고자 하는 레이스의 아이디"),
-                parameterWithName("riderId").description("정산받고자 하는 라이더의 아이디")
+                parameterWithName("raceId").description("정산하고자 하는 레이스의 아이디")
             ),
             getErrorResponseFields()
         );

@@ -12,20 +12,18 @@ import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jdbc.core.mapping.AggregateReference;
 import org.springframework.data.relational.core.mapping.Embedded;
 
-import com.woowacourse.pelotonbackend.common.exception.BusinessException;
 import com.woowacourse.pelotonbackend.common.exception.DuplicateCalculationException;
 import com.woowacourse.pelotonbackend.race.domain.Race;
 import com.woowacourse.pelotonbackend.rider.domain.Rider;
 import com.woowacourse.pelotonbackend.vo.Cash;
 import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NonNull;
 import lombok.With;
 
-@Builder
+@Builder(toBuilder = true)
 @EqualsAndHashCode(of = "id")
 @Getter
 public class Calculation {
@@ -49,11 +47,13 @@ public class Calculation {
     @With(value = AccessLevel.PACKAGE)
     private final LocalDateTime updatedAt;
 
-    public void receivePrize() {
+    public Calculation receivePrize() {
         if(this.isCalculated) {
             throw new DuplicateCalculationException(raceId.getId(), riderId.getId());
         }
 
-        this.isCalculated = true;
+        return this.toBuilder()
+            .isCalculated(true)
+            .build();
     }
 }

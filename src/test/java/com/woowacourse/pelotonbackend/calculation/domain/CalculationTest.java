@@ -38,8 +38,8 @@ class CalculationTest {
     @DisplayName("정산 받지 않은 라이더의 정산 여부를 변경한다.")
     @Test
     void receivePrize() {
-        calculation1.receivePrize();
-        assertThat(calculation1.isCalculated()).isTrue();
+        final Calculation receivedCalculation = calculation1.receivePrize();
+        assertThat(receivedCalculation.isCalculated()).isTrue();
     }
 
     @DisplayName("이미 정산 받은 라이더의 정산 여부 변경 시 예외를 반환한다.")

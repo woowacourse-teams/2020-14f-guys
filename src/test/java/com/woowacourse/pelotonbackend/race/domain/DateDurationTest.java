@@ -13,19 +13,19 @@ class DateDurationTest {
 
     @BeforeEach
     void setUp() {
-        dateDuration1 = new DateDuration(LocalDate.now().minusDays(2L), LocalDate.now().plusDays(1L));
-        dateDuration2 = new DateDuration(LocalDate.now().minusDays(2L), LocalDate.now().minusDays(1L));
+        dateDuration1 = new DateDuration(LocalDate.now().minusDays(10L), LocalDate.now().plusDays(1L));
+        dateDuration2 = new DateDuration(LocalDate.now().minusDays(11L), LocalDate.now().minusDays(11L));
     }
 
     @Test
     void isEnd() {
-        assertThat(dateDuration1.raceEnd()).isFalse();
-        assertThat(dateDuration2.raceEnd()).isTrue();
+        assertThat(dateDuration1.end()).isFalse();
+        assertThat(dateDuration2.end()).isTrue();
     }
 
     @Test
     void isNotEnd() {
-        assertThat(dateDuration1.raceNotEnd()).isTrue();
-        assertThat(dateDuration2.raceNotEnd()).isFalse();
+        assertThat(dateDuration1.notEnd()).isTrue();
+        assertThat(dateDuration2.notEnd()).isFalse();
     }
 }

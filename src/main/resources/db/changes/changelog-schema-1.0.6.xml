@@ -24,5 +24,10 @@
                 <constraints nullable="false"/>
             </column>
         </createTable>
+        <renameColumn
+                columnDataType="NUMBER"
+                newColumnName="CASH"
+                oldColumnName="PRIZE"
+                tableName="CALCULATION"/>
     </changeSet>
 </databaseChangeLog>

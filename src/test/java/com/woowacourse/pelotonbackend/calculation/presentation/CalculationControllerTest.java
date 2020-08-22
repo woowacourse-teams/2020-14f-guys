@@ -78,14 +78,12 @@ class CalculationControllerTest {
             any(NativeWebRequest.class), any(WebDataBinderFactory.class))).willReturn(MemberFixture.memberResponse());
 
         mockMvc.perform(
-            post("/api/calculations/races/{raceId}/riders/{riderId}", RaceFixture.TEST_RACE_ID,
-                RiderFixture.TEST_RIDER_ID)
+            post("/api/calculations/races/{raceId}", RaceFixture.TEST_RACE_ID)
                 .header(HttpHeaders.AUTHORIZATION, LoginFixture.getTokenHeader())
         )
             .andExpect(status().isCreated())
             .andExpect(header().stringValues("Location",
-                String.format("/api/calculations/races/%d/riders/%d", RaceFixture.TEST_RACE_ID,
-                    RiderFixture.TEST_RIDER_ID)))
+                String.format("/api/calculations/races/%d", RaceFixture.TEST_RACE_ID)))
             .andDo(CalculationDocumentation.create());
     }
 
@@ -98,11 +96,10 @@ class CalculationControllerTest {
         given(argumentResolver.resolveArgument(any(MethodParameter.class), any(ModelAndViewContainer.class),
             any(NativeWebRequest.class), any(WebDataBinderFactory.class))).willReturn(MemberFixture.memberResponse());
         doThrow(new RiderInvalidException(RiderFixture.TEST_RIDER_ID)).when(calculationService)
-            .calculate(any(MemberResponse.class), anyLong(), anyLong());
+            .calculate(any(MemberResponse.class), anyLong());
 
         mockMvc.perform(
-            post("/api/calculations/races/{raceId}/riders/{riderId}", RaceFixture.TEST_RACE_ID,
-                RiderFixture.TEST_RIDER_ID)
+            post("/api/calculations/races/{raceId}", RaceFixture.TEST_RACE_ID)
                 .header(HttpHeaders.AUTHORIZATION, LoginFixture.getTokenHeader())
         )
             .andExpect(status().isBadRequest())

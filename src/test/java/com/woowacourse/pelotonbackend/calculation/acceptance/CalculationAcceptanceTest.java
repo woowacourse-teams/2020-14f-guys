@@ -58,11 +58,11 @@ class CalculationAcceptanceTest extends AcceptanceTest {
 
         createCertifications(representToken, certificationCreateRequests);
 
-        createCalculation(representToken, raceId, 1L);
-        retrieveCalculation(representToken, raceId, 1L);
+        createCalculation(representToken, raceId);
+        retrieveCalculation(representToken, raceId);
     }
 
-    private void retrieveCalculation(final JwtTokenResponse tokenResponse, final long raceId, final long riderId) {
+    private void retrieveCalculation(final JwtTokenResponse tokenResponse, final long raceId) {
         final CalculationResponses responses = given()
             .header(createTokenHeader(tokenResponse))
             .accept(MediaType.APPLICATION_JSON_VALUE)
@@ -79,15 +79,15 @@ class CalculationAcceptanceTest extends AcceptanceTest {
             .isEqualTo(CalculationFixture.createAcceptanceResponses());
     }
 
-    private void createCalculation(final JwtTokenResponse tokenResponse, final long raceId, final long riderId) {
+    private void createCalculation(final JwtTokenResponse tokenResponse, final long raceId) {
         given()
             .header(createTokenHeader(tokenResponse))
             .accept(MediaType.APPLICATION_JSON_VALUE)
             .when()
-            .post("/api/calculations/races/{raceId}/riders/{riderId}", raceId, riderId)
+            .post("/api/calculations/races/{raceId}", raceId)
             .then()
             .log().all()
             .statusCode(HttpStatus.CREATED.value())
-            .header("Location", String.format("/api/calculations/races/%d/riders/%d", raceId, riderId));
+            .header("Location", String.format("/api/calculations/races/%d", raceId));
     }
 }
