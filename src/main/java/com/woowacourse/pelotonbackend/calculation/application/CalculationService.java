@@ -42,8 +42,11 @@ public class CalculationService {
             .orElseGet(() -> Calculations.create(queryService.findCertificationsByRaceId(raceId,
                 PageRequest.of(0, Integer.MAX_VALUE)).getCertifications().getContent(), riders, race));
 
-        memberService.chargeCash(memberResponse.getId(),
-            MemberCashUpdateRequest.builder().cash(calculations.receivePrize(riderId)).build());
+        final MemberCashUpdateRequest cashUpdateRequest = MemberCashUpdateRequest.builder()
+            .cash(calculations.receivePrize(riderId))
+            .build();
+
+        memberService.chargeCash(memberResponse.getId(), cashUpdateRequest);
         calculationRepository.saveAll(calculations.getCalculations());
     }
 
@@ -67,17 +70,17 @@ public class CalculationService {
     }
 
     private void validateMember(final MemberResponse memberResponse, final List<RiderResponse> riders) {
-        final boolean validMember = riders.stream()
+        final boolean isValidMember = riders.stream()
             .anyMatch(rider -> rider.getMemberId().equals(memberResponse.getId()));
-        if (!validMember) {
+        if (!isValidMember) {
             throw new UnAuthenticatedException(memberResponse.getId());
         }
     }
 
     private void validateRider(final Long riderId, final List<RiderResponse> riders) {
-        final boolean validRider = riders.stream()
+        final boolean isValidRider = riders.stream()
             .anyMatch(rider -> rider.getId().equals(riderId));
-        if (!validRider) {
+        if (!isValidRider) {
             throw new UnAuthenticatedException(riderId);
         }
     }
