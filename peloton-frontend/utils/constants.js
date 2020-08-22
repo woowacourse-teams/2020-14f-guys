@@ -119,13 +119,13 @@ export const RaceCreateUnitType = {
 };
 
 export const DAYS = [
+  "SUNDAY",
   "MONDAY",
   "TUESDAY",
   "WEDNESDAY",
   "THURSDAY",
   "FRIDAY",
   "SATURDAY",
-  "SUNDAY",
 ];
 
 export const CERTIFICATION_TYPE = {

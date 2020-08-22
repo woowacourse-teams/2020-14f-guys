@@ -8,6 +8,7 @@ import InputBox from "./InputBox";
 import { DateFormatter } from "../../../utils/DateFormatter";
 import { COLOR, RaceCreateUnitType } from "../../../utils/constants";
 import MissionDaysSelector from "./MissionDaysSelector";
+import moment from "moment";
 
 const RaceCreateUnit = ({
   type = RaceCreateUnitType.TEXT,
@@ -20,25 +21,25 @@ const RaceCreateUnit = ({
   const [raceCreateInfo, setRaceCreateInfo] = useRecoilState(raceCreateInfoState);
   const [isShowPicker, setIsShowPicker] = useState(false);
 
-  const onPickDate = (pickedDate) => {
-    let formattedDate = DateFormatter.yyyyMMdd(pickedDate);
-    const currentDate = DateFormatter.yyyyMMdd(new Date());
+  const onPickDate = (pickedDateTime) => {
+    let formattedPickedDate = DateFormatter.UTCyyyyMMdd(pickedDateTime);
+    const currentFormattedSystemDate = DateFormatter.UTCyyyyMMdd(new Date());
 
-    if (formattedDate < currentDate) {
+    if (formattedPickedDate < currentFormattedSystemDate) {
       alert("현재보다 이전 날짜를 선택할 수 없습니다!");
-      formattedDate = currentDate;
+      formattedPickedDate = currentFormattedSystemDate;
     }
 
     setRaceCreateInfo((info) => ({
       ...info,
-      [fieldName]: formattedDate,
+      [fieldName]: formattedPickedDate,
     }));
     setIsShowPicker(false);
   };
 
-  const onPickTime = (pickedTime) => {
-    const hours = pickedTime.getHours();
-    const minutes = pickedTime.getMinutes();
+  const onPickTime = (pickedDate) => {
+    let hours = pickedDate.getUTCHours();
+    const minutes = pickedDate.getUTCMinutes();
 
     if (hours < 0 || hours > 24) {
       alert("시간은 0~24 사이의 숫자여야 합니다.");
@@ -70,12 +71,53 @@ const RaceCreateUnit = ({
     }));
   };
 
+  const convertTimeInput = (value) => {
+    const timezoneOffsetHours = parseInt(new Date().getTimezoneOffset() / 60);
+    const timezoneOffsetMinutes = new Date().getTimezoneOffset() % 60;
+
+    let hours = value.split(":")[0] - timezoneOffsetHours;
+    let minutes = value.split(":")[1] - timezoneOffsetMinutes;
+    if (minutes > 60) {
+      hours++;
+      minutes -= 60;
+    }
+    if (minutes < 0) {
+      hours--;
+      minutes += 60;
+    }
+    if (hours >= 24) {
+      hours -= 24;
+    }
+    if (hours < 0) {
+      hours += 24;
+    }
+    hours = hours < 10 ? `0${hours}` : hours;
+    minutes = minutes < 10 ? `0${minutes}` : minutes;
+    return value && `${hours}시 ${minutes}분`;
+  };
+
+  const convertDateInput = (value) => {
+    const currentUTCDate = new Date().getUTCDate();
+    const currentDate = new Date().getDate();
+
+    if (currentUTCDate !== currentDate) {
+      const diff = currentDate - currentUTCDate;
+
+      return value && moment(value).add(diff, "days").format("YYYY-MM-DD");
+    }
+    return value;
+  };
+
   const inputValue = () => {
     const value = raceCreateInfo[fieldName];
 
-    return type === RaceCreateUnitType.TIME
-      ? value && value.substring(0, 2) + "시 " + value.substring(3, 5) + "분"
-      : value;
+    if (type === RaceCreateUnitType.TIME) {
+      return convertTimeInput(value);
+    }
+    if (type === RaceCreateUnitType.DATE) {
+      return convertDateInput(value);
+    }
+    return value;
   };
 
   return (
@@ -112,7 +154,11 @@ const RaceCreateUnit = ({
           locale="ko-KR"
           confirmTextIOS="확인"
           cancelTextIOS="취소"
-          headerTextIOS="날짜를 골라주세요"
+          headerTextIOS={
+            type === RaceCreateUnitType.DATE
+              ? "날짜를 골라주세요"
+              : "시간을 골라주세요"
+          }
         />
       )}
     </View>
