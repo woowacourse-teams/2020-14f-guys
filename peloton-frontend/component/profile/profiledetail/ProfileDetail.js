@@ -2,7 +2,6 @@ import React from "react";
 import { ImageBackground, StyleSheet, View } from "react-native";
 import MemberInfo from "./MemberInfo";
 import { useRecoilValue } from "recoil";
-import { COLOR } from "../../../utils/constants";
 import { memberInfoState } from "../../../state/member/MemberState";
 
 const ProfileDetail = () => {
@@ -31,7 +30,6 @@ const styles = StyleSheet.create({
   },
   memberContainer: {
     flex: 1,
-    backgroundColor: COLOR.RED,
     alignItems: "center",
   },
   background: {

@@ -19,11 +19,9 @@ const styles = StyleSheet.create({
   },
   button: {
     borderWidth: 1,
-    width: 100,
-    height: 28,
+    padding: 10,
     borderColor: COLOR.WHITE3,
     borderRadius: 100,
-    flex: 1,
     alignItems: "center",
     justifyContent: "center",
   },
