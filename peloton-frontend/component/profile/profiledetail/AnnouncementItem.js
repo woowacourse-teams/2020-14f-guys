@@ -1,6 +1,7 @@
 import React from "react";
-import { StyleSheet, Text, TouchableOpacity } from "react-native";
+import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { useNavigation } from "@react-navigation/core";
+import { COLOR } from "../../../utils/constants";
 
 const AnnouncementItem = ({ children, target }) => {
   const navigation = useNavigation();
@@ -10,7 +11,9 @@ const AnnouncementItem = ({ children, target }) => {
       style={styles.container}
       onPress={() => navigation.navigate(target)}
     >
-      <Text style={styles.title}>{children}</Text>
+      <View style={styles.item}>
+        <Text style={styles.title}>{children}</Text>
+      </View>
     </TouchableOpacity>
   );
 };
@@ -18,11 +21,18 @@ const AnnouncementItem = ({ children, target }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    alignItems: "center",
+    marginTop: 20,
+  },
+  item: {
+    borderBottomWidth: 1,
+    borderColor: COLOR.GRAY3,
+    width: "80%",
   },
   title: {
     fontSize: 23,
     textAlign: "center",
-    marginTop: 30,
+    paddingBottom: 10,
   },
 });
 
