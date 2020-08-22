@@ -82,8 +82,10 @@ const CertificationDetail = ({ route }) => {
           <View style={styles.certificationImageContainer}>
             {certificationDetail.certification && (
               <RaceCertificationImage
-                item={certificationDetail.certification}
-                touchable={false}
+                certification={certificationDetail.certification}
+                touchable={true}
+                name="ImageDetail"
+                params={{ uri: certificationDetail.certification.image }}
               />
             )}
           </View>

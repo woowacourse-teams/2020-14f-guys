@@ -17,7 +17,13 @@ const RaceCertificationImages = () => {
     >
       {certifications && certifications.length > 0 ? (
         certifications.map((item, index) => (
-          <RaceCertificationImage key={index} item={item} touchable={true} />
+          <RaceCertificationImage
+            key={index}
+            certification={item}
+            touchable={true}
+            name="CertificationDetail"
+            params={{ id: item.id }}
+          />
         ))
       ) : (
         <RaceCertificationImage key={0} item={null} touchable={false} />

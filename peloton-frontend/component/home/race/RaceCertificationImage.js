@@ -3,32 +3,23 @@ import { Image, StyleSheet, TouchableWithoutFeedback } from "react-native";
 import LoadingIndicator from "../../../utils/LoadingIndicator";
 import { useNavigation } from "@react-navigation/core";
 
-const RaceCertificationImage = ({ item, touchable }) => {
+const RaceCertificationImage = ({ certification, touchable, name, params }) => {
   const navigation = useNavigation();
 
-  const navigateToCertificationDetail = () => {
-    navigation.navigate("CertificationDetail", {
-      id: item.id,
-    });
-  };
-
-  const navigateToImageDetail = () => {
-    navigation.navigate("ImageDetail", {
-      uri: item.image,
-    });
+  const navigateToScreen = (screen, param) => {
+    navigation.navigate(screen, param);
   };
 
   return (
     <TouchableWithoutFeedback
-      onPress={
-        touchable ? navigateToCertificationDetail : navigateToImageDetail
-      }
+      disabled={!touchable}
+      onPress={() => navigateToScreen(name, params)}
     >
       <Image
         style={styles.image}
         source={
-          item
-            ? { uri: item.image }
+          certification
+            ? { uri: certification.image }
             : require("../../../assets/empty-image.jpeg")
         }
       />
