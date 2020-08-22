@@ -40,7 +40,7 @@ const styles = StyleSheet.create({
     width: "120%",
   },
   announcementContainer: {
-    flex: 11,
+    flex: 1,
   },
 });
 
