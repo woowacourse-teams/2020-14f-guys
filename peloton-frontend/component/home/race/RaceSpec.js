@@ -1,23 +1,51 @@
 import React from "react";
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet, View } from "react-native";
 import RaceSpecItem from "./RaceSpecItem";
-import { COLOR } from "../../../utils/constants";
+import { COLOR, DAYS_IN_KOREAN } from "../../../utils/constants";
 
-const RaceSpec = ({ raceDuration, cash, riderCount }) => {
+const RaceSpec = ({
+  days,
+  raceDuration,
+  missionDuration,
+  cash,
+  riderCount,
+}) => {
   const startDate = raceDuration.start_date;
   const endDate = raceDuration.end_date;
+  const startTime = missionDuration.start_time
+    ? missionDuration.start_time.substring(0, 5)
+    : "";
+  const endTime = missionDuration.end_time
+    ? missionDuration.end_time.substring(0, 5)
+    : "";
+
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>레이스 정보 확인하기</Text>
       <RaceSpecItem
         itemKey={"레이스 기간"}
         value={`${startDate} ~ ${endDate}`}
         border
       />
-      <RaceSpecItem itemKey={"인증 주기"} value={"월, 수, 금"} border />
-      <RaceSpecItem itemKey={"인증 시간"} value={"17:00 ~ 23:00"} border />
-      <RaceSpecItem itemKey={"모인 금액"} value={cash * riderCount} border />
-      <RaceSpecItem itemKey={"참가자 수"} value={riderCount} border={false} />
+      <RaceSpecItem
+        itemKey={"인증 주기"}
+        value={days ? days.map((day) => DAYS_IN_KOREAN[day]).join(", ") : ""}
+        border
+      />
+      <RaceSpecItem
+        itemKey={"인증 시간"}
+        value={`${startTime} ~ ${endTime}`}
+        border
+      />
+      <RaceSpecItem
+        itemKey={"모인 금액"}
+        value={`${cash * riderCount}원`}
+        border
+      />
+      <RaceSpecItem
+        itemKey={"참가자 수"}
+        value={`${riderCount}명`}
+        border={false}
+      />
     </View>
   );
 };
@@ -25,15 +53,12 @@ const RaceSpec = ({ raceDuration, cash, riderCount }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingTop: 10,
-    paddingBottom: 10,
-    paddingHorizontal: 20,
-    backgroundColor: COLOR.GRAY6,
-  },
-  title: {
-    fontSize: 25,
-    paddingBottom: 30,
-    fontWeight: "400",
+    padding: 30,
+    paddingTop: 40,
+    margin: 20,
+    borderWidth: 1,
+    borderColor: COLOR.GRAY5,
+    borderRadius: 20,
   },
   border: {
     borderWidth: 1,

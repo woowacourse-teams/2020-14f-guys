@@ -18,20 +18,19 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     overflow: "hidden",
-    borderBottomEndRadius: 15,
-    borderBottomStartRadius: 15,
   },
   image: {
     height: 200,
   },
   raceInfoText: {
-    padding: 20,
+    paddingHorizontal: 30,
+    paddingTop: 25,
     backgroundColor: COLOR.WHITE,
   },
   title: {
     color: COLOR.BLACK,
-    fontWeight: "900",
-    fontSize: 17,
+    fontWeight: "600",
+    fontSize: 25,
     justifyContent: "center",
     paddingBottom: 10,
   },

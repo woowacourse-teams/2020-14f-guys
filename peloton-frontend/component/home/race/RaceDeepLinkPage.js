@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet, View } from "react-native";
 import { useRecoilState, useSetRecoilState } from "recoil";
 import { loadingState } from "../../../state/loading/LoadingState";
 import {
@@ -102,7 +102,7 @@ const RaceDeepLinkPage = ({ route }) => {
         return;
       }
       try {
-        const newRaceInfo = await RaceApi.get(userToken, raceId);
+        const newRaceInfo = await QueryApi.getRaceDetail(userToken, raceId);
         setRaceInfo(newRaceInfo);
       } catch (error) {
         alert(error.response.data.code);
