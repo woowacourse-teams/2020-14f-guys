@@ -2,13 +2,13 @@ import React from "react";
 import { StyleSheet, Text, TouchableOpacity } from "react-native";
 import { useNavigation } from "@react-navigation/core";
 
-const AnnouncementItem = ({ children }) => {
+const AnnouncementItem = ({ children, target }) => {
   const navigation = useNavigation();
 
   return (
     <TouchableOpacity
       style={styles.container}
-      onPress={() => navigation.navigate("License")}
+      onPress={() => navigation.navigate(target)}
     >
       <Text style={styles.title}>{children}</Text>
     </TouchableOpacity>
@@ -22,7 +22,7 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 23,
     textAlign: "center",
-    marginVertical: 30,
+    marginTop: 30,
   },
 });
 

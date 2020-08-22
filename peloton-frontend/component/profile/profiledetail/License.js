@@ -240,6 +240,7 @@ IN NO EVENT SHALL APPLE BE LIABLE FOR ANY SPECIAL, INDIRECT, INCIDENTAL OR CONSE
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    marginLeft: 10,
   },
 });
 
