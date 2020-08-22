@@ -29,11 +29,13 @@ import LoadingIndicator from "../../utils/LoadingIndicator";
 import { navigateWithoutHistory } from "../../utils/util";
 import InputBox from "../home/racecreate/InputBox";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
+import { certificationsState } from "../../state/certification/CertificationState";
 
 const CertificationSubmit = ({ route }) => {
   const raceMissions = useRecoilValue(raceMissionState);
   const setIsLoading = useSetRecoilState(loadingState);
   const token = useRecoilValue(memberTokenState);
+  const setCertification = useSetRecoilState(certificationsState);
   const navigation = useNavigation();
   const linkTo = useLinkTo();
   const [description, setDescription] = useState();
@@ -64,11 +66,29 @@ const CertificationSubmit = ({ route }) => {
       ? raceMission.certification.id
       : null;
     try {
-      await certificationCreateOrUpdateRequest(
+      const { location } = await certificationCreateOrUpdateRequest(
         token,
         formData,
         certificationId,
       );
+
+      const locationCertificationId = location.split("/")[3];
+
+      const certification = await CertificationApi.get(
+        token,
+        locationCertificationId,
+      );
+
+      setCertification((prev) => {
+        if (!prev) {
+          return [certification];
+        }
+        const notUpdatedCertification = prev.filter(
+          (it) => Number(it.id) !== Number(locationCertificationId),
+        );
+        return [...notUpdatedCertification, certification];
+      });
+
       alert("인증 완료되었습니다");
       setPhotoUri(raceMission.race.certification_example);
       navigateWithoutHistory(navigation, "CertificationHome");
