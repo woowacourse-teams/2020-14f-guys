@@ -27,8 +27,8 @@ const ProfileEditInfo = () => {
       </View>
       <View style={styles.eachInfo}>
         <View style={styles.eachTextBox}>
-          <Text style={styles.eachInfoKey}>😀 Kakao ID</Text>
-          <Text style={styles.eachInfoValue}>{memberInfo.kakao_id}</Text>
+          <Text style={styles.eachInfoKey}>😀 Email</Text>
+          <Text style={styles.eachInfoValue}>{memberInfo.email}</Text>
         </View>
       </View>
       <View style={styles.eachInfo}>
@@ -100,8 +100,7 @@ const styles = StyleSheet.create({
     fontSize: 17,
     fontWeight: "800",
     color: COLOR.GREEN3,
-    lineHeight: 35,
-    paddingBottom: 5,
+    paddingBottom: 12,
   },
   eachInfoValue: {
     color: COLOR.GREEN2,
