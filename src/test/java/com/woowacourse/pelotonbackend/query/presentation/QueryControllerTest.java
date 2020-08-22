@@ -243,6 +243,7 @@ class QueryControllerTest {
     @DisplayName("레이스의 아이디로 멤버별 성취율을 계산한다.")
     @Test
     void findRaceAchievementRate() throws Exception {
+        final Race race = RaceFixture.createWithId(RaceFixture.TEST_RACE_ID);
         final List<Rider> riders = createRidersByCount(5);
         final List<Mission> missions = createMissionsWithRaceIdAndCount(RaceFixture.TEST_RACE_ID, 5);
         final Map<Long, Integer> riderToCount = new HashMap<>();
@@ -255,7 +256,7 @@ class QueryControllerTest {
             .getContent();
         final List<Member> members = createMemberByCount(5);
 
-        final RaceAchievementRates response = RaceAchievementRates.create(riders, missions, certifications, members);
+        final RaceAchievementRates response = RaceAchievementRates.create(race, riders, missions, certifications, members);
 
         when(queryService.findRaceAchievement(anyLong())).thenReturn(response);
         when(bearerAuthInterceptor.preHandle(any(HttpServletRequest.class), any(HttpServletResponse.class),

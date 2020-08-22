@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.assertj.core.util.Lists;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -17,11 +18,19 @@ import com.woowacourse.pelotonbackend.member.domain.Member;
 import com.woowacourse.pelotonbackend.member.domain.MemberFixture;
 import com.woowacourse.pelotonbackend.mission.domain.Mission;
 import com.woowacourse.pelotonbackend.mission.domain.MissionFixture;
+import com.woowacourse.pelotonbackend.race.domain.Race;
 import com.woowacourse.pelotonbackend.race.domain.RaceFixture;
 import com.woowacourse.pelotonbackend.rider.domain.Rider;
 import com.woowacourse.pelotonbackend.rider.domain.RiderFixture;
 
 class RaceAchievementRatesTest {
+    private Race race;
+
+    @BeforeEach
+    void setUp() {
+        race = RaceFixture.createWithId(RaceFixture.TEST_RACE_ID);
+    }
+
     /**
      * 라이더 5명
      * 총 미션 개수 10개
@@ -44,7 +53,7 @@ class RaceAchievementRatesTest {
             .getContent();
         final List<Member> members = MemberFixture.createMemberByCount(5);
 
-        final List<RaceAchievementRate> raceAchievementRates = RaceAchievementRates.create(riders, missions,
+        final List<RaceAchievementRate> raceAchievementRates = RaceAchievementRates.create(race, riders, missions,
             certifications, members).getRaceAchievementRates();
 
         assertThat(raceAchievementRates)
@@ -76,7 +85,7 @@ class RaceAchievementRatesTest {
             .getContent();
         final List<Member> members = MemberFixture.createMemberByCount(1);
 
-        final List<RaceAchievementRate> raceAchievementRates = RaceAchievementRates.create(riders, missions,
+        final List<RaceAchievementRate> raceAchievementRates = RaceAchievementRates.create(race, riders, missions,
             certifications, members).getRaceAchievementRates();
 
         assertThat(raceAchievementRates)
@@ -104,7 +113,7 @@ class RaceAchievementRatesTest {
             .getContent();
         final List<Member> members = MemberFixture.createMemberByCount(1);
 
-        assertThatThrownBy(() -> RaceAchievementRates.create(riders, missions, certifications, members))
+        assertThatThrownBy(() -> RaceAchievementRates.create(race, riders, missions, certifications, members))
             .isInstanceOf(MissionCountInvalidException.class)
             .hasMessage(String.format("레이스 id : %d의 미션이 존재하지 않습니다", RaceFixture.TEST_RACE_ID));
     }

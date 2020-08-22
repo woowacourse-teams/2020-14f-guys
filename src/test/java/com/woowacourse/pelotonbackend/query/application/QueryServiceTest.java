@@ -222,6 +222,7 @@ class QueryServiceTest {
 
     @Test
     void findRaceAchievement() {
+        final Race race = RaceFixture.createWithId(RaceFixture.TEST_RACE_ID);
         final List<Rider> riders = createRidersByCount(5);
         final List<Mission> missions = createMissionsWithRaceIdAndCount(RaceFixture.TEST_RACE_ID, 5);
         final Map<Long, Integer> riderToCount = new HashMap<>();
@@ -233,6 +234,7 @@ class QueryServiceTest {
         final Page<Certification> certifications = CertificationFixture.createMockCertifications(riderToCount);
         final List<Member> members = createMemberByCount(5);
 
+        when(raceRepository.findById(anyLong())).thenReturn(Optional.of(race));
         when(riderRepository.findRidersByRaceId(anyLong())).thenReturn(riders);
         when(missionRepository.findByRaceId(anyLong())).thenReturn(missions);
         when(certificationRepository.findByMissionIds(anyList(), any())).thenReturn(certifications);

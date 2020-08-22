@@ -23,7 +23,6 @@ import com.woowacourse.pelotonbackend.member.domain.MemberRepository;
 import com.woowacourse.pelotonbackend.member.presentation.dto.MemberResponse;
 import com.woowacourse.pelotonbackend.mission.domain.Mission;
 import com.woowacourse.pelotonbackend.mission.domain.MissionRepository;
-import com.woowacourse.pelotonbackend.query.presentation.dto.RaceAchievementRates;
 import com.woowacourse.pelotonbackend.query.presentation.dto.*;
 import com.woowacourse.pelotonbackend.race.domain.Race;
 import com.woowacourse.pelotonbackend.race.domain.RaceRepository;
@@ -135,6 +134,8 @@ public class QueryService {
     }
 
     public RaceAchievementRates findRaceAchievement(final Long raceId) {
+        final Race race = raceRepository.findById(raceId)
+            .orElseThrow(() -> new RaceNotFoundException(raceId));
         final List<Rider> riders = riderRepository.findRidersByRaceId(raceId);
         final List<Mission> missions = missionRepository.findByRaceId(raceId);
         final List<Certification> certifications = missions.stream()
@@ -146,6 +147,6 @@ public class QueryService {
             .map(rider -> rider.getMemberId().getId())
             .collect(Collectors.collectingAndThen(Collectors.toList(), memberRepository::findAllById));
 
-        return RaceAchievementRates.create(riders, missions, certifications, members);
+        return RaceAchievementRates.create(race, riders, missions, certifications, members);
     }
 }

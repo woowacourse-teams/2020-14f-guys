@@ -158,9 +158,11 @@ public class QueryDocumentation {
                 parameterWithName("raceId").description("Race ID")
             ),
             responseFields(
+                fieldWithPath("race_id").type(NUMBER).description("Race Id"),
+                fieldWithPath("race_title").type(STRING).description("Race 제목"),
                 fieldWithPath("race_achievement_rates").type(ARRAY).description("Member 별 성취율 목록"),
                 fieldWithPath("race_achievement_rates[].id").type(NUMBER).description("Member Id"),
-                fieldWithPath("race_achievement_rates[].name").type(STRING).description("Member 이름"),
+                fieldWithPath("race_achievement_rates[].member_name").type(STRING).description("Member 이름"),
                 fieldWithPath("race_achievement_rates[].achievement").type(NUMBER).description("Member의 성취율")
             )
         );
