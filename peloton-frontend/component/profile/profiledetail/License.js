@@ -132,6 +132,13 @@ The following sets forth attribution notices for third party software that may b
       <RepositoryOwner>(c) 2014-present Kakao Corp.</RepositoryOwner>
       <RepositoryLicense>Apache License 2.0</RepositoryLicense>
 
+      <RepositoryName>moment</RepositoryName>
+      <RepositoryUrl>https://github.com/moment/moment/</RepositoryUrl>
+      <RepositoryOwner>
+        (c) JS Foundation and other contributors
+      </RepositoryOwner>
+      <RepositoryLicense>MIT License</RepositoryLicense>
+
       <LicenseTitle>MIT License</LicenseTitle>
       <LicenseBody>{`
 Copyright (c)  
