@@ -3,6 +3,7 @@ package com.woowacourse.pelotonbackend.calculation.domain;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import org.springframework.data.jdbc.core.mapping.AggregateReference;
@@ -64,14 +65,19 @@ public class Calculations {
 
     private static Map<Long, Long> collectCertificationCountPerRider(final List<CertificationResponse> certifications,
         final List<RiderResponse> riders) {
-        return riders.stream()
-            .collect(Collectors.toMap(RiderResponse::getId, rider -> 0L)).entrySet().stream()
-            .collect(Collectors.toMap(
-                Map.Entry::getKey,
-                entry -> certifications.stream()
-                    .filter(certification -> certification.getRiderId().equals(entry.getKey()))
-                    .count()
-            ));
+
+        final List<Long> riderIds = riders.stream()
+            .map(RiderResponse::getId)
+            .collect(Collectors.toList());
+
+        return riderIds.stream()
+            .collect(Collectors.toMap(Function.identity(), riderId -> countCertificationsPerRider(certifications, riderId)));
+    }
+
+    private static long countCertificationsPerRider(final List<CertificationResponse> certifications, final Long riderId) {
+        return certifications.stream()
+            .filter(certification -> certification.getRiderId().equals(riderId))
+            .count();
     }
 
     public Cash receivePrize(final Long riderId) {
