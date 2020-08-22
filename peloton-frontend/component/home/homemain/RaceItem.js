@@ -11,7 +11,7 @@ const RaceItem = ({ item, parallaxProps }) => {
   const onItemClick = () => {
     navigation.navigate({
       name: "RaceDetail",
-      params: { location: `/api/races/${item.id}` },
+      params: { id: item.id },
     });
   };
 

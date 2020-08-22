@@ -29,4 +29,15 @@ export const CertificationApi = {
     );
     return headers;
   },
+  get: async (token, certificationId) => {
+    const response = await Axios({
+      method: "GET",
+      baseURL: SERVER_BASE_URL,
+      url: `/api/certifications/${certificationId}`,
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    return response.data;
+  },
 };

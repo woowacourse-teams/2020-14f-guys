@@ -83,7 +83,7 @@ class CertificationServiceTest {
         final CertificationResponse response = createMockCertificationResponse();
 
         assertAll(
-            () -> assertThat(response).isEqualToIgnoringGivenFields(expectedValue, "missionId", "riderId"),
+            () -> assertThat(response).isEqualToIgnoringGivenFields(expectedValue, "missionId", "riderId", "createdAt"),
             () -> assertThat(response.getMissionId()).isEqualTo(expectedValue.getMissionId().getId()),
             () -> assertThat(response.getRiderId()).isEqualTo(expectedValue.getRiderId().getId())
         );

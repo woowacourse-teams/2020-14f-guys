@@ -1,5 +1,5 @@
 import React from "react";
-import { StyleSheet, Alert, Linking, TouchableOpacity } from "react-native";
+import { StyleSheet, TouchableOpacity } from "react-native";
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import * as ImagePicker from "expo-image-picker";
 

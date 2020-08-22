@@ -7,7 +7,6 @@ import {
   View,
 } from "react-native";
 import { Feather } from "@expo/vector-icons";
-
 import { COLOR } from "../../../utils/constants";
 import { raceShareLink } from "./RaceDeepLinkPage";
 

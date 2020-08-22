@@ -5,9 +5,9 @@ import { MaterialIcons } from "@expo/vector-icons";
 import { View } from "react-native";
 
 import { COLOR } from "../utils/constants";
-import HomeNavigationRoot from "./HomeNavigationRoot";
 import ProfileNavigationRoot from "./ProfileStackRoot";
 import CertificationNavigationRoot from "./certification/CertificationNavigationRoot";
+import HomeNavigationRoot from "./home/HomeNavigationRoot";
 
 const Tab = createBottomTabNavigator();
 

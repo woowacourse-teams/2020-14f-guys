@@ -13,6 +13,17 @@ export const MemberApi = {
     });
     return response.data;
   },
+  getById: async (token, memberId) => {
+    const response = await Axios({
+      method: "GET",
+      baseURL: SERVER_BASE_URL,
+      url: `/api/members/${memberId}`,
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    return response.data;
+  },
   postProfile: async (token, formData) => {
     try {
       const response = await Axios.post(

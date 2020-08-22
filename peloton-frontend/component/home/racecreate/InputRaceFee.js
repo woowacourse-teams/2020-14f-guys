@@ -1,5 +1,5 @@
 import React from "react";
-import { ActivityIndicator, Alert, StyleSheet, View } from "react-native";
+import { ActivityIndicator, StyleSheet, View } from "react-native";
 import { useRecoilState, useRecoilValue, useResetRecoilState } from "recoil";
 import { useNavigation } from "@react-navigation/native";
 
@@ -24,7 +24,8 @@ import { RiderApi } from "../../../utils/api/RiderApi";
 
 const InputRaceFee = () => {
   // eslint-disable-next-line prettier/prettier
-  const {title, description, start_date, end_date, category, entrance_fee, mission_start_time, mission_end_time, days} = useRecoilValue(raceCreateInfoState);
+  const { title, description, start_date, end_date, category, entrance_fee, mission_start_time, mission_end_time, days } = useRecoilValue(
+    raceCreateInfoState);
   const resetRaceCreateInfo = useResetRecoilState(raceCreateInfoState);
   const [loading, setGlobalLoading] = useRecoilState(loadingState);
   const token = useRecoilValue(memberTokenState);

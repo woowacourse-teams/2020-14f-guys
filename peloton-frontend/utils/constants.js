@@ -1,5 +1,5 @@
 import { animated } from "react-spring";
-import { Image, Text, View } from "react-native";
+import { Dimensions, Image, Text, View } from "react-native";
 import * as Linking from "expo-linking";
 
 export const COLOR = {
@@ -154,3 +154,6 @@ export const CERTIFICATION_TYPE = {
     message: "인증 대기",
   },
 };
+
+export const deviceWidth = Dimensions.get("window").width;
+export const deviceHeight = Dimensions.get("window").height;

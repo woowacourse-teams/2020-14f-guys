@@ -29,7 +29,7 @@ public class CertificationRepositoryCustomImpl implements CertificationRepositor
 
         this.jdbcOperations = jdbcOperations;
         this.rowMapper = new EntityRowMapper<>(
-            (RelationalPersistentEntity<Certification>) mappingContext.getRequiredPersistentEntity(Certification.class),
+            (RelationalPersistentEntity<Certification>)mappingContext.getRequiredPersistentEntity(Certification.class),
             jdbcConverter
         );
     }
@@ -86,13 +86,14 @@ public class CertificationRepositoryCustomImpl implements CertificationRepositor
             .addValue("missionId", missionId);
 
         try {
-            return jdbcOperations.queryForObject(existsCertificationByRiderIdAndMissionIdSql(), parameterSource, Boolean.class);
+            return jdbcOperations.queryForObject(existsCertificationByRiderIdAndMissionIdSql(), parameterSource,
+                Boolean.class);
         } catch (EmptyResultDataAccessException e) {
             return false;
         } catch (IncorrectResultSizeDataAccessException e) {
             throw new AssertionError(
-                String.format("There should not be duplicated (rider_id, mission_id), but (%d, %d)",
-                    riderId, missionId));
+                String.format("There should not be duplicated (rider_id, mission_id), but (%d, %d)", riderId,
+                    missionId));
         }
     }
 }

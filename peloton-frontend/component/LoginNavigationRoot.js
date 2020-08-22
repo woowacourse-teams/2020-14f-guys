@@ -3,6 +3,7 @@ import { createStackNavigator } from "@react-navigation/stack";
 import ChangeProfile from "./login/ChangeProfile";
 import Login from "./login/Login";
 import ApplicationNavigationRoot from "./ApplicationNavigationRoot";
+import ErrorPage from "./ErrorPage";
 
 const LoginStack = createStackNavigator();
 
@@ -23,6 +24,11 @@ const LoginNavigationRoot = () => {
         name="ApplicationNavigationRoot"
         component={ApplicationNavigationRoot}
         options={{ headerShown: false }}
+      />
+      <LoginStack.Screen
+        name="ErrorPage"
+        component={ErrorPage}
+        options={{ title: "에러😭" }}
       />
     </LoginStack.Navigator>
   );
