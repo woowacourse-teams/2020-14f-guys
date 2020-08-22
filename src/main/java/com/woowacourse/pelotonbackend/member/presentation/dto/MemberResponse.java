@@ -14,7 +14,6 @@ import lombok.*;
     "name", "email", "cash", "role"}))
 @Builder
 @Getter
-@EqualsAndHashCode(of = "id")
 @JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class)
 public class MemberResponse {
     private final Long id;
