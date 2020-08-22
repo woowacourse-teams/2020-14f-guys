@@ -4,8 +4,6 @@ import { createStackNavigator } from "@react-navigation/stack";
 
 import Certification from "./Certification";
 import CertificationSubmit from "./CertificationSubmit";
-import CertificationDetail from "./CertificationDetail";
-import ImageDetail from "./ImageDetail";
 
 const CertificationStack = createStackNavigator();
 

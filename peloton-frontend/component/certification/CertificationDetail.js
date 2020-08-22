@@ -113,7 +113,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   infoContainer: {
-    marginHorizontal: 10,
+    marginHorizontal: 20,
   },
   certificationImageContainer: {
     width: deviceWidth,

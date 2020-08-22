@@ -1,11 +1,5 @@
 import React from "react";
-import {
-  Image,
-  ScrollView,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-} from "react-native";
+import { Image, ScrollView, StyleSheet, Text, TouchableOpacity, } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { useSetRecoilState } from "recoil";
 
@@ -122,6 +116,7 @@ const styles = StyleSheet.create({
     color: COLOR.WHITE,
     fontWeight: "bold",
     fontSize: 30,
+    paddingBottom: 10,
   },
   itemSubtitle: {
     position: "absolute",
