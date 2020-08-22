@@ -28,7 +28,9 @@ const ProfileEditInfo = () => {
       <View style={styles.eachInfo}>
         <View style={styles.eachTextBox}>
           <Text style={styles.eachInfoKey}>😀 Email</Text>
-          <Text style={styles.eachInfoValue}>{memberInfo.email}</Text>
+          <Text style={styles.eachInfoValue}>
+            {memberInfo.email ? memberInfo.email : ""}
+          </Text>
         </View>
       </View>
       <View style={styles.eachInfo}>
