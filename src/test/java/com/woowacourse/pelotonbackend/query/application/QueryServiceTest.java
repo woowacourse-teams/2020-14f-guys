@@ -10,11 +10,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.BDDMockito.*;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -36,9 +32,11 @@ import com.woowacourse.pelotonbackend.certification.domain.CertificationReposito
 import com.woowacourse.pelotonbackend.certification.domain.TimeDuration;
 import com.woowacourse.pelotonbackend.certification.presentation.dto.CertificationResponse;
 import com.woowacourse.pelotonbackend.member.domain.MemberFixture;
+import com.woowacourse.pelotonbackend.member.domain.MemberRepository;
 import com.woowacourse.pelotonbackend.mission.domain.Mission;
 import com.woowacourse.pelotonbackend.mission.domain.MissionFixture;
 import com.woowacourse.pelotonbackend.mission.domain.MissionRepository;
+import com.woowacourse.pelotonbackend.query.presentation.dto.RaceAchievementRate;
 import com.woowacourse.pelotonbackend.query.presentation.dto.RaceDetailResponse;
 import com.woowacourse.pelotonbackend.query.presentation.dto.UpcomingMissionResponses;
 import com.woowacourse.pelotonbackend.race.domain.Race;
@@ -68,11 +66,15 @@ class QueryServiceTest {
     @Mock
     private CertificationRepository certificationRepository;
 
+    @Mock
+    private MemberRepository memberRepository;
+
     private QueryService queryService;
 
     @BeforeEach
     void setUp() {
-        queryService = new QueryService(riderRepository, raceRepository, missionRepository, certificationRepository);
+        queryService = new QueryService(riderRepository, raceRepository, missionRepository, certificationRepository,
+            memberRepository);
     }
 
     @DisplayName("MemberResponse의 id로 riders와 races를 찾아 RaceResponses로 반환한다.")
@@ -212,7 +214,27 @@ class QueryServiceTest {
             () -> assertThat(raceDetail.getMissionDuration()).isEqualTo(
                 new TimeDuration(START_TIME.toLocalTime(), END_TIME.toLocalTime())),
             () -> assertThat(raceDetail.getDays()).isEqualTo(
-                Arrays.asList(MISSION_DURATION.getStartTime().getDayOfWeek()))
+                Collections.singletonList(MISSION_DURATION.getStartTime().getDayOfWeek()))
         );
+    }
+
+    @Test
+    void findRaceAchievement() {
+        final List<Rider> riders = createRidersByCount(5);
+        final List<Mission> missions = createMissionsWithRaceIdAndCount(RaceFixture.TEST_RACE_ID, 5);
+        final Map<Long, Integer> riderToCount = new HashMap<>();
+        riderToCount.put(1L, 3);
+        riderToCount.put(2L, 2);
+        riderToCount.put(3L, 1);
+        riderToCount.put(4L, 0);
+        riderToCount.put(5L, 5);
+
+        when(riderRepository.findRidersByRaceId(anyLong())).thenReturn(riders);
+        when(missionRepository.findByRaceId(anyLong())).thenReturn(missions);
+        when(certificationRepository.findByMissionIds(anyList(), any())).thenReturn(
+            CertificationFixture.createMockCertifications(riderToCount));
+        when(memberRepository.findAllById(anyList())).thenReturn(MemberFixture.createMemberByCount(5));
+
+        final RaceAchievementRate response = queryService.findRaceAchievement(TEST_RACE_ID);
     }
 }

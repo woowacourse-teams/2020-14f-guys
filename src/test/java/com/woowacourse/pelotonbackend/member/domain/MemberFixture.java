@@ -2,6 +2,8 @@ package com.woowacourse.pelotonbackend.member.domain;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.LongStream;
 
 import org.assertj.core.util.Lists;
 import org.springframework.mock.web.MockMultipartFile;
@@ -210,5 +212,11 @@ public class MemberFixture {
             .cash(CASH)
             .role(ROLE)
             .build();
+    }
+
+    public static List<Member> createMemberByCount(final int count) {
+        return LongStream.range(1, count + 1)
+            .mapToObj(id -> createWithId(id))
+            .collect(Collectors.toList());
     }
 }
