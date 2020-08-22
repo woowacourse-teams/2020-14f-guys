@@ -15,34 +15,46 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 
-@AllArgsConstructor(onConstructor_ = @ConstructorProperties({"id", "memberName", "achievement"}))
+@AllArgsConstructor(onConstructor_ = @ConstructorProperties({"id", "memberName", "certificationCount", "achievement"}))
 @Builder
 @Getter
 @JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class)
 public class RaceAchievementRate {
     private final Long id;
     private final String memberName;
+    private final long certificationCount;
     private final double achievement;
 
     public static RaceAchievementRate of(final Rider rider, final List<Member> members,
         final List<Certification> certifications, final int totalMissionCount) {
 
         final Member member = getMemberByRider(members, rider);
-        final double achievementRate = getAchievementRate(certifications, rider, totalMissionCount);
+        final long certificationCount = getCertificationCount(certifications, rider);
+        final double achievementRate = getAchievementRate(certificationCount, totalMissionCount);
 
         return RaceAchievementRate.builder()
             .id(member.getId())
             .memberName(member.getName())
+            .certificationCount(certificationCount)
             .achievement(achievementRate)
             .build();
     }
 
-    public static RaceAchievementRate of(final Member member, final double achievement) {
+    public static RaceAchievementRate of(final Member member, final long totalCertificationCount,
+        final double achievement) {
         return RaceAchievementRate.builder()
             .id(member.getId())
             .memberName(member.getName())
+            .certificationCount(totalCertificationCount)
             .achievement(achievement)
             .build();
+    }
+
+    private static double getAchievementRate(final long certificationCount, final int totalMissionCount) {
+        return BigDecimal.valueOf(certificationCount)
+            .divide(BigDecimal.valueOf(totalMissionCount), 3, BigDecimal.ROUND_HALF_DOWN)
+            .multiply(BigDecimal.valueOf(100))
+            .doubleValue();
     }
 
     private static Member getMemberByRider(final List<Member> members, final Rider rider) {
@@ -52,14 +64,9 @@ public class RaceAchievementRate {
             .orElseThrow(() -> new MemberNotFoundException(rider.getMemberId().getId()));
     }
 
-    private static double getAchievementRate(final List<Certification> certifications, final Rider rider,
-        final int totalMissionCount) {
-
-        return BigDecimal.valueOf(certifications.stream()
+    private static long getCertificationCount(final List<Certification> certifications, final Rider rider) {
+        return certifications.stream()
             .filter(certification -> Objects.equals(certification.getRiderId().getId(), rider.getId()))
-            .count())
-            .divide(BigDecimal.valueOf(totalMissionCount), 3, BigDecimal.ROUND_HALF_DOWN)
-            .multiply(BigDecimal.valueOf(100))
-            .doubleValue();
+            .count();
     }
 }

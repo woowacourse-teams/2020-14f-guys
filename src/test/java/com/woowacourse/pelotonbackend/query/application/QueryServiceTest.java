@@ -246,11 +246,11 @@ class QueryServiceTest {
         assertThat(responses)
             .usingRecursiveFieldByFieldElementComparator()
             .isEqualTo(Lists.newArrayList(
-                RaceAchievementRate.of(members.get(0), 60.0),
-                RaceAchievementRate.of(members.get(1), 40.0),
-                RaceAchievementRate.of(members.get(2), 20.0),
-                RaceAchievementRate.of(members.get(3), 0.0),
-                RaceAchievementRate.of(members.get(4), 100.0)
+                RaceAchievementRate.of(members.get(0), 3,60.0),
+                RaceAchievementRate.of(members.get(1), 2, 40.0),
+                RaceAchievementRate.of(members.get(2), 1, 20.0),
+                RaceAchievementRate.of(members.get(3), 0, 0.0),
+                RaceAchievementRate.of(members.get(4), 5, 100.0)
             ));
     }
 }

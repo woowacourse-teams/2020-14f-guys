@@ -11,6 +11,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.woowacourse.pelotonbackend.certification.domain.Certification;
 import com.woowacourse.pelotonbackend.certification.domain.CertificationFixture;
 import com.woowacourse.pelotonbackend.common.exception.MissionCountInvalidException;
@@ -24,6 +26,7 @@ import com.woowacourse.pelotonbackend.rider.domain.Rider;
 import com.woowacourse.pelotonbackend.rider.domain.RiderFixture;
 
 class RaceAchievementRatesTest {
+    private final ObjectMapper objectMapper = new ObjectMapper();
     private Race race;
 
     @BeforeEach
@@ -59,11 +62,11 @@ class RaceAchievementRatesTest {
         assertThat(raceAchievementRates)
             .usingRecursiveFieldByFieldElementComparator()
             .isEqualTo(Lists.newArrayList(
-                RaceAchievementRate.of(members.get(0), 70.0),
-                RaceAchievementRate.of(members.get(1), 30.0),
-                RaceAchievementRate.of(members.get(2), 100.0),
-                RaceAchievementRate.of(members.get(3), 10.0),
-                RaceAchievementRate.of(members.get(4), 0.0)
+                RaceAchievementRate.of(members.get(0), 7, 70.0),
+                RaceAchievementRate.of(members.get(1), 3, 30.0),
+                RaceAchievementRate.of(members.get(2), 10, 100.0),
+                RaceAchievementRate.of(members.get(3), 1, 10.0),
+                RaceAchievementRate.of(members.get(4), 0, 0.0)
             ));
     }
 
@@ -91,7 +94,7 @@ class RaceAchievementRatesTest {
         assertThat(raceAchievementRates)
             .usingRecursiveFieldByFieldElementComparator()
             .isEqualTo(Lists.newArrayList(
-                RaceAchievementRate.of(members.get(0), 100.0)
+                RaceAchievementRate.of(members.get(0), 3, 100.0)
             ));
     }
 
@@ -116,5 +119,125 @@ class RaceAchievementRatesTest {
         assertThatThrownBy(() -> RaceAchievementRates.create(race, riders, missions, certifications, members))
             .isInstanceOf(MissionCountInvalidException.class)
             .hasMessage(String.format("레이스 id : %d의 미션이 존재하지 않습니다", RaceFixture.TEST_RACE_ID));
+    }
+
+    @DisplayName("정상적으로 serialize 한다.")
+    @Test
+    void serialize() throws JsonProcessingException {
+        final List<Rider> riders = RiderFixture.createRidersByCount(5);
+        final List<Mission> missions = MissionFixture.createMissionsWithRaceIdAndCount(
+            RaceFixture.TEST_RACE_ID, 10);
+        final Map<Long, Integer> riderCertifications = new HashMap<>();
+        riderCertifications.put(1L, 7);
+        riderCertifications.put(2L, 3);
+        riderCertifications.put(3L, 10);
+        riderCertifications.put(4L, 1);
+        riderCertifications.put(5L, 0);
+        final List<Certification> certifications = CertificationFixture.createMockCertifications(riderCertifications)
+            .getContent();
+        final List<Member> members = MemberFixture.createMemberByCount(5);
+
+        final String expectedBody = "{"
+            + "\"race_id\":1,"
+            + "\"race_title\":\"14층 녀석들 기상 레이스\","
+            + "\"total_mission_count\":10,"
+            + "\"race_achievement_rates\":["
+            + "{"
+            + "\"id\":1,"
+            + "\"member_name\":\"jinju\","
+            + "\"certification_count\":7,"
+            + "\"achievement\":70.0"
+            + "},"
+            + "{"
+            + "\"id\":2,"
+            + "\"member_name\":\"jinju\","
+            + "\"certification_count\":3,"
+            + "\"achievement\":30.0"
+            + "},"
+            + "{"
+            + "\"id\":3,"
+            + "\"member_name\":\"jinju\","
+            + "\"certification_count\":10,"
+            + "\"achievement\":100.0"
+            + "},"
+            + "{"
+            + "\"id\":4,"
+            + "\"member_name\":\"jinju\","
+            + "\"certification_count\":1,"
+            + "\"achievement\":10.0"
+            + "},"
+            + "{"
+            + "\"id\":5,"
+            + "\"member_name\":\"jinju\","
+            + "\"certification_count\":0,"
+            + "\"achievement\":0.0"
+            + "}"
+            + "]"
+            + "}";
+
+        final RaceAchievementRates responses = RaceAchievementRates.create(race, riders, missions, certifications,
+            members);
+        assertThat(objectMapper.writeValueAsString(responses)).isEqualTo(expectedBody);
+    }
+
+    @DisplayName("정상적으로 deserialize 한다.")
+    @Test
+    void deserialize() throws JsonProcessingException {
+        final List<Rider> riders = RiderFixture.createRidersByCount(5);
+        final List<Mission> missions = MissionFixture.createMissionsWithRaceIdAndCount(
+            RaceFixture.TEST_RACE_ID, 10);
+        final Map<Long, Integer> riderCertifications = new HashMap<>();
+        riderCertifications.put(1L, 7);
+        riderCertifications.put(2L, 3);
+        riderCertifications.put(3L, 10);
+        riderCertifications.put(4L, 1);
+        riderCertifications.put(5L, 0);
+        final List<Certification> certifications = CertificationFixture.createMockCertifications(riderCertifications)
+            .getContent();
+        final List<Member> members = MemberFixture.createMemberByCount(5);
+
+        final String jsonBody = "{"
+            + "\"race_achievement_rates\":["
+            + "{"
+            + "\"id\":1,"
+            + "\"member_name\":\"jinju\","
+            + "\"certification_count\":7,"
+            + "\"achievement\":70.0"
+            + "},"
+            + "{"
+            + "\"id\":2,"
+            + "\"member_name\":\"jinju\","
+            + "\"certification_count\":3,"
+            + "\"achievement\":30.0"
+            + "},"
+            + "{"
+            + "\"id\":3,"
+            + "\"member_name\":\"jinju\","
+            + "\"certification_count\":10,"
+            + "\"achievement\":100.0"
+            + "},"
+            + "{"
+            + "\"id\":4,"
+            + "\"member_name\":\"jinju\","
+            + "\"certification_count\":1,"
+            + "\"achievement\":10.0"
+            + "},"
+            + "{"
+            + "\"id\":5,"
+            + "\"member_name\":\"jinju\","
+            + "\"certification_count\":0,"
+            + "\"achievement\":0.0"
+            + "}"
+            + "],"
+            + "\"race_id\":1,"
+            + "\"race_title\":\"14층 녀석들 기상 레이스\","
+            + "\"total_mission_count\":10"
+            + "}";
+
+        final RaceAchievementRates expectedBody = RaceAchievementRates.create(race, riders, missions, certifications,
+            members);
+        assertThat(objectMapper.readValue(jsonBody, RaceAchievementRates.class))
+            .usingRecursiveComparison()
+            .isEqualTo(expectedBody);
     }
 }

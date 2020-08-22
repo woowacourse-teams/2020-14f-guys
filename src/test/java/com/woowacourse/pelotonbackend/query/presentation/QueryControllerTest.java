@@ -256,7 +256,8 @@ class QueryControllerTest {
             .getContent();
         final List<Member> members = createMemberByCount(5);
 
-        final RaceAchievementRates response = RaceAchievementRates.create(race, riders, missions, certifications, members);
+        final RaceAchievementRates response = RaceAchievementRates.create(race, riders, missions, certifications,
+            members);
 
         when(queryService.findRaceAchievement(anyLong())).thenReturn(response);
         when(bearerAuthInterceptor.preHandle(any(HttpServletRequest.class), any(HttpServletResponse.class),
@@ -278,11 +279,11 @@ class QueryControllerTest {
         assertThat(results.getRaceAchievementRates())
             .usingRecursiveFieldByFieldElementComparator()
             .isEqualTo(Lists.newArrayList(
-                RaceAchievementRate.of(members.get(0), 60.0),
-                RaceAchievementRate.of(members.get(1), 40.0),
-                RaceAchievementRate.of(members.get(2), 20.0),
-                RaceAchievementRate.of(members.get(3), 0.0),
-                RaceAchievementRate.of(members.get(4), 100.0)
+                RaceAchievementRate.of(members.get(0), 3, 60.0),
+                RaceAchievementRate.of(members.get(1), 2, 40.0),
+                RaceAchievementRate.of(members.get(2), 1, 20.0),
+                RaceAchievementRate.of(members.get(3), 0, 0.0),
+                RaceAchievementRate.of(members.get(4), 5, 100.0)
             ));
     }
 }

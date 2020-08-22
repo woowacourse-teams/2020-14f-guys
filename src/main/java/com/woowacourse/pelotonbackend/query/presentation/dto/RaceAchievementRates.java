@@ -17,13 +17,15 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 
-@AllArgsConstructor(access = AccessLevel.PRIVATE, onConstructor_ = @ConstructorProperties({"raceAchievementRates"}))
+@AllArgsConstructor(access = AccessLevel.PRIVATE, onConstructor_ = @ConstructorProperties({"raceId", "raceTitle",
+    "totalMissionCount", "raceAchievementRates"}))
 @Builder
 @Getter
 @JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class)
 public class RaceAchievementRates {
     private final Long raceId;
     private final String raceTitle;
+    private final int totalMissionCount;
     private final List<RaceAchievementRate> raceAchievementRates;
 
     public static RaceAchievementRates create(final Race race, final List<Rider> riders, final List<Mission> missions,
@@ -38,6 +40,7 @@ public class RaceAchievementRates {
         return RaceAchievementRates.builder()
             .raceId(race.getId())
             .raceTitle(race.getTitle())
+            .totalMissionCount(totalMissionCount)
             .raceAchievementRates(result)
             .build();
     }
