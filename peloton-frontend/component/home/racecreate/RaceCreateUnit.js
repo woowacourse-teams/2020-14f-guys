@@ -73,6 +73,7 @@ const RaceCreateUnit = ({
   const convertTimeInput = (value) => {
     const timezoneOffsetHours = parseInt(new Date().getTimezoneOffset() / 60);
     const timezoneOffsetMinutes = new Date().getTimezoneOffset() % 60;
+
     let hours = value.split(":")[0] - timezoneOffsetHours;
     let minutes = value.split(":")[1] - timezoneOffsetMinutes;
     if (minutes > 60) {
@@ -97,13 +98,9 @@ const RaceCreateUnit = ({
   const convertDateInput = (value) => {
     const currentUTCDate = new Date().getUTCDate();
     const currentDate = new Date().getDate();
-    if (currentUTCDate !== currentDate) {
-      const diff = currentDate - currentUTCDate;
 
-      return (
-        value &&
-        `${value.substring(0, 8)}${parseInt(value.substring(8)) + diff}`
-      );
+    if (currentUTCDate !== currentDate) {
+      return value && DateFormatter.yyyyMMdd(new Date());
     }
     return value;
   };
@@ -154,7 +151,11 @@ const RaceCreateUnit = ({
           locale="ko-KR"
           confirmTextIOS="확인"
           cancelTextIOS="취소"
-          headerTextIOS="날짜를 골라주세요"
+          headerTextIOS={
+            type === RaceCreateUnitType.DATE
+              ? "날짜를 골라주세요"
+              : "시간을 골라주세요"
+          }
         />
       )}
     </View>

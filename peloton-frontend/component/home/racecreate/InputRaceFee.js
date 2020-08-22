@@ -82,14 +82,9 @@ const InputRaceFee = () => {
   };
 
   const calculateDays = (daysOffset) => {
-    if (daysOffset === 1) {
-      return days.map((day) => DAYS[(DAYS.indexOf(day) + 1) % 7]);
-    } else if (daysOffset === -1) {
-      return days.map(
-        (day) => DAYS[DAYS.indexOf(day) === 0 ? 6 : DAYS.indexOf(day) - 1],
-      );
-    }
-    return days;
+    const mod = (n, m) => ((n % m) + m) % m;
+    const dayIndex = (day) => mod(DAYS.indexOf(day) + daysOffset, 7);
+    return days.map((day) => DAYS[dayIndex(day)]);
   };
 
   const convertUTCDays = () => {
