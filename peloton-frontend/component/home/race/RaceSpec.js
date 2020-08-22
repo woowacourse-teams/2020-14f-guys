@@ -1,5 +1,7 @@
 import React from "react";
 import { StyleSheet, View } from "react-native";
+import moment from "moment";
+
 import RaceSpecItem from "./RaceSpecItem";
 import { COLOR, DAYS_IN_KOREAN } from "../../../utils/constants";
 
@@ -10,14 +12,22 @@ const RaceSpec = ({
   cash,
   riderCount,
 }) => {
-  const startDate = raceDuration.start_date;
-  const endDate = raceDuration.end_date;
-  const startTime = missionDuration.start_time
-    ? missionDuration.start_time.substring(0, 5)
-    : "";
-  const endTime = missionDuration.end_time
-    ? missionDuration.end_time.substring(0, 5)
-    : "";
+  const startDateTime = moment
+    .utc(
+      `${raceDuration.start_date} ${missionDuration.start_time}`,
+      "YYYY-MM-DD HH:mm:ss"
+    )
+    .local();
+  const endDateTime = moment
+    .utc(
+      `${raceDuration.end_date}T${missionDuration.end_time}`,
+      "YYYY-MM-DD HH:mm:ss"
+    )
+    .local();
+  const startDate = startDateTime.format("YYYY-MM-DD");
+  const endDate = endDateTime.format("YYYY-MM-DD");
+  const startTime = startDateTime.format("HH:mm");
+  const endTime = endDateTime.format("HH:mm");
 
   return (
     <View style={styles.container}>
