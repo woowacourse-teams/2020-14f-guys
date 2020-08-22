@@ -9,7 +9,6 @@ import { ridersInfoState } from "../../../state/rider/RiderState";
 import { QueryApi } from "../../../utils/api/QueryApi";
 import LoadingIndicator from "../../../utils/LoadingIndicator";
 import { certificationsState } from "../../../state/certification/CertificationState";
-import { RaceApi } from "../../../utils/api/RaceApi";
 import { COLOR } from "../../../utils/constants";
 import RaceCertificationImages from "./RaceCertificationImages";
 import RaceDetailInfo from "./RaceDetailInfo";
@@ -35,7 +34,7 @@ const RaceDetail = ({ route }) => {
         return;
       }
       try {
-        const race = await RaceApi.get(token, raceId);
+        const race = await QueryApi.getRaceDetail(token, raceId);
         const { rider_responses: riders } = await RiderApi.getInRace(
           token,
           raceId
