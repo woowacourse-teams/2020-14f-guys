@@ -2,6 +2,7 @@ package com.woowacourse.pelotonbackend.race.domain;
 
 import java.beans.ConstructorProperties;
 import java.time.LocalDate;
+import java.time.ZoneOffset;
 
 import com.fasterxml.jackson.databind.PropertyNamingStrategy;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
@@ -24,11 +25,11 @@ public class DateDuration {
     @JsonDeserialize(using = LocalDateDeserializer.class)
     private final LocalDate endDate;
 
-    public boolean raceEnd() {
-        return endDate.isBefore(LocalDate.now());
+    public boolean end() {
+        return endDate.isBefore(LocalDate.now(ZoneOffset.UTC));
     }
 
-    public boolean raceNotEnd() {
-        return !raceEnd();
+    public boolean notEnd() {
+        return !end();
     }
 }

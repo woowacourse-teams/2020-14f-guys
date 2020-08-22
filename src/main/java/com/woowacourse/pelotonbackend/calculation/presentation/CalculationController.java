@@ -20,13 +20,13 @@ import lombok.RequiredArgsConstructor;
 public class CalculationController {
     private final CalculationService calculationService;
 
-    @PostMapping("/races/{raceId}/riders/{riderId}")
+    @PostMapping("/races/{raceId}")
     public ResponseEntity<Void> create(@LoginMember final MemberResponse memberResponse,
-        @PathVariable final Long raceId, @PathVariable final Long riderId) {
+        @PathVariable final Long raceId) {
 
-        calculationService.calculate(memberResponse, raceId, riderId);
+        calculationService.calculate(memberResponse, raceId);
 
-        return ResponseEntity.created(URI.create(String.format("/api/calculations/races/%d/riders/%d", raceId, riderId))).build();
+        return ResponseEntity.created(URI.create(String.format("/api/calculations/races/%d", raceId))).build();
     }
 
     @GetMapping("/races/{raceId}")

@@ -18,10 +18,10 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 import org.springframework.data.jdbc.core.mapping.AggregateReference;
 
-import com.woowacourse.pelotonbackend.calculation.domain.Calculation;
-import com.woowacourse.pelotonbackend.calculation.domain.Calculations;
 import com.woowacourse.pelotonbackend.certification.domain.CertificationFixture;
 import com.woowacourse.pelotonbackend.certification.presentation.dto.CertificationResponse;
+import com.woowacourse.pelotonbackend.common.exception.DuplicateCalculationException;
+import com.woowacourse.pelotonbackend.common.exception.RiderInvalidException;
 import com.woowacourse.pelotonbackend.race.domain.RaceFixture;
 import com.woowacourse.pelotonbackend.race.presentation.dto.RaceResponse;
 import com.woowacourse.pelotonbackend.rider.domain.RiderFixture;
@@ -251,16 +251,53 @@ class CalculationsTest {
             Cash.of(0)));
     }
 
+    @DisplayName("이미 정산된 사용자가 다시 정산 요청을 보낸다.")
+    @Test
+    void duplicatedCalculation() {
+        Map<Long, Integer> emptyToRiderId = new LinkedHashMap<>();
+        emptyToRiderId.put(1L, 0);
+        emptyToRiderId.put(2L, 0);
+        emptyToRiderId.put(3L, 0);
+        emptyToRiderId.put(4L, 0);
+        emptyToRiderId.put(5L, 0);
+
+        Calculations calculations = createCalculations(emptyToRiderId, 20000);
+        final Calculation receivedCalculation = calculations.receivePrize(1L);
+        assertThatThrownBy(receivedCalculation::receivePrize)
+            .isInstanceOf(DuplicateCalculationException.class);
+    }
+
     @DisplayName("대표 정산결과를 불러온다.")
     @ParameterizedTest
     @CsvSource(value = {"1:35700", "2:28600", "3:21400", "4:14300", "5:0"}, delimiter = ':')
     void receivePrize(final long riderId, final long expectedPrize) {
-        final Cash cash = representativeCalculations.receivePrize(riderId);
+        final Calculation calculation = representativeCalculations.receivePrize(riderId);
 
-        assertThat(cash).isEqualTo(Cash.of(expectedPrize));
+        assertThat(calculation.getPrize()).isEqualTo(Cash.of(expectedPrize));
         assertThat(representativeCalculations.getCalculations()).allMatch(
-            item -> (Objects.equals(item.getRiderId().getId(), riderId) && item.isCalculated()) ||
+            item -> (Objects.equals(item.getRiderId().getId(), riderId) && calculation.isCalculated()) ||
                 (!item.getRiderId().getId().equals(riderId) && !item.isCalculated()));
+    }
+
+    @DisplayName("존재하지 않는 라이더를 정산하려 할 때 예외를 반환한다.")
+    @Test
+    void receivePrizeFail() {
+        assertThatThrownBy(() -> representativeCalculations.receivePrize(1000L))
+            .isInstanceOf(RiderInvalidException.class);
+    }
+
+    @DisplayName("정산된 정산 객체를 포함하도록 변경하는 메소드가 정상 동작한다.")
+    @Test
+    void replace() {
+        final Calculation calculation = representativeCalculations.receivePrize(1L);
+        assertThat(representativeCalculations.getCalculations().stream()
+            .filter(Calculation::isCalculated)
+            .count()).isEqualTo(0);
+
+        final Calculations updatedCalculations = representativeCalculations.replaceCalculatedItem(calculation);
+        assertThat(updatedCalculations.getCalculations().stream()
+            .filter(Calculation::isCalculated)
+            .count()).isEqualTo(1);
     }
 
     private Calculations createCalculations(final Map<Long, Integer> riderIdToCount, final long entranceFee) {
@@ -300,5 +337,11 @@ class CalculationsTest {
     void isEmpty() {
         final Calculations emptyCalculations = Calculations.of(Lists.emptyList());
         assertThat(emptyCalculations.isEmpty()).isTrue();
+    }
+
+    @DisplayName("정산 진행중인 경우 false를 반환한다.")
+    @Test
+    void isNotEmpty() {
+        assertThat(representativeCalculations.isEmpty()).isFalse();
     }
 }

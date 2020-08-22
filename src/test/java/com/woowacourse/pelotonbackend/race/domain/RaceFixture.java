@@ -30,10 +30,10 @@ public class RaceFixture {
     public static final BigDecimal TEST_MONEY_AMOUNT = new BigDecimal(20000);
     public static final BigDecimal TEST_CHANGED_MONEY_AMOUNT = new BigDecimal(25000);
     public static final LocalDate TEST_START_TIME = LocalDate.now().plusDays(1L);
-    public static final LocalDate TEST_START_TIME_PAST = LocalDate.now().minusDays(2L);
+    public static final LocalDate TEST_START_TIME_PAST = LocalDate.now().minusDays(11L);
     public static final LocalDate TEST_CHANGED_START_TIME = LocalDate.now().plusDays(2L);
     public static final LocalDate TEST_END_TIME = LocalDate.now().plusDays(2L);
-    public static final LocalDate TEST_END_TIME_PAST = LocalDate.now().minusDays(1L);
+    public static final LocalDate TEST_END_TIME_PAST = LocalDate.now().minusDays(10L);
     public static final LocalDate TEST_CHANGED_END_TIME = LocalDate.now().plusDays(3L);
     public static final RaceCategory TEST_CATEGORY = RaceCategory.TIME;
     public static final RaceCategory TEST_CHANGED_CATEGORY = RaceCategory.STUDY;
