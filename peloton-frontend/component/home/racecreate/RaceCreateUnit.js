@@ -8,6 +8,7 @@ import InputBox from "./InputBox";
 import { DateFormatter } from "../../../utils/DateFormatter";
 import { COLOR, RaceCreateUnitType } from "../../../utils/constants";
 import MissionDaysSelector from "./MissionDaysSelector";
+import moment from "moment";
 
 const RaceCreateUnit = ({
   type = RaceCreateUnitType.TEXT,
@@ -100,7 +101,9 @@ const RaceCreateUnit = ({
     const currentDate = new Date().getDate();
 
     if (currentUTCDate !== currentDate) {
-      return value && DateFormatter.yyyyMMdd(new Date());
+      const diff = currentDate - currentUTCDate;
+
+      return value && moment(value).add(diff, "days").format("YYYY-MM-DD");
     }
     return value;
   };
