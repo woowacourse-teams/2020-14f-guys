@@ -1,4 +1,4 @@
-package com.woowacourse.pelotonbackend.query.presentation.dto;
+package com.woowacourse.pelotonbackend.query.domain;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -6,10 +6,9 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
-import com.fasterxml.jackson.databind.PropertyNamingStrategy;
-import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import com.woowacourse.pelotonbackend.certification.domain.Certification;
 import com.woowacourse.pelotonbackend.common.exception.MemberNotFoundException;
+import com.woowacourse.pelotonbackend.common.exception.MissionCountInvalidException;
 import com.woowacourse.pelotonbackend.member.domain.Member;
 import com.woowacourse.pelotonbackend.mission.domain.Mission;
 import com.woowacourse.pelotonbackend.rider.domain.Rider;
@@ -19,7 +18,6 @@ import lombok.Getter;
 
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @Getter
-@JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class)
 public class RaceAchievementRate {
     private final Map<Member, Double> raceAchievement;
 
@@ -41,6 +39,11 @@ public class RaceAchievementRate {
 
     private static double getAchievementRate(final List<Certification> certifications, final Rider rider,
         final int totalMissionCount) {
+
+        if (totalMissionCount == 0) {
+            throw new MissionCountInvalidException(rider.getRaceId().getId());
+        }
+
         return BigDecimal.valueOf(certifications.stream()
             .filter(certification -> Objects.equals(certification.getRiderId().getId(), rider.getId()))
             .count())

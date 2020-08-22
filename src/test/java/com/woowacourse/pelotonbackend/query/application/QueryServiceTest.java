@@ -31,12 +31,14 @@ import com.woowacourse.pelotonbackend.certification.domain.CertificationFixture;
 import com.woowacourse.pelotonbackend.certification.domain.CertificationRepository;
 import com.woowacourse.pelotonbackend.certification.domain.TimeDuration;
 import com.woowacourse.pelotonbackend.certification.presentation.dto.CertificationResponse;
+import com.woowacourse.pelotonbackend.member.domain.Member;
 import com.woowacourse.pelotonbackend.member.domain.MemberFixture;
 import com.woowacourse.pelotonbackend.member.domain.MemberRepository;
+import com.woowacourse.pelotonbackend.member.presentation.dto.MemberResponse;
+import com.woowacourse.pelotonbackend.member.presentation.dto.MemberResponses;
 import com.woowacourse.pelotonbackend.mission.domain.Mission;
 import com.woowacourse.pelotonbackend.mission.domain.MissionFixture;
 import com.woowacourse.pelotonbackend.mission.domain.MissionRepository;
-import com.woowacourse.pelotonbackend.query.presentation.dto.RaceAchievementRate;
 import com.woowacourse.pelotonbackend.query.presentation.dto.RaceDetailResponse;
 import com.woowacourse.pelotonbackend.query.presentation.dto.UpcomingMissionResponses;
 import com.woowacourse.pelotonbackend.race.domain.Race;
@@ -228,13 +230,21 @@ class QueryServiceTest {
         riderToCount.put(3L, 1);
         riderToCount.put(4L, 0);
         riderToCount.put(5L, 5);
+        final Page<Certification> certifications = CertificationFixture.createMockCertifications(riderToCount);
+        final List<Member> members = createMemberByCount(5);
 
         when(riderRepository.findRidersByRaceId(anyLong())).thenReturn(riders);
         when(missionRepository.findByRaceId(anyLong())).thenReturn(missions);
-        when(certificationRepository.findByMissionIds(anyList(), any())).thenReturn(
-            CertificationFixture.createMockCertifications(riderToCount));
-        when(memberRepository.findAllById(anyList())).thenReturn(MemberFixture.createMemberByCount(5));
 
-        final RaceAchievementRate response = queryService.findRaceAchievement(TEST_RACE_ID);
+        when(certificationRepository.findByMissionIds(anyList(), any())).thenReturn(certifications);
+
+        when(memberRepository.findAllById(anyList())).thenReturn(members);
+
+        final Map<MemberResponse, Double> responses = queryService.findRaceAchievement(TEST_RACE_ID)
+            .getRaceAchievement();
+
+        assertThat(responses).hasSize(5);
+        assertThat(responses).containsOnlyKeys(MemberResponses.from(members).getResponses());
+        assertThat(responses).containsValues(60.0, 40.0, 20.0, 0.0, 100.0);
     }
 }

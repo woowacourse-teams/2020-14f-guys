@@ -8,15 +8,13 @@ import com.woowacourse.pelotonbackend.member.domain.Member;
 import com.woowacourse.pelotonbackend.member.domain.Role;
 import com.woowacourse.pelotonbackend.vo.Cash;
 import com.woowacourse.pelotonbackend.vo.ImageUrl;
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
+import lombok.*;
 
 @AllArgsConstructor(access = AccessLevel.PRIVATE, onConstructor_ = @ConstructorProperties({"id", "kakaoId", "profile",
     "name", "email", "cash", "role"}))
 @Builder
 @Getter
+@EqualsAndHashCode(of = "id")
 @JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class)
 public class MemberResponse {
     private final Long id;
