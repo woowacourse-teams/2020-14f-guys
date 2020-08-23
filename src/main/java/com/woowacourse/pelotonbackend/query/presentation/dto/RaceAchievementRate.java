@@ -10,12 +10,12 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 
-@AllArgsConstructor(onConstructor_ = @ConstructorProperties({"id", "memberName", "certificationCount", "achievement"}))
+@AllArgsConstructor(onConstructor_ = @ConstructorProperties({"memberId", "memberName", "certificationCount", "achievement"}))
 @Builder
 @Getter
 @JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class)
 public class RaceAchievementRate {
-    private final Long id;
+    private final Long memberId;
     private final String memberName;
     private final long certificationCount;
     private final double achievement;
@@ -31,7 +31,7 @@ public class RaceAchievementRate {
     public static RaceAchievementRate of(final Member member, final long totalCertificationCount,
         final double achievementRate) {
         return RaceAchievementRate.builder()
-            .id(member.getId())
+            .memberId(member.getId())
             .memberName(member.getName())
             .certificationCount(totalCertificationCount)
             .achievement(achievementRate)

@@ -46,7 +46,7 @@ class RaceAchievementRateTest {
         final RaceAchievementRate result = RaceAchievementRate.of(member, 1, 10.0);
 
         final String expectedBody = "{"
-            + "\"id\":1,"
+            + "\"member_id\":1,"
             + "\"member_name\":\"jinju\","
             + "\"certification_count\":1,"
             + "\"achievement\":10.0"
@@ -59,7 +59,7 @@ class RaceAchievementRateTest {
     @Test
     void deserialize() throws JsonProcessingException {
         final String jsonBody = "{"
-            + "\"id\":1,"
+            + "\"member_id\":1,"
             + "\"member_name\":\"jinju\","
             + "\"certification_count\":1,"
             + "\"achievement\":10.0"

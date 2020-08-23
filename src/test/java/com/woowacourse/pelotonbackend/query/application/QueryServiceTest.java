@@ -220,6 +220,10 @@ class QueryServiceTest {
         );
     }
 
+    @DisplayName("성취율을 정상적으로 조회한다."
+        + "총 미션의 갯수 5개"
+        + "회원 순서대로 인증 갯수 3, 2, 1, 0 ,5 개 "
+        + "회원 순서대로 성취율 3/5, 2/5, 1/5, 0/5, 5/5")
     @Test
     void findRaceAchievement() {
         final Race race = RaceFixture.createWithId(RaceFixture.TEST_RACE_ID);
