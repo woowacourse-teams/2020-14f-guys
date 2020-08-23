@@ -50,7 +50,7 @@ public class QueryController {
     }
 
     @GetMapping("/races/{raceId}/achievement")
-    public ResponseEntity<RaceAchievementRates> findRaceAchieve(@PathVariable final Long raceId) {
+    public ResponseEntity<RaceAchievementRates> findRaceAchievementRates(@PathVariable final Long raceId) {
 
         return ResponseEntity.ok(queryService.findRaceAchievement(raceId));
     }

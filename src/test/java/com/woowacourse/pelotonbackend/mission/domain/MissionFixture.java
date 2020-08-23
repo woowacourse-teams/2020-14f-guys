@@ -250,8 +250,13 @@ public class MissionFixture {
 
     public static List<Mission> createMissionsWithRaceIdAndCount(final Long raceId, final int count) {
         return createMissionsWithId(
-            LongStream.rangeClosed(1, count).boxed().collect(Collectors.toList())).stream()
-            .map(mission -> mission.toBuilder().raceId(AggregateReference.to(raceId)).build())
+            LongStream.rangeClosed(1, count)
+                .boxed()
+                .collect(Collectors.toList()))
+            .stream()
+            .map(mission -> mission.toBuilder()
+                .raceId(AggregateReference.to(raceId))
+                .build())
             .collect(Collectors.toList());
     }
 }

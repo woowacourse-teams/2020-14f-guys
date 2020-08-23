@@ -2,6 +2,8 @@ package com.woowacourse.pelotonbackend.query.presentation.dto;
 
 import java.beans.ConstructorProperties;
 import java.util.List;
+import java.util.Map;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import com.fasterxml.jackson.databind.PropertyNamingStrategy;
@@ -33,8 +35,16 @@ public class RaceAchievementRates {
 
         final int totalMissionCount = getTotalMissionCount(race, missions);
 
+        final Map<Long, Member> idMembers = members.stream()
+            .collect(Collectors.toMap(Member::getId, Function.identity()));
+        final Map<Long, Member> riderMember = riders.stream()
+            .collect(Collectors.toMap(Rider::getId, rider -> idMembers.get(rider.getMemberId().getId())));
+        final Map<Long, Long> riderCertification = certifications.stream()
+            .collect(Collectors.groupingBy(certification -> certification.getRiderId().getId(), Collectors.counting()));
+
         final List<RaceAchievementRate> result = riders.stream()
-            .map(rider -> RaceAchievementRate.of(rider, members, certifications, totalMissionCount))
+            .map(rider -> RaceAchievementRate.of(riderMember.get(rider.getMemberId().getId()),
+                riderCertification.getOrDefault(rider.getId(), 0L), totalMissionCount))
             .collect(Collectors.toList());
 
         return RaceAchievementRates.builder()

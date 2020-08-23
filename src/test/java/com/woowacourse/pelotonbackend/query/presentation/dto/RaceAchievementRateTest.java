@@ -33,7 +33,7 @@ class RaceAchievementRateTest {
             .getContent();
         final double achievement = 10.0;
 
-        final RaceAchievementRate result1 = RaceAchievementRate.of(rider, members, certifications, 10);
+        final RaceAchievementRate result1 = RaceAchievementRate.of(member, certifications.size(), achievement);
         final RaceAchievementRate result2 = RaceAchievementRate.of(member, 1, achievement);
 
         assertThat(result1).isEqualToComparingFieldByField(result2);

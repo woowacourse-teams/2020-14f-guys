@@ -237,7 +237,7 @@ class QueryServiceTest {
         when(raceRepository.findById(anyLong())).thenReturn(Optional.of(race));
         when(riderRepository.findRidersByRaceId(anyLong())).thenReturn(riders);
         when(missionRepository.findByRaceId(anyLong())).thenReturn(missions);
-        when(certificationRepository.findByMissionIds(anyList(), any())).thenReturn(certifications);
+        when(certificationRepository.findByMissionIdsAndStatus(anyList(), any(), any())).thenReturn(certifications);
         when(memberRepository.findAllById(anyList())).thenReturn(members);
 
         final List<RaceAchievementRate> responses = queryService.findRaceAchievement(TEST_RACE_ID)
