@@ -42,7 +42,7 @@ class MemberRepositoryTest {
         );
     }
 
-    @DisplayName("Profile image의 url이 null인 회원을 저장하면 예외가 발생한다.")
+    @DisplayName("Profile이 null인 회원을 저장하면 예외가 발생한다.")
     @Test
     void saveMemberWithNullProfile_ThrowsException() {
         final Member member = createWithoutId(KAKAO_ID, EMAIL, NAME)
@@ -66,6 +66,17 @@ class MemberRepositoryTest {
         assertThatThrownBy(() -> memberRepository.save(member))
             .isInstanceOf(ConstraintViolationException.class)
             .hasMessageContaining("profile.baseImageUrl:");
+    }
+
+    @DisplayName("Email이 null인 회원을 정상적으로 저장한다.")
+    @Test
+    void saveMemberWithNullEmail() {
+        final Member member = createWithoutId(KAKAO_ID, null, NAME);
+
+        final Member persist = memberRepository.save(member);
+
+        assertThat(persist).isEqualToIgnoringGivenFields(member, "id", "email", "createdAt", "updatedAt");
+        assertThat(persist.getEmail()).isNull();
     }
 
     @DisplayName("모든 회원들을 리스트로 반환한다.")

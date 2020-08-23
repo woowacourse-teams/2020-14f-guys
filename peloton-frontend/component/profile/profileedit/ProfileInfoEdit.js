@@ -1,13 +1,13 @@
 import React from "react";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
-import { useRecoilState } from "recoil";
+import { useRecoilValue } from "recoil";
 import { useNavigation } from "@react-navigation/core";
 import { memberInfoState } from "../../../state/member/MemberState";
 import { AntDesign } from "@expo/vector-icons";
 import { COLOR } from "../../../utils/constants";
 
 const ProfileEditInfo = () => {
-  const [memberInfo, setMemberInfo] = useRecoilState(memberInfoState);
+  const memberInfo = useRecoilValue(memberInfoState);
   const navigation = useNavigation();
 
   return (
@@ -27,8 +27,10 @@ const ProfileEditInfo = () => {
       </View>
       <View style={styles.eachInfo}>
         <View style={styles.eachTextBox}>
-          <Text style={styles.eachInfoKey}>😀 Kakao ID</Text>
-          <Text style={styles.eachInfoValue}>{memberInfo.kakao_id}</Text>
+          <Text style={styles.eachInfoKey}>😀 Email</Text>
+          <Text style={styles.eachInfoValue}>
+            {memberInfo.email ? memberInfo.email : ""}
+          </Text>
         </View>
       </View>
       <View style={styles.eachInfo}>
@@ -100,8 +102,7 @@ const styles = StyleSheet.create({
     fontSize: 17,
     fontWeight: "800",
     color: COLOR.GREEN3,
-    lineHeight: 35,
-    paddingBottom: 5,
+    paddingBottom: 12,
   },
   eachInfoValue: {
     color: COLOR.GREEN2,

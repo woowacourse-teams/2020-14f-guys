@@ -18,10 +18,7 @@ import { useNavigation } from "@react-navigation/core";
 import { raceMissionState } from "../../state/certification/RaceMissionState";
 import { COLOR } from "../../utils/constants";
 import { loadingState } from "../../state/loading/LoadingState";
-import {
-  getCameraPermission,
-  getCameraRollPermission,
-} from "../../utils/Permission";
+import { getCameraPermission, getCameraRollPermission, } from "../../utils/Permission";
 import FullWidthButton from "../home/race/FullWidthButton";
 import { CertificationApi } from "../../utils/api/CertificationApi";
 import { memberTokenState } from "../../state/member/MemberState";
@@ -153,11 +150,11 @@ const CertificationSubmit = ({ route }) => {
               </View>
             </TouchableOpacity>
             <View style={styles.instructionContainer}>
+              <Text style={styles.instructionTitle}>미션 방법</Text>
               <Text style={styles.instruction}>
                 {raceMission.mission.mission_instruction}
               </Text>
             </View>
-
             {isNotExample() ? (
               <View style={styles.absoluteBottom}>
                 <FullWidthButton
@@ -173,7 +170,7 @@ const CertificationSubmit = ({ route }) => {
                   value={description}
                   onChangeText={setDescription}
                   placeholder="간단한 설명을 남겨주세요."
-                  fontSize={17}
+                  fontSize={16}
                 />
               </View>
             )}
@@ -197,15 +194,20 @@ const styles = StyleSheet.create({
     resizeMode: "cover",
   },
   instructionContainer: {
-    marginTop: 20,
+    marginTop: 25,
+    marginHorizontal: 20,
+  },
+  instructionTitle: {
+    fontSize: 12,
+    color: COLOR.GRAY7,
+    marginBottom: 5,
   },
   instruction: {
     fontSize: 20,
-    fontWeight: "300",
+    fontWeight: "600",
     fontStyle: "normal",
-    lineHeight: 35,
-    color: COLOR.GRAY1,
-    textAlign: "center",
+    lineHeight: 30,
+    color: COLOR.DARK_GRAY6,
   },
   certificationButton: {
     backgroundColor: COLOR.WHITE,
@@ -227,7 +229,7 @@ const styles = StyleSheet.create({
   },
   descriptionInput: {
     alignSelf: "flex-start",
-    marginHorizontal: 30,
+    marginHorizontal: 20,
   },
 });
 
