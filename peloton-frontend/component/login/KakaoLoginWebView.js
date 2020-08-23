@@ -1,15 +1,12 @@
 import React from "react";
 import { StyleSheet, View } from "react-native";
 import WebView from "react-native-webview";
-import { COLOR, SERVER_BASE_URL } from "../../utils/constants";
+import { COLOR, KAKAO_LOGIN_API_URI } from "../../utils/constants";
 import { useSetRecoilState } from "recoil";
 import { useNavigation } from "@react-navigation/core";
 import { navigateWithoutHistory } from "../../utils/util";
 import WebViewCloseButton from "./WebViewCloseButton";
 import { memberTokenState } from "../../state/member/MemberState";
-
-const KAKAO_LOGIN_API_URI =
-  "https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=23756df6ba3513c3b269a71d468aed45&redirect_uri=https://peloton.ga/api/login/token";
 
 const KakaoLoginWebView = ({ toggleModal }) => {
   const navigation = useNavigation();

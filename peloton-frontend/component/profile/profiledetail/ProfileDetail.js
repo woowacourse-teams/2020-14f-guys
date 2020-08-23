@@ -8,8 +8,6 @@ import { memberInfoState } from "../../../state/member/MemberState";
 const ProfileDetail = () => {
   const memberInfo = useRecoilValue(memberInfoState);
 
-  console.log(memberInfo.profile);
-
   return (
     <View style={styles.container}>
       <View style={styles.memberContainer}>
