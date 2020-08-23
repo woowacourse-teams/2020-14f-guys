@@ -24,7 +24,7 @@ public class MemberFixture {
     public static final String NAME2 = "sika";
     public static final String NAME3 = "dd";
     public static final String UPDATE_NAME = "blbi";
-    public static final Cash CASH = new Cash(BigDecimal.valueOf(50000));
+    public static final Cash CASH = Cash.of(50000);
     public static final Cash UPDATE_CASH = new Cash(BigDecimal.TEN);
     public static final ImageUrl PROFILE = new ImageUrl(
         "https://lh3.googleusercontent.com/5EfQBHDb47tchiART6U6yk3yYS9qBYr6VUssB5wHE1AgavqV5E2SSuzyiNkc7UgVng");
@@ -32,6 +32,7 @@ public class MemberFixture {
     public static final Long MEMBER_ID = 1L;
     public static final Long MEMBER_ID2 = 2L;
     public static final Long MEMBER_ID3 = 3L;
+    public static final Long WRONG_MEMBER_ID = 10L;
     public static final Long KAKAO_ID = 1L;
     public static final Long KAKAO_ID2 = 2L;
     public static final Long KAKAO_ID3 = 3L;
@@ -75,6 +76,18 @@ public class MemberFixture {
             .profile(PROFILE)
             .email(EMAIL)
             .name(NAME)
+            .cash(CASH)
+            .role(ROLE)
+            .build();
+    }
+
+    public static Member createWithId(final Long id, final String name) {
+        return Member.builder()
+            .id(id)
+            .kakaoId(KAKAO_ID)
+            .profile(PROFILE)
+            .email(EMAIL)
+            .name(name)
             .cash(CASH)
             .role(ROLE)
             .build();
@@ -132,6 +145,18 @@ public class MemberFixture {
             .build();
     }
 
+    public static MemberResponse memberResponse(final Long id) {
+        return MemberResponse.builder()
+            .id(id)
+            .kakaoId(KAKAO_ID)
+            .profile(PROFILE)
+            .email(EMAIL)
+            .name(NAME)
+            .cash(CASH)
+            .role(ROLE)
+            .build();
+    }
+
     public static MemberResponses memberResponses() {
         return MemberResponses.from(
             Lists.newArrayList(createWithInfo(MEMBER_ID, KAKAO_ID, EMAIL, NAME),
@@ -153,13 +178,13 @@ public class MemberFixture {
 
     public static MemberCashUpdateRequest createCashUpdateRequest(Long money) {
         return MemberCashUpdateRequest.builder()
-            .cash(new Cash(BigDecimal.valueOf(money)))
+            .cash(Cash.of(money))
             .build();
     }
 
     public static MemberCashUpdateRequest createBadCashUpdateRequest(long value) {
         return MemberCashUpdateRequest.builder()
-            .cash(new Cash(BigDecimal.valueOf(value)))
+            .cash(Cash.of(value))
             .build();
     }
 

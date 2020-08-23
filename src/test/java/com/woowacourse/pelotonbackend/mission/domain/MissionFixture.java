@@ -127,6 +127,14 @@ public class MissionFixture {
             .build();
     }
 
+    public static MissionCreateRequest mockCreateRequestByRaceId(final Long raceId) {
+        return MissionCreateRequest.builder()
+            .missionDuration(MISSION_DURATION)
+            .missionInstruction(MISSION_INSTRUCTION)
+            .raceId(raceId)
+            .build();
+    }
+
     public static MissionCreateRequest badMockCreateRequest() {
         return MissionCreateRequest.builder()
             .raceId(RACE_ID)

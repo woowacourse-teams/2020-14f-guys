@@ -55,8 +55,8 @@ public class MemberAcceptanceTest extends AcceptanceTest {
 
     private MemberResponse createAndFindMember() {
         final MemberCreateRequest memberRequest = createRequest(KAKAO_ID, EMAIL, NAME);
-        final Long createMemberId = requestCreate(memberRequest);
-        final MemberResponse memberResponse = requestFind(KAKAO_ID);
+        final Long createMemberId = createMember(memberRequest);
+        final MemberResponse memberResponse = findMember(KAKAO_ID);
 
         assertAll(
             () -> assertThat(createMemberId).isEqualTo(memberResponse.getId()),
@@ -64,7 +64,7 @@ public class MemberAcceptanceTest extends AcceptanceTest {
         );
 
         final MemberCreateRequest memberOtherRequest = MemberFixture.createRequest(KAKAO_ID2, EMAIL2, NAME2);
-        requestCreate(memberOtherRequest);
+        createMember(memberOtherRequest);
         final List<MemberResponse> memberResponses = requestFindAll(KAKAO_ID).getResponses();
 
         assertAll(
@@ -78,7 +78,7 @@ public class MemberAcceptanceTest extends AcceptanceTest {
     private void updateName(final MemberResponse memberResponse) {
         final MemberNameUpdateRequest nameUpdatedRequest = MemberFixture.createNameUpdateRequest();
         requestUpdateName(memberResponse.getKakaoId(), nameUpdatedRequest);
-        final MemberResponse nameUpdatedResponse = requestFind(memberResponse.getKakaoId());
+        final MemberResponse nameUpdatedResponse = findMember(memberResponse.getKakaoId());
 
         assertAll(
             () -> assertThat(nameUpdatedResponse.getName()).isEqualTo(nameUpdatedRequest.getName()),
@@ -89,7 +89,7 @@ public class MemberAcceptanceTest extends AcceptanceTest {
     private void updateCash(final MemberResponse memberResponse) {
         final MemberCashUpdateRequest cashUpdatedRequest = MemberFixture.createCashUpdateRequest();
         requestUpdateCash(memberResponse.getKakaoId(), cashUpdatedRequest);
-        final MemberResponse cashUpdatedResponse = requestFind(memberResponse.getKakaoId());
+        final MemberResponse cashUpdatedResponse = findMember(memberResponse.getKakaoId());
 
         assertAll(
             () -> assertThat(cashUpdatedResponse.getCash()).isEqualTo(memberResponse.getCash().plus(cashUpdatedRequest.getCash())),
@@ -99,7 +99,7 @@ public class MemberAcceptanceTest extends AcceptanceTest {
 
     private void updateProfile(final MemberResponse memberResponse) throws FileNotFoundException {
         requestUpdateProfile(memberResponse.getKakaoId());
-        final MemberResponse imageUpdatedResponse = requestFind(memberResponse.getKakaoId());
+        final MemberResponse imageUpdatedResponse = findMember(memberResponse.getKakaoId());
 
         assertThat(imageUpdatedResponse.getProfile().getBaseImageUrl()).contains(UPLOAD_SERVER_URL);
     }

@@ -4,7 +4,12 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 import java.util.Base64;
+import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
+import java.util.stream.LongStream;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -19,6 +24,7 @@ import com.woowacourse.pelotonbackend.certification.presentation.dto.Certificati
 import com.woowacourse.pelotonbackend.certification.presentation.dto.CertificationResponse;
 import com.woowacourse.pelotonbackend.certification.presentation.dto.CertificationResponses;
 import com.woowacourse.pelotonbackend.certification.presentation.dto.CertificationStatusUpdateRequest;
+import com.woowacourse.pelotonbackend.query.presentation.dto.RaceCertificationsResponse;
 import com.woowacourse.pelotonbackend.vo.ImageUrl;
 
 public class CertificationFixture {
@@ -111,6 +117,26 @@ public class CertificationFixture {
             .build();
     }
 
+    private static List<CertificationRequest> createCertificationRequests(final long riderId,
+        final int count) {
+        return LongStream.range(1, count + 1)
+            .mapToObj(num -> CertificationRequest.builder()
+                .status(TEST_CERTIFICATION_STATUS)
+                .description(TEST_CERTIFICATION_DESCRIPTION)
+                .riderId(riderId)
+                .missionId(num)
+                .build())
+            .collect(Collectors.toList());
+    }
+
+    public static List<CertificationRequest> createMockCertificationRequestByRiderIdAndCount(
+        final Map<Long, Integer> riderIdToCount) {
+
+        return riderIdToCount.entrySet().stream()
+            .flatMap(entry -> createCertificationRequests(entry.getKey(), entry.getValue()).stream())
+            .collect(Collectors.toList());
+    }
+
     public static CertificationRequest createBadMockCertificationRequest() {
         return CertificationRequest.builder()
             .status(TEST_CERTIFICATION_STATUS)
@@ -174,5 +200,42 @@ public class CertificationFixture {
         );
 
         return new PageImpl<>(mockCertifications, request, 4);
+    }
+
+    public static RaceCertificationsResponse createMockRaceCertifications(final Map<Long, Integer> countToRiderId) {
+        final List<CertificationResponse> certifications = countToRiderId.entrySet().stream()
+            .map(entry -> createMockCertifications(entry.getValue(), entry.getKey()))
+            .flatMap(Collection::stream)
+            .collect(Collectors.toList());
+
+        return RaceCertificationsResponse.builder()
+            .certifications(new PageImpl<>(certifications))
+            .build();
+    }
+
+    private static List<CertificationResponse> createMockCertifications(final int count, final Long riderId) {
+        return LongStream.range(1, count + 1).
+            mapToObj(id -> createMockCertification(id, riderId))
+            .collect(Collectors.toList());
+    }
+
+    private static CertificationResponse createMockCertification(final Long id, final Long riderId) {
+        return CertificationResponse.builder()
+            .id(id)
+            .image(TEST_CERTIFICATION_FILE_URL)
+            .missionId(TEST_MISSION_ID)
+            .riderId(riderId)
+            .description(TEST_CERTIFICATION_DESCRIPTION)
+            .status(TEST_CERTIFICATION_STATUS)
+            .build();
+    }
+
+    public static Map<Long, Integer> createRiderToCount() {
+        Map<Long, Integer> riderIdToCount = new HashMap<>();
+        riderIdToCount.put(1L, 3);
+        riderIdToCount.put(2L, 2);
+        riderIdToCount.put(3L, 1);
+
+        return riderIdToCount;
     }
 }

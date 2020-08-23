@@ -30,7 +30,7 @@ class MemberTest {
     void minusCash(final BigDecimal minusMoney, final BigDecimal result) {
         final Member member = MemberFixture.createWithId(1L)
             .toBuilder()
-            .cash(new Cash(BigDecimal.valueOf(5000)))
+            .cash(Cash.of(5000))
             .build();
         final Member cashUpdatedMember = member.minusCash(new Cash(minusMoney));
 
@@ -43,9 +43,9 @@ class MemberTest {
     void minusInvalidCash(final long minusMoney) {
         final Member member = MemberFixture.createWithId(1L)
             .toBuilder()
-            .cash(new Cash(BigDecimal.valueOf(999)))
+            .cash(Cash.of(999))
             .build();
-        assertThatThrownBy(() -> member.minusCash(new Cash(BigDecimal.valueOf(minusMoney))))
+        assertThatThrownBy(() -> member.minusCash(Cash.of(minusMoney)))
             .isInstanceOf(MoneyInvalidException.class)
             .hasMessage("잔액이 부족합니다. 충전 후 이용해주세요.");
     }
