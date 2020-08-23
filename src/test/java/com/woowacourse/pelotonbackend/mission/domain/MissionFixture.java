@@ -2,6 +2,7 @@ package com.woowacourse.pelotonbackend.mission.domain;
 
 import static com.woowacourse.pelotonbackend.rider.domain.RiderFixture.*;
 
+import java.time.DayOfWeek;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -49,6 +50,7 @@ public class MissionFixture {
     public static final Long RACE_ID_UPDATED = 9L;
     public static final String MISSION_API_URL = "/api/missions";
     public static final long TEST_RACE_ID = 1L;
+    public static final DayOfWeek NOT_CONTAINED_DAY = DayOfWeek.MONDAY;
 
     public static Mission createWithId() {
         return createWithoutId().toBuilder()
