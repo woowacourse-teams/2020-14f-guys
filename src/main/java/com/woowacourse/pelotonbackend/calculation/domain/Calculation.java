@@ -16,15 +16,11 @@ import com.woowacourse.pelotonbackend.common.exception.DuplicateCalculationExcep
 import com.woowacourse.pelotonbackend.race.domain.Race;
 import com.woowacourse.pelotonbackend.rider.domain.Rider;
 import com.woowacourse.pelotonbackend.vo.Cash;
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.NonNull;
-import lombok.With;
+import lombok.*;
 
 @Builder(toBuilder = true)
 @EqualsAndHashCode(of = "id")
+@ToString
 @Getter
 public class Calculation {
     @Id @With(value = AccessLevel.PACKAGE)

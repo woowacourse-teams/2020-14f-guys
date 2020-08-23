@@ -291,13 +291,13 @@ class CalculationsTest {
     void replace() {
         final Calculation calculation = representativeCalculations.receivePrize(1L);
         assertThat(representativeCalculations.getCalculations().stream()
-            .filter(Calculation::isCalculated)
-            .count()).isEqualTo(0);
+            .filter(cal -> Objects.equals(cal.getRiderId().getId(), 1L))
+            .findAny().get()).extracting(Calculation::isCalculated).isEqualTo(false);
 
         final Calculations updatedCalculations = representativeCalculations.replaceCalculatedItem(calculation);
         assertThat(updatedCalculations.getCalculations().stream()
-            .filter(Calculation::isCalculated)
-            .count()).isEqualTo(1);
+            .filter(cal -> Objects.equals(cal.getRiderId().getId(), 1L))
+            .findAny().get()).extracting(Calculation::isCalculated).isEqualTo(true);
     }
 
     private Calculations createCalculations(final Map<Long, Integer> riderIdToCount, final long entranceFee) {

@@ -66,6 +66,7 @@ class CalculationServiceTest {
         memberResponse = MemberFixture.memberResponse();
     }
 
+    @DisplayName("정상적으로 Calculation을 생성한다.")
     @Test
     void create() {
         when(riderService.retrieveByRaceId(anyLong())).thenReturn(
@@ -80,6 +81,7 @@ class CalculationServiceTest {
         verify(calculationRepository).saveAll(any());
     }
 
+    @DisplayName("정상적으로 Calculation을 가져온다.")
     @Test
     void retrieve() {
         when(riderService.retrieveByRaceId(anyLong())).thenReturn(

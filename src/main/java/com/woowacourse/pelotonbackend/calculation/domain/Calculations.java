@@ -20,6 +20,8 @@ import lombok.Getter;
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 public class Calculations {
     private static final int NONE = 0;
+    private static final int EMPTY = 0;
+    private static final Long DEFAULT_VALUE = 0L;
 
     private final List<Calculation> calculations;
 
@@ -56,17 +58,14 @@ public class Calculations {
     }
 
     public Calculations replaceCalculatedItem(final Calculation receivedCalculation) {
-        final Calculation originCalculation = calculations.stream()
-            .filter(item -> item.getRaceId().equals(receivedCalculation.getRaceId())
-                && item.getRiderId().equals(receivedCalculation.getRiderId()))
-            .findAny()
-            .get();
+        final List<Calculation> removedCalculations = calculations.stream()
+            .filter(item -> !(item.getRaceId().equals(receivedCalculation.getRaceId())
+                && item.getRiderId().equals(receivedCalculation.getRiderId())))
+            .collect(Collectors.toList());
 
-        final int index = calculations.indexOf(originCalculation);
-        calculations.remove(originCalculation);
-        calculations.add(index, receivedCalculation);
+        removedCalculations.add(receivedCalculation);
 
-        return Calculations.of(calculations);
+        return Calculations.of(removedCalculations);
     }
 
     private static Cash calculatePrize(final long totalCertificationCount, final Long certificationCount,
@@ -94,7 +93,7 @@ public class Calculations {
             .collect(Collectors.groupingBy(CertificationResponse::getRiderId, Collectors.counting()));
 
         return riders.stream()
-            .collect(Collectors.toMap(RiderResponse::getId, rider -> certificationCountPerRider.getOrDefault(rider.getId(), 0L)));
+            .collect(Collectors.toMap(RiderResponse::getId, rider -> certificationCountPerRider.getOrDefault(rider.getId(), DEFAULT_VALUE)));
     }
 
     public int size() {
@@ -102,6 +101,6 @@ public class Calculations {
     }
 
     public boolean isEmpty() {
-        return calculations.size() == 0;
+        return calculations.size() == EMPTY;
     }
 }

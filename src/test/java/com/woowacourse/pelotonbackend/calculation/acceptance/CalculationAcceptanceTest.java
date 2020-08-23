@@ -76,7 +76,7 @@ class CalculationAcceptanceTest extends AcceptanceTest {
         assertThat(responses.getCalculationResponses())
             .usingRecursiveFieldByFieldElementComparator()
             .usingElementComparatorIgnoringFields("createdAt")
-            .isEqualTo(CalculationFixture.createAcceptanceResponses());
+            .containsExactlyInAnyOrderElementsOf(CalculationFixture.createAcceptanceResponses());
     }
 
     private void createCalculation(final JwtTokenResponse tokenResponse, final long raceId) {
