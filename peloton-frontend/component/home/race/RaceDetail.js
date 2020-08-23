@@ -1,24 +1,23 @@
 import React, { useEffect } from "react";
 import { Alert, ScrollView, StyleSheet, View } from "react-native";
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
-import { useNavigation } from "@react-navigation/core";
-
-import { COLOR } from "../../../utils/constants";
 import { loadingState } from "../../../state/loading/LoadingState";
 import { memberTokenState } from "../../../state/member/MemberState";
 import { raceInfoState } from "../../../state/race/RaceState";
-import { ridersInfoState } from "../../../state/rider/RiderState";
-import { certificationsState } from "../../../state/certification/CertificationState";
 import { RiderApi } from "../../../utils/api/RiderApi";
+import { ridersInfoState } from "../../../state/rider/RiderState";
 import { QueryApi } from "../../../utils/api/QueryApi";
 import LoadingIndicator from "../../../utils/LoadingIndicator";
-import LinkCopyButton from "./LinkCopyButton";
-import RaceDetailInfo from "./RaceDetailInfo";
+import { certificationsState } from "../../../state/certification/CertificationState";
+import { COLOR } from "../../../utils/constants";
 import RaceCertificationImages from "./RaceCertificationImages";
+import RaceDetailInfo from "./RaceDetailInfo";
 import RaceSpec from "./RaceSpec";
 import { logNav } from "../../../utils/Analytics";
 import { navigateWithHistory } from "../../../utils/util";
 import FullWidthButton from "./FullWidthButton";
+import { useNavigation } from "@react-navigation/core";
+import LinkCopyButton from "./LinkCopyButton";
 
 const RaceDetail = ({ route }) => {
   const raceId = route.params.id;
@@ -28,6 +27,26 @@ const RaceDetail = ({ route }) => {
   const [raceInfo, setRaceInfo] = useRecoilState(raceInfoState);
   const [ridersInfo, setRidersInfo] = useRecoilState(ridersInfoState);
   const setCertificationsInfo = useSetRecoilState(certificationsState);
+
+  const navigateToRaceCalculation = () => {
+    navigateWithHistory(navigation, [
+      {
+        name: "Home",
+      },
+      {
+        name: "RaceDetail",
+        params: {
+          id: raceInfo.id,
+        },
+      },
+      {
+        name: "RaceCalculation",
+        params: {
+          id: raceInfo.id,
+        },
+      },
+    ]);
+  };
 
   useEffect(() => {
     setIsLoading(true);
@@ -61,23 +80,6 @@ const RaceDetail = ({ route }) => {
     setIsLoading(false);
   }, []);
 
-  const navigateToRaceCalculation = () => {
-    navigateWithHistory(navigation, [
-      {
-        name: "RaceDetail",
-        params: {
-          id: raceInfo.id,
-        },
-      },
-      {
-        name: "RaceCalculation",
-        params: {
-          id: raceInfo.id,
-        },
-      },
-    ]);
-  };
-
   return (
     <LoadingIndicator>
       <ScrollView style={styles.container}>
@@ -87,7 +89,9 @@ const RaceDetail = ({ route }) => {
           description={raceInfo.description}
         />
         <RaceSpec
+          days={raceInfo.days}
           raceDuration={raceInfo.race_duration}
+          missionDuration={raceInfo.mission_duration}
           cash={raceInfo.entrance_fee}
           riderCount={ridersInfo.length}
         />

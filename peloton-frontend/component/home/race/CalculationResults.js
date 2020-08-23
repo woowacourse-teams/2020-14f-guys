@@ -2,11 +2,11 @@ import React from "react";
 import { StyleSheet, View } from "react-native";
 import CalculationResult from "./CalculationResult";
 
-const CalculationResults = ({ calculations }) => {
+const CalculationResults = ({ achievementRates }) => {
   return (
     <View style={styles.container}>
-      {calculations.map((calculation, index) => (
-        <CalculationResult calculation={calculation} key={index} />
+      {achievementRates.map((achievementRate, index) => (
+        <CalculationResult achievementRate={achievementRate} key={index} />
       ))}
     </View>
   );

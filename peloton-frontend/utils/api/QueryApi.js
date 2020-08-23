@@ -62,4 +62,15 @@ export const QueryApi = {
     });
     return response.data;
   },
+  getRaceAchievement: async (token, raceId) => {
+    const response = await Axios({
+      method: "GET",
+      baseURL: SERVER_BASE_URL,
+      url: `/api/queries/races/${raceId}/achievement`,
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    return response.data;
+  },
 };
