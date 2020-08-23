@@ -70,7 +70,7 @@ class CalculationServiceTest {
     @Test
     void create() {
         when(riderService.retrieveByRaceId(anyLong())).thenReturn(
-            new RiderResponses(RiderFixture.createRidersInSameRaceByCount(5)));
+            RiderResponses.of(RiderFixture.createRidersByCount(5)));
         when(queryService.findCertificationsByRaceId(anyLong(), any())).thenReturn(
             CertificationFixture.createMockRaceCertifications(countToRiderId));
         when(raceService.retrieve(anyLong())).thenReturn(RaceFixture.retrieveFinishedResponse());
@@ -85,7 +85,7 @@ class CalculationServiceTest {
     @Test
     void retrieve() {
         when(riderService.retrieveByRaceId(anyLong())).thenReturn(
-            new RiderResponses(RiderFixture.createRidersInSameRaceByCount(5)));
+            RiderResponses.of(RiderFixture.createRidersByCount(5)));
         when(raceService.retrieve(anyLong())).thenReturn(RaceFixture.retrieveFinishedResponse());
         when(calculationRepository.findAllByRaceId(anyLong())).thenReturn(
             Optional.of(CalculationFixture.createCalculations(5, RiderFixture.TEST_RIDER_ID)));
@@ -114,7 +114,7 @@ class CalculationServiceTest {
     @Test
     void invalidMemberRetrieve() {
         when(riderService.retrieveByRaceId(anyLong())).thenReturn(
-            new RiderResponses(RiderFixture.createRidersInSameRaceByCount(5)));
+            RiderResponses.of(RiderFixture.createRidersByCount(5)));
         when(raceService.retrieve(anyLong())).thenReturn(RaceFixture.retrieveResponse());
 
         final MemberResponse memberResponse = MemberFixture.memberResponse(MemberFixture.WRONG_MEMBER_ID);
@@ -128,7 +128,7 @@ class CalculationServiceTest {
     @Test
     void notFinishedRaceRetrieve() {
         when(riderService.retrieveByRaceId(anyLong())).thenReturn(
-            new RiderResponses(RiderFixture.createRidersInSameRaceByCount(5)));
+            RiderResponses.of(RiderFixture.createRidersByCount(5)));
         when(raceService.retrieve(anyLong())).thenReturn(RaceFixture.retrieveNotFinishedResponse());
 
         assertThatThrownBy(
@@ -141,7 +141,7 @@ class CalculationServiceTest {
     @Test
     void notFoundCalculation() {
         when(riderService.retrieveByRaceId(anyLong())).thenReturn(
-            new RiderResponses(RiderFixture.createRidersInSameRaceByCount(5)));
+            RiderResponses.of(RiderFixture.createRidersByCount(5)));
         when(raceService.retrieve(anyLong())).thenReturn(RaceFixture.retrieveFinishedResponse());
         when(calculationRepository.findAllByRaceId(anyLong())).thenReturn(Optional.empty());
 
@@ -155,7 +155,7 @@ class CalculationServiceTest {
     @Test
     void duplicateCalculation() {
         when(riderService.retrieveByRaceId(anyLong())).thenReturn(
-            new RiderResponses(RiderFixture.createRidersInSameRaceByCount(5)));
+            RiderResponses.of(RiderFixture.createRidersByCount(5)));
         when(raceService.retrieve(anyLong())).thenReturn(RaceFixture.retrieveFinishedResponse());
         when(calculationRepository.findAllByRaceId(anyLong())).thenReturn(Optional.of(CalculationFixture.createCalculations(3,RiderFixture.TEST_RIDER_ID)));
 

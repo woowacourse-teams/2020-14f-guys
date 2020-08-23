@@ -111,9 +111,13 @@ public class RiderFixture {
             .collect(Collectors.collectingAndThen(Collectors.toList(), RiderResponses::of));
     }
 
-    public static List<RiderResponse> createRidersInSameRaceByCount(final int count) {
+    public static List<Rider> createRidersByCount(final int count) {
         return LongStream.range(1, count + 1)
-            .mapToObj(id -> RiderResponse.of(createRiderWithIdAndMemberId(id)))
-            .collect((Collectors.toList()));
+            .mapToObj(id -> createRiderBy(id, TEST_RACE_ID, id))
+            .collect(Collectors.toList());
+    }
+
+    public static List<RiderResponse> createRiderResponseByCount(final int count) {
+        return RiderResponses.of(createRidersByCount(count)).getRiderResponses();
     }
 }

@@ -17,14 +17,14 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.woowacourse.pelotonbackend.certification.domain.Certification;
 import com.woowacourse.pelotonbackend.certification.domain.CertificationRepository;
+import com.woowacourse.pelotonbackend.certification.domain.CertificationStatus;
 import com.woowacourse.pelotonbackend.common.exception.RaceNotFoundException;
+import com.woowacourse.pelotonbackend.member.domain.Member;
+import com.woowacourse.pelotonbackend.member.domain.MemberRepository;
 import com.woowacourse.pelotonbackend.member.presentation.dto.MemberResponse;
 import com.woowacourse.pelotonbackend.mission.domain.Mission;
 import com.woowacourse.pelotonbackend.mission.domain.MissionRepository;
-import com.woowacourse.pelotonbackend.query.presentation.dto.RaceCertificationsResponse;
-import com.woowacourse.pelotonbackend.query.presentation.dto.RaceDetailResponse;
-import com.woowacourse.pelotonbackend.query.presentation.dto.UpcomingMissionResponse;
-import com.woowacourse.pelotonbackend.query.presentation.dto.UpcomingMissionResponses;
+import com.woowacourse.pelotonbackend.query.presentation.dto.*;
 import com.woowacourse.pelotonbackend.race.domain.Race;
 import com.woowacourse.pelotonbackend.race.domain.RaceRepository;
 import com.woowacourse.pelotonbackend.race.presentation.dto.RaceResponses;
@@ -40,6 +40,7 @@ public class QueryService {
     private final RaceRepository raceRepository;
     private final MissionRepository missionRepository;
     private final CertificationRepository certificationRepository;
+    private final MemberRepository memberRepository;
 
     public RaceResponses retrieveRacesBy(final MemberResponse member) {
         final List<Rider> riders = riderRepository.findRidersByMemberId(member.getId());
@@ -131,5 +132,22 @@ public class QueryService {
             .map(LocalDateTime::getDayOfWeek)
             .distinct()
             .collect(Collectors.toList());
+    }
+
+    public RaceAchievementRates findRaceAchievement(final Long raceId) {
+        final Race race = raceRepository.findById(raceId)
+            .orElseThrow(() -> new RaceNotFoundException(raceId));
+        final List<Rider> riders = riderRepository.findRidersByRaceId(raceId);
+        final List<Mission> missions = missionRepository.findByRaceId(raceId);
+        final List<Certification> certifications = missions.stream()
+            .map(Mission::getId)
+            .collect(Collectors.collectingAndThen(Collectors.toList(),
+                list -> certificationRepository.findByMissionIdsAndStatus(list, CertificationStatus.SUCCESS, PageRequest.of(0, Integer.MAX_VALUE))
+                    .getContent()));
+        final List<Member> members = riders.stream()
+            .map(rider -> rider.getMemberId().getId())
+            .collect(Collectors.collectingAndThen(Collectors.toList(), memberRepository::findAllById));
+
+        return RaceAchievementRates.create(race, riders, missions, certifications, members);
     }
 }

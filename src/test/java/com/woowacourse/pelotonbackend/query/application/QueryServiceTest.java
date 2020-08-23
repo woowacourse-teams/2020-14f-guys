@@ -10,13 +10,10 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.BDDMockito.*;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
+import org.assertj.core.util.Lists;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -35,10 +32,13 @@ import com.woowacourse.pelotonbackend.certification.domain.CertificationFixture;
 import com.woowacourse.pelotonbackend.certification.domain.CertificationRepository;
 import com.woowacourse.pelotonbackend.certification.domain.TimeDuration;
 import com.woowacourse.pelotonbackend.certification.presentation.dto.CertificationResponse;
+import com.woowacourse.pelotonbackend.member.domain.Member;
 import com.woowacourse.pelotonbackend.member.domain.MemberFixture;
+import com.woowacourse.pelotonbackend.member.domain.MemberRepository;
 import com.woowacourse.pelotonbackend.mission.domain.Mission;
 import com.woowacourse.pelotonbackend.mission.domain.MissionFixture;
 import com.woowacourse.pelotonbackend.mission.domain.MissionRepository;
+import com.woowacourse.pelotonbackend.query.presentation.dto.RaceAchievementRate;
 import com.woowacourse.pelotonbackend.query.presentation.dto.RaceDetailResponse;
 import com.woowacourse.pelotonbackend.query.presentation.dto.UpcomingMissionResponses;
 import com.woowacourse.pelotonbackend.race.domain.Race;
@@ -68,11 +68,15 @@ class QueryServiceTest {
     @Mock
     private CertificationRepository certificationRepository;
 
+    @Mock
+    private MemberRepository memberRepository;
+
     private QueryService queryService;
 
     @BeforeEach
     void setUp() {
-        queryService = new QueryService(riderRepository, raceRepository, missionRepository, certificationRepository);
+        queryService = new QueryService(riderRepository, raceRepository, missionRepository, certificationRepository,
+            memberRepository);
     }
 
     @DisplayName("MemberResponse의 id로 riders와 races를 찾아 RaceResponses로 반환한다.")
@@ -212,7 +216,45 @@ class QueryServiceTest {
             () -> assertThat(raceDetail.getMissionDuration()).isEqualTo(
                 new TimeDuration(START_TIME.toLocalTime(), END_TIME.toLocalTime())),
             () -> assertThat(raceDetail.getDays()).isEqualTo(
-                Arrays.asList(MISSION_DURATION.getStartTime().getDayOfWeek()))
+                Collections.singletonList(MISSION_DURATION.getStartTime().getDayOfWeek()))
         );
+    }
+
+    @DisplayName("성취율을 정상적으로 조회한다."
+        + "총 미션의 갯수 5개"
+        + "회원 순서대로 인증 갯수 3, 2, 1, 0 ,5 개 "
+        + "회원 순서대로 성취율 3/5, 2/5, 1/5, 0/5, 5/5")
+    @Test
+    void findRaceAchievement() {
+        final Race race = RaceFixture.createWithId(RaceFixture.TEST_RACE_ID);
+        final List<Rider> riders = createRidersByCount(5);
+        final List<Mission> missions = createMissionsWithRaceIdAndCount(RaceFixture.TEST_RACE_ID, 5);
+        final Map<Long, Integer> riderToCount = new HashMap<>();
+        riderToCount.put(1L, 3);
+        riderToCount.put(2L, 2);
+        riderToCount.put(3L, 1);
+        riderToCount.put(4L, 0);
+        riderToCount.put(5L, 5);
+        final Page<Certification> certifications = CertificationFixture.createMockCertifications(riderToCount);
+        final List<Member> members = createMemberByCount(5);
+
+        when(raceRepository.findById(anyLong())).thenReturn(Optional.of(race));
+        when(riderRepository.findRidersByRaceId(anyLong())).thenReturn(riders);
+        when(missionRepository.findByRaceId(anyLong())).thenReturn(missions);
+        when(certificationRepository.findByMissionIdsAndStatus(anyList(), any(), any())).thenReturn(certifications);
+        when(memberRepository.findAllById(anyList())).thenReturn(members);
+
+        final List<RaceAchievementRate> responses = queryService.findRaceAchievement(TEST_RACE_ID)
+            .getRaceAchievementRates();
+
+        assertThat(responses)
+            .usingRecursiveFieldByFieldElementComparator()
+            .isEqualTo(Lists.newArrayList(
+                RaceAchievementRate.of(members.get(0), 3,60.0),
+                RaceAchievementRate.of(members.get(1), 2, 40.0),
+                RaceAchievementRate.of(members.get(2), 1, 20.0),
+                RaceAchievementRate.of(members.get(3), 0, 0.0),
+                RaceAchievementRate.of(members.get(4), 5, 100.0)
+            ));
     }
 }

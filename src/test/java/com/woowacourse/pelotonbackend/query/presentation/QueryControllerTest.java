@@ -1,6 +1,8 @@
 package com.woowacourse.pelotonbackend.query.presentation;
 
-import static com.woowacourse.pelotonbackend.race.domain.RaceFixture.*;
+import static com.woowacourse.pelotonbackend.member.domain.MemberFixture.*;
+import static com.woowacourse.pelotonbackend.mission.domain.MissionFixture.*;
+import static com.woowacourse.pelotonbackend.rider.domain.RiderFixture.*;
 import static org.assertj.core.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.*;
@@ -12,13 +14,16 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import java.time.DayOfWeek;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.http.HttpHeaders;
+import org.assertj.core.util.Lists;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -52,15 +57,14 @@ import com.woowacourse.pelotonbackend.common.exception.RaceNotFoundException;
 import com.woowacourse.pelotonbackend.common.exception.TokenInvalidException;
 import com.woowacourse.pelotonbackend.docs.QueryDocumentation;
 import com.woowacourse.pelotonbackend.member.domain.LoginFixture;
+import com.woowacourse.pelotonbackend.member.domain.Member;
 import com.woowacourse.pelotonbackend.member.domain.MemberFixture;
 import com.woowacourse.pelotonbackend.member.presentation.LoginMemberArgumentResolver;
 import com.woowacourse.pelotonbackend.member.presentation.dto.MemberResponse;
+import com.woowacourse.pelotonbackend.mission.domain.Mission;
 import com.woowacourse.pelotonbackend.mission.domain.MissionFixture;
 import com.woowacourse.pelotonbackend.query.application.QueryService;
-import com.woowacourse.pelotonbackend.query.presentation.dto.RaceCertificationsResponse;
-import com.woowacourse.pelotonbackend.query.presentation.dto.RaceDetailResponse;
-import com.woowacourse.pelotonbackend.query.presentation.dto.UpcomingMissionResponse;
-import com.woowacourse.pelotonbackend.query.presentation.dto.UpcomingMissionResponses;
+import com.woowacourse.pelotonbackend.query.presentation.dto.*;
 import com.woowacourse.pelotonbackend.race.domain.Race;
 import com.woowacourse.pelotonbackend.race.domain.RaceFixture;
 import com.woowacourse.pelotonbackend.race.presentation.dto.RaceResponses;
@@ -100,7 +104,7 @@ class QueryControllerTest {
         final MemberResponse loginMember = MemberResponse.from(MemberFixture.createWithId(11L));
         final List<Rider> riders = RiderFixture.createRidersBy(loginMember.getId());
         final List<Race> races = riders.stream()
-            .map(rider -> createWithId(rider.getRaceId().getId()))
+            .map(rider -> RaceFixture.createWithId(rider.getRaceId().getId()))
             .collect(Collectors.toList());
         given(bearerAuthInterceptor.preHandle(any(HttpServletRequest.class), any(HttpServletResponse.class),
             any(HandlerMethod.class))).willReturn(true);
@@ -151,7 +155,7 @@ class QueryControllerTest {
         when(bearerAuthInterceptor.preHandle(any(HttpServletRequest.class), any(HttpServletResponse.class),
             any(HandlerMethod.class))).thenReturn(true);
 
-        mockMvc.perform(get("/api/queries/races/{raceId}/certifications", TEST_RACE_ID)
+        mockMvc.perform(get("/api/queries/races/{raceId}/certifications", RaceFixture.TEST_RACE_ID)
             .header(HttpHeaders.AUTHORIZATION, LoginFixture.getTokenHeader())
             .accept(MediaType.APPLICATION_JSON)
         )
@@ -163,11 +167,11 @@ class QueryControllerTest {
     @Test
     void findCertificationByNotExistRaceId() throws Exception {
         when(queryService.findCertificationsByRaceId(anyLong(), any(Pageable.class)))
-            .thenThrow(new RaceNotFoundException(TEST_RACE_ID));
+            .thenThrow(new RaceNotFoundException(RaceFixture.TEST_RACE_ID));
         when(bearerAuthInterceptor.preHandle(any(HttpServletRequest.class), any(HttpServletResponse.class),
             any(HandlerMethod.class))).thenReturn(true);
 
-        mockMvc.perform(get("/api/queries/races/{raceId}/certifications", TEST_RACE_ID)
+        mockMvc.perform(get("/api/queries/races/{raceId}/certifications", RaceFixture.TEST_RACE_ID)
             .header(HttpHeaders.AUTHORIZATION, LoginFixture.getTokenHeader())
             .accept(MediaType.APPLICATION_JSON)
         )
@@ -207,15 +211,15 @@ class QueryControllerTest {
     @DisplayName("레이스의 아이디로 레이스 상세정보를 조회한다.")
     @Test
     void findRaceDetail() throws Exception {
-        final Race race = createWithId(TEST_RACE_ID);
-        final List<DayOfWeek> days =  Arrays.asList(DayOfWeek.MONDAY, DayOfWeek.WEDNESDAY, DayOfWeek.FRIDAY);
+        final Race race = RaceFixture.createWithId(RaceFixture.TEST_RACE_ID);
+        final List<DayOfWeek> days = Arrays.asList(DayOfWeek.MONDAY, DayOfWeek.WEDNESDAY, DayOfWeek.FRIDAY);
         final RaceDetailResponse response = RaceDetailResponse.of(race, MissionFixture.MISSION_DURATION, days);
 
         when(queryService.findRaceDetail(anyLong())).thenReturn(response);
         when(bearerAuthInterceptor.preHandle(any(HttpServletRequest.class), any(HttpServletResponse.class),
             any(HandlerMethod.class))).thenReturn(true);
 
-        final MvcResult mvcResult = mockMvc.perform(get("/api/queries/races/{raceId}/detail", TEST_RACE_ID)
+        final MvcResult mvcResult = mockMvc.perform(get("/api/queries/races/{raceId}/detail", RaceFixture.TEST_RACE_ID)
             .header(HttpHeaders.AUTHORIZATION, LoginFixture.getTokenHeader())
             .accept(MediaType.APPLICATION_JSON)
         )
@@ -229,9 +233,57 @@ class QueryControllerTest {
         final TimeDuration expectedTimeDuration = new TimeDuration(MissionFixture.START_TIME.toLocalTime(),
             MissionFixture.END_TIME.toLocalTime());
         assertAll(
-            () -> assertThat(actualResponse).isEqualToComparingOnlyGivenFields(race, "id", "title", "description", "thumbnail", "certificationExample", "category", "entranceFee", "raceDuration"),
+            () -> assertThat(actualResponse).isEqualToComparingOnlyGivenFields(race, "id", "title", "description",
+                "thumbnail", "certificationExample", "category", "entranceFee", "raceDuration"),
             () -> assertThat(actualResponse.getMissionDuration()).isEqualTo(expectedTimeDuration),
             () -> assertThat(actualResponse.getDays()).isEqualTo(days)
         );
+    }
+
+    @DisplayName("레이스의 아이디로 멤버별 성취율을 계산한다.")
+    @Test
+    void findRaceAchievementRate() throws Exception {
+        final Race race = RaceFixture.createWithId(RaceFixture.TEST_RACE_ID);
+        final List<Rider> riders = createRidersByCount(5);
+        final List<Mission> missions = createMissionsWithRaceIdAndCount(RaceFixture.TEST_RACE_ID, 5);
+        final Map<Long, Integer> riderToCount = new HashMap<>();
+        riderToCount.put(1L, 3);
+        riderToCount.put(2L, 2);
+        riderToCount.put(3L, 1);
+        riderToCount.put(4L, 0);
+        riderToCount.put(5L, 5);
+        final List<Certification> certifications = CertificationFixture.createMockCertifications(riderToCount)
+            .getContent();
+        final List<Member> members = createMemberByCount(5);
+
+        final RaceAchievementRates response = RaceAchievementRates.create(race, riders, missions, certifications,
+            members);
+
+        when(queryService.findRaceAchievement(anyLong())).thenReturn(response);
+        when(bearerAuthInterceptor.preHandle(any(HttpServletRequest.class), any(HttpServletResponse.class),
+            any(HandlerMethod.class))).thenReturn(true);
+
+        final MvcResult mvcResult = mockMvc.perform(
+            get("/api/queries/races/{raceId}/achievement", RaceFixture.TEST_RACE_ID)
+                .header(HttpHeaders.AUTHORIZATION, LoginFixture.getTokenHeader())
+                .accept(MediaType.APPLICATION_JSON)
+        )
+            .andExpect(status().isOk())
+            .andDo(QueryDocumentation.getRaceAchievement())
+            .andReturn();
+
+        final byte[] serializedBody = mvcResult.getResponse().getContentAsByteArray();
+        final RaceAchievementRates results = objectMapper.readValue(serializedBody,
+            RaceAchievementRates.class);
+
+        assertThat(results.getRaceAchievementRates())
+            .usingRecursiveFieldByFieldElementComparator()
+            .isEqualTo(Lists.newArrayList(
+                RaceAchievementRate.of(members.get(0), 3, 60.0),
+                RaceAchievementRate.of(members.get(1), 2, 40.0),
+                RaceAchievementRate.of(members.get(2), 1, 20.0),
+                RaceAchievementRate.of(members.get(3), 0, 0.0),
+                RaceAchievementRate.of(members.get(4), 5, 100.0)
+            ));
     }
 }

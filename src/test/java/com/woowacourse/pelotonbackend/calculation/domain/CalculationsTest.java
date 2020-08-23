@@ -43,7 +43,7 @@ class CalculationsTest {
         riderIdToCount.put(4L, 2);
         riderIdToCount.put(5L, 0);
 
-        riders = RiderFixture.createRidersInSameRaceByCount(5);
+        riders = RiderFixture.createRiderResponseByCount(5);
         certifications = CertificationFixture.createMockRaceCertifications(riderIdToCount)
             .getCertifications()
             .getContent();
@@ -304,7 +304,7 @@ class CalculationsTest {
         List<CertificationResponse> certifications = CertificationFixture.createMockRaceCertifications(riderIdToCount)
             .getCertifications()
             .getContent();
-        final List<RiderResponse> riders = RiderFixture.createRidersInSameRaceByCount(riderIdToCount.size());
+        final List<RiderResponse> riders = RiderFixture.createRiderResponseByCount(riderIdToCount.size());
         final RaceResponse race = RaceFixture.retrieveResponse(entranceFee);
         return Calculations.create(certifications, riders, race);
     }

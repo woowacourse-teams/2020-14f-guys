@@ -2,12 +2,7 @@ package com.woowacourse.pelotonbackend.certification.domain;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Arrays;
-import java.util.Base64;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.LongStream;
 
@@ -16,14 +11,11 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jdbc.core.mapping.AggregateReference;
+import org.springframework.data.util.Streamable;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockMultipartFile;
 
-import com.woowacourse.pelotonbackend.certification.presentation.dto.CertificationDescriptionUpdateRequest;
-import com.woowacourse.pelotonbackend.certification.presentation.dto.CertificationRequest;
-import com.woowacourse.pelotonbackend.certification.presentation.dto.CertificationResponse;
-import com.woowacourse.pelotonbackend.certification.presentation.dto.CertificationResponses;
-import com.woowacourse.pelotonbackend.certification.presentation.dto.CertificationStatusUpdateRequest;
+import com.woowacourse.pelotonbackend.certification.presentation.dto.*;
 import com.woowacourse.pelotonbackend.query.presentation.dto.RaceCertificationsResponse;
 import com.woowacourse.pelotonbackend.vo.ImageUrl;
 
@@ -203,31 +195,16 @@ public class CertificationFixture {
     }
 
     public static RaceCertificationsResponse createMockRaceCertifications(final Map<Long, Integer> countToRiderId) {
-        final List<CertificationResponse> certifications = countToRiderId.entrySet().stream()
-            .map(entry -> createMockCertifications(entry.getValue(), entry.getKey()))
-            .flatMap(Collection::stream)
-            .collect(Collectors.toList());
-
-        return RaceCertificationsResponse.builder()
-            .certifications(new PageImpl<>(certifications))
-            .build();
+        return RaceCertificationsResponse.of(createMockCertifications(countToRiderId));
     }
 
-    private static List<CertificationResponse> createMockCertifications(final int count, final Long riderId) {
-        return LongStream.range(1, count + 1).
-            mapToObj(id -> createMockCertification(id, riderId))
+    public static Page<Certification> createMockCertifications(final Map<Long, Integer> countToRiderId) {
+        final List<Certification> certifications = countToRiderId.entrySet().stream()
+            .map(entry -> createPageCertifications(entry.getKey(), entry.getValue()))
+            .flatMap(Streamable::stream)
             .collect(Collectors.toList());
-    }
 
-    private static CertificationResponse createMockCertification(final Long id, final Long riderId) {
-        return CertificationResponse.builder()
-            .id(id)
-            .image(TEST_CERTIFICATION_FILE_URL)
-            .missionId(TEST_MISSION_ID)
-            .riderId(riderId)
-            .description(TEST_CERTIFICATION_DESCRIPTION)
-            .status(TEST_CERTIFICATION_STATUS)
-            .build();
+        return new PageImpl<>(certifications);
     }
 
     public static Map<Long, Integer> createRiderToCount() {
@@ -237,5 +214,22 @@ public class CertificationFixture {
         riderIdToCount.put(3L, 1);
 
         return riderIdToCount;
+    }
+
+    private static Page<Certification> createPageCertifications(final Long riderId, final int count) {
+        return new PageImpl<>(LongStream.range(1, count + 1).
+            mapToObj(id -> createMockCertification(id, riderId))
+            .collect(Collectors.toList()));
+    }
+
+    private static Certification createMockCertification(final Long id, final Long riderId) {
+        return Certification.builder()
+            .id(id)
+            .image(TEST_CERTIFICATION_FILE_URL)
+            .missionId(AggregateReference.to(TEST_MISSION_ID))
+            .riderId(AggregateReference.to(riderId))
+            .description(TEST_CERTIFICATION_DESCRIPTION)
+            .status(TEST_CERTIFICATION_STATUS)
+            .build();
     }
 }

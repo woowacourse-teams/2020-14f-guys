@@ -14,6 +14,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.stream.LongStream;
 
 import org.assertj.core.util.Lists;
 import org.springframework.data.jdbc.core.mapping.AggregateReference;
@@ -29,18 +30,25 @@ import com.woowacourse.pelotonbackend.rider.domain.RiderFixture;
 
 public class MissionFixture {
     public static final Long TEST_MISSION_ID = 1L;
-    public static final LocalDateTime START_TIME = LocalDateTime.parse(LocalDateTime.now().plusYears(2L).format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS")));
-    public static final LocalDateTime END_TIME = LocalDateTime.parse(LocalDateTime.now().plusYears(3L).format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS")));
+    public static final LocalDateTime START_TIME = LocalDateTime.parse(
+        LocalDateTime.now().plusYears(2L).format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS")));
+    public static final LocalDateTime END_TIME = LocalDateTime.parse(
+        LocalDateTime.now().plusYears(3L).format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS")));
     public static final long TEST_MISSION_ID2 = 2L;
     public static final long TEST_MISSION_ID3 = 3L;
     public static final long TEST_MISSION_ID4 = 4L;
     public static final long TEST_MISSION_ID5 = 5L;
     public static final DateTimeDuration MISSION_DURATION = new DateTimeDuration(START_TIME, END_TIME);
     private static final DateTimeDuration MISSION_UTC_DURATION = new DateTimeDuration(
-        LocalDateTime.parse(LocalDateTime.ofInstant(Instant.now(), ZoneOffset.UTC).format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS"))),
-        LocalDateTime.parse(LocalDateTime.ofInstant(Instant.now(), ZoneOffset.UTC).plusHours(9L).format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS"))));
-    public static final LocalDateTime START_TIME_UPDATED = LocalDateTime.parse(LocalDateTime.now().plusYears(9L).format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS")));
-    public static final LocalDateTime END_TIME_UPDATED = LocalDateTime.parse(LocalDateTime.now().plusYears(10L).format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS")));
+        LocalDateTime.parse(LocalDateTime.ofInstant(Instant.now(), ZoneOffset.UTC)
+            .format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS"))),
+        LocalDateTime.parse(LocalDateTime.ofInstant(Instant.now(), ZoneOffset.UTC)
+            .plusHours(9L)
+            .format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS"))));
+    public static final LocalDateTime START_TIME_UPDATED = LocalDateTime.parse(
+        LocalDateTime.now().plusYears(9L).format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS")));
+    public static final LocalDateTime END_TIME_UPDATED = LocalDateTime.parse(
+        LocalDateTime.now().plusYears(10L).format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS")));
     public static final DateTimeDuration MISSION_DURATION_UPDATED = new DateTimeDuration(START_TIME_UPDATED,
         END_TIME_UPDATED);
     public static final LocalDateTime CRITERION_TIME = LocalDateTime.of(2020, 8, 15, 7, 0);
@@ -237,6 +245,18 @@ public class MissionFixture {
     public static List<Mission> createMissionsWithRaceId(final Long raceId) {
         return createMissionsWithId(Arrays.asList(4L, 5L, 6L)).stream()
             .map(mission -> mission.toBuilder().raceId(AggregateReference.to(raceId)).build())
+            .collect(Collectors.toList());
+    }
+
+    public static List<Mission> createMissionsWithRaceIdAndCount(final Long raceId, final int count) {
+        return createMissionsWithId(
+            LongStream.rangeClosed(1, count)
+                .boxed()
+                .collect(Collectors.toList()))
+            .stream()
+            .map(mission -> mission.toBuilder()
+                .raceId(AggregateReference.to(raceId))
+                .build())
             .collect(Collectors.toList());
     }
 }

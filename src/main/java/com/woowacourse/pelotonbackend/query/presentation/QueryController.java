@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.woowacourse.pelotonbackend.member.presentation.dto.MemberResponse;
 import com.woowacourse.pelotonbackend.query.application.QueryService;
+import com.woowacourse.pelotonbackend.query.presentation.dto.RaceAchievementRates;
 import com.woowacourse.pelotonbackend.query.presentation.dto.RaceCertificationsResponse;
 import com.woowacourse.pelotonbackend.query.presentation.dto.RaceDetailResponse;
 import com.woowacourse.pelotonbackend.query.presentation.dto.UpcomingMissionResponses;
@@ -46,5 +47,11 @@ public class QueryController {
         @PathVariable final Long raceId) {
 
         return ResponseEntity.ok(queryService.findRaceDetail(raceId));
+    }
+
+    @GetMapping("/races/{raceId}/achievement")
+    public ResponseEntity<RaceAchievementRates> findRaceAchievementRates(@PathVariable final Long raceId) {
+
+        return ResponseEntity.ok(queryService.findRaceAchievement(raceId));
     }
 }
