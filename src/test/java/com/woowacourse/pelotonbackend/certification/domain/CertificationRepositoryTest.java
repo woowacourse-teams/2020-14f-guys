@@ -142,4 +142,23 @@ class CertificationRepositoryTest {
             .usingElementComparatorIgnoringFields("id", "createdAt", "updatedAt")
             .isEqualTo(certifications);
     }
+
+    @DisplayName("MissionIds와 CertificationStatus로 잘 가져오는 지 확인한다.")
+    @Test
+    void findByMissionIdsAndStatus() {
+        final Certification certification = createCertificationWithoutId();
+        final Long missionId = certification.getMissionId().getId();
+        final List<Certification> certifications =
+            Arrays.asList(certification, certification, certification, certification, certification);
+        certificationRepository.saveAll(certifications);
+
+        final Page<Certification> result = certificationRepository.findByMissionIdsAndStatus(
+            Collections.singletonList(missionId), CertificationStatus.SUCCESS.name(), PageRequest.of(0, Integer.MAX_VALUE));
+        assertThat(result.getTotalPages()).isEqualTo(1);
+        assertThat(result.getTotalElements()).isEqualTo(certifications.size());
+        assertThat(result.getContent())
+            .usingRecursiveFieldByFieldElementComparator()
+            .usingElementComparatorIgnoringFields("id", "createdAt", "updatedAt")
+            .isEqualTo(certifications);
+    }
 }

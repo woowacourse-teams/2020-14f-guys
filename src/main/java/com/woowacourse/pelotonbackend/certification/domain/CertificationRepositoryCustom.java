@@ -11,7 +11,7 @@ public interface CertificationRepositoryCustom {
 
     Page<Certification> findByMissionIds(List<Long> missionIds, Pageable pageable);
 
-    Page<Certification> findByMissionIdsAndStatus(List<Long> missionIds, CertificationStatus status,
+    Page<Certification> findByMissionIdsAndStatus(List<Long> missionIds, String status,
         Pageable pageable);
 
     Page<Certification> findByMissionIdsAndRiderIds(List<Long> missionIds, List<Long> riderIds, Pageable pageable);

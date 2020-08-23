@@ -63,7 +63,7 @@ public class CertificationRepositoryCustomImpl implements CertificationRepositor
     }
 
     @Override
-    public Page<Certification> findByMissionIdsAndStatus(final List<Long> missionIds, final CertificationStatus status,
+    public Page<Certification> findByMissionIdsAndStatus(final List<Long> missionIds, final String status,
         final Pageable pageable) {
         final SqlParameterSource parameterSource = new MapSqlParameterSource()
             .addValue("missionIds", missionIds)
