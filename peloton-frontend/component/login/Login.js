@@ -5,6 +5,7 @@ import {
   StyleSheet,
   TouchableOpacity,
   View,
+  Platform,
 } from "react-native";
 import KakaoLoginWebView from "./KakaoLoginWebView";
 import LoginTitle from "./LoginTitle";
@@ -23,9 +24,10 @@ import {
 } from "../../state/member/MemberState";
 import { MemberApi } from "../../utils/api/MemberApi";
 
-const AnimatedAppleButton = animated(
-  AppleAuthentication.AppleAuthenticationButton,
-);
+const AnimatedAppleButton =
+  Platform.OS === "ios"
+    ? animated(AppleAuthentication.AppleAuthenticationButton)
+    : null;
 
 const Login = () => {
   const [modalVisible, setModalVisible] = useState(false);
@@ -87,16 +89,18 @@ const Login = () => {
               source={require("../../assets/kakao_login_medium_wide.png")}
             />
           </TouchableOpacity>
-          <AnimatedAppleButton
-            buttonType={
-              AppleAuthentication.AppleAuthenticationButtonType.SIGN_IN
-            }
-            buttonStyle={
-              AppleAuthentication.AppleAuthenticationButtonStyle.BLACK
-            }
-            style={{ ...styles.loginButton, opacity: buttonOpacity.opacity }}
-            onPress={() => alert("힝 속았지?")}
-          />
+          {Platform.OS === "ios" && (
+            <AnimatedAppleButton
+              buttonType={
+                AppleAuthentication.AppleAuthenticationButtonType.SIGN_IN
+              }
+              buttonStyle={
+                AppleAuthentication.AppleAuthenticationButtonStyle.BLACK
+              }
+              style={{ ...styles.loginButton, opacity: buttonOpacity.opacity }}
+              onPress={() => alert("힝 속았지?")}
+            />
+          )}
         </View>
       </SafeAreaView>
     </LoadingIndicator>

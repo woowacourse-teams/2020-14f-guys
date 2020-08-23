@@ -1,7 +1,7 @@
 import React from "react";
 import { StyleSheet, View } from "react-native";
 import WebView from "react-native-webview";
-import { COLOR, SERVER_BASE_URL } from "../../utils/constants";
+import { COLOR, KAKAO_LOGIN_API_URI } from "../../utils/constants";
 import { useSetRecoilState } from "recoil";
 import { useNavigation } from "@react-navigation/core";
 import { navigateWithoutHistory } from "../../utils/util";
@@ -58,7 +58,7 @@ const KakaoLoginWebView = ({ toggleModal }) => {
       <View style={styles.webview}>
         <WebView
           useWebKit={true}
-          source={{ uri: `${SERVER_BASE_URL}/api/login` }}
+          source={{ uri: KAKAO_LOGIN_API_URI }}
           scalesPageToFit
           startInLoadingState={true}
           incognito={true}

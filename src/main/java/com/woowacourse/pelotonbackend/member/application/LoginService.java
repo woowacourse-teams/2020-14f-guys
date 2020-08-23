@@ -43,10 +43,6 @@ public class LoginService {
         this.basicProfileUrl = basicProfileUrl;
     }
 
-    public String createCodeUrl() {
-        return kakaoAPIService.getCodeUrl();
-    }
-
     public String createJwtTokenUrl(final String code) {
         return kakaoAPIService.createTokenUrl(createJwtToken(code));
     }

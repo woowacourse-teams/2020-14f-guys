@@ -42,11 +42,11 @@ const NameUpdate = () => {
   return (
     <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
       <View style={styles.container}>
-        <View style={styles.chargeContainer}>
+        <View style={styles.infoContainer}>
           <View style={{ width: "100%" }}>
-            <Text style={styles.chargeText}>변경할 닉네임을 입력해주세요</Text>
+            <Text style={styles.infoText}>변경할 닉네임을 입력해주세요</Text>
             <TextInput
-              style={styles.chargeInput}
+              style={styles.infoInput}
               onChangeText={(text) => setName(text)}
               value={name}
             />
@@ -65,23 +65,21 @@ const NameUpdate = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: COLOR.WHITE4,
   },
-  chargeContainer: {
+  infoContainer: {
     flex: 5,
     alignItems: "center",
     justifyContent: "center",
   },
-  chargeText: {
-    marginLeft: "14%",
+  infoText: {
+    marginHorizontal: "14%",
     color: COLOR.GREEN3,
     fontWeight: "bold",
     fontSize: 20,
-    lineHeight: 21,
     letterSpacing: -0.36,
     marginBottom: 20,
   },
-  chargeInput: {
+  infoInput: {
     backgroundColor: COLOR.WHITE,
     fontSize: 17,
     fontWeight: "300",

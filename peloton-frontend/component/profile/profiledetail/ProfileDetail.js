@@ -11,7 +11,7 @@ const ProfileDetail = () => {
     <View style={styles.container}>
       <View style={styles.memberContainer}>
         <ImageBackground
-          source={{ url: memberInfo.profile }}
+          source={{ uri: memberInfo.profile }}
           defaultSource={require("../../../assets/default-image-background.png")}
           style={styles.background}
           blurRadius={6}

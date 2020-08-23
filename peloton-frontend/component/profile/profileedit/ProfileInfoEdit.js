@@ -2,8 +2,9 @@ import React from "react";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { useRecoilValue } from "recoil";
 import { useNavigation } from "@react-navigation/core";
-import { memberInfoState } from "../../../state/member/MemberState";
 import { AntDesign } from "@expo/vector-icons";
+
+import { memberInfoState } from "../../../state/member/MemberState";
 import { COLOR } from "../../../utils/constants";
 
 const ProfileEditInfo = () => {

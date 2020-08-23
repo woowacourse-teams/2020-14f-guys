@@ -50,20 +50,6 @@ class LoginControllerTest {
             .build();
     }
 
-    @DisplayName("로그인 시 외부 API 로그인 화면으로 Redirection 한다.")
-    @Test
-    void redirectLoginPageTest() throws Exception {
-        given(bearerAuthInterceptor.preHandle(any(HttpServletRequest.class), any(HttpServletResponse.class), any()))
-            .willReturn(true);
-        given(loginService.createCodeUrl()).willReturn(URL+"?code="+CODE);
-
-        mockMvc.perform(get("/api/login"))
-            .andExpect(status().is3xxRedirection())
-            .andExpect(redirectedUrl(URL+"?code="+CODE))
-            .andExpect(header().string("location", URL+"?code="+CODE))
-            .andDo(LoginDocumentation.getCode());
-    }
-
     @DisplayName("토큰 생성 후 토큰이 담긴 화면으로 Redirection 한다.")
     @Test
     void redirectTokenPageTest() throws Exception {
