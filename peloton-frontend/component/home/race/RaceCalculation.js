@@ -1,55 +1,63 @@
 import React, { useEffect, useState } from "react";
 import { StyleSheet, Text, View } from "react-native";
 import { COLOR } from "../../../utils/constants";
-import { useRecoilValue } from "recoil/dist";
+import { useRecoilState, useRecoilValue } from "recoil/dist";
 import { memberInfoState, memberTokenState, } from "../../../state/member/MemberState";
 import { CalculationApi } from "../../../utils/api/CalculationApi";
+import { raceAchievementState } from "../../../state/certification/RaceAchievementState";
+import { ridersInfoState } from "../../../state/rider/RiderState";
+import { QueryApi } from "../../../utils/api/QueryApi";
 import CalculationResults from "./CalculationResults";
 
 const RaceCalculation = ({ route }) => {
   const token = useRecoilValue(memberTokenState);
   const memberInfo = useRecoilValue(memberInfoState);
+  const ridersInfo = useRecoilValue(ridersInfoState);
+  const [isCalculated, setIsCalculated] = useState(false);
   const raceId = route.params.id;
 
-  const [isCalculated, setIsCalculated] = useState(false);
-  const [calculations, setCalculations] = useState(null);
+  const [raceAchievement, setRaceAchievement] = useRecoilState(
+    raceAchievementState,
+  );
 
   useEffect(() => {
-    const fetchCalculations = () => {
-      CalculationApi.get(token, raceId)
-        .then((calculations) => {
-          setCalculations(calculations);
-          setIsCalculated(true);
-        })
-        .catch((e) => alert(e.response.data.message));
-    };
-    // fetchCalculations();
+    setIsCalculated(false);
+    const fetchCalculations = async () => {
+      try {
+        await CalculationApi.post(token, raceId);
+      } catch (e) {
+        alert(e.response.data.message);
+      }
+      try {
+        const achievement = await QueryApi.getRaceAchievement(token, raceId);
 
-    const mockCalculations = [
-      {
-        riderId: 1,
-        raceId: 100,
-        prize: 1000,
-        calculated: false,
-        createdAt: null,
-      },
-      {
-        riderId: 2,
-        raceId: 100,
-        prize: 2000,
-        calculated: false,
-        createdAt: null,
-      },
-      {
-        riderId: 3,
-        raceId: 100,
-        prize: 4000,
-        calculated: false,
-        createdAt: null,
-      },
-    ];
-    setCalculations(mockCalculations);
-    setIsCalculated(true);
+        const { calculationResponses: calculations } = await CalculationApi.get(
+          token,
+          raceId
+        );
+
+        console.log("achievement");
+        console.log(achievement);
+        console.log("---------");
+
+        const findPrizeByMember = (memberId) => {
+          const rider = ridersInfo.filter(
+            (rider) => rider.member_id === memberId,
+          )[0];
+          return calculations.filter(
+            (calculation) => calculation.rider_id === rider.id
+          )[0].prize;
+        };
+
+        achievement.race_achievement_rates.map(
+          (rate) => (rate.prize = findPrizeByMember(rate.member_id))
+        );
+        setRaceAchievement(achievement);
+      } catch (e) {
+        console.log(e.response.data.message);
+      }
+    };
+    fetchCalculations().then(() => setIsCalculated(true));
   }, []);
 
   return (
@@ -61,9 +69,13 @@ const RaceCalculation = ({ route }) => {
       </View>
       <View style={styles.bottom}>
         {isCalculated ? (
-          <CalculationResults calculations={calculations} />
+          <CalculationResults
+            achievementRates={raceAchievement.race_achievement_rates}
+          />
         ) : (
-          <Text>정산중</Text>
+          <View>
+            <Text>Loading중</Text>
+          </View>
         )}
       </View>
     </View>

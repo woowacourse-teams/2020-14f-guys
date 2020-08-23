@@ -1,28 +1,23 @@
 import React, { useEffect } from "react";
 import { StyleSheet, Text, View } from "react-native";
 import { COLOR } from "../../../utils/constants";
-import { useRecoilValue } from "recoil/dist";
-import { raceInfoState } from "../../../state/race/RaceState";
 
-const CalculationResult = ({ calculation, key }) => {
-  const raceInfo = useRecoilValue(raceInfoState);
-
-  const successRatio = (calculation.prize / raceInfo.entrance_fee) * 100;
+const CalculationResult = ({ achievementRate }) => {
+  const rate = achievementRate.achievement;
 
   useEffect(() => {
-    console.log(calculation.prize);
-    console.log(raceInfo.entrance_fee);
+    console.log(achievementRate.prize);
   }, []);
 
   return (
     <View style={styles.container}>
       <View style={styles.top}>
-        <Text style={styles.riderName}>{calculation.riderId}</Text>
-        <Text style={styles.prize}>{`${calculation.prize}원`}</Text>
+        <Text style={styles.riderName}>{achievementRate.member_name}</Text>
+        <Text style={styles.prize}>{`${achievementRate.prize}원`}</Text>
       </View>
       <View style={styles.bottom}>
-        <View style={[styles.successRatioBar, { width: `${successRatio}%` }]} />
-        <Text style={styles.successRatioText}>{`${successRatio}%`}</Text>
+        <View style={[styles.successRatioBar, { width: `${rate}%` }]} />
+        <Text style={styles.successRatioText}>{`${rate}%`}</Text>
       </View>
     </View>
   );
@@ -40,14 +35,12 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     marginBottom: 5,
-    // backgroundColor: COLOR.RED,
   },
   riderName: {
     flex: 1,
     minWidth: 50,
     fontSize: 18,
     fontWeight: "600",
-    // backgroundColor: COLOR.GREEN1,
   },
   prize: {
     flex: 3,
@@ -59,13 +52,14 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: "row",
     alignItems: "center",
-    // backgroundColor: COLOR.BLACK,
   },
   successRatioBar: {
-    height: "80%",
+    height: "70%",
     fontSize: 20,
     backgroundColor: COLOR.PURPLE,
     borderRadius: 120,
+    borderWidth: 5,
+    borderColor: COLOR.WHITE,
   },
   successRatioText: {
     fontSize: 14,
