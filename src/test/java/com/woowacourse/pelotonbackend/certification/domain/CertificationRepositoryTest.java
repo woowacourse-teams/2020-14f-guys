@@ -142,4 +142,55 @@ class CertificationRepositoryTest {
             .usingElementComparatorIgnoringFields("id", "createdAt", "updatedAt")
             .isEqualTo(certifications);
     }
+
+    @DisplayName("MissionIds와 CertificationStatus로 잘 가져오는 지 확인한다.")
+    @Test
+    void findByMissionIdsAndStatus() {
+        final Certification certification = createCertificationWithoutId();
+        final Long missionId = certification.getMissionId().getId();
+        final List<Certification> certifications =
+            Arrays.asList(certification, certification, certification, certification, certification);
+        certificationRepository.saveAll(certifications);
+
+        final Page<Certification> result = certificationRepository.findByMissionIdsAndStatus(
+            Collections.singletonList(missionId), CertificationStatus.SUCCESS, PageRequest.of(0, Integer.MAX_VALUE));
+        assertThat(result.getTotalPages()).isEqualTo(1);
+        assertThat(result.getTotalElements()).isEqualTo(certifications.size());
+        assertThat(result.getContent())
+            .usingRecursiveFieldByFieldElementComparator()
+            .usingElementComparatorIgnoringFields("id", "createdAt", "updatedAt")
+            .isEqualTo(certifications);
+    }
+
+    @DisplayName("MissionIds와 CertificationStatus로 잘 가져오는 지 확인한다."
+        + "모두 성공한 인증 5개, 실패한 인증 찾기 : 0개")
+    @Test
+    void findByMissionIdsAndStatusFail() {
+        final Certification certification = createCertificationWithoutId();
+        final Long missionId = certification.getMissionId().getId();
+        final List<Certification> certifications =
+            Arrays.asList(certification, certification, certification, certification, certification);
+        certificationRepository.saveAll(certifications);
+
+        final Page<Certification> result = certificationRepository.findByMissionIdsAndStatus(
+            Collections.singletonList(missionId), CertificationStatus.FAIL, PageRequest.of(0, Integer.MAX_VALUE));
+        assertThat(result.getTotalPages()).isEqualTo(0);
+        assertThat(result.getTotalElements()).isEqualTo(0);
+    }
+
+    @DisplayName("MissionIds와 CertificationStatus로 잘 가져오는 지 확인한다."
+        + "모두 성공한 인증 5개, 신고 받은 인증을 찾기 : 0개")
+    @Test
+    void findByMissionIdsAndStatusReported() {
+        final Certification certification = createCertificationWithoutId();
+        final Long missionId = certification.getMissionId().getId();
+        final List<Certification> certifications =
+            Arrays.asList(certification, certification, certification, certification, certification);
+        certificationRepository.saveAll(certifications);
+
+        final Page<Certification> result = certificationRepository.findByMissionIdsAndStatus(
+            Collections.singletonList(missionId), CertificationStatus.REPORTED, PageRequest.of(0, Integer.MAX_VALUE));
+        assertThat(result.getTotalPages()).isEqualTo(0);
+        assertThat(result.getTotalElements()).isEqualTo(0);
+    }
 }

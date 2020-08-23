@@ -49,8 +49,9 @@ public class CalculationService {
 
             calculationRepository.save(receivedCalculation);
         } else {
-            final Calculations originCalculations = Calculations.create(queryService.findCertificationsByRaceId(raceId,
-                PageRequest.of(0, Integer.MAX_VALUE)).getCertifications().getContent(), riders, race);
+            final Calculations originCalculations = Calculations.create(
+                queryService.findCertificationsByRaceId(raceId, PageRequest.of(0, Integer.MAX_VALUE))
+                    .getCertifications().getContent(), riders, race);
             final Calculation receivedCalculation = originCalculations.receivePrize(rider.getId());
             final Calculations updatedCalculations = originCalculations.replaceCalculatedItem(receivedCalculation);
             updateMemberCash(memberResponse, receivedCalculation);

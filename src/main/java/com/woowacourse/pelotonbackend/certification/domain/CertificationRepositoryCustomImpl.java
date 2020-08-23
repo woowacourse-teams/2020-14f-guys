@@ -67,7 +67,7 @@ public class CertificationRepositoryCustomImpl implements CertificationRepositor
         final Pageable pageable) {
         final SqlParameterSource parameterSource = new MapSqlParameterSource()
             .addValue("missionIds", missionIds)
-            .addValue("status", status)
+            .addValue("status", status.name())
             .addValue("offset", pageable.getOffset())
             .addValue("pageSize", pageable.getPageSize());
 
