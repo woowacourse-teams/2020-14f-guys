@@ -5,7 +5,6 @@ import static org.assertj.core.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.BDDMockito.*;
 
-import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.Collections;
@@ -59,8 +58,8 @@ class MissionServiceTest {
     @DisplayName("미션을 생성한다.")
     @Test
     void createMissionFromRace() {
-        List<LocalDate> dates = MissionFixture.datesFixture();
-        List<DateTimeDuration> dateTimeDurations = MissionFixture.dateTimeDurationsFixture();
+        final List<LocalDate> dates = MissionFixture.datesFixture();
+        final List<DateTimeDuration> dateTimeDurations = MissionFixture.dateTimeDurationsFixture();
         given(dateParser.convertDayToDate(any(DateDuration.class), anyList()))
             .willReturn(dates);
         given(dateParser.convertDateToDuration(dates, MissionFixture.timeDurationFixture()))
@@ -68,7 +67,7 @@ class MissionServiceTest {
         given(randomGenerator.getRandomIntLowerThan(RaceCategory.TIME.getMissionInstructions().size()))
             .willReturn(MISSION_INSTRUCTION_INDEX);
 
-        List<Mission> expectedToSave = dateTimeDurations.stream()
+        final List<Mission> expectedToSave = dateTimeDurations.stream()
             .map(dateTimeDuration -> Mission.builder()
                 .missionInstruction(RaceCategory.TIME.getMissionInstructions().get(MISSION_INSTRUCTION_INDEX))
                 .raceId(AggregateReference.to(TEST_RACE_ID))
@@ -83,33 +82,30 @@ class MissionServiceTest {
     @DisplayName("미션을 정상적으로 생성한다.")
     @Test
     void create() {
-        Mission savedMission = MissionFixture.createWithId(1L);
+        final Mission savedMission = MissionFixture.createWithId(1L);
         given(missionRepository.save(any(Mission.class))).willReturn(savedMission);
 
-        Long missionId = missionService.createFromRace(MissionFixture.mockCreateRequest());
+        final Long missionId = missionService.createFromRace(MissionFixture.mockCreateRequest());
 
         assertThat(missionId).isEqualTo(savedMission.getId());
     }
 
-    /**
-     * 2020/08/22 SAT
-     */
     @DisplayName("레이스 기간중에 해당되는 요일이 없을 시 예외를 던진다.")
     @Test
     void noMissionDatesThrowError() {
         final LocalDate date = LocalDate.of(2020, 8, 22);
-        given(dateParser.convertDayToDate(new DateDuration(date, date), Collections.singletonList(DayOfWeek.MONDAY)))
+        given(dateParser.convertDayToDate(new DateDuration(date, date), Collections.singletonList(MissionFixture.NOT_CONTAINED_DAY)))
             .willReturn(Collections.emptyList());
 
         final RaceCreateRequest request = RaceCreateRequest.builder()
             .raceDuration(new DateDuration(date, date))
-            .days(Collections.singletonList(DayOfWeek.MONDAY))
+            .days(Collections.singletonList(MissionFixture.NOT_CONTAINED_DAY))
             .build();
 
         assertThatThrownBy(() -> missionService.createFromRace(TEST_RACE_ID, request))
             .isInstanceOf(MissionNotCreatedException.class)
             .hasMessage(String.format("레이스 기간 %s에 %s 요일들이 포함되지 않습니다.",
-                new DateDuration(date, date), Collections.singletonList(DayOfWeek.MONDAY)));
+                new DateDuration(date, date), Collections.singletonList(MissionFixture.NOT_CONTAINED_DAY)));
     }
 
     @DisplayName("미션을 정상적으로 조회한다.")
@@ -158,7 +154,7 @@ class MissionServiceTest {
         final Mission mission = MissionFixture.createWithIdAndRaceId(raceId);
         given(missionRepository.findByRaceId(anyLong())).willReturn(Arrays.asList(mission));
 
-        MissionResponses response = missionService.retrieveByRaceId(raceId);
+        final MissionResponses response = missionService.retrieveByRaceId(raceId);
 
         assertThat(response.getMissionRetrieveResponses().get(0).getRaceId()).isEqualTo(raceId);
     }

@@ -27,13 +27,15 @@ import lombok.RequiredArgsConstructor;
 @Service
 @Transactional
 public class MissionService {
+    private static final int ZERO_SIZE = 0;
+
     private final MissionRepository missionRepository;
     private final CustomDateParser dateParser;
     private final RandomGenerator randomGenerator;
 
     public void createFromRace(final long raceId, final RaceCreateRequest request) {
         final List<LocalDate> missionDates = dateParser.convertDayToDate(request.getRaceDuration(), request.getDays());
-        if (missionDates.size() == 0) {
+        if (missionDates.size() == ZERO_SIZE) {
             throw new MissionNotCreatedException(request.getRaceDuration(), request.getDays());
         }
 
