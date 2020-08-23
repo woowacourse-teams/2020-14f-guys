@@ -155,7 +155,6 @@ const CertificationSubmit = ({ route }) => {
                 {raceMission.mission.mission_instruction}
               </Text>
             </View>
-
             {isNotExample() ? (
               <View style={styles.absoluteBottom}>
                 <FullWidthButton
@@ -196,7 +195,7 @@ const styles = StyleSheet.create({
   },
   instructionContainer: {
     marginTop: 25,
-    marginHorizontal: 40,
+    marginHorizontal: 20,
   },
   instructionTitle: {
     fontSize: 12,
@@ -230,7 +229,7 @@ const styles = StyleSheet.create({
   },
   descriptionInput: {
     alignSelf: "flex-start",
-    marginHorizontal: 40,
+    marginHorizontal: 20,
   },
 });
 

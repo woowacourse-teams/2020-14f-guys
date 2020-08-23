@@ -1,6 +1,6 @@
 import React from "react";
-import { Text, View, StyleSheet } from "react-native";
-import { COLOR, deviceWidth } from "../../utils/constants";
+import { StyleSheet, View } from "react-native";
+import { COLOR } from "../../utils/constants";
 
 const BorderLine = () => {
   return <View style={styles.border} />;

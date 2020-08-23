@@ -26,12 +26,11 @@ const MissionContent = ({ mission }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    marginHorizontal: 40,
+    marginHorizontal: 20,
     marginTop: 50,
   },
   durationContainer: {
     flexDirection: "row",
-    paddingLeft: 7,
     alignItems: "flex-end",
     paddingBottom: 5,
   },
