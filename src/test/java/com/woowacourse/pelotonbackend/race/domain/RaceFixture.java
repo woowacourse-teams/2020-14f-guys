@@ -114,7 +114,7 @@ public class RaceFixture {
             .category(TEST_CATEGORY)
             .entranceFee(new Cash(TEST_MONEY_AMOUNT))
             .raceDuration(new DateDuration(TEST_START_TIME_PAST, TEST_END_TIME_PAST))
-            .days(Arrays.asList(DayOfWeek.MONDAY, DayOfWeek.SUNDAY, DayOfWeek.TUESDAY))
+            .days(Arrays.asList(DayOfWeek.WEDNESDAY, DayOfWeek.THURSDAY))
             .certificationAvailableDuration(MissionFixture.timeDurationFixture())
             .build();
     }
