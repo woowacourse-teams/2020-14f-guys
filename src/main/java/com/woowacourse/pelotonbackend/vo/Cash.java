@@ -62,7 +62,7 @@ public class Cash {
         return Cash.of(cash);
     }
 
-    public Cash divide(final long denominator) {
-        return new Cash(this.cash.divide(BigDecimal.valueOf(denominator), ENOUGH_BIG, RoundingMode.HALF_UP));
+    public Cash divide(final long divisor) {
+        return new Cash(this.cash.divide(BigDecimal.valueOf(divisor), ENOUGH_BIG, RoundingMode.HALF_UP));
     }
 }
