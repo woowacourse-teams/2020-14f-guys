@@ -30,7 +30,7 @@ public class Calculation {
 
     private final AggregateReference<Race, @NotNull Long> raceId;
 
-    private boolean isCalculated;
+    private final boolean isCalculated;
 
     @Embedded.Empty @Valid
     private final Cash prize;

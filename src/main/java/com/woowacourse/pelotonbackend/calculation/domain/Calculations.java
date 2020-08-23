@@ -7,6 +7,7 @@ import java.util.stream.Collectors;
 
 import org.springframework.data.jdbc.core.mapping.AggregateReference;
 
+import com.woowacourse.pelotonbackend.certification.domain.CertificationStatus;
 import com.woowacourse.pelotonbackend.certification.presentation.dto.CertificationResponse;
 import com.woowacourse.pelotonbackend.common.exception.RiderInvalidException;
 import com.woowacourse.pelotonbackend.race.presentation.dto.RaceResponse;
@@ -90,6 +91,7 @@ public class Calculations {
         final List<RiderResponse> riders) {
 
         final Map<Long, Long> certificationCountPerRider = certifications.stream()
+            .filter(certificationResponse -> certificationResponse.getStatus().equals(CertificationStatus.SUCCESS))
             .collect(Collectors.groupingBy(CertificationResponse::getRiderId, Collectors.counting()));
 
         return riders.stream()
