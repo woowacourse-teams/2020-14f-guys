@@ -11,6 +11,8 @@ import com.woowacourse.pelotonbackend.calculation.domain.Calculation;
 import com.woowacourse.pelotonbackend.calculation.domain.CalculationRepository;
 import com.woowacourse.pelotonbackend.calculation.domain.Calculations;
 import com.woowacourse.pelotonbackend.calculation.presentation.CalculationResponses;
+import com.woowacourse.pelotonbackend.certification.domain.CertificationStatus;
+import com.woowacourse.pelotonbackend.certification.presentation.dto.CertificationResponse;
 import com.woowacourse.pelotonbackend.common.exception.CalculationNotFoundException;
 import com.woowacourse.pelotonbackend.common.exception.RaceNotFinishedException;
 import com.woowacourse.pelotonbackend.common.exception.UnAuthenticatedException;
@@ -49,9 +51,10 @@ public class CalculationService {
 
             calculationRepository.save(receivedCalculation);
         } else {
-            final Calculations originCalculations = Calculations.create(
-                queryService.findCertificationsByRaceId(raceId, PageRequest.of(0, Integer.MAX_VALUE))
-                    .getCertifications().getContent(), riders, race);
+            final List<CertificationResponse> certifications = queryService.findCertificationsByRaceIdAndStatus(
+                raceId, CertificationStatus.SUCCESS, PageRequest.of(0, Integer.MAX_VALUE))
+                .getCertifications().getContent();
+            final Calculations originCalculations = Calculations.create(certifications, riders, race);
             final Calculation receivedCalculation = originCalculations.receivePrize(rider.getId());
             final Calculations updatedCalculations = originCalculations.replaceCalculatedItem(receivedCalculation);
             updateMemberCash(memberResponse, receivedCalculation);

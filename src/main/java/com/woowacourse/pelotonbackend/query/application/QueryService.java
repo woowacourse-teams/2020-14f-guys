@@ -24,7 +24,11 @@ import com.woowacourse.pelotonbackend.member.domain.MemberRepository;
 import com.woowacourse.pelotonbackend.member.presentation.dto.MemberResponse;
 import com.woowacourse.pelotonbackend.mission.domain.Mission;
 import com.woowacourse.pelotonbackend.mission.domain.MissionRepository;
-import com.woowacourse.pelotonbackend.query.presentation.dto.*;
+import com.woowacourse.pelotonbackend.query.presentation.dto.RaceAchievementRates;
+import com.woowacourse.pelotonbackend.query.presentation.dto.RaceCertificationsResponse;
+import com.woowacourse.pelotonbackend.query.presentation.dto.RaceDetailResponse;
+import com.woowacourse.pelotonbackend.query.presentation.dto.UpcomingMissionResponse;
+import com.woowacourse.pelotonbackend.query.presentation.dto.UpcomingMissionResponses;
 import com.woowacourse.pelotonbackend.race.domain.Race;
 import com.woowacourse.pelotonbackend.race.domain.RaceRepository;
 import com.woowacourse.pelotonbackend.race.presentation.dto.RaceResponses;
@@ -54,11 +58,11 @@ public class QueryService {
             .collect(Collectors.collectingAndThen(Collectors.toList(), raceRepository::findAllById));
     }
 
-    public RaceCertificationsResponse findCertificationsByRaceId(final Long raceId, final Pageable pageable) {
+    public RaceCertificationsResponse findCertificationsByRaceIdAndStatus(final Long raceId, final CertificationStatus status, final Pageable pageable) {
         final List<Long> missionIds = missionRepository.findByRaceId(raceId).stream()
             .map(Mission::getId)
             .collect(Collectors.toList());
-        Page<Certification> certifications = certificationRepository.findByMissionIds(missionIds, pageable);
+        Page<Certification> certifications = certificationRepository.findByMissionIdsAndStatus(missionIds, status, pageable);
 
         return RaceCertificationsResponse.of(certifications);
     }

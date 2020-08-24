@@ -64,8 +64,8 @@ class CertificationRepositoryTest {
     void findByMissionId() {
         final Certification certification = createCertificationWithoutId();
         certificationRepository.save(certification);
-        final Page<Certification> certifications = certificationRepository.findByMissionIds(
-            Arrays.asList(TEST_MISSION_ID), PageRequest.of(0, 1));
+        final Page<Certification> certifications = certificationRepository.findByMissionIdsAndStatus(
+            Arrays.asList(TEST_MISSION_ID), CertificationStatus.SUCCESS, PageRequest.of(0, 1));
 
         assertAll(
             () -> assertThat(certifications.getTotalPages()).isEqualTo(1),
@@ -133,8 +133,8 @@ class CertificationRepositoryTest {
             Arrays.asList(certification, certification, certification, certification, certification);
         certificationRepository.saveAll(certifications);
 
-        final Page<Certification> result = certificationRepository.findByMissionIds(
-            Collections.singletonList(missionId), PageRequest.of(0, Integer.MAX_VALUE));
+        final Page<Certification> result = certificationRepository.findByMissionIdsAndStatus(
+            Collections.singletonList(missionId), CertificationStatus.SUCCESS, PageRequest.of(0, Integer.MAX_VALUE));
         assertThat(result.getTotalPages()).isEqualTo(1);
         assertThat(result.getTotalElements()).isEqualTo(certifications.size());
         assertThat(result.getContent())

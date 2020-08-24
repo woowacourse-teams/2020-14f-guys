@@ -51,6 +51,7 @@ import org.springframework.web.method.support.ModelAndViewContainer;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.woowacourse.pelotonbackend.certification.domain.Certification;
 import com.woowacourse.pelotonbackend.certification.domain.CertificationFixture;
+import com.woowacourse.pelotonbackend.certification.domain.CertificationStatus;
 import com.woowacourse.pelotonbackend.certification.domain.TimeDuration;
 import com.woowacourse.pelotonbackend.common.ErrorCode;
 import com.woowacourse.pelotonbackend.common.exception.RaceNotFoundException;
@@ -64,7 +65,12 @@ import com.woowacourse.pelotonbackend.member.presentation.dto.MemberResponse;
 import com.woowacourse.pelotonbackend.mission.domain.Mission;
 import com.woowacourse.pelotonbackend.mission.domain.MissionFixture;
 import com.woowacourse.pelotonbackend.query.application.QueryService;
-import com.woowacourse.pelotonbackend.query.presentation.dto.*;
+import com.woowacourse.pelotonbackend.query.presentation.dto.RaceAchievementRate;
+import com.woowacourse.pelotonbackend.query.presentation.dto.RaceAchievementRates;
+import com.woowacourse.pelotonbackend.query.presentation.dto.RaceCertificationsResponse;
+import com.woowacourse.pelotonbackend.query.presentation.dto.RaceDetailResponse;
+import com.woowacourse.pelotonbackend.query.presentation.dto.UpcomingMissionResponse;
+import com.woowacourse.pelotonbackend.query.presentation.dto.UpcomingMissionResponses;
 import com.woowacourse.pelotonbackend.race.domain.Race;
 import com.woowacourse.pelotonbackend.race.domain.RaceFixture;
 import com.woowacourse.pelotonbackend.race.presentation.dto.RaceResponses;
@@ -151,7 +157,7 @@ class QueryControllerTest {
             CertificationFixture.createMockPagedCertifications(PageRequest.of(0, 1));
         final RaceCertificationsResponse response = RaceCertificationsResponse.of(pagedCertifications);
 
-        when(queryService.findCertificationsByRaceId(anyLong(), any(Pageable.class))).thenReturn(response);
+        when(queryService.findCertificationsByRaceIdAndStatus(anyLong(), any(CertificationStatus.class), any(Pageable.class))).thenReturn(response);
         when(bearerAuthInterceptor.preHandle(any(HttpServletRequest.class), any(HttpServletResponse.class),
             any(HandlerMethod.class))).thenReturn(true);
 
@@ -166,7 +172,7 @@ class QueryControllerTest {
     @DisplayName("존재하지 않는 race의 아이디로 인증을 조회한다.")
     @Test
     void findCertificationByNotExistRaceId() throws Exception {
-        when(queryService.findCertificationsByRaceId(anyLong(), any(Pageable.class)))
+        when(queryService.findCertificationsByRaceIdAndStatus(anyLong(), any(CertificationStatus.class), any(Pageable.class)))
             .thenThrow(new RaceNotFoundException(RaceFixture.TEST_RACE_ID));
         when(bearerAuthInterceptor.preHandle(any(HttpServletRequest.class), any(HttpServletResponse.class),
             any(HandlerMethod.class))).thenReturn(true);

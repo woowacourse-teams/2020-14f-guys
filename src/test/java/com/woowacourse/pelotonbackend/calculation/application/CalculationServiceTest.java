@@ -21,6 +21,7 @@ import com.woowacourse.pelotonbackend.calculation.domain.CalculationFixture;
 import com.woowacourse.pelotonbackend.calculation.domain.CalculationRepository;
 import com.woowacourse.pelotonbackend.calculation.presentation.CalculationResponse;
 import com.woowacourse.pelotonbackend.certification.domain.CertificationFixture;
+import com.woowacourse.pelotonbackend.certification.domain.CertificationStatus;
 import com.woowacourse.pelotonbackend.common.exception.CalculationNotFoundException;
 import com.woowacourse.pelotonbackend.common.exception.DuplicateCalculationException;
 import com.woowacourse.pelotonbackend.common.exception.RaceNotFinishedException;
@@ -71,7 +72,7 @@ class CalculationServiceTest {
     void create() {
         when(riderService.retrieveByRaceId(anyLong())).thenReturn(
             RiderResponses.of(RiderFixture.createRidersByCount(5)));
-        when(queryService.findCertificationsByRaceId(anyLong(), any())).thenReturn(
+        when(queryService.findCertificationsByRaceIdAndStatus(anyLong(), any(CertificationStatus.class), any())).thenReturn(
             CertificationFixture.createMockRaceCertifications(countToRiderId));
         when(raceService.retrieve(anyLong())).thenReturn(RaceFixture.retrieveFinishedResponse());
 
