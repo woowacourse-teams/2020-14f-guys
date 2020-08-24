@@ -23,7 +23,6 @@ const CashUpdate = () => {
   const [cash, setCash] = React.useState(5000);
   const token = useRecoilValue(memberTokenState);
   const navigation = useNavigation();
-  const setMemberInfo = useSetRecoilState(memberInfoState);
 
   const validateCash = (value) => {
     const onlyNumber = /^[0-9]+$/;
@@ -53,8 +52,7 @@ const CashUpdate = () => {
     }
     try {
       await MemberApi.patchCash(token, cash);
-      const response = await MemberApi.get(token);
-      setMemberInfo(response);
+      Alert.alert("", "충전 요청이 정상적으로 완료되었어요! 😊");
       navigation.navigate("ProfileEdit");
     } catch (error) {
       Alert.alert("", error.response.data.code);

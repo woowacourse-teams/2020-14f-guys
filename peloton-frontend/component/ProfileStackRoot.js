@@ -22,7 +22,7 @@ const ProfileStackRoot = () => {
         name="ProfileEdit"
         component={ProfileEdit}
         options={{
-          title: "Settings",
+          title: "내 정보 수정",
         }}
       />
       <ProfileStack.Screen
@@ -38,12 +38,6 @@ const ProfileStackRoot = () => {
         options={{
           title: "닉네임 변경",
         }}
-      />
-
-      <ProfileStack.Screen
-        name="License"
-        component={License}
-        options={{ title: "오픈소스 라이선스" }}
       />
     </ProfileStack.Navigator>
   );
