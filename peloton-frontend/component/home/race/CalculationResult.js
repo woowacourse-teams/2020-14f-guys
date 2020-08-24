@@ -1,13 +1,9 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { StyleSheet, Text, View } from "react-native";
 import { COLOR } from "../../../utils/constants";
 
 const CalculationResult = ({ achievementRate }) => {
   const rate = achievementRate.achievement;
-
-  useEffect(() => {
-    console.log(achievementRate.prize);
-  }, []);
 
   return (
     <View style={styles.container}>
