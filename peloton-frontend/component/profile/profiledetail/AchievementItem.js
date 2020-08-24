@@ -2,7 +2,7 @@ import React from "react";
 import { StyleSheet, Text, View } from "react-native";
 import { COLOR } from "../../../utils/constants";
 
-const AchievementItem = ({ achievement, raceTitle, color }) => {
+const AchievementItem = ({ achievement, raceTitle }) => {
   return (
     <View style={styles.container}>
       <Text style={styles.ratio}>{`${achievement}%`}</Text>

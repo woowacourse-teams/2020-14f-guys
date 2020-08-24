@@ -1,6 +1,5 @@
-import React, { useEffect, useState } from "react";
-import { ScrollView, StyleSheet, Text, View } from "react-native";
-import { ACHIEVEMENT_COLORS, COLOR } from "../../../utils/constants";
+import React, { useEffect } from "react";
+import { Alert, ScrollView, StyleSheet } from "react-native";
 import { QueryApi } from "../../../utils/api/QueryApi";
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil/dist";
 import {
@@ -18,10 +17,6 @@ const AchievementItems = () => {
     achievementRatesState
   );
   const setIsLoading = useSetRecoilState(loadingState);
-
-  const getRandomColor = (index) => {
-    return ACHIEVEMENT_COLORS[index % ACHIEVEMENT_COLORS.length];
-  };
 
   useEffect(() => {
     setIsLoading(true);
@@ -43,6 +38,7 @@ const AchievementItems = () => {
         );
         setAchievementRates(response);
       } catch (e) {
+        Alert.alert("", e.response.data.code);
         console.log(e.response.data.message);
       }
       setIsLoading(false);
@@ -52,13 +48,12 @@ const AchievementItems = () => {
 
   return (
     <ScrollView horizontal={true} contentContainerStyle={styles.container}>
-      {achievementRates.map((achievementRate, index) => (
+      {achievementRates.map((achievementRate) => (
         <AchievementItem
           key={achievementRate.race_id}
           achievement={achievementRate.achievement}
           raceTitle={achievementRate.race_title.substr(0, 8)}
           certificationCount={achievementRate.certification_count}
-          color={getRandomColor(index)}
         />
       ))}
     </ScrollView>
