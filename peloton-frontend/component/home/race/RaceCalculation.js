@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { StyleSheet, Text, View } from "react-native";
 import { COLOR } from "../../../utils/constants";
 import { useRecoilState, useRecoilValue } from "recoil/dist";
+import { useNavigation } from "@react-navigation/core";
 import { memberInfoState, memberTokenState, } from "../../../state/member/MemberState";
 import { CalculationApi } from "../../../utils/api/CalculationApi";
 import { raceAchievementState } from "../../../state/certification/RaceAchievementState";
@@ -10,6 +11,7 @@ import { QueryApi } from "../../../utils/api/QueryApi";
 import CalculationResults from "./CalculationResults";
 
 const RaceCalculation = ({ route }) => {
+  const navigation = useNavigation();
   const token = useRecoilValue(memberTokenState);
   const memberInfo = useRecoilValue(memberInfoState);
   const ridersInfo = useRecoilValue(ridersInfoState);
@@ -22,6 +24,9 @@ const RaceCalculation = ({ route }) => {
 
   useEffect(() => {
     setIsCalculated(false);
+    console.log("------");
+    console.log("raceId");
+    console.log(raceId);
     const fetchCalculations = async () => {
       try {
         await CalculationApi.post(token, raceId);
@@ -35,7 +40,7 @@ const RaceCalculation = ({ route }) => {
           token,
           raceId
         );
-
+        console.log("--");
         console.log("achievement");
         console.log(achievement);
         console.log("---------");
@@ -54,6 +59,7 @@ const RaceCalculation = ({ route }) => {
         );
         setRaceAchievement(achievement);
       } catch (e) {
+        navigation.goBack();
         console.log(e.response.data.message);
       }
     };
