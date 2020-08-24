@@ -29,15 +29,17 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   memberContainer: {
-    flex: 9,
+    flex: 1,
     alignItems: "center",
+    minHeight: 290,
   },
   background: {
     flex: 1,
     width: "120%",
   },
   raceContainer: {
-    flex: 11,
+    flex: 1,
+    minHeight: 360,
   },
 });
 
