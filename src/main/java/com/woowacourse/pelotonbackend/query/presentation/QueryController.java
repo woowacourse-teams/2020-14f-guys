@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.woowacourse.pelotonbackend.certification.domain.CertificationStatus;
 import com.woowacourse.pelotonbackend.member.presentation.dto.MemberResponse;
 import com.woowacourse.pelotonbackend.query.application.QueryService;
 import com.woowacourse.pelotonbackend.query.presentation.dto.RaceAchievementRates;
@@ -32,7 +33,7 @@ public class QueryController {
     public ResponseEntity<RaceCertificationsResponse> findCertificationsByRaceId(
         @PathVariable final Long raceId, final Pageable pageable) {
 
-        return ResponseEntity.ok(queryService.findCertificationsByRaceId(raceId, pageable));
+        return ResponseEntity.ok(queryService.findCertificationsByRaceIdAndStatus(raceId, CertificationStatus.SUCCESS, pageable));
     }
 
     @GetMapping("/missions/upcoming")

@@ -10,7 +10,13 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.BDDMockito.*;
 
 import java.time.LocalDateTime;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.assertj.core.util.Lists;
@@ -30,6 +36,7 @@ import org.springframework.data.jdbc.core.mapping.AggregateReference;
 import com.woowacourse.pelotonbackend.certification.domain.Certification;
 import com.woowacourse.pelotonbackend.certification.domain.CertificationFixture;
 import com.woowacourse.pelotonbackend.certification.domain.CertificationRepository;
+import com.woowacourse.pelotonbackend.certification.domain.CertificationStatus;
 import com.woowacourse.pelotonbackend.certification.domain.TimeDuration;
 import com.woowacourse.pelotonbackend.certification.presentation.dto.CertificationResponse;
 import com.woowacourse.pelotonbackend.member.domain.Member;
@@ -118,9 +125,11 @@ class QueryServiceTest {
     void findCertificationByRaceId() {
         final PageRequest page = PageRequest.of(0, 1);
         when(missionRepository.findByRaceId(anyLong())).thenReturn(Arrays.asList(MissionFixture.createWithId()));
-        when(certificationRepository.findByMissionIds(any(), any(Pageable.class)))
+        when(certificationRepository.findByMissionIdsAndStatus(any(), any(CertificationStatus.class),
+            any(Pageable.class)))
             .thenReturn(CertificationFixture.createMockPagedCertifications(page));
-        final Page<CertificationResponse> certifications = queryService.findCertificationsByRaceId(1L, page)
+        final Page<CertificationResponse> certifications = queryService.findCertificationsByRaceIdAndStatus(1L,
+            CertificationStatus.SUCCESS, page)
             .getCertifications();
 
         assertAll(
@@ -250,7 +259,7 @@ class QueryServiceTest {
         assertThat(responses)
             .usingRecursiveFieldByFieldElementComparator()
             .isEqualTo(Lists.newArrayList(
-                RaceAchievementRate.of(members.get(0), 3,60.0),
+                RaceAchievementRate.of(members.get(0), 3, 60.0),
                 RaceAchievementRate.of(members.get(1), 2, 40.0),
                 RaceAchievementRate.of(members.get(2), 1, 20.0),
                 RaceAchievementRate.of(members.get(3), 0, 0.0),
