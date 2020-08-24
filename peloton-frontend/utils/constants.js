@@ -105,7 +105,7 @@ export const RACE_CATEGORY_STUDY = "STUDY";
 export const RACE_CATEGORY_PLAY = "PLAY";
 export const RACE_CATEGORY_EXERCISE = "EXERCISE";
 
-export const SERVER_BASE_URL = "https://peloton.ga";
+export const SERVER_BASE_URL = "https://dev.peloton.ga";
 export const TOKEN_STORAGE = "@token_storage";
 export const DEEP_LINK_BASE_URL = Linking.makeUrl("/");
 
