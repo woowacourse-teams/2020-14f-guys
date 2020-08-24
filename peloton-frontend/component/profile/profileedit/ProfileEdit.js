@@ -26,10 +26,6 @@ const ProfileEdit = () => {
   useEffect(() => {
     setIsLoading(true);
     const fetchUser = async () => {
-      if (!token) {
-        Alert.alert("", "비정상적인 접근입니다.");
-        navigateWithoutHistory(navigation, "Login");
-      }
       try {
         const memberInfo = await MemberApi.get(token);
         setMemberInfo(memberInfo);
