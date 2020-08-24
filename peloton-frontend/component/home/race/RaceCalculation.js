@@ -24,15 +24,7 @@ const RaceCalculation = ({ route }) => {
 
   useEffect(() => {
     setIsCalculated(false);
-    console.log("------");
-    console.log("raceId");
-    console.log(raceId);
     const fetchCalculations = async () => {
-      try {
-        await CalculationApi.post(token, raceId);
-      } catch (e) {
-        alert(e.response.data.message);
-      }
       try {
         const achievement = await QueryApi.getRaceAchievement(token, raceId);
 
@@ -40,11 +32,6 @@ const RaceCalculation = ({ route }) => {
           token,
           raceId
         );
-        console.log("--");
-        console.log("achievement");
-        console.log(achievement);
-        console.log("---------");
-
         const findPrizeByMember = (memberId) => {
           const rider = ridersInfo.filter(
             (rider) => rider.member_id === memberId,

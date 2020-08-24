@@ -14,9 +14,10 @@ import RaceCertificationImages from "./RaceCertificationImages";
 import RaceDetailInfo from "./RaceDetailInfo";
 import RaceSpec from "./RaceSpec";
 import LinkCopyButton from "./LinkCopyButton";
-import FullWidthButton from "./FullWidthButton";
 import { navigateWithHistory } from "../../../utils/util";
 import { useNavigation } from "@react-navigation/core";
+import { CalculationApi } from "../../../utils/api/CalculationApi";
+import HalfWidthButton from "./HalfWidthButton";
 
 const RaceDetail = ({ route }) => {
   const raceId = route.params.id;
@@ -26,6 +27,12 @@ const RaceDetail = ({ route }) => {
   const [raceInfo, setRaceInfo] = useRecoilState(raceInfoState);
   const [ridersInfo, setRidersInfo] = useRecoilState(ridersInfoState);
   const setCertificationsInfo = useSetRecoilState(certificationsState);
+
+  const calculateRace = () => {
+    CalculationApi.post(token, raceId).catch((e) =>
+      alert(e.response.data.code),
+    );
+  };
 
   const navigateToRaceCalculation = () => {
     navigateWithHistory(navigation, [
@@ -97,9 +104,14 @@ const RaceDetail = ({ route }) => {
           <LinkCopyButton raceId={raceId} />
         </View>
         <View style={styles.calculationButton}>
-          <FullWidthButton
+          <HalfWidthButton
             color={COLOR.BLUE3}
             children={"정산하기"}
+            onClick={calculateRace}
+          />
+          <HalfWidthButton
+            color={COLOR.BLUE5}
+            children={"정산결과보기"}
             onClick={navigateToRaceCalculation}
           />
         </View>
@@ -117,9 +129,9 @@ const styles = StyleSheet.create({
     marginBottom: 55,
   },
   calculationButton: {
+    flexDirection: "row",
     position: "absolute",
     bottom: 0,
-    backgroundColor: COLOR.RED,
   },
 });
 
