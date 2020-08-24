@@ -73,8 +73,8 @@ const RaceCalculation = ({ route }) => {
             achievementRates={raceAchievement.race_achievement_rates}
           />
         ) : (
-          <View>
-            <Text>Loading중</Text>
+          <View style={styles.loadingTextContainer}>
+            <Text style={styles.loadingText}>잠시만 기다려주세요!</Text>
           </View>
         )}
       </View>
@@ -114,6 +114,14 @@ const styles = StyleSheet.create({
   },
   bottom: {
     flex: 2,
+  },
+  loadingTextContainer: {
+    alignItems: "center",
+    justifyContent: "center",
+    height: "100%",
+  },
+  loadingText: {
+    color: COLOR.GRAY7,
   },
 });
 
