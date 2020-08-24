@@ -1,7 +1,7 @@
 import React from "react";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { useNavigation } from "@react-navigation/core";
-import { COLOR } from "../../../utils/constants";
+import { COLOR } from "../../utils/constants";
 
 const AnnouncementItem = ({ children, target }) => {
   const navigation = useNavigation();
@@ -9,7 +9,11 @@ const AnnouncementItem = ({ children, target }) => {
   return (
     <TouchableOpacity
       style={styles.container}
-      onPress={() => navigation.navigate(target)}
+      onPress={() =>
+        target !== "Null"
+          ? navigation.navigate(target)
+          : alert("아직 지원하지 않습니다 조금만 기다려주세요 😅")
+      }
     >
       <View style={styles.item}>
         <Text style={styles.title}>{children}</Text>
@@ -22,17 +26,22 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: "center",
-    marginTop: 20,
   },
   item: {
     borderBottomWidth: 1,
-    borderColor: COLOR.GRAY3,
-    width: "80%",
+    borderTopWidth: 0.1,
+    borderColor: COLOR.GRAY6,
+    backgroundColor: COLOR.WHITE,
+    shadowColor: COLOR.GRAY1,
+    shadowOpacity: 0.05,
+    shadowOffset: { width: 0, height: 2 },
+    elevation: 3,
+    paddingLeft: 25,
+    width: "100%",
   },
   title: {
-    fontSize: 23,
-    textAlign: "center",
-    paddingBottom: 10,
+    fontSize: 18,
+    paddingVertical: 18,
   },
 });
 

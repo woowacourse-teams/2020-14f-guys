@@ -4,7 +4,7 @@ import ProfileDetail from "./profile/profiledetail/ProfileDetail";
 import ProfileEdit from "./profile/profileedit/ProfileEdit";
 import CashUpdate from "./profile/profileedit/CashUpdate";
 import NameUpdate from "./profile/profileedit/NameUpdate";
-import License from "./profile/profiledetail/License";
+import License from "./setting/license/License";
 
 const ProfileStack = createStackNavigator();
 

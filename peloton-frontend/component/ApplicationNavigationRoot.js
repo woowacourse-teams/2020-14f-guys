@@ -8,6 +8,7 @@ import { COLOR } from "../utils/constants";
 import ProfileNavigationRoot from "./ProfileStackRoot";
 import CertificationNavigationRoot from "./certification/CertificationNavigationRoot";
 import HomeNavigationRoot from "./home/HomeNavigationRoot";
+import SettingNavigationRoot from "./SettingNavigationRoot";
 
 const Tab = createBottomTabNavigator();
 
@@ -21,6 +22,8 @@ const screenOptions = ({ route }) => ({
       iconName = "camera";
     } else if (route.name === "Profile") {
       iconName = "person";
+    } else if (route.name === "Setting") {
+      iconName = "settings";
     }
     return (
       <View style={Platform.OS === "ios" ? { marginTop: 25 } : null}>
@@ -53,6 +56,7 @@ const ApplicationNavigationRoot = () => {
         component={CertificationNavigationRoot}
       />
       <Tab.Screen name="Profile" component={ProfileNavigationRoot} />
+      <Tab.Screen name="Setting" component={SettingNavigationRoot} />
     </Tab.Navigator>
   );
 };
