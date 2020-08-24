@@ -12,7 +12,9 @@ const CalculationResult = ({ achievementRate }) => {
         <Text style={styles.prize}>{`${achievementRate.prize}원`}</Text>
       </View>
       <View style={styles.bottom}>
-        <View style={[styles.successRatioBar, { width: `${rate}%` }]} />
+        <View style={styles.barContainer}>
+          <View style={[styles.successRatioBar, { width: `${rate}%` }]} />
+        </View>
         <Text style={styles.successRatioText}>{`${rate}%`}</Text>
       </View>
     </View>
@@ -45,17 +47,22 @@ const styles = StyleSheet.create({
     color: COLOR.DARK_GRAY6,
   },
   bottom: {
-    flex: 1,
+    flex: 2,
     flexDirection: "row",
-    alignItems: "center",
+    marginTop: 10,
+  },
+  barContainer: {
+    width: "85%",
+    marginBottom: 20,
+    padding: 5,
+    backgroundColor: COLOR.WHITE,
+    borderRadius: 20,
   },
   successRatioBar: {
-    height: "70%",
+    height: "100%",
     fontSize: 20,
     backgroundColor: COLOR.PURPLE,
     borderRadius: 120,
-    borderWidth: 5,
-    borderColor: COLOR.WHITE,
   },
   successRatioText: {
     fontSize: 14,
