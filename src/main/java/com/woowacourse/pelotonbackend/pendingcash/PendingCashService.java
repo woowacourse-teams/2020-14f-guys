@@ -13,7 +13,7 @@ import lombok.RequiredArgsConstructor;
 public class PendingCashService {
     private final PendingCashRepository pendingCashRepository;
 
-    public void create(Long memberId, Cash cash) {
+    public void create(final Long memberId, final Cash cash) {
         final PendingCash pendingCash = PendingCash.builder()
             .memberId(AggregateReference.to(memberId))
             .cash(cash)
