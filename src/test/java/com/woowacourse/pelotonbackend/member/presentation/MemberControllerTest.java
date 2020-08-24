@@ -201,8 +201,6 @@ public class MemberControllerTest {
             NativeWebRequest.class), any(WebDataBinderFactory.class))).willReturn(expectedResponse);
         given(argumentResolver.supportsParameter(any())).willReturn(true);
         given(memberService.findMember(MEMBER_ID)).willReturn(expectedResponse);
-        given(memberService.chargeCash(anyLong(), any(MemberCashUpdateRequest.class)))
-            .willReturn(MemberFixture.memberResponse());
 
         mockMvc.perform(patch(RESOURCE_URL + "/cash")
             .header(HttpHeaders.AUTHORIZATION, LoginFixture.getTokenHeader())

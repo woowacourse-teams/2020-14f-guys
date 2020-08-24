@@ -86,13 +86,15 @@ public class MemberAcceptanceTest extends AcceptanceTest {
         );
     }
 
+    // 사용자가 요청을해도 수동으로 업데이트 하기 때문에 같은 결과값이 나와야한다.
+    // Todo: 캐시 자동 충전 기능이 활성화 되면 다시 제대로 업데이트 되는지 확인해야한다.
     private void updateCash(final MemberResponse memberResponse) {
         final MemberCashUpdateRequest cashUpdatedRequest = MemberFixture.createCashUpdateRequest();
         requestUpdateCash(memberResponse.getKakaoId(), cashUpdatedRequest);
         final MemberResponse cashUpdatedResponse = findMember(memberResponse.getKakaoId());
 
         assertAll(
-            () -> assertThat(cashUpdatedResponse.getCash()).isEqualTo(memberResponse.getCash().plus(cashUpdatedRequest.getCash())),
+            () -> assertThat(cashUpdatedResponse.getCash()).isEqualTo(memberResponse.getCash()),
             () -> assertThat(cashUpdatedResponse).isEqualToIgnoringGivenFields(memberResponse, "name", "cash")
         );
     }

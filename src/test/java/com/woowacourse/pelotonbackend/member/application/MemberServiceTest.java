@@ -31,6 +31,8 @@ import com.woowacourse.pelotonbackend.member.presentation.dto.MemberCreateReques
 import com.woowacourse.pelotonbackend.member.presentation.dto.MemberProfileResponse;
 import com.woowacourse.pelotonbackend.member.presentation.dto.MemberResponse;
 import com.woowacourse.pelotonbackend.member.presentation.dto.MemberResponses;
+import com.woowacourse.pelotonbackend.pendingcash.PendingCash;
+import com.woowacourse.pelotonbackend.pendingcash.PendingCashService;
 import com.woowacourse.pelotonbackend.vo.Cash;
 
 @ExtendWith(MockitoExtension.class)
@@ -43,11 +45,14 @@ class MemberServiceTest {
     @Mock
     private UploadService uploadService;
 
+    @Mock
+    private PendingCashService pendingCashService;
+
     private Member expectedMember;
 
     @BeforeEach
     void setUp() {
-        memberService = new MemberService(memberRepository, uploadService);
+        memberService = new MemberService(memberRepository, pendingCashService, uploadService);
         expectedMember = createWithId(MEMBER_ID);
     }
 
@@ -140,18 +145,10 @@ class MemberServiceTest {
     @Test
     void plusCashTest() {
         final Member originMember = MemberFixture.createWithId(MEMBER_ID);
-        final Member updatedMember = MemberFixture.memberCashUpdated(MEMBER_ID);
         given(memberRepository.findById(anyLong())).willReturn(Optional.of(originMember));
-        given(memberRepository.save(any(Member.class))).willReturn(updatedMember);
 
-        final MemberResponse memberResponse = memberService.chargeCash(originMember.getId(),
-            createCashUpdateRequest());
-
-        assertAll(
-            () -> assertThat(memberResponse.getCash()).isEqualTo(originMember.getCash().plus(createCashUpdateRequest().getCash())),
-            () -> assertThat(memberResponse).isEqualToIgnoringGivenFields(originMember, "cash", "createdAt",
-                "updatedAt")
-        );
+        memberService.chargeCash(originMember.getId(), createCashUpdateRequest());
+        verify(pendingCashService).create(anyLong(), any(Cash.class));
     }
 
     @DisplayName("회원의 캐시를 차감한다")
