@@ -2,9 +2,14 @@ import React, { useEffect, useState } from "react";
 import { ScrollView, StyleSheet, Text, View } from "react-native";
 import { ACHIEVEMENT_COLORS, COLOR } from "../../../utils/constants";
 import { QueryApi } from "../../../utils/api/QueryApi";
-import { useRecoilState, useRecoilValue } from "recoil/dist";
-import { memberInfoState, memberTokenState, } from "../../../state/member/MemberState";
+import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil/dist";
+import {
+  memberInfoState,
+  memberTokenState,
+} from "../../../state/member/MemberState";
 import { achievementRatesState } from "../../../state/certification/AchievementRatesState";
+import { loadingState } from "../../../state/loading/LoadingState";
+import AchievementItem from "./AchievementItem";
 
 const AchievementItems = () => {
   const token = useRecoilValue(memberTokenState);
@@ -12,83 +17,59 @@ const AchievementItems = () => {
   const [achievementRates, setAchievementRates] = useRecoilState(
     achievementRatesState
   );
-
-  const [isCalculated, setIsCalculated] = useState(false);
+  const setIsLoading = useSetRecoilState(loadingState);
 
   const getRandomColor = (index) => {
-    ACHIEVEMENT_COLORS[index % ACHIEVEMENT_COLORS.length];
+    return ACHIEVEMENT_COLORS[index % ACHIEVEMENT_COLORS.length];
   };
 
   useEffect(() => {
-    setIsCalculated(false);
+    setIsLoading(true);
     const fetchRaceAchievementRate = async () => {
       try {
         const { race_responses: races } = await QueryApi.getRaces(token);
-        console.log(races.length);
-        await races.map((race) => {
-          QueryApi.getRaceAchievement(token, race.id)
-            .then((achievement) => {
-              setAchievementRates([
-                ...achievementRates,
-                {
-                  race_id: achievement.race_id,
-                  race_title: achievement.race_title,
-                  total_mission_count: achievement.total_mission_count,
-                  achievement: achievement.race_achievement_rates.filter(
-                    (rate) => rate.member_id === member.id
-                  )[0].achievement,
-                },
-              ]);
-            })
-            .catch((e) => console.log(e.response.data.message));
-        });
+        const response = await Promise.all(
+          races.map(async (race) => {
+            const {
+              race_id,
+              race_title,
+              race_achievement_rates: list,
+            } = await QueryApi.getRaceAchievement(token, race.id);
+            const [{ achievement, certification_count }] = list.filter(
+              (item) => item.member_id === member.id
+            );
+            return { race_id, race_title, achievement, certification_count };
+          })
+        );
+        setAchievementRates(response);
       } catch (e) {
         console.log(e.response.data.message);
       }
+      setIsLoading(false);
     };
-    fetchRaceAchievementRate().then(() => console.log(achievementRates));
+    fetchRaceAchievementRate();
   }, []);
 
   return (
     <ScrollView horizontal={true} contentContainerStyle={styles.container}>
-      {isCalculated ? (
-        <View>
-          {/*{achievementRates.map((achievementRate, index) => (*/}
-          {/*  <AchievementItem*/}
-          {/*    key={achievementRates.race_id}*/}
-          {/*    ratio={achievementRate.achievement}*/}
-          {/*    raceInitial={achievementRate.race_title.substring(0, 1)}*/}
-          {/*    color={getRandomColor(index)}*/}
-          {/*  />*/}
-          {/*))}*/}
-        </View>
-      ) : (
-        <View style={styles.loadingTextContainer}>
-          <Text style={styles.loadingText}>잠시만 기다려주세요!</Text>
-        </View>
-      )}
+      {achievementRates.map((achievementRate, index) => (
+        <AchievementItem
+          key={achievementRate.race_id}
+          achievement={achievementRate.achievement}
+          raceTitle={achievementRate.race_title.substr(0, 8)}
+          certificationCount={achievementRate.certification_count}
+          color={getRandomColor(index)}
+        />
+      ))}
     </ScrollView>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
+    flexDirection: "row",
     marginHorizontal: 20,
     marginVertical: 10,
-  },
-  title: {
-    paddingTop: 35,
-    paddingLeft: 50,
-    fontSize: 18,
-    fontWeight: "600",
-  },
-  loadingTextContainer: {
-    alignItems: "center",
-    justifyContent: "center",
-    height: "100%",
-  },
-  loadingText: {
-    color: COLOR.GRAY7,
   },
 });
 

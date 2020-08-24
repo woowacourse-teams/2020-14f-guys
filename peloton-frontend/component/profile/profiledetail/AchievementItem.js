@@ -2,21 +2,23 @@ import React from "react";
 import { StyleSheet, Text, View } from "react-native";
 import { COLOR } from "../../../utils/constants";
 
-const AchievementItem = ({ ratio, raceInitial, color }) => {
+const AchievementItem = ({ achievement, raceTitle, color }) => {
   return (
     <View style={styles.container}>
-      <Text style={styles.ratio}>{`${ratio}%`}</Text>
+      <Text style={styles.ratio}>{`${achievement}%`}</Text>
       <View style={styles.barContainer}>
         <View
           style={[
             styles.bar,
-            { height: `${ratio}%`, backgroundColor: `${color}` },
+            {
+              opacity: achievement * 0.01 > 0.5 ? achievement * 0.01 : 0.5,
+              height: `${achievement}%`,
+              backgroundColor: COLOR.PURPLE,
+            },
           ]}
         />
       </View>
-      <View style={[styles.raceNameContainer, { backgroundColor: `${color}` }]}>
-        <Text style={styles.raceNameText}>{raceInitial}</Text>
-      </View>
+      <Text style={styles.raceNameText}>{raceTitle}</Text>
     </View>
   );
 };
@@ -24,6 +26,7 @@ const AchievementItem = ({ ratio, raceInitial, color }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    minWidth: 90,
     minHeight: 300,
     padding: 20,
     paddingTop: 10,
@@ -48,13 +51,10 @@ const styles = StyleSheet.create({
     opacity: 0.6,
     borderRadius: 15,
   },
-  raceNameContainer: {
-    borderRadius: 30,
-  },
   raceNameText: {
     margin: 10,
     fontSize: 12,
-    color: COLOR.WHITE,
+    color: COLOR.BLACK,
     fontWeight: "700",
     textAlign: "center",
   },

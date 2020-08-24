@@ -4,8 +4,8 @@ export const achievementRatesState = atom({
   key: "achievementRatesState",
   default: [
     {
-      member_id: "",
-      member_name: "",
+      race_id: "",
+      race_title: "",
       certification_count: "",
       achievement: "",
     },
