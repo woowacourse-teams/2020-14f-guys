@@ -43,7 +43,7 @@ public class RaceAchievementRates {
             .collect(Collectors.groupingBy(certification -> certification.getRiderId().getId(), Collectors.counting()));
 
         final List<RaceAchievementRate> result = riders.stream()
-            .map(rider -> RaceAchievementRate.of(riderMember.get(rider.getMemberId().getId()),
+            .map(rider -> RaceAchievementRate.of(riderMember.get(rider.getId()),
                 riderCertification.getOrDefault(rider.getId(), 0L), totalMissionCount))
             .collect(Collectors.toList());
 
