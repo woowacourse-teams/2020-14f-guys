@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { ScrollView, StyleSheet, View } from "react-native";
+import { Alert, ScrollView, StyleSheet, View } from "react-native";
 
 import RaceList from "./RaceList";
 import HomeBanner from "./HomeBanner";
@@ -30,7 +30,7 @@ const Home = () => {
         await AsyncStorage.setItem(TOKEN_STORAGE, token);
       }
       if (!token) {
-        alert("비정상적인 접근입니다.");
+        Alert.alert("", "비정상적인 접근입니다.");
         navigateWithoutHistory(navigation, "Login");
       }
       const memberInfo = await MemberApi.get(token);

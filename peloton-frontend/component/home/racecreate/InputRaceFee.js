@@ -1,11 +1,6 @@
 import React from "react";
-import { ActivityIndicator, StyleSheet, View } from "react-native";
-import {
-  useRecoilState,
-  useRecoilValue,
-  useResetRecoilState,
-  useSetRecoilState,
-} from "recoil";
+import { Alert, ActivityIndicator, StyleSheet, View } from "react-native";
+import { useRecoilState, useRecoilValue, useResetRecoilState } from "recoil";
 import { useNavigation } from "@react-navigation/native";
 
 import RaceCreateUnit from "./RaceCreateUnit";
@@ -108,7 +103,7 @@ const InputRaceFee = () => {
         },
       ]);
     } catch (e) {
-      alert(e.response.data.code);
+      Alert.alert("", e.response.data.code);
     }
     setGlobalLoading(false);
   };
@@ -135,11 +130,11 @@ const InputRaceFee = () => {
     const userCash = Number(memberInfo.cash);
 
     if (!entrance_fee) {
-      alert("입장료를 입력해주세요");
+      Alert.alert("", "입장료를 입력해주세요");
       return;
     }
     if (entrance_fee < 0) {
-      alert("입장료는 음수가 될 수 없습니다");
+      Alert.alert("", "입장료는 음수가 될 수 없습니다");
       return;
     }
     if (userCash < entrance_fee) {
@@ -154,7 +149,7 @@ const InputRaceFee = () => {
     const newDays = convertUTCDays();
     const filteredDays = newDays.filter((day) => !availableDays.includes(day));
     if (filteredDays.length > 0) {
-      alert("레이스 기간에 해당하지 않는 요일 선택이 존재합니다.");
+      Alert.alert("", "레이스 기간에 해당하지 않는 요일 선택이 존재합니다.");
       return;
     }
 

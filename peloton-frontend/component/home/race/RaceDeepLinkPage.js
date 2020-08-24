@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { StyleSheet, View } from "react-native";
+import { Alert, StyleSheet, View } from "react-native";
 import { useRecoilState, useSetRecoilState } from "recoil";
 import { loadingState } from "../../../state/loading/LoadingState";
 import {
@@ -16,7 +16,6 @@ import {
   navigateWithoutHistory,
 } from "../../../utils/util";
 import { MemberApi } from "../../../utils/api/MemberApi";
-import { RaceApi } from "../../../utils/api/RaceApi";
 import {
   memberInfoState,
   memberTokenState,
@@ -59,7 +58,7 @@ const RaceDeepLinkPage = ({ route }) => {
       setMemberInfo(newMemberInfo);
       navigateToRaceDetail(navigation, raceId);
     } catch (error) {
-      alert(error.response.data.code);
+      Alert.alert("", error.response.data.code);
       console.log(error.response.data.message);
     }
     setLoadingState(false);
@@ -68,7 +67,7 @@ const RaceDeepLinkPage = ({ route }) => {
   useEffect(() => {
     setLoadingState(true);
     if (!raceId) {
-      alert("정상적이지 않은 접근입니다.");
+      Alert.alert("", "정상적이지 않은 접근입니다.");
       navigateWithoutHistory(navigation, "Home");
       setLoadingState(false);
       return;
@@ -78,7 +77,7 @@ const RaceDeepLinkPage = ({ route }) => {
       if (!token) {
         userToken = await AsyncStorage.getItem(TOKEN_STORAGE);
         if (!userToken) {
-          alert("로그인 먼저 해주세요.");
+          Alert.alert("", "로그인 먼저 해주세요.");
           navigateWithoutHistory(navigation, "Login");
           setLoadingState(false);
           return;
@@ -86,7 +85,7 @@ const RaceDeepLinkPage = ({ route }) => {
         setToken(userToken);
       }
       if (!userToken) {
-        alert("로그인 먼저 해주세요.");
+        Alert.alert("", "로그인 먼저 해주세요.");
         navigateWithoutHistory(navigation, "Login");
         setLoadingState(false);
         return;
@@ -95,7 +94,7 @@ const RaceDeepLinkPage = ({ route }) => {
         const newMemberInfo = await MemberApi.get(userToken);
         setMemberInfo(newMemberInfo);
       } catch (error) {
-        alert(error.response.data.code);
+        Alert.alert("", error.response.data.code);
         console.log(error.response.data.message);
         navigateWithoutHistory(navigation, "Login");
         setLoadingState(false);
@@ -105,7 +104,7 @@ const RaceDeepLinkPage = ({ route }) => {
         const newRaceInfo = await QueryApi.getRaceDetail(userToken, raceId);
         setRaceInfo(newRaceInfo);
       } catch (error) {
-        alert(error.response.data.code);
+        Alert.alert("", error.response.data.code);
         console.log(error.response.data.message);
         navigateWithoutHistory(navigation, "Home");
         setLoadingState(false);
@@ -121,7 +120,7 @@ const RaceDeepLinkPage = ({ route }) => {
           return;
         }
       } catch (error) {
-        alert(error.response.data.code);
+        Alert.alert("", error.response.data.code);
         console.log(error.response.data.message);
         navigateWithoutHistory(navigation, "Home");
       }

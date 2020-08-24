@@ -28,11 +28,11 @@ const CashUpdate = () => {
   const validateCash = (value) => {
     const onlyNumber = /^[0-9]+$/;
     if (value.length === 0) {
-      alert("금액을 입력해주세요.");
+      Alert.alert("", "금액을 입력해주세요.");
       return false;
     }
     if (!onlyNumber.test(value)) {
-      alert("숫자를 입력해주세요.");
+      Alert.alert("", "숫자를 입력해주세요.");
       return false;
     }
     return true;
@@ -57,7 +57,7 @@ const CashUpdate = () => {
       setMemberInfo(response);
       navigation.navigate("ProfileEdit");
     } catch (error) {
-      alert(error.response.data.code);
+      Alert.alert("", error.response.data.code);
       console.log(error.response.data.message);
     }
   };

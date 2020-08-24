@@ -4,6 +4,7 @@ import ProfileDetail from "./profile/profiledetail/ProfileDetail";
 import ProfileEdit from "./profile/profileedit/ProfileEdit";
 import CashUpdate from "./profile/profileedit/CashUpdate";
 import NameUpdate from "./profile/profileedit/NameUpdate";
+import License from "./setting/license/License";
 
 const ProfileStack = createStackNavigator();
 
@@ -37,6 +38,12 @@ const ProfileStackRoot = () => {
         options={{
           title: "닉네임 변경",
         }}
+      />
+
+      <ProfileStack.Screen
+        name="License"
+        component={License}
+        options={{ title: "오픈소스 라이선스" }}
       />
     </ProfileStack.Navigator>
   );

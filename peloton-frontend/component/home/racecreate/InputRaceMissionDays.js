@@ -1,4 +1,5 @@
 import React from "react";
+import { Alert } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { useRecoilValue } from "recoil";
 
@@ -13,7 +14,7 @@ const InputRaceMissionDays = () => {
 
   const navigateToMissionTime = () => {
     if (days.length === 0) {
-      alert("요일을 하나 이상 선택해주세요");
+      Alert.alert("", "요일을 하나 이상 선택해주세요");
       return;
     }
     navigation.navigate("InputRaceFee");

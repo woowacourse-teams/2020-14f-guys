@@ -29,7 +29,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   memberContainer: {
-    flex: 1,
+    flex: 9,
     alignItems: "center",
   },
   background: {
@@ -37,7 +37,7 @@ const styles = StyleSheet.create({
     width: "120%",
   },
   raceContainer: {
-    flex: 1,
+    flex: 11,
   },
 });
 

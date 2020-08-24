@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { StyleSheet, Text, View } from "react-native";
+import { Alert, StyleSheet, Text, View } from "react-native";
 import RaceItems from "./RaceItems";
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import { loadingState } from "../../../state/loading/LoadingState";
@@ -20,7 +20,7 @@ const RaceList = () => {
         const { race_responses } = await QueryApi.getRaces(token);
         setRaces(race_responses);
       } catch (error) {
-        alert(error.response.data.code);
+        Alert.alert("", error.response.data.code);
         console.log(error.response.data.message);
         setRaces([]);
       }

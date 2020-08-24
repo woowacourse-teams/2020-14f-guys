@@ -1,5 +1,5 @@
 import React, { useCallback, useState } from "react";
-import { FlatList, StyleSheet, Text, View } from "react-native";
+import { Alert, FlatList, StyleSheet, Text, View } from "react-native";
 import { useRecoilState, useRecoilValue } from "recoil";
 import { useFocusEffect } from "@react-navigation/core";
 
@@ -22,7 +22,7 @@ const Certification = () => {
           const { upcoming_missions } = await QueryApi.getMissions(token);
           setCertifications(upcoming_missions);
         } catch (e) {
-          alert(e.response.data.message);
+          Alert.alert("", e.response.data.message);
         }
       })();
       return () => {
