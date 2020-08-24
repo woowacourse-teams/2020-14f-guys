@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import {
+  Alert,
   Dimensions,
   Image,
   Keyboard,
@@ -18,7 +19,10 @@ import { useNavigation } from "@react-navigation/core";
 import { raceMissionState } from "../../state/certification/RaceMissionState";
 import { COLOR } from "../../utils/constants";
 import { loadingState } from "../../state/loading/LoadingState";
-import { getCameraPermission, getCameraRollPermission, } from "../../utils/Permission";
+import {
+  getCameraPermission,
+  getCameraRollPermission,
+} from "../../utils/Permission";
 import FullWidthButton from "../home/race/FullWidthButton";
 import { CertificationApi } from "../../utils/api/CertificationApi";
 import { memberTokenState } from "../../state/member/MemberState";
@@ -86,12 +90,12 @@ const CertificationSubmit = ({ route }) => {
         return [...notUpdatedCertification, certification];
       });
 
-      alert("인증 완료되었습니다");
+      Alert.alert("", "인증 완료되었습니다");
       setPhotoUri(raceMission.race.certification_example);
       navigateWithoutHistory(navigation, "CertificationHome");
       linkTo(`/home/races/detail/${raceMission.race.id}`);
     } catch (e) {
-      alert(e.response.data.message);
+      Alert.alert("", e.response.data.message);
     }
     setIsLoading(false);
   };

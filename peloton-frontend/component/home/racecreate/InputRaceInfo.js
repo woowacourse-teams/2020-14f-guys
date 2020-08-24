@@ -1,4 +1,5 @@
 import React from "react";
+import { Alert } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 
 import RaceCreateUnit from "./RaceCreateUnit";
@@ -12,7 +13,7 @@ const InputRaceInfo = () => {
 
   const navigateToDateInput = async () => {
     if (!title || !description) {
-      alert("이름과 설명을 모두 입력해주세요");
+      Alert.alert("", "이름과 설명을 모두 입력해주세요");
       return;
     }
     navigation.navigate("InputRaceDates");

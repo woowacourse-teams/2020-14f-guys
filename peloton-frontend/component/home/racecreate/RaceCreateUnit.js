@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { StyleSheet, Text, View } from "react-native";
+import { Alert, StyleSheet, Text, View } from "react-native";
 import { useRecoilState } from "recoil";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 
@@ -26,7 +26,7 @@ const RaceCreateUnit = ({
     const currentFormattedSystemDate = DateFormatter.UTCyyyyMMdd(new Date());
 
     if (formattedPickedDate < currentFormattedSystemDate) {
-      alert("현재보다 이전 날짜를 선택할 수 없습니다!");
+      Alert.alert("", "현재보다 이전 날짜를 선택할 수 없습니다!");
       formattedPickedDate = currentFormattedSystemDate;
     }
 
@@ -42,12 +42,12 @@ const RaceCreateUnit = ({
     const minutes = pickedDate.getUTCMinutes();
 
     if (hours < 0 || hours > 24) {
-      alert("시간은 0~24 사이의 숫자여야 합니다.");
+      Alert.alert("", "시간은 0~24 사이의 숫자여야 합니다.");
       return;
     }
 
     if (minutes < 0 || minutes > 60) {
-      alert("분은 0~60 사이의 숫자여야 합니다.");
+      Alert.alert("", "분은 0~60 사이의 숫자여야 합니다.");
       return;
     }
 

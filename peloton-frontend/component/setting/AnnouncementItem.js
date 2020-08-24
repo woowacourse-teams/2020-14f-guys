@@ -1,5 +1,5 @@
 import React from "react";
-import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { Alert, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { useNavigation } from "@react-navigation/core";
 import { COLOR } from "../../utils/constants";
 
@@ -12,7 +12,7 @@ const AnnouncementItem = ({ children, target }) => {
       onPress={() =>
         target !== "Null"
           ? navigation.navigate(target)
-          : alert("아직 지원하지 않습니다 조금만 기다려주세요 😅")
+          : Alert.alert("", "아직 지원하지 않습니다 조금만 기다려주세요 😅")
       }
     >
       <View style={styles.item}>

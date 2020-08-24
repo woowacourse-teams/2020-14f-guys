@@ -1,5 +1,5 @@
 import React from "react";
-import { StyleSheet, TouchableOpacity } from "react-native";
+import { Alert, StyleSheet, TouchableOpacity } from "react-native";
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import * as ImagePicker from "expo-image-picker";
 
@@ -30,7 +30,7 @@ const ProfileImageEditButton = ({ children, directUpdate }) => {
         profile,
       });
     } catch (error) {
-      alert(error.response.data.code);
+      Alert.alert("", error.response.data.code);
     }
     setIsLoading(false);
   };

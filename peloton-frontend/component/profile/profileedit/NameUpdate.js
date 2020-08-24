@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import {
+  Alert,
   Keyboard,
   StyleSheet,
   Text,
@@ -33,7 +34,7 @@ const NameUpdate = () => {
       setMemberInfo(newMemberInfo);
       navigation.navigate("ProfileEdit");
     } catch (error) {
-      alert(error.response.data.code);
+      Alert.alert("", error.response.data.code);
       console.log(error.response.data.message);
     }
     setIsLoading(false);

@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { ScrollView, StyleSheet } from "react-native";
+import { Alert, ScrollView, StyleSheet } from "react-native";
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import { loadingState } from "../../../state/loading/LoadingState";
 import { memberTokenState } from "../../../state/member/MemberState";
@@ -29,7 +29,7 @@ const RaceDetail = ({ route }) => {
     setIsLoading(true);
     const fetchRace = async () => {
       if (!raceId) {
-        alert("잘못된 경로입니다.");
+        Alert.alert("", "잘못된 경로입니다.");
         setIsLoading(false);
         return;
       }
@@ -49,7 +49,7 @@ const RaceDetail = ({ route }) => {
         setRaceInfo(race);
         setCertificationsInfo(certifications.content);
       } catch (e) {
-        alert(e.response.data.message);
+        Alert.alert("", e.response.data.message);
       }
     };
     fetchRace();

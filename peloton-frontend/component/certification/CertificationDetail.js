@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { ScrollView, StyleSheet, View } from "react-native";
+import { Alert, ScrollView, StyleSheet, View } from "react-native";
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import { memberTokenState } from "../../state/member/MemberState";
 import { loadingState } from "../../state/loading/LoadingState";
@@ -52,7 +52,7 @@ const CertificationDetail = ({ route }) => {
         };
       } catch (e) {
         console.log(e.response.data.message);
-        alert(e.response.data.code);
+        Alert.alert("", e.response.data.code);
         setIsLoading(false);
         return;
       }
@@ -65,7 +65,7 @@ const CertificationDetail = ({ route }) => {
         };
       } catch (e) {
         console.log(e.response.data.message);
-        alert(e.response.data.code);
+        Alert.alert("", e.response.data.code);
         setIsLoading(false);
         return;
       }

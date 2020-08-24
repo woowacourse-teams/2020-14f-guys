@@ -1,5 +1,12 @@
 import React from "react";
-import { Clipboard, StyleSheet, Text, TouchableOpacity, View, } from "react-native";
+import {
+  Alert,
+  Clipboard,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
 import { Feather } from "@expo/vector-icons";
 import { COLOR } from "../../../utils/constants";
 import { raceShareLink } from "./RaceDeepLinkPage";
@@ -7,7 +14,7 @@ import { raceShareLink } from "./RaceDeepLinkPage";
 const LinkCopyButton = ({ raceId }) => {
   const copyLink = async () => {
     Clipboard.setString(raceShareLink(raceId));
-    alert("클립보드에 복사되었습니다.");
+    Alert.alert("", "클립보드에 복사되었습니다.");
   };
 
   return (

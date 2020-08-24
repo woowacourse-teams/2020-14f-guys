@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import {
+  Alert,
   Modal,
   SafeAreaView,
   StyleSheet,
@@ -98,7 +99,7 @@ const Login = () => {
                 AppleAuthentication.AppleAuthenticationButtonStyle.BLACK
               }
               style={{ ...styles.loginButton, opacity: buttonOpacity.opacity }}
-              onPress={() => alert("힝 속았지?")}
+              onPress={() => Alert.alert("힝 속았지?")}
             />
           )}
         </View>
