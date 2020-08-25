@@ -4,8 +4,6 @@ import ProfileDetail from "./profiledetail/ProfileDetail";
 import ProfileEdit from "./profileedit/ProfileEdit";
 import CashUpdate from "./profileedit/CashUpdate";
 import NameUpdate from "./profileedit/NameUpdate";
-import License from "../setting/license/License";
-
 const ProfileStack = createStackNavigator();
 
 const ProfileStackRoot = () => {

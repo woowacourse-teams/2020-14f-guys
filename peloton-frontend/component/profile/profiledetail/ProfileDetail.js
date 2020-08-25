@@ -1,12 +1,15 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { ImageBackground, StyleSheet, View } from "react-native";
 import MemberInfo from "./MemberInfo";
 import { useRecoilValue } from "recoil";
 import { memberInfoState } from "../../../state/member/MemberState";
 import AchievementItems from "./AchievementItems";
+import { logNav } from "../../../utils/Analytics";
 
 const ProfileDetail = () => {
   const memberInfo = useRecoilValue(memberInfoState);
+
+  useEffect(() => logNav("Profile", "ProfileHome"), []);
 
   return (
     <View style={styles.container}>

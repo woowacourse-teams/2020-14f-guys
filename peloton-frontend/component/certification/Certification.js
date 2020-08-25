@@ -8,6 +8,7 @@ import CertificationItem from "./CertificationItem";
 import { COLOR } from "../../utils/constants";
 import { QueryApi } from "../../utils/api/QueryApi";
 import { memberTokenState } from "../../state/member/MemberState";
+import { logNav } from "../../utils/Analytics";
 
 const Certification = () => {
   const [certifications, setCertifications] = useRecoilState(raceMissionState);
@@ -16,6 +17,7 @@ const Certification = () => {
 
   useFocusEffect(
     useCallback(() => {
+      logNav("Certification", "CertificationHome");
       const intervalId = setInterval(() => setCurrentTime(new Date()), 1000);
       (async () => {
         try {
