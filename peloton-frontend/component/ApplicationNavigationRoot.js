@@ -8,6 +8,7 @@ import HomeNavigationRoot from "./home/HomeNavigationRoot";
 import CertificationNavigationRoot from "./certification/CertificationNavigationRoot";
 import SettingNavigationRoot from "./setting/SettingNavigationRoot";
 import ProfileStackRoot from "./profile/ProfileStackRoot";
+import Certification from "./certification/Certification";
 
 const Tab = createBottomTabNavigator();
 

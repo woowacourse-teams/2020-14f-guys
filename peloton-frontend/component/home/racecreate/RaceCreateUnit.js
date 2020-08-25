@@ -41,13 +41,13 @@ const RaceCreateUnit = ({
     let hours = pickedDate.getUTCHours();
     const minutes = pickedDate.getUTCMinutes();
 
-    if (hours < 0 || hours > 24) {
-      Alert.alert("", "시간은 0~24 사이의 숫자여야 합니다.");
+    if (hours < 0 || hours >= 24) {
+      Alert.alert("", "시간은 0~23 사이의 숫자여야 합니다.");
       return;
     }
 
-    if (minutes < 0 || minutes > 60) {
-      Alert.alert("", "분은 0~60 사이의 숫자여야 합니다.");
+    if (minutes < 0 || minutes >= 60) {
+      Alert.alert("", "분은 0~59 사이의 숫자여야 합니다.");
       return;
     }
 
@@ -77,7 +77,7 @@ const RaceCreateUnit = ({
 
     let hours = value.split(":")[0] - timezoneOffsetHours;
     let minutes = value.split(":")[1] - timezoneOffsetMinutes;
-    if (minutes > 60) {
+    if (minutes >= 60) {
       hours++;
       minutes -= 60;
     }

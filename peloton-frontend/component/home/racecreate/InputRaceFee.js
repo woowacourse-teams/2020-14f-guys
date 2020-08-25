@@ -9,8 +9,15 @@ import { COLOR, DAYS } from "../../../utils/constants";
 import { loadingState } from "../../../state/loading/LoadingState";
 import LoadingIndicator from "../../../utils/LoadingIndicator";
 import RaceCreateView from "./RaceCreateView";
-import { alertNotEnoughCash, navigateTabScreen, navigateWithHistory, } from "../../../utils/util";
-import { memberInfoState, memberTokenState, } from "../../../state/member/MemberState";
+import {
+  alertNotEnoughCash,
+  navigateTabScreen,
+  navigateWithHistory,
+} from "../../../utils/util";
+import {
+  memberInfoState,
+  memberTokenState,
+} from "../../../state/member/MemberState";
 import { RaceApi } from "../../../utils/api/RaceApi";
 import { MemberApi } from "../../../utils/api/MemberApi";
 import { RiderApi } from "../../../utils/api/RiderApi";
@@ -52,7 +59,7 @@ const InputRaceFee = () => {
     const timezoneOffsetMinutes = new Date().getTimezoneOffset() % 60;
     let hours = time.split(":")[0] - timezoneOffsetHours;
     let minutes = time.split(":")[1] - timezoneOffsetMinutes;
-    if (minutes > 60) {
+    if (minutes >= 60) {
       hours++;
     }
     if (minutes < 0) {
@@ -63,7 +70,7 @@ const InputRaceFee = () => {
     if (hours < 0) {
       daysOffset--;
     }
-    if (hours > 24) {
+    if (hours >= 24) {
       daysOffset++;
     }
     return daysOffset;
