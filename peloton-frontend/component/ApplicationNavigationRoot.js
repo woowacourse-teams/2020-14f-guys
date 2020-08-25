@@ -51,6 +51,17 @@ const tabBarOptions = {
 const ApplicationNavigationRoot = () => {
   useEffect(() => {
     Amplitude.initialize(apiKey);
+    Amplitude.setTrackingOptions({
+      disableCarrier: true,
+      disableRegion: true,
+      disableCity: true,
+      disableCountry: true,
+      disableLatLng: true,
+      disableDMA: true,
+      disableIDFA: true,
+      disableIDFV: true,
+      disableIPAddress: true,
+    });
   }, []);
 
   return (
