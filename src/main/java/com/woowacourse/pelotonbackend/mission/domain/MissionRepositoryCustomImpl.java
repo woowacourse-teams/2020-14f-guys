@@ -14,7 +14,9 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcOperations;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 
 import com.woowacourse.pelotonbackend.common.exception.RaceNotFoundException;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 public class MissionRepositoryCustomImpl implements MissionRepositoryCustom {
     private final NamedParameterJdbcOperations jdbcOperations;
     private final EntityRowMapper<Mission> rowMapper;
@@ -45,6 +47,11 @@ public class MissionRepositoryCustomImpl implements MissionRepositoryCustom {
     @Override
     public List<Mission> findAllByRaceIdsEndTimeAfterThanAndWithinOneDayOrderByStartTime(final List<Long> raceIds,
         final LocalDateTime criterion) {
+
+        if (raceIds.isEmpty()) {
+            log.info("Race Id 리스트가 빈 배열인 채로 DB 조회를 합니다.");
+        }
+
         final SqlParameterSource parameterSource = new MapSqlParameterSource()
             .addValue("raceIds", raceIds.isEmpty() ? null : raceIds)
             .addValue("criterion", criterion)

@@ -17,6 +17,9 @@ import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcOperations;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 public class CertificationRepositoryCustomImpl implements CertificationRepositoryCustom {
     private final NamedParameterJdbcOperations jdbcOperations;
     private final EntityRowMapper<Certification> rowMapper;
@@ -52,6 +55,10 @@ public class CertificationRepositoryCustomImpl implements CertificationRepositor
     public Page<Certification> findByMissionIdsAndStatus(final List<Long> missionIds, final CertificationStatus status,
         final Pageable pageable) {
 
+        if (missionIds.isEmpty()) {
+            log.info("Mission Id 리스트가 빈 배열인 채로 DB 조회를 합니다.");
+        }
+
         final SqlParameterSource parameterSource = new MapSqlParameterSource()
             .addValue("missionIds", missionIds.isEmpty() ? null : missionIds)
             .addValue("status", status.name())
@@ -68,6 +75,10 @@ public class CertificationRepositoryCustomImpl implements CertificationRepositor
     @Override
     public Page<Certification> findByMissionIdsAndRiderIds(final List<Long> missionIds, final List<Long> riderIds,
         final Pageable pageable) {
+
+        if (missionIds.isEmpty() || riderIds.isEmpty()) {
+            log.info("Mission Id, Rider Id 리스트 중 빈 배열인 채로 DB 조회를 합니다.");
+        }
 
         final SqlParameterSource parameterSource = new MapSqlParameterSource()
             .addValue("missionIds", missionIds.isEmpty() ? null : missionIds)
