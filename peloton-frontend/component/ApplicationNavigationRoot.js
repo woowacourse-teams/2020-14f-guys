@@ -4,15 +4,12 @@ import { MaterialIcons } from "@expo/vector-icons";
 import { View } from "react-native";
 
 import { COLOR } from "../utils/constants";
-import { config } from "../config/config";
 import Certification from "./certification/Certification";
 import ProfileNavigationRoot from "./ProfileStackRoot";
 import CertificationNavigationRoot from "./certification/CertificationNavigationRoot";
 import HomeNavigationRoot from "./home/HomeNavigationRoot";
 import SettingNavigationRoot from "./SettingNavigationRoot";
 import * as Amplitude from "expo-analytics-amplitude";
-
-const apiKey = config.apiKey;
 
 const Tab = createBottomTabNavigator();
 
@@ -49,21 +46,6 @@ const tabBarOptions = {
 };
 
 const ApplicationNavigationRoot = () => {
-  useEffect(() => {
-    Amplitude.initialize(apiKey);
-    Amplitude.setTrackingOptions({
-      disableCarrier: true,
-      disableRegion: true,
-      disableCity: true,
-      disableCountry: true,
-      disableLatLng: true,
-      disableDMA: true,
-      disableIDFA: true,
-      disableIDFV: true,
-      disableIPAddress: true,
-    });
-  }, []);
-
   return (
     <Tab.Navigator
       screenOptions={screenOptions}
