@@ -62,7 +62,7 @@ const RaceDetail = ({ route }) => {
           name: "RaceCalculation",
           params: {
             id: raceId,
-            calculations,
+            calculations: calculations.calculationResponses,
           },
         },
       ]);

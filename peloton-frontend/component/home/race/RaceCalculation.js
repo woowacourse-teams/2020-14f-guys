@@ -27,29 +27,31 @@ const RaceCalculation = ({ route }) => {
     raceAchievementState
   );
 
+  const findPrizeByMember = (memberId) => {
+    const rider = ridersInfo.filter((rider) => rider.member_id === memberId)[0];
+    const result = calculations.filter(
+      (calculation) => calculation.rider_id === rider.id
+    );
+    if (result.length === 1) {
+      return result[0].prize;
+    }
+    return 0;
+  };
+
   useEffect(() => {
     setIsLoading(true);
     const fetchCalculations = async () => {
       try {
-        const achievement = await QueryApi.getRaceAchievement(token, raceId);
+        const {
+          race_achievement_rates: rates,
+        } = await QueryApi.getRaceAchievement(token, raceId);
 
-        const { calculationResponses: calculations } = await CalculationApi.get(
-          token,
-          raceId
-        );
-        const findPrizeByMember = (memberId) => {
-          const rider = ridersInfo.filter(
-            (rider) => rider.member_id === memberId
-          )[0];
-          return calculations.filter(
-            (calculation) => calculation.rider_id === rider.id
-          )[0].prize;
-        };
-
-        achievement.race_achievement_rates.map(
-          (rate) => (rate.prize = findPrizeByMember(rate.member_id))
-        );
-        setRaceAchievement(achievement);
+        const filteredRates = rates.filter((rate) => rate.member_id !== 0);
+        const result = filteredRates.map((rate) => {
+          const prize = findPrizeByMember(rate.member_id);
+          return { ...rate, prize };
+        });
+        setRaceAchievement(result);
       } catch (e) {
         Alert.alert("", e.response.data.code);
         console.log(e.response.data.message);
@@ -71,9 +73,7 @@ const RaceCalculation = ({ route }) => {
           <View style={styles.bannerSeparator} />
         </View>
         <View style={styles.bottom}>
-          <CalculationResults
-            achievementRates={raceAchievement.race_achievement_rates}
-          />
+          <CalculationResults achievementRates={raceAchievement} />
         </View>
       </ScrollView>
     </LoadingIndicator>

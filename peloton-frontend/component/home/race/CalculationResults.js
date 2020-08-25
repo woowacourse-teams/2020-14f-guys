@@ -5,7 +5,7 @@ import CalculationResult from "./CalculationResult";
 const CalculationResults = ({ achievementRates }) => {
   return (
     <View style={styles.container}>
-      {achievementRates
+      {achievementRates && achievementRates.length > 0
         ? achievementRates.map((achievementRate, index) => (
             <CalculationResult achievementRate={achievementRate} key={index} />
           ))
