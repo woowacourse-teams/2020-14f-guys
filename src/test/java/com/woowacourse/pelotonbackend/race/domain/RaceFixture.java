@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.util.Arrays;
+import java.util.List;
 
 import com.woowacourse.pelotonbackend.mission.domain.MissionFixture;
 import com.woowacourse.pelotonbackend.race.presentation.dto.RaceCreateRequest;
@@ -34,6 +35,8 @@ public class RaceFixture {
     public static final LocalDate TEST_CHANGED_START_TIME = LocalDate.now().plusDays(2L);
     public static final LocalDate TEST_END_TIME = LocalDate.now().plusDays(2L);
     public static final LocalDate TEST_END_TIME_PAST = LocalDate.now().minusDays(10L);
+    public static final List<DayOfWeek> TEST_DAYS = Arrays.asList(LocalDate.now().getDayOfWeek(), LocalDate.now().getDayOfWeek().plus(1), LocalDate.now().getDayOfWeek().plus(2));
+    public static final List<DayOfWeek> TEST_PAST_DAYS = Arrays.asList(LocalDate.now().getDayOfWeek(), LocalDate.now().getDayOfWeek().minus(11), LocalDate.now().getDayOfWeek().minus(10));
     public static final LocalDate TEST_CHANGED_END_TIME = LocalDate.now().plusDays(3L);
     public static final RaceCategory TEST_CATEGORY = RaceCategory.TIME;
     public static final RaceCategory TEST_CHANGED_CATEGORY = RaceCategory.STUDY;
@@ -102,7 +105,7 @@ public class RaceFixture {
             .category(TEST_CATEGORY)
             .entranceFee(new Cash(TEST_MONEY_AMOUNT))
             .raceDuration(new DateDuration(TEST_START_TIME, TEST_END_TIME))
-            .days(Arrays.asList(DayOfWeek.MONDAY, DayOfWeek.SUNDAY, DayOfWeek.TUESDAY))
+            .days(TEST_DAYS)
             .certificationAvailableDuration(MissionFixture.timeDurationFixture())
             .build();
     }
@@ -114,7 +117,7 @@ public class RaceFixture {
             .category(TEST_CATEGORY)
             .entranceFee(new Cash(TEST_MONEY_AMOUNT))
             .raceDuration(new DateDuration(TEST_START_TIME_PAST, TEST_END_TIME_PAST))
-            .days(Arrays.asList(DayOfWeek.WEDNESDAY, DayOfWeek.THURSDAY))
+            .days(TEST_PAST_DAYS)
             .certificationAvailableDuration(MissionFixture.timeDurationFixture())
             .build();
     }
