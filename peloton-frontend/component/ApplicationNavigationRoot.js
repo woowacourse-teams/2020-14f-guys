@@ -30,11 +30,6 @@ const screenOptions = ({ route }) => ({
       iconName = "settings";
     }
 
-    // eslint-disable-next-line react-hooks/rules-of-hooks
-    useEffect(() => {
-      Amplitude.initialize(apiKey);
-    }, []);
-
     return (
       <View style={{ minWidth: 35 }}>
         <MaterialIcons name={iconName} size={30} color={color} />
@@ -54,6 +49,10 @@ const tabBarOptions = {
 };
 
 const ApplicationNavigationRoot = () => {
+  useEffect(() => {
+    Amplitude.initialize(apiKey);
+  }, []);
+
   return (
     <Tab.Navigator
       screenOptions={screenOptions}
