@@ -50,6 +50,32 @@ class KakaoUserResponseTest {
         assertThat(kakaoUserResponse).isEqualToComparingFieldByField(createMockKakaoUserResponse());
     }
 
+    @DisplayName("KakaoUserResponse가 올바르게 Deserialize되는지 확인한다.")
+    @Test
+    void JsonToNullResponse() throws JsonProcessingException {
+        final String kakaoUserResponseBody = "{\n"
+            + "    \"id\": 1,\n"
+            + "    \"properties\": {\n"
+            + "        \"nickname\": \"nickname\",\n"
+            + "        \"profile_image\": \"https://peloton.ga\",\n"
+            + "        \"thumbnail_image\": \"https://peloton.ga\"\n"
+            + "    },\n"
+            + "    \"kakao_account\": {\n"
+            + "        \"profile\": {\n"
+            + "            \"nickname\": \"nickname\",\n"
+            + "            \"thumbnail_image_url\": \"https://peloton.ga\",\n"
+            + "            \"profile_image_url\": \"https://peloton.ga\"\n"
+            + "        },\n"
+            + "        \"email\": \"jj@woowa.com\",\n"
+            + "        \"birthday\": \"0429\",\n"
+            + "        \"birthday_type\": \"SOLAR\"\n"
+            + "    }\n"
+            + "}";
+        final KakaoUserResponse kakaoUserResponse = objectMapper.readValue(kakaoUserResponseBody,
+            KakaoUserResponse.class);
+        assertThat(kakaoUserResponse).isEqualToComparingFieldByField(createMockFalseResponse());
+    }
+
     @DisplayName("KakaoTokenResponse가 올바르게 Deserialize되는지 확인한다.")
     @Test
     void kakaoTokenResponseTest() throws JsonProcessingException {
