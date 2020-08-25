@@ -39,7 +39,7 @@ const styles = StyleSheet.create({
   },
   raceContainer: {
     flex: 1,
-    minHeight: 360,
+    minHeight: 350,
   },
 });
 
