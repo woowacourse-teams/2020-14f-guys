@@ -31,7 +31,7 @@ public class MissionRepositoryCustomImpl implements MissionRepositoryCustom {
     }
 
     @Override
-    public List<Mission> findByRaceId(final Long raceId) {
+    public List<Mission> findByRaceId(final long raceId) {
         final SqlParameterSource parameterSource = new MapSqlParameterSource()
             .addValue("raceId", raceId);
 
@@ -46,7 +46,7 @@ public class MissionRepositoryCustomImpl implements MissionRepositoryCustom {
     public List<Mission> findAllByRaceIdsEndTimeAfterThanAndWithinOneDayOrderByStartTime(final List<Long> raceIds,
         final LocalDateTime criterion) {
         final SqlParameterSource parameterSource = new MapSqlParameterSource()
-            .addValue("raceIds", raceIds)
+            .addValue("raceIds", raceIds.isEmpty() ? null : raceIds)
             .addValue("criterion", criterion)
             .addValue("tomorrow", criterion.plus(1, ChronoUnit.DAYS));
 

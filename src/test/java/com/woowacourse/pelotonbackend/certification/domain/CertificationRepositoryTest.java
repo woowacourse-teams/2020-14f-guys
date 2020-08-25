@@ -7,11 +7,15 @@ import static org.junit.jupiter.api.Assertions.*;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Stream;
 
 import org.assertj.core.util.Lists;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.Page;
@@ -192,5 +196,34 @@ class CertificationRepositoryTest {
             Collections.singletonList(missionId), CertificationStatus.REPORTED, PageRequest.of(0, Integer.MAX_VALUE));
         assertThat(result.getTotalPages()).isEqualTo(0);
         assertThat(result.getTotalElements()).isEqualTo(0);
+    }
+
+    @DisplayName("certificationIds가 빈 리스트면 비어있는 결과를 리턴")
+    @Test
+    void noCertificationReturnEmpty() {
+        final Page<Certification> results = certificationRepository.findByMissionIdsAndStatus(
+            Collections.emptyList(), CertificationStatus.SUCCESS, PageRequest.of(0, Integer.MAX_VALUE));
+
+        assertThat(results.getTotalPages()).isEqualTo(0);
+        assertThat(results.getTotalElements()).isEqualTo(0);
+    }
+
+    @DisplayName("certificationIds, riderIds 둘 중 하나라도 빈 리스트면 비어있는 결과를 리턴")
+    @ParameterizedTest
+    @MethodSource("generateEmptyList")
+    void noRiderOrCertificationReturnEmpty(final List<Long> certificationIds, final List<Long> riderIds) {
+        final Page<Certification> results = certificationRepository.findByMissionIdsAndRiderIds(
+            certificationIds, riderIds, PageRequest.of(0, Integer.MAX_VALUE));
+
+        assertThat(results.getTotalPages()).isEqualTo(0);
+        assertThat(results.getTotalElements()).isEqualTo(0);
+    }
+
+    private static Stream<Arguments> generateEmptyList() {
+        return Stream.of(
+            Arguments.of(Collections.emptyList(), Arrays.asList(1L, 2L, 3L)),
+            Arguments.of(Arrays.asList(1L, 2L, 3L), Collections.emptyList()),
+            Arguments.of(Collections.emptyList(), Collections.emptyList())
+        );
     }
 }

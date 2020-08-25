@@ -6,5 +6,5 @@ import com.woowacourse.pelotonbackend.calculation.domain.Calculations;
 
 public interface CalculationRepositoryCustom {
 
-    Optional<Calculations> findAllByRaceId(Long raceId);
+    Optional<Calculations> findAllByRaceId(long raceId);
 }

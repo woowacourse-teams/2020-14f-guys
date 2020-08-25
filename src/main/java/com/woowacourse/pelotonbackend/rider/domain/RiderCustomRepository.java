@@ -3,9 +3,9 @@ package com.woowacourse.pelotonbackend.rider.domain;
 import java.util.List;
 
 public interface RiderCustomRepository {
-    List<Rider> findRidersByRaceId(Long raceId);
+    List<Rider> findRidersByRaceId(long raceId);
 
-    List<Rider> findRidersByMemberId(Long memberId);
+    List<Rider> findRidersByMemberId(long memberId);
 
-    boolean existsByMemberIdAndRaceID(Long memberId, Long raceId);
+    boolean existsByMemberIdAndRaceID(long memberId, long raceId);
 }

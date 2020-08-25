@@ -7,12 +7,12 @@ import org.springframework.data.domain.Pageable;
 
 public interface CertificationRepositoryCustom {
 
-    Page<Certification> findByRiderId(Long id, Pageable pageable);
+    Page<Certification> findByRiderId(long id, Pageable pageable);
 
     Page<Certification> findByMissionIdsAndStatus(List<Long> missionIds, CertificationStatus status,
         Pageable pageable);
 
     Page<Certification> findByMissionIdsAndRiderIds(List<Long> missionIds, List<Long> riderIds, Pageable pageable);
 
-    boolean existsByRiderIdAndMissionId(Long riderId, Long missionId);
+    boolean existsByRiderIdAndMissionId(long riderId, long missionId);
 }

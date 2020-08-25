@@ -35,7 +35,7 @@ public class CertificationRepositoryCustomImpl implements CertificationRepositor
     }
 
     @Override
-    public Page<Certification> findByRiderId(final Long id, final Pageable pageable) {
+    public Page<Certification> findByRiderId(final long id, final Pageable pageable) {
         final SqlParameterSource parameterSource = new MapSqlParameterSource()
             .addValue("riderId", id)
             .addValue("offset", pageable.getOffset())
@@ -51,8 +51,9 @@ public class CertificationRepositoryCustomImpl implements CertificationRepositor
     @Override
     public Page<Certification> findByMissionIdsAndStatus(final List<Long> missionIds, final CertificationStatus status,
         final Pageable pageable) {
+
         final SqlParameterSource parameterSource = new MapSqlParameterSource()
-            .addValue("missionIds", missionIds)
+            .addValue("missionIds", missionIds.isEmpty() ? null : missionIds)
             .addValue("status", status.name())
             .addValue("offset", pageable.getOffset())
             .addValue("pageSize", pageable.getPageSize());
@@ -69,8 +70,8 @@ public class CertificationRepositoryCustomImpl implements CertificationRepositor
         final Pageable pageable) {
 
         final SqlParameterSource parameterSource = new MapSqlParameterSource()
-            .addValue("missionIds", missionIds)
-            .addValue("riderIds", riderIds)
+            .addValue("missionIds", missionIds.isEmpty() ? null : missionIds)
+            .addValue("riderIds", riderIds.isEmpty() ? null : riderIds)
             .addValue("offset", pageable.getOffset())
             .addValue("pageSize", pageable.getPageSize());
 
@@ -82,7 +83,7 @@ public class CertificationRepositoryCustomImpl implements CertificationRepositor
     }
 
     @Override
-    public boolean existsByRiderIdAndMissionId(final Long riderId, final Long missionId) {
+    public boolean existsByRiderIdAndMissionId(final long riderId, final long missionId) {
         final SqlParameterSource parameterSource = new MapSqlParameterSource()
             .addValue("riderId", riderId)
             .addValue("missionId", missionId);
