@@ -4,7 +4,7 @@ import { MaterialIcons } from "@expo/vector-icons";
 import { View } from "react-native";
 
 import { COLOR } from "../utils/constants";
-import { config } from "../config";
+import { config } from "../config/config";
 import Certification from "./certification/Certification";
 import ProfileNavigationRoot from "./ProfileStackRoot";
 import CertificationNavigationRoot from "./certification/CertificationNavigationRoot";

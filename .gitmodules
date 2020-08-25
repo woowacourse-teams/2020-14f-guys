@@ -4,3 +4,6 @@
 [submodule "src/main/resources/config"]
 	path = src/main/resources/config
 	url = https://github.com/fucct/14f-guys-secret-main
+[submodule "peloton-frontend/config"]
+	path = peloton-frontend/config
+	url = https://github.com/fucct/14f-guys-front-secret
