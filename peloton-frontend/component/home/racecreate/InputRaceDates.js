@@ -7,6 +7,7 @@ import RaceCreateUnit from "./RaceCreateUnit";
 import { raceCreateInfoState } from "../../../state/race/RaceState";
 import RaceCreateView from "./RaceCreateView";
 import { RaceCreateUnitType } from "../../../utils/constants";
+import { logNav } from "../../../utils/Analytics";
 
 const InputRaceDates = () => {
   const { start_date, end_date } = useRecoilValue(raceCreateInfoState);
@@ -21,6 +22,7 @@ const InputRaceDates = () => {
       Alert.alert("", "레이스 종료 날짜가 시작 날짜보다 빠릅니다");
       return;
     }
+    logNav("Home", "RaceCreate4(InputRaceMissionTime)");
     navigation.navigate("InputRaceMissionTime");
   };
 

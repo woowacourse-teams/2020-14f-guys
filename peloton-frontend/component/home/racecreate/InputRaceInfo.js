@@ -6,6 +6,7 @@ import RaceCreateUnit from "./RaceCreateUnit";
 import { useRecoilValue } from "recoil";
 import { raceCreateInfoState } from "../../../state/race/RaceState";
 import RaceCreateView from "./RaceCreateView";
+import { logNav } from "../../../utils/Analytics";
 
 const InputRaceInfo = () => {
   const navigation = useNavigation();
@@ -16,6 +17,7 @@ const InputRaceInfo = () => {
       Alert.alert("", "이름과 설명을 모두 입력해주세요");
       return;
     }
+    logNav("Home", "RaceCreate3(InputRaceDates)");
     navigation.navigate("InputRaceDates");
   };
 
