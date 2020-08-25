@@ -83,12 +83,7 @@ public class QueryService {
         final List<UpcomingMissionResponse> upcomingMissionResponses = missions.stream()
             .map(mission -> {
                 final Long raceId = mission.getRaceId().getId();
-                Certification certification;
-                try {
-                    certification = missionIdToCertification.get(mission.getId());
-                } catch (NullPointerException e) {
-                    certification = null;
-                }
+                final Certification certification = missionIdToCertification.getOrDefault(mission.getId(), null);
                 return UpcomingMissionResponse.of(
                     mission, raceIdToRider.get(raceId), raceIdToRace.get(raceId), certification);
             })
