@@ -107,10 +107,7 @@ const RaceDetail = ({ route }) => {
     if (raceInfo) {
       const endDate = raceInfo.race_duration.end_date;
       const endTime = raceInfo.mission_duration.end_time;
-      const endDateTime = moment(
-        endDate + " " + endTime,
-        "YYYY-MM-DD hh:mm:ss"
-      );
+      const endDateTime = moment(`${endDate}T${endTime}Z`);
       return endDateTime.isBefore(moment());
     }
     return false;
