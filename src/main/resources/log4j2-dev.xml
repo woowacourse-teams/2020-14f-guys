@@ -11,7 +11,7 @@
             <PatternLayout pattern="${layoutPattern}"/>
         </Console>
 
-        <RollingFile name="ErrorAppender" fileName="classlogs/error/${logNm}.log"
+        <RollingFile name="ErrorAppender" fileName="logs/error/${logNm}.log"
                      filePattern="logs/error/${logNm}_%d{yyyy-MM-dd}_%i.log">
             <PatternLayout pattern="${layoutPattern}"/>
             <LevelRangeFilter minLevel="ERROR"/>
