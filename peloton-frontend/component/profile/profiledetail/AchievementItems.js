@@ -23,19 +23,26 @@ const AchievementItems = () => {
     const fetchRaceAchievementRate = async () => {
       try {
         const { race_responses: races } = await QueryApi.getRaces(token);
-        const response = await Promise.all(
-          races.map(async (race) => {
-            const {
-              race_id,
-              race_title,
-              race_achievement_rates: list,
-            } = await QueryApi.getRaceAchievement(token, race.id);
-            const [{ achievement, certification_count }] = list.filter(
-              (item) => item.member_id === member.id
-            );
-            return { race_id, race_title, achievement, certification_count };
-          })
-        );
+        const response = races
+          ? await Promise.all(
+              races.map(async (race) => {
+                const {
+                  race_id,
+                  race_title,
+                  race_achievement_rates: list,
+                } = await QueryApi.getRaceAchievement(token, race.id);
+                const [{ achievement, certification_count }] = list.filter(
+                  (item) => item.member_id === member.id
+                );
+                return {
+                  race_id,
+                  race_title,
+                  achievement,
+                  certification_count,
+                };
+              })
+            )
+          : [];
         setAchievementRates(response);
       } catch (e) {
         Alert.alert("", e.response.data.code);
