@@ -36,7 +36,7 @@ const InputRaceFee = () => {
 
   const navigation = useNavigation();
 
-  const formatPostRaceBody = () => {
+  const formatPostRaceBody = (calculatedDays) => {
     return {
       title,
       description,
@@ -46,7 +46,7 @@ const InputRaceFee = () => {
         start_date,
         end_date,
       },
-      days,
+      days: calculatedDays,
       certification_available_duration: {
         start_time: mission_start_time,
         end_time: mission_end_time,
@@ -68,10 +68,10 @@ const InputRaceFee = () => {
 
     let daysOffset = 0;
     if (hours < 0) {
-      daysOffset--;
+      daysOffset++;
     }
     if (hours >= 24) {
-      daysOffset++;
+      daysOffset--;
     }
     return daysOffset;
   };
@@ -88,10 +88,13 @@ const InputRaceFee = () => {
     return calculateDays(startTimeDaysOffset);
   };
 
-  const createRaceRequest = async () => {
+  const createRaceRequest = async (calculatedDays) => {
     setGlobalLoading(true);
     try {
-      const { location } = await RaceApi.post(token, formatPostRaceBody());
+      const { location } = await RaceApi.post(
+        token,
+        formatPostRaceBody(calculatedDays),
+      );
       const race_id = location.split("/")[3];
       await RiderApi.post(token, race_id);
       resetRaceCreateInfo();
@@ -106,24 +109,6 @@ const InputRaceFee = () => {
       Alert.alert("", e.response.data.code);
     }
     setGlobalLoading(false);
-  };
-
-  const calculateAvailableDays = () => {
-    const startDateTime = new Date(
-      `${start_date}T${mission_start_time}Z`,
-    ).getTime();
-    const endDateTime = new Date(`${end_date}T${mission_end_time}Z`).getTime();
-
-    const oneDayMillis = 1000 * 60 * 60 * 24;
-    let availableDays = [];
-    for (let i = startDateTime; i <= endDateTime; i += oneDayMillis) {
-      const tempDay = new Date(i).getDay();
-      if (availableDays.includes(DAYS[tempDay])) {
-        continue;
-      }
-      availableDays.push(DAYS[tempDay]);
-    }
-    return availableDays;
   };
 
   const submitRaceRequest = async () => {
@@ -145,23 +130,12 @@ const InputRaceFee = () => {
       return;
     }
 
-    const availableDays = calculateAvailableDays();
     const newDays = convertUTCDays();
-    const filteredDays = newDays.filter((day) => !availableDays.includes(day));
-    if (filteredDays.length > 0) {
-      Alert.alert("", "레이스 기간에 해당하지 않는 요일 선택이 존재합니다.");
-      return;
-    }
-
-    setDaysInRaceCreateInfo((prev) => ({
-      ...prev,
-      days: newDays,
-    }));
 
     try {
       const newMemberInfo = await MemberApi.get(token);
       setMemberInfo(newMemberInfo);
-      await createRaceRequest();
+      await createRaceRequest(newDays);
     } catch (e) {
       console.log(e.response.data.message);
     }
