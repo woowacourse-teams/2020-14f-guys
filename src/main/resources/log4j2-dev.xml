@@ -10,6 +10,17 @@
         <Console name="ConsoleAppender" target="SYSTEM_OUT">
             <PatternLayout pattern="${layoutPattern}"/>
         </Console>
+
+        <RollingFile name="ErrorAppender" fileName="logs/error/${logNm}.log"
+                     filePattern="logs/error/${logNm}_%d{yyyy-MM-dd}_%i.log">
+            <PatternLayout pattern="${layoutPattern}"/>
+            <LevelRangeFilter minLevel="ERROR"/>
+            <Policies>
+                <SizeBasedTriggeringPolicy size="10MB"/>
+                <TimeBasedTriggeringPolicy interval="1"/>
+            </Policies>
+            <DefaultRolloverStrategy max="30" fileIndex="max"/>
+        </RollingFile>
     </Appenders>
     <Loggers>
         <Root level="INFO" additivity="false">
