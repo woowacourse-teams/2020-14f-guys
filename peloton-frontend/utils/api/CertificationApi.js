@@ -1,9 +1,11 @@
 import Axios from "axios";
 
 import { SERVER_BASE_URL } from "../constants";
+import { logApi } from "../Analytics";
 
 export const CertificationApi = {
   post: async (token, formData) => {
+    logApi("Certification", "Post");
     const { headers } = await Axios.post(
       `${SERVER_BASE_URL}/api/certifications`,
       formData,
@@ -17,6 +19,7 @@ export const CertificationApi = {
     return headers;
   },
   update: async (token, formData, id) => {
+    logApi("Certification", "Update");
     const { headers } = await Axios.post(
       `${SERVER_BASE_URL}/api/certifications/update/${id}`,
       formData,
@@ -30,6 +33,7 @@ export const CertificationApi = {
     return headers;
   },
   get: async (token, certificationId) => {
+    logApi("Certification", "Get");
     const response = await Axios({
       method: "GET",
       baseURL: SERVER_BASE_URL,

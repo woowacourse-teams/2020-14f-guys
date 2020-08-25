@@ -6,17 +6,12 @@ import { useNavigation } from "@react-navigation/native";
 import { COLOR, SAMPLE_SUBTITLE } from "../../../utils/constants";
 import { useRecoilValue } from "recoil";
 import { memberInfoState } from "../../../state/member/MemberState";
-import * as Amplitude from "expo-analytics-amplitude";
 
 const HomeBanner = () => {
   const navigation = useNavigation();
   const memberInfo = useRecoilValue(memberInfoState);
 
   const goToCategorySelection = () => {
-    Amplitude.logEventWithProperties("USER_OPENE  D_CREATION", {
-      Category: "Member",
-      memberName: memberInfo.name,
-    });
     navigation.navigate("CategorySelection");
   };
 

@@ -1,8 +1,10 @@
 import Axios from "axios";
 import { SERVER_BASE_URL } from "../constants";
+import { logApi } from "../Analytics";
 
 export const QueryApi = {
   getRaces: async (token) => {
+    logApi("Race", "GetByMemberId");
     const response = await Axios({
       method: "GET",
       baseURL: SERVER_BASE_URL,
@@ -14,6 +16,7 @@ export const QueryApi = {
     return response.data;
   },
   getMissions: async (token) => {
+    logApi("Mission", "GetUpcomingByMemberId");
     const response = await Axios({
       method: "GET",
       baseURL: SERVER_BASE_URL,
@@ -25,6 +28,7 @@ export const QueryApi = {
     return response.data;
   },
   getRaceCertifications: async (token, raceId) => {
+    logApi("Certification", "GetByRaceId");
     const response = await Axios({
       method: "GET",
       baseURL: SERVER_BASE_URL,
@@ -36,6 +40,7 @@ export const QueryApi = {
     return response.data;
   },
   getRaceDetail: async (token, raceId) => {
+    logApi("Race", "GetRaceDetail");
     const response = await Axios({
       method: "GET",
       baseURL: SERVER_BASE_URL,
