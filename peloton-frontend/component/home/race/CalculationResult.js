@@ -15,7 +15,9 @@ const CalculationResult = ({ achievementRate }) => {
         <View style={styles.barContainer}>
           <View style={[styles.successRatioBar, { width: `${rate}%` }]} />
         </View>
-        <Text style={styles.successRatioText}>{`${rate}%`}</Text>
+        <View style={styles.ratioTextContainer}>
+          <Text style={styles.successRatioText}>{`${rate}%`}</Text>
+        </View>
       </View>
     </View>
   );
@@ -24,12 +26,11 @@ const CalculationResult = ({ achievementRate }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    minHeight: 50,
-    maxHeight: 80,
-    marginBottom: 40,
+    height: 75,
+    marginVertical: 20,
   },
   top: {
-    flex: 1,
+    height: 20,
     flexDirection: "row",
     alignItems: "center",
     marginBottom: 5,
@@ -47,25 +48,30 @@ const styles = StyleSheet.create({
     color: COLOR.DARK_GRAY6,
   },
   bottom: {
-    flex: 2,
+    height: 30,
     flexDirection: "row",
     marginTop: 10,
   },
   barContainer: {
     width: "85%",
+    height: 20,
     marginBottom: 20,
     padding: 5,
     backgroundColor: COLOR.WHITE,
     borderRadius: 20,
   },
   successRatioBar: {
-    height: "100%",
+    height: 10,
     fontSize: 20,
     backgroundColor: COLOR.PURPLE,
     borderRadius: 120,
   },
+  ratioTextContainer: {
+    width: "15%",
+  },
   successRatioText: {
-    fontSize: 14,
+    fontSize: 15,
+    textAlign: "right",
     fontWeight: "400",
     color: COLOR.DARK_GRAY6,
     marginLeft: 10,

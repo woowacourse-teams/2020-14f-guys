@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
-import { Alert, StyleSheet, Text, View } from "react-native";
-import { COLOR } from "../../../utils/constants";
+import { Alert, ScrollView, StyleSheet, Text, View } from "react-native";
+import { COLOR, deviceHeight } from "../../../utils/constants";
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil/dist";
 import { useNavigation } from "@react-navigation/core";
 import {
@@ -64,7 +64,7 @@ const RaceCalculation = ({ route }) => {
 
   return (
     <LoadingIndicator>
-      <View style={styles.container}>
+      <ScrollView style={styles.container}>
         <View style={styles.top}>
           <Text style={styles.title}>{memberInfo.name}님,</Text>
           <Text style={styles.subtitle}>수고하셨습니다!</Text>
@@ -75,7 +75,7 @@ const RaceCalculation = ({ route }) => {
             achievementRates={raceAchievement.race_achievement_rates}
           />
         </View>
-      </View>
+      </ScrollView>
     </LoadingIndicator>
   );
 };
@@ -83,13 +83,12 @@ const RaceCalculation = ({ route }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: "center",
   },
   top: {
     justifyContent: "center",
     paddingHorizontal: 35,
     backgroundColor: COLOR.LAVENDER,
-    flex: 1,
+    height: deviceHeight / 3,
   },
   title: {
     fontSize: 30,
