@@ -50,7 +50,6 @@ const HomeNavigationRoot = () => {
         component={RaceCalculation}
         options={{
           title: "레이스 정산",
-          headerLeft: () => <GoBackButton />,
         }}
       />
       <HomeStack.Screen

@@ -3,13 +3,13 @@ import { StyleSheet, Text, View } from "react-native";
 import { COLOR } from "../../../utils/constants";
 
 const CalculationResult = ({ achievementRate }) => {
-  const rate = achievementRate.achievement;
+  const { member_name, prize, achievement: rate } = achievementRate;
 
   return (
     <View style={styles.container}>
       <View style={styles.top}>
-        <Text style={styles.riderName}>{achievementRate.member_name}</Text>
-        <Text style={styles.prize}>{`${achievementRate.prize}원`}</Text>
+        <Text style={styles.riderName}>{member_name}</Text>
+        <Text style={styles.prize}>{`${prize}원`}</Text>
       </View>
       <View style={styles.bottom}>
         <View style={styles.barContainer}>

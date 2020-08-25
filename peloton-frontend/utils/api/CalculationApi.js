@@ -11,7 +11,7 @@ export const CalculationApi = {
         Authorization: `Bearer ${token}`,
       },
     });
-    return response.status;
+    return response;
   },
   get: async (token, raceId) => {
     const response = await Axios({
@@ -22,6 +22,6 @@ export const CalculationApi = {
         Authorization: `Bearer ${token}`,
       },
     });
-    return response.data;
+    return response;
   },
 };

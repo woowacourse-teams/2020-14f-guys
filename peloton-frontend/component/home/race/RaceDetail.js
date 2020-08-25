@@ -19,6 +19,7 @@ import { useNavigation } from "@react-navigation/core";
 import LinkCopyButton from "./LinkCopyButton";
 import { CalculationApi } from "../../../utils/api/CalculationApi";
 import HalfWidthButton from "./HalfWidthButton";
+import moment from "moment";
 
 const RaceDetail = ({ route }) => {
   const raceId = route.params.id;
@@ -31,51 +32,45 @@ const RaceDetail = ({ route }) => {
 
   const calculateRace = async () => {
     setIsLoading(true);
-    let response;
     try {
-      response = await CalculationApi.post(token, raceId);
+      const { status } = await CalculationApi.post(token, raceId);
+      if (status === 201) {
+        Alert.alert("", "정산이 완료되었습니다.");
+      }
     } catch (e) {
       console.log(e.response.data.message);
       Alert.alert("", e.response.data.code);
-      setIsLoading(false);
-      return;
-    }
-    if (response === 201) {
-      Alert.alert("", "정산이 완료되었습니다.");
     }
     setIsLoading(false);
   };
 
   const navigateToRaceCalculation = async () => {
     setIsLoading(true);
-    let calculations;
     try {
-      calculations = await CalculationApi.get(token, raceId);
+      const { data: calculations } = await CalculationApi.get(token, raceId);
+      navigateWithHistory(navigation, [
+        {
+          name: "Home",
+        },
+        {
+          name: "RaceDetail",
+          params: {
+            id: raceId,
+          },
+        },
+        {
+          name: "RaceCalculation",
+          params: {
+            id: raceId,
+            calculations,
+          },
+        },
+      ]);
     } catch (e) {
       Alert.alert("", e.response.data.code);
       console.log(e.response.data.message);
-      setIsLoading(false);
-      return;
     }
-
-    navigateWithHistory(navigation, [
-      {
-        name: "Home",
-      },
-      {
-        name: "RaceDetail",
-        params: {
-          id: raceId,
-        },
-      },
-      {
-        name: "RaceCalculation",
-        params: {
-          id: raceId,
-          calculations,
-        },
-      },
-    ]);
+    setIsLoading(false);
   };
 
   useEffect(() => {
@@ -108,6 +103,19 @@ const RaceDetail = ({ route }) => {
     setIsLoading(false);
   }, []);
 
+  const isEndRace = () => {
+    if (raceInfo) {
+      const endDate = raceInfo.race_duration.end_date;
+      const endTime = raceInfo.mission_duration.end_time;
+      const endDateTime = moment(
+        endDate + " " + endTime,
+        "YYYY-MM-DD hh:mm:ss"
+      );
+      return endDateTime.isBefore(moment());
+    }
+    return false;
+  };
+
   return (
     <LoadingIndicator>
       <View style={styles.container}>
@@ -129,16 +137,20 @@ const RaceDetail = ({ route }) => {
           </View>
         </ScrollView>
         <View style={styles.calculationButton}>
-          <HalfWidthButton
-            color={COLOR.BLUE3}
-            children={"정산하기"}
-            onClick={calculateRace}
-          />
-          <HalfWidthButton
-            color={COLOR.BLUE5}
-            children={"정산결과보기"}
-            onClick={navigateToRaceCalculation}
-          />
+          {isEndRace() && (
+            <>
+              <HalfWidthButton
+                color={COLOR.BLUE3}
+                children={"정산하기"}
+                onClick={calculateRace}
+              />
+              <HalfWidthButton
+                color={COLOR.BLUE5}
+                children={"정산결과보기"}
+                onClick={navigateToRaceCalculation}
+              />
+            </>
+          )}
         </View>
       </View>
     </LoadingIndicator>
