@@ -38,7 +38,8 @@ public class RaceAchievementRates {
         final Map<Long, Member> idMembers = members.stream()
             .collect(Collectors.toMap(Member::getId, Function.identity()));
         final Map<Long, Member> riderMember = riders.stream()
-            .collect(Collectors.toMap(Rider::getId, rider -> idMembers.get(rider.getMemberId().getId())));
+            .collect(Collectors.toMap(Rider::getId, rider -> idMembers.getOrDefault(rider.getMemberId().getId(),
+                Member.builder().id(0L).name("탈퇴 회원").build())));
         final Map<Long, Long> riderCertification = certifications.stream()
             .collect(Collectors.groupingBy(certification -> certification.getRiderId().getId(), Collectors.counting()));
 

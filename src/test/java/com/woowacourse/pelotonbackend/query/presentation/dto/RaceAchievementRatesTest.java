@@ -98,6 +98,32 @@ class RaceAchievementRatesTest {
             ));
     }
 
+    @DisplayName("멤버가 탈퇴한 경우 탈퇴 회원임을 보여준다.")
+    @Test
+    void create4() {
+        final List<Rider> riders = RiderFixture.createRidersByCount(3);
+        final List<Mission> missions = MissionFixture.createMissionsWithRaceIdAndCount(
+            RaceFixture.TEST_RACE_ID, 3);
+        final Map<Long, Integer> riderCertifications = new HashMap<>();
+        riderCertifications.put(1L, 3);
+        riderCertifications.put(2L, 2);
+        riderCertifications.put(3L, 1);
+        final List<Certification> certifications = CertificationFixture.createMockCertifications(riderCertifications)
+            .getContent();
+        final List<Member> members = MemberFixture.createMemberByCount(2);
+
+        final List<RaceAchievementRate> raceAchievementRates = RaceAchievementRates.create(race, riders, missions,
+            certifications, members).getRaceAchievementRates();
+
+        assertThat(raceAchievementRates)
+            .usingRecursiveFieldByFieldElementComparator()
+            .isEqualTo(Lists.newArrayList(
+                RaceAchievementRate.of(members.get(0), 3, 100.0),
+                RaceAchievementRate.of(members.get(1), 2, 66.7),
+                RaceAchievementRate.of(MemberFixture.unRegisteredMember(), 1, 33.3)
+            ));
+    }
+
     /**
      * 라이더 1명
      * 총 미션 개수 0개

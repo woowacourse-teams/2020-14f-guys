@@ -219,4 +219,8 @@ public class MemberFixture {
             .mapToObj(id -> createWithId(id))
             .collect(Collectors.toList());
     }
+
+    public static Member unRegisteredMember() {
+        return Member.builder().id(0L).name("탈퇴 회원").build();
+    }
 }
