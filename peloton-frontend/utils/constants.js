@@ -35,6 +35,14 @@ export const COLOR = {
   BLACK: "#000",
   BLACK2: "#1b1c20",
 };
+
+export const ACHIEVEMENT_COLORS = [
+  COLOR.PURPLE,
+  COLOR.INDIAN_PINK,
+  COLOR.GREEN1,
+  COLOR.LAVENDER,
+];
+
 export const SAMPLE_IMAGES = [
   {
     id: 1,

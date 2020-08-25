@@ -25,25 +25,32 @@ export const QueryApi = {
     return response.data;
   },
   getRaceCertifications: async (token, raceId) => {
-    try {
-      const response = await Axios({
-        method: "GET",
-        baseURL: SERVER_BASE_URL,
-        url: `/api/queries/races/${raceId}/certifications`,
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-      return response.data;
-    } catch (error) {
-      console.log(error);
-    }
+    const response = await Axios({
+      method: "GET",
+      baseURL: SERVER_BASE_URL,
+      url: `/api/queries/races/${raceId}/certifications`,
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    return response.data;
   },
   getRaceDetail: async (token, raceId) => {
     const response = await Axios({
       method: "GET",
       baseURL: SERVER_BASE_URL,
       url: `/api/queries/races/${raceId}/detail`,
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    return response.data;
+  },
+  getRaceAchievement: async (token, raceId) => {
+    const response = await Axios({
+      method: "GET",
+      baseURL: SERVER_BASE_URL,
+      url: `/api/queries/races/${raceId}/achievement`,
       headers: {
         Authorization: `Bearer ${token}`,
       },

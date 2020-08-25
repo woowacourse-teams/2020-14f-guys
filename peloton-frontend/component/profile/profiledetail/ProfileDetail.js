@@ -3,6 +3,7 @@ import { ImageBackground, StyleSheet, View } from "react-native";
 import MemberInfo from "./MemberInfo";
 import { useRecoilValue } from "recoil";
 import { memberInfoState } from "../../../state/member/MemberState";
+import AchievementItems from "./AchievementItems";
 
 const ProfileDetail = () => {
   const memberInfo = useRecoilValue(memberInfoState);
@@ -19,7 +20,9 @@ const ProfileDetail = () => {
           <MemberInfo />
         </ImageBackground>
       </View>
-      <View style={styles.raceContainer} />
+      <View style={styles.achievementContainer}>
+        <AchievementItems />
+      </View>
     </View>
   );
 };
@@ -37,9 +40,8 @@ const styles = StyleSheet.create({
     flex: 1,
     width: "100%",
   },
-  raceContainer: {
-    flex: 1,
-    minHeight: 350,
+  achievementContainer: {
+    flex: 11,
   },
 });
 

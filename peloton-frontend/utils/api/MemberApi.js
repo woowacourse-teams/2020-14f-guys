@@ -34,7 +34,7 @@ export const MemberApi = {
             ContentType: "multipart/form-data",
             Authorization: `Bearer ${token}`,
           },
-        },
+        }
       );
       return response.data.image_url;
     } catch (error) {
@@ -76,17 +76,13 @@ export const MemberApi = {
     }
   },
   delete: async (token) => {
-    try {
-      await Axios({
-        method: "DELETE",
-        baseURL: SERVER_BASE_URL,
-        url: "/api/members",
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-    } catch (error) {
-      console.log(error);
-    }
+    await Axios({
+      method: "DELETE",
+      baseURL: SERVER_BASE_URL,
+      url: "/api/members",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
   },
 };
