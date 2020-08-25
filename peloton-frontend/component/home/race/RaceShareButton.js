@@ -17,14 +17,19 @@ const RaceShareButton = () => {
 
   return (
     <TouchableOpacity style={styles.shareButton} onPress={onShare}>
-      <EvilIcons name="share-apple" size={44} color={COLOR.BLACK} />
+      <EvilIcons name="share-apple" size={38} color={COLOR.BLACK} />
     </TouchableOpacity>
   );
 };
 
 const styles = StyleSheet.create({
   shareButton: {
-    padding: 5,
+    width: 50,
+    height: 50,
+    borderRadius: 30,
+    backgroundColor: "rgba(255,255,255,0.2)",
+    alignItems: "center",
+    justifyContent: "center",
   },
 });
 
