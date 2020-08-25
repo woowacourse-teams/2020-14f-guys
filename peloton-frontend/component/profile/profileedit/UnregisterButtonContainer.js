@@ -30,7 +30,14 @@ const UnregisterButtonContainer = () => {
 
   const requestUnregister = async () => {
     setIsLoading(true);
-    await MemberApi.delete(token);
+    try {
+      await MemberApi.delete(token);
+    } catch (e) {
+      console.log(e.response.data.message);
+      Alert.alert("", e.response.data.code);
+      setIsLoading(false);
+      return;
+    }
     await AsyncStorage.removeItem(TOKEN_STORAGE);
     navigateWithoutHistory(navigation, "Login");
     setIsLoading(false);
@@ -55,7 +62,7 @@ const UnregisterButtonContainer = () => {
         },
         { text: "Yes", onPress: requestUnregister },
       ],
-      { cancelable: false },
+      { cancelable: false }
     );
 
   return (
