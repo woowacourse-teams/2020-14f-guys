@@ -1,29 +1,34 @@
 import React, { useEffect, useState } from "react";
-import { StyleSheet, Text, View } from "react-native";
+import { Alert, StyleSheet, Text, View } from "react-native";
 import { COLOR } from "../../../utils/constants";
-import { useRecoilState, useRecoilValue } from "recoil/dist";
+import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil/dist";
 import { useNavigation } from "@react-navigation/core";
-import { memberInfoState, memberTokenState, } from "../../../state/member/MemberState";
+import {
+  memberInfoState,
+  memberTokenState,
+} from "../../../state/member/MemberState";
 import { CalculationApi } from "../../../utils/api/CalculationApi";
 import { raceAchievementState } from "../../../state/certification/RaceAchievementState";
 import { ridersInfoState } from "../../../state/rider/RiderState";
 import { QueryApi } from "../../../utils/api/QueryApi";
 import CalculationResults from "./CalculationResults";
+import { loadingState } from "../../../state/loading/LoadingState";
+import LoadingIndicator from "../../../utils/LoadingIndicator";
 
 const RaceCalculation = ({ route }) => {
   const navigation = useNavigation();
   const token = useRecoilValue(memberTokenState);
   const memberInfo = useRecoilValue(memberInfoState);
   const ridersInfo = useRecoilValue(ridersInfoState);
-  const [isCalculated, setIsCalculated] = useState(false);
-  const raceId = route.params.id;
+  const setIsLoading = useSetRecoilState(loadingState);
+  const { id: raceId, calculations } = route.params;
 
   const [raceAchievement, setRaceAchievement] = useRecoilState(
-    raceAchievementState,
+    raceAchievementState
   );
 
   useEffect(() => {
-    setIsCalculated(false);
+    setIsLoading(true);
     const fetchCalculations = async () => {
       try {
         const achievement = await QueryApi.getRaceAchievement(token, raceId);
@@ -34,7 +39,7 @@ const RaceCalculation = ({ route }) => {
         );
         const findPrizeByMember = (memberId) => {
           const rider = ridersInfo.filter(
-            (rider) => rider.member_id === memberId,
+            (rider) => rider.member_id === memberId
           )[0];
           return calculations.filter(
             (calculation) => calculation.rider_id === rider.id
@@ -46,32 +51,32 @@ const RaceCalculation = ({ route }) => {
         );
         setRaceAchievement(achievement);
       } catch (e) {
-        navigation.goBack();
+        Alert.alert("", e.response.data.code);
         console.log(e.response.data.message);
+        setIsLoading(false);
+        navigation.goBack();
+        return;
       }
+      setIsLoading(false);
     };
-    fetchCalculations().then(() => setIsCalculated(true));
+    fetchCalculations();
   }, []);
 
   return (
-    <View style={styles.container}>
-      <View style={styles.top}>
-        <Text style={styles.title}>{memberInfo.name}님,</Text>
-        <Text style={styles.subtitle}>수고하셨습니다!</Text>
-        <View style={styles.bannerSeparator} />
-      </View>
-      <View style={styles.bottom}>
-        {isCalculated ? (
+    <LoadingIndicator>
+      <View style={styles.container}>
+        <View style={styles.top}>
+          <Text style={styles.title}>{memberInfo.name}님,</Text>
+          <Text style={styles.subtitle}>수고하셨습니다!</Text>
+          <View style={styles.bannerSeparator} />
+        </View>
+        <View style={styles.bottom}>
           <CalculationResults
             achievementRates={raceAchievement.race_achievement_rates}
           />
-        ) : (
-          <View style={styles.loadingTextContainer}>
-            <Text style={styles.loadingText}>잠시만 기다려주세요!</Text>
-          </View>
-        )}
+        </View>
       </View>
-    </View>
+    </LoadingIndicator>
   );
 };
 

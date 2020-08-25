@@ -5,9 +5,11 @@ import CalculationResult from "./CalculationResult";
 const CalculationResults = ({ achievementRates }) => {
   return (
     <View style={styles.container}>
-      {achievementRates.map((achievementRate, index) => (
-        <CalculationResult achievementRate={achievementRate} key={index} />
-      ))}
+      {achievementRates
+        ? achievementRates.map((achievementRate, index) => (
+            <CalculationResult achievementRate={achievementRate} key={index} />
+          ))
+        : null}
     </View>
   );
 };

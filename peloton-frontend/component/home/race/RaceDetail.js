@@ -9,7 +9,7 @@ import { ridersInfoState } from "../../../state/rider/RiderState";
 import { QueryApi } from "../../../utils/api/QueryApi";
 import LoadingIndicator from "../../../utils/LoadingIndicator";
 import { certificationsState } from "../../../state/certification/CertificationState";
-import { COLOR } from "../../../utils/constants";
+import { COLOR, deviceHeight } from "../../../utils/constants";
 import RaceCertificationImages from "./RaceCertificationImages";
 import RaceDetailInfo from "./RaceDetailInfo";
 import RaceSpec from "./RaceSpec";
@@ -29,13 +29,35 @@ const RaceDetail = ({ route }) => {
   const [ridersInfo, setRidersInfo] = useRecoilState(ridersInfoState);
   const setCertificationsInfo = useSetRecoilState(certificationsState);
 
-  const calculateRace = () => {
-    CalculationApi.post(token, raceId).catch((e) =>
-      alert(e.response.data.code)
-    );
+  const calculateRace = async () => {
+    setIsLoading(true);
+    let response;
+    try {
+      response = await CalculationApi.post(token, raceId);
+    } catch (e) {
+      console.log(e.response.data.message);
+      Alert.alert("", e.response.data.code);
+      setIsLoading(false);
+      return;
+    }
+    if (response === 201) {
+      Alert.alert("", "정산이 완료되었습니다.");
+    }
+    setIsLoading(false);
   };
 
-  const navigateToRaceCalculation = () => {
+  const navigateToRaceCalculation = async () => {
+    setIsLoading(true);
+    let calculations;
+    try {
+      calculations = await CalculationApi.get(token, raceId);
+    } catch (e) {
+      Alert.alert("", e.response.data.code);
+      console.log(e.response.data.message);
+      setIsLoading(false);
+      return;
+    }
+
     navigateWithHistory(navigation, [
       {
         name: "Home",
@@ -43,13 +65,14 @@ const RaceDetail = ({ route }) => {
       {
         name: "RaceDetail",
         params: {
-          id: raceInfo.id,
+          id: raceId,
         },
       },
       {
         name: "RaceCalculation",
         params: {
-          id: raceInfo.id,
+          id: raceId,
+          calculations,
         },
       },
     ]);
@@ -70,12 +93,10 @@ const RaceDetail = ({ route }) => {
           token,
           raceId
         );
-
         const { certifications } = await QueryApi.getRaceCertifications(
           token,
           raceId
         );
-
         setRidersInfo(riders);
         setRaceInfo(race);
         setCertificationsInfo(certifications.content);
@@ -89,22 +110,24 @@ const RaceDetail = ({ route }) => {
 
   return (
     <LoadingIndicator>
-      <ScrollView style={styles.container}>
-        <RaceCertificationImages />
-        <RaceDetailInfo
-          title={raceInfo.title}
-          description={raceInfo.description}
-        />
-        <RaceSpec
-          days={raceInfo.days}
-          raceDuration={raceInfo.race_duration}
-          missionDuration={raceInfo.mission_duration}
-          cash={raceInfo.entrance_fee}
-          riderCount={ridersInfo.length}
-        />
-        <View style={styles.linkButton}>
-          <LinkCopyButton raceId={raceId} />
-        </View>
+      <View style={styles.container}>
+        <ScrollView style={styles.scrollViewContainer}>
+          <RaceCertificationImages />
+          <RaceDetailInfo
+            title={raceInfo.title}
+            description={raceInfo.description}
+          />
+          <RaceSpec
+            days={raceInfo.days}
+            raceDuration={raceInfo.race_duration}
+            missionDuration={raceInfo.mission_duration}
+            cash={raceInfo.entrance_fee}
+            riderCount={ridersInfo.length}
+          />
+          <View style={styles.linkButton}>
+            <LinkCopyButton raceId={raceId} />
+          </View>
+        </ScrollView>
         <View style={styles.calculationButton}>
           <HalfWidthButton
             color={COLOR.BLUE3}
@@ -117,13 +140,15 @@ const RaceDetail = ({ route }) => {
             onClick={navigateToRaceCalculation}
           />
         </View>
-      </ScrollView>
+      </View>
     </LoadingIndicator>
   );
 };
-
 const styles = StyleSheet.create({
   container: {
+    flex: 1,
+  },
+  scrollViewContainer: {
     flex: 1,
     backgroundColor: COLOR.WHITE,
   },
