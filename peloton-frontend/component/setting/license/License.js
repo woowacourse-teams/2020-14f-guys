@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { ScrollView, StyleSheet } from "react-native";
 import LicenseTitle from "./LicenseTitle";
 import LicenseBody from "./LicenseBody";
@@ -6,8 +6,11 @@ import RepositoryName from "./RepositoryName";
 import RepositoryUrl from "./RepositoryUrl";
 import RepositoryLicense from "./RepositoryLicense";
 import RepositoryOwner from "./RepositoryOwner";
+import { logNav } from "../../../utils/Analytics";
 
 const License = () => {
+  useEffect(() => logNav("Setting", "License"), []);
+
   return (
     <ScrollView style={styles.container}>
       <LicenseTitle>OSS Notice | Peloton</LicenseTitle>

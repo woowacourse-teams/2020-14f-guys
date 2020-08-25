@@ -7,6 +7,7 @@ import RaceCreateUnit from "./RaceCreateUnit";
 import RaceCreateView from "./RaceCreateView";
 import { RaceCreateUnitType } from "../../../utils/constants";
 import { raceCreateInfoState } from "../../../state/race/RaceState";
+import { logNav } from "../../../utils/Analytics";
 
 const InputRaceMissionTime = () => {
   const {
@@ -42,6 +43,7 @@ const InputRaceMissionTime = () => {
       Alert.alert("", "미션 시작 날짜와 시간은 현재시간 이후여야합니다.");
       return;
     }
+    logNav("Home", "RaceCreate5(InputRaceMissionDays)");
     navigation.navigate("InputRaceMissionDays");
   };
 

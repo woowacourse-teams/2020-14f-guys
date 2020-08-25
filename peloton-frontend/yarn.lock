@@ -2898,6 +2898,11 @@ expand-brackets@^2.1.4:
     snapdragon "^0.8.1"
     to-regex "^3.0.1"
 
+expo-analytics-amplitude@~8.2.1:
+  version "8.2.1"
+  resolved "https://registry.yarnpkg.com/expo-analytics-amplitude/-/expo-analytics-amplitude-8.2.1.tgz#96f4609022eb60dd5a1fae1c40c77f9a5b55f8cf"
+  integrity sha512-+GQDKFusM0G4K+lOjY2HbMyn9tSpyIfhpCpopfd/BcNZVjv9t53Fh8q0eV2ha1GLMoe5JAsS4Cskr1xDtbhbxw==
+
 expo-apple-authentication@~2.2.1:
   version "2.2.1"
   resolved "https://registry.yarnpkg.com/expo-apple-authentication/-/expo-apple-authentication-2.2.1.tgz#4f515183a385bb2681d8f7bf1064251016d05b97"
@@ -2914,7 +2919,7 @@ expo-asset@~8.1.7:
     path-browserify "^1.0.0"
     url-parse "^1.4.4"
 
-expo-constants@~9.1.1:
+expo-constants@^9.1.1, expo-constants@~9.1.1:
   version "9.1.1"
   resolved "https://registry.yarnpkg.com/expo-constants/-/expo-constants-9.1.1.tgz#bca141ee3d4550e308798128f66c6d9c6a206ca1"
   integrity sha512-zCa/wRARODHd6BSwxjBhidmao0AqQnKmLkl0tsVIoZlRyPDHsEaxNR/m+7wqGC7qiC+UpG1qRnvLOLwCGt2ihg==

@@ -7,6 +7,7 @@ import RaceCreateView from "./RaceCreateView";
 import RaceCreateUnit from "./RaceCreateUnit";
 import { RaceCreateUnitType } from "../../../utils/constants";
 import { raceCreateInfoState } from "../../../state/race/RaceState";
+import { logNav } from "../../../utils/Analytics";
 
 const InputRaceMissionDays = () => {
   const { days } = useRecoilValue(raceCreateInfoState);
@@ -17,6 +18,7 @@ const InputRaceMissionDays = () => {
       Alert.alert("", "요일을 하나 이상 선택해주세요");
       return;
     }
+    logNav("Home", "RaceCreate6(InputRaceFee)");
     navigation.navigate("InputRaceFee");
   };
 

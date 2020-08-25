@@ -6,12 +6,14 @@ import { useNavigation } from "@react-navigation/native";
 import { COLOR, SAMPLE_SUBTITLE } from "../../../utils/constants";
 import { useRecoilValue } from "recoil";
 import { memberInfoState } from "../../../state/member/MemberState";
+import { logNav } from "../../../utils/Analytics";
 
 const HomeBanner = () => {
   const navigation = useNavigation();
   const memberInfo = useRecoilValue(memberInfoState);
 
   const goToCategorySelection = () => {
+    logNav("Home", "RaceCreate1(CategorySelection)");
     navigation.navigate("CategorySelection");
   };
 

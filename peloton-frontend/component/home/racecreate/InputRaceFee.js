@@ -1,5 +1,5 @@
 import React from "react";
-import { Alert, ActivityIndicator, StyleSheet, View } from "react-native";
+import { ActivityIndicator, Alert, StyleSheet, View } from "react-native";
 import { useRecoilState, useRecoilValue, useResetRecoilState } from "recoil";
 import { useNavigation } from "@react-navigation/native";
 
@@ -9,15 +9,8 @@ import { COLOR, DAYS } from "../../../utils/constants";
 import { loadingState } from "../../../state/loading/LoadingState";
 import LoadingIndicator from "../../../utils/LoadingIndicator";
 import RaceCreateView from "./RaceCreateView";
-import {
-  alertNotEnoughCash,
-  navigateTabScreen,
-  navigateWithHistory,
-} from "../../../utils/util";
-import {
-  memberInfoState,
-  memberTokenState,
-} from "../../../state/member/MemberState";
+import { alertNotEnoughCash, navigateTabScreen, navigateWithHistory, } from "../../../utils/util";
+import { memberInfoState, memberTokenState, } from "../../../state/member/MemberState";
 import { RaceApi } from "../../../utils/api/RaceApi";
 import { MemberApi } from "../../../utils/api/MemberApi";
 import { RiderApi } from "../../../utils/api/RiderApi";

@@ -1,8 +1,10 @@
 import Axios from "axios";
 import { SERVER_BASE_URL } from "../constants";
+import { logApi } from "../Analytics";
 
 export const MemberApi = {
   get: async (token) => {
+    logApi("Member", "Get");
     const response = await Axios({
       method: "GET",
       baseURL: SERVER_BASE_URL,
@@ -14,6 +16,7 @@ export const MemberApi = {
     return response.data;
   },
   getById: async (token, memberId) => {
+    logApi("Member", "GetById");
     const response = await Axios({
       method: "GET",
       baseURL: SERVER_BASE_URL,
@@ -25,6 +28,7 @@ export const MemberApi = {
     return response.data;
   },
   postProfile: async (token, formData) => {
+    logApi("Member", "UpdateProfile");
     try {
       const response = await Axios.post(
         `${SERVER_BASE_URL}/api/members/profile`,
@@ -42,6 +46,7 @@ export const MemberApi = {
     }
   },
   patchCash: async (token, cash) => {
+    logApi("Member", "UpdateCash");
     try {
       await Axios({
         method: "PATCH",
@@ -59,6 +64,7 @@ export const MemberApi = {
     }
   },
   patchName: async (token, name) => {
+    logApi("Member", "UpdateName");
     try {
       await Axios({
         method: "PATCH",
@@ -76,6 +82,7 @@ export const MemberApi = {
     }
   },
   delete: async (token) => {
+    logApi("Member", "Delete");
     await Axios({
       method: "DELETE",
       baseURL: SERVER_BASE_URL,

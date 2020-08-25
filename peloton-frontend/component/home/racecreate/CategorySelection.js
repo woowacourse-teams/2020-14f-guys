@@ -11,6 +11,7 @@ import {
   RACE_CATEGORY_STUDY,
   RACE_CATEGORY_TIME,
 } from "../../../utils/constants";
+import { logNav } from "../../../utils/Analytics";
 
 const CategorySelection = () => {
   const navigation = useNavigation();
@@ -21,6 +22,7 @@ const CategorySelection = () => {
       ...previousInfo,
       category,
     }));
+    logNav("Home", "RaceCreate2(InputRaceInfo)");
     navigation.navigate("InputRaceInfo");
   };
 

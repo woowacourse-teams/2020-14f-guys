@@ -2,11 +2,11 @@ import React, { useState } from "react";
 import {
   Alert,
   Modal,
+  Platform,
   SafeAreaView,
   StyleSheet,
   TouchableOpacity,
   View,
-  Platform,
 } from "react-native";
 import KakaoLoginWebView from "./KakaoLoginWebView";
 import LoginTitle from "./LoginTitle";
@@ -19,11 +19,9 @@ import { useNavigation } from "@react-navigation/core";
 import LoadingIndicator from "../../utils/LoadingIndicator";
 import { loadingState } from "../../state/loading/LoadingState";
 import { navigateWithoutHistory } from "../../utils/util";
-import {
-  memberInfoState,
-  memberTokenState,
-} from "../../state/member/MemberState";
+import { memberInfoState, memberTokenState, } from "../../state/member/MemberState";
 import { MemberApi } from "../../utils/api/MemberApi";
+import { logNav } from "../../utils/Analytics";
 
 const AnimatedAppleButton =
   Platform.OS === "ios"
@@ -43,6 +41,7 @@ const Login = () => {
 
   const onLogin = async () => {
     setIsLoading(true);
+    logNav("Login", "LoginHome");
     const token = await AsyncStorage.getItem(TOKEN_STORAGE);
     if (token) {
       setToken(token);

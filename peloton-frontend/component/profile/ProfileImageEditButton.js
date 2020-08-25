@@ -4,12 +4,10 @@ import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import * as ImagePicker from "expo-image-picker";
 
 import { MemberApi } from "../../utils/api/MemberApi";
-import {
-  memberInfoState,
-  memberTokenState,
-} from "../../state/member/MemberState";
+import { memberInfoState, memberTokenState, } from "../../state/member/MemberState";
 import { loadingState } from "../../state/loading/LoadingState";
 import { getCameraRollPermission } from "../../utils/Permission";
+import { logNav } from "../../utils/Analytics";
 
 const ProfileImageEditButton = ({ children, directUpdate }) => {
   const token = useRecoilValue(memberTokenState);
@@ -38,6 +36,7 @@ const ProfileImageEditButton = ({ children, directUpdate }) => {
 
   const pickAndChangeProfileImage = async () => {
     setIsLoading(true);
+    logNav("Profile", "ProfileImageUpdate");
     const hasCameraRollPermission = await getCameraRollPermission();
     if (hasCameraRollPermission === false) {
       setIsLoading(false);
