@@ -1,12 +1,13 @@
 import React from "react";
 import { Image, StyleSheet, TouchableWithoutFeedback } from "react-native";
-import LoadingIndicator from "../../../utils/LoadingIndicator";
 import { useNavigation } from "@react-navigation/core";
+import { logNav } from "../../../utils/Analytics";
 
 const RaceCertificationImage = ({ certification, touchable, name, params }) => {
   const navigation = useNavigation();
 
   const navigateToScreen = (screen, param) => {
+    logNav("Home", "CertificationDetail");
     navigation.navigate(screen, param);
   };
 

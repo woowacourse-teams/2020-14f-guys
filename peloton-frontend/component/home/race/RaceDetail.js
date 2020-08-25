@@ -14,6 +14,7 @@ import RaceCertificationImages from "./RaceCertificationImages";
 import RaceDetailInfo from "./RaceDetailInfo";
 import RaceSpec from "./RaceSpec";
 import LinkCopyButton from "./LinkCopyButton";
+import { logNav } from "../../../utils/Analytics";
 
 const RaceDetail = ({ route }) => {
   const raceId = route.params.id;
@@ -27,6 +28,7 @@ const RaceDetail = ({ route }) => {
 
   useEffect(() => {
     setIsLoading(true);
+    logNav("Home", "RaceDetail");
     const fetchRace = async () => {
       if (!raceId) {
         Alert.alert("", "잘못된 경로입니다.");
