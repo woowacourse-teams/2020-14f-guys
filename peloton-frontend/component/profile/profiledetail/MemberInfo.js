@@ -4,7 +4,6 @@ import ProfileImage from "../ProfileImage";
 import MemberInfoDetail from "./MemberInfoDetail";
 import ProfileEditButton from "../ProfileEditButton";
 import { useNavigation } from "@react-navigation/core";
-import ProfileDefaultImage from "../ProfileDefaultImage";
 import { useRecoilValue } from "recoil";
 import { memberInfoState } from "../../../state/member/MemberState";
 
@@ -15,11 +14,7 @@ const MemberInfo = () => {
   return (
     <View style={styles.memberInfo}>
       <View style={styles.imageContainer}>
-        {memberInfo.profile ? (
-          <ProfileImage image={memberInfo.profile} />
-        ) : (
-          <ProfileDefaultImage />
-        )}
+        <ProfileImage image={memberInfo.profile} />
       </View>
       <MemberInfoDetail name={memberInfo.name} cash={memberInfo.cash} />
       <ProfileEditButton
@@ -33,13 +28,12 @@ const MemberInfo = () => {
 const styles = StyleSheet.create({
   memberInfo: {
     flex: 1,
-    width: "auto",
     alignItems: "center",
+    backgroundColor: "rgba(0, 0, 0, 0.3)",
   },
   imageContainer: {
-    flex: 5,
-    marginTop: 45,
-    marginBottom: 20,
+    height: 125,
+    marginTop: 35,
   },
 });
 

@@ -31,11 +31,11 @@ const styles = StyleSheet.create({
   memberContainer: {
     flex: 1,
     alignItems: "center",
-    minHeight: 290,
+    minHeight: 350,
   },
   background: {
     flex: 1,
-    width: "120%",
+    width: "100%",
   },
   raceContainer: {
     flex: 1,
