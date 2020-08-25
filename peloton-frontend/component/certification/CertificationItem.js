@@ -4,6 +4,7 @@ import { useNavigation } from "@react-navigation/core";
 
 import { CERTIFICATION_TYPE, COLOR } from "../../utils/constants";
 import CertificationStateIcon from "./CertificationStateIcon";
+import { logNav } from "../../utils/Analytics";
 
 const CertificationItem = ({ item, index, currentTime }) => {
   const missionStartTime = new Date(item.mission.mission_duration.start_time);
@@ -33,6 +34,7 @@ const CertificationItem = ({ item, index, currentTime }) => {
   }, [currentTime]);
 
   const navigateToCertificate = (isFirst) => {
+    logNav("Certification", "CertificationSubmit");
     navigation.navigate("CertificationSubmit", { index, isFirst });
   };
 

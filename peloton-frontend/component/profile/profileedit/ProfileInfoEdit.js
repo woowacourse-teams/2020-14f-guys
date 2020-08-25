@@ -6,6 +6,7 @@ import { AntDesign } from "@expo/vector-icons";
 
 import { memberInfoState } from "../../../state/member/MemberState";
 import { COLOR } from "../../../utils/constants";
+import { logNav } from "../../../utils/Analytics";
 
 const ProfileEditInfo = () => {
   const memberInfo = useRecoilValue(memberInfoState);
@@ -20,7 +21,10 @@ const ProfileEditInfo = () => {
         </View>
         <TouchableOpacity
           style={styles.button}
-          onPress={() => navigation.navigate("NameUpdate")}
+          onPress={() => {
+            logNav("Profile", "NameUpdate");
+            navigation.navigate("NameUpdate");
+          }}
         >
           <Text style={styles.buttonText}>수정하기</Text>
           <AntDesign name="right" size={18} color={COLOR.GREEN2} />
@@ -41,7 +45,10 @@ const ProfileEditInfo = () => {
         </View>
         <TouchableOpacity
           style={styles.button}
-          onPress={() => navigation.navigate("CashUpdate")}
+          onPress={() => {
+            logNav("Profile", "CashUpdate");
+            navigation.navigate("CashUpdate");
+          }}
         >
           <Text style={styles.buttonText}>충전하기</Text>
           <AntDesign name="right" size={18} color={COLOR.GREEN2} />
