@@ -35,6 +35,5 @@ out/
 /peloton-frontend/node_modules/
 /peloton-frontend/.expo/packager-info.json
 /peloton-frontend/.expo/web/
-/peloton-frontend/package-lock.json
 /peloton-frontend/config.js
 /logs/
