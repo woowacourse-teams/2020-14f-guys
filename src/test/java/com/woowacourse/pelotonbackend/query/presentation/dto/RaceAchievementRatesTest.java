@@ -120,7 +120,7 @@ class RaceAchievementRatesTest {
             .isEqualTo(Lists.newArrayList(
                 RaceAchievementRate.of(members.get(0), 3, 100.0),
                 RaceAchievementRate.of(members.get(1), 2, 66.7),
-                RaceAchievementRate.of(MemberFixture.unRegisteredMember(), 1, 33.3)
+                RaceAchievementRate.of(Member.UNREGISTERED, 1, 33.3)
             ));
     }
 

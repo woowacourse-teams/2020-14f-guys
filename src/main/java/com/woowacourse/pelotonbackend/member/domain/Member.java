@@ -27,6 +27,8 @@ import lombok.With;
 @EqualsAndHashCode(of = "id")
 @Getter
 public class Member {
+    public static final Member UNREGISTERED = Member.builder().id(0L).name("탈퇴 회원").build();
+
     @Id @With(value = AccessLevel.PACKAGE)
     private final Long id;
 
@@ -70,7 +72,7 @@ public class Member {
     }
 
     public Member minusCash(final Cash value) {
-        if(isNotEnoughMoney(value)) {
+        if (isNotEnoughMoney(value)) {
             throw new MoneyInvalidException();
         }
 
