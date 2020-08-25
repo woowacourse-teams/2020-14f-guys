@@ -1,15 +1,18 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { MaterialIcons } from "@expo/vector-icons";
 import { View } from "react-native";
 
-import Certification from "./certification/Certification";
 import { COLOR } from "../utils/constants";
-import ProfileNavigationRoot from "./profile/ProfileStackRoot";
+import { config } from "../config";
+import Certification from "./certification/Certification";
+import ProfileNavigationRoot from "./ProfileStackRoot";
 import CertificationNavigationRoot from "./certification/CertificationNavigationRoot";
 import HomeNavigationRoot from "./home/HomeNavigationRoot";
-import SettingNavigationRoot from "./setting/SettingNavigationRoot";
-import Text from "react-native-web/src/exports/Text";
+import SettingNavigationRoot from "./SettingNavigationRoot";
+import * as Amplitude from "expo-analytics-amplitude";
+
+const apiKey = config.apiKey;
 
 const Tab = createBottomTabNavigator();
 
@@ -26,6 +29,12 @@ const screenOptions = ({ route }) => ({
     } else if (route.name === "Setting") {
       iconName = "settings";
     }
+
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    useEffect(() => {
+      Amplitude.initialize(apiKey);
+    }, []);
+
     return (
       <View style={{ minWidth: 35 }}>
         <MaterialIcons name={iconName} size={30} color={color} />
