@@ -1,14 +1,15 @@
 import React from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { MaterialIcons } from "@expo/vector-icons";
-import { View, Platform } from "react-native";
+import { View } from "react-native";
 
 import Certification from "./certification/Certification";
 import { COLOR } from "../utils/constants";
-import ProfileNavigationRoot from "./ProfileStackRoot";
+import ProfileNavigationRoot from "./profile/ProfileStackRoot";
 import CertificationNavigationRoot from "./certification/CertificationNavigationRoot";
 import HomeNavigationRoot from "./home/HomeNavigationRoot";
-import SettingNavigationRoot from "./SettingNavigationRoot";
+import SettingNavigationRoot from "./setting/SettingNavigationRoot";
+import Text from "react-native-web/src/exports/Text";
 
 const Tab = createBottomTabNavigator();
 
@@ -26,8 +27,8 @@ const screenOptions = ({ route }) => ({
       iconName = "settings";
     }
     return (
-      <View style={Platform.OS === "ios" ? { marginTop: 25 } : null}>
-        <MaterialIcons name={iconName} size={25} color={color} />
+      <View style={{ minWidth: 35 }}>
+        <MaterialIcons name={iconName} size={30} color={color} />
       </View>
     );
   },

@@ -34,6 +34,12 @@ const HomeNavigationRoot = () => {
           title: "진행중인 레이스",
           headerTransparent: true,
           headerTitle: false,
+          headerLeftContainerStyle: {
+            marginHorizontal: 5,
+          },
+          headerRightContainerStyle: {
+            marginHorizontal: 5,
+          },
           headerLeft: () => <GoBackButton />,
           headerRight: () => <RaceShareButton />,
         }}
@@ -80,6 +86,9 @@ const HomeNavigationRoot = () => {
           title: "진행중인 레이스",
           headerTransparent: true,
           headerTitle: false,
+          headerLeftContainerStyle: {
+            marginHorizontal: 5,
+          },
           headerLeft: () => <GoBackButton />,
         }}
       />

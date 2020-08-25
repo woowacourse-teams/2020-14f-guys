@@ -42,7 +42,7 @@ const SignOutButtonContainer = () => {
       <TouchableOpacity style={styles.button} onPress={onSignOut}>
         <Text style={styles.buttonText}>Sign Out</Text>
       </TouchableOpacity>
-      <Text style={styles.version}>Version 4.8.42</Text>
+      <Text style={styles.version}>Version 1.0.0</Text>
     </View>
   );
 };

@@ -13,24 +13,24 @@ const MemberInfoDetail = ({ name, cash }) => {
 
 export default MemberInfoDetail;
 const styles = StyleSheet.create({
+  textContainer: {
+    height: 65,
+    marginVertical: 15,
+    alignItems: "center",
+    borderRadius: 25,
+    padding: 10,
+  },
   nickname: {
-    flex: 1,
-    marginBottom: 7,
-
+    height: 30,
+    marginBottom: 2,
     fontSize: 18,
     color: COLOR.WHITE2,
     fontWeight: "bold",
   },
   cash: {
-    flex: 1,
+    height: 20,
     fontSize: 15,
     color: COLOR.WHITE2,
     fontWeight: "300",
-  },
-  textContainer: {
-    flex: 2.5,
-    marginTop: 10,
-    marginBottom: 15,
-    alignItems: "center",
   },
 });

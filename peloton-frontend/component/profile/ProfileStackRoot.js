@@ -1,10 +1,10 @@
 import React from "react";
 import { createStackNavigator } from "@react-navigation/stack";
-import ProfileDetail from "./profile/profiledetail/ProfileDetail";
-import ProfileEdit from "./profile/profileedit/ProfileEdit";
-import CashUpdate from "./profile/profileedit/CashUpdate";
-import NameUpdate from "./profile/profileedit/NameUpdate";
-import License from "./setting/license/License";
+import ProfileDetail from "./profiledetail/ProfileDetail";
+import ProfileEdit from "./profileedit/ProfileEdit";
+import CashUpdate from "./profileedit/CashUpdate";
+import NameUpdate from "./profileedit/NameUpdate";
+import License from "../setting/license/License";
 
 const ProfileStack = createStackNavigator();
 
@@ -15,7 +15,7 @@ const ProfileStackRoot = () => {
         name="ProfileDetail"
         component={ProfileDetail}
         options={{
-          title: "Peloton",
+          title: "프로필",
         }}
       />
       <ProfileStack.Screen

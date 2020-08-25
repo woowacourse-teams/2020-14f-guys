@@ -2,7 +2,7 @@ import React from "react";
 import { StyleSheet, TouchableOpacity } from "react-native";
 import { COLOR } from "../../../utils/constants";
 import { useNavigation } from "@react-navigation/core";
-import { AntDesign } from "@expo/vector-icons";
+import { AntDesign, Entypo, MaterialIcons } from "@expo/vector-icons";
 
 const GoBackButton = () => {
   const navigation = useNavigation();
@@ -15,14 +15,19 @@ const GoBackButton = () => {
 
   return (
     <TouchableOpacity style={styles.goBackButton} onPress={goBack}>
-      <AntDesign name="left" size={30} color={COLOR.BLACK} />
+      <Entypo name="chevron-thin-left" size={24} color="black" />
     </TouchableOpacity>
   );
 };
 
 const styles = StyleSheet.create({
   goBackButton: {
-    padding: 10,
+    width: 50,
+    height: 50,
+    borderRadius: 30,
+    backgroundColor: "rgba(255,255,255,0.2)",
+    alignItems: "center",
+    justifyContent: "center",
   },
 });
 

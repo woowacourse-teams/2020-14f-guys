@@ -31,6 +31,7 @@ const ProfileImageEditButton = ({ children, directUpdate }) => {
       });
     } catch (error) {
       Alert.alert("", error.response.data.code);
+      console.log(error.response.data.message);
     }
     setIsLoading(false);
   };
@@ -58,13 +59,7 @@ const ProfileImageEditButton = ({ children, directUpdate }) => {
         profile,
       });
       if (directUpdate) {
-        const formData = new FormData();
-        formData.append("profile_image", {
-          uri: profile,
-          type: "image/jpeg",
-          name: profile.substring(9),
-        });
-        await MemberApi.postProfile(token, formData);
+        await requestChangeImage(profile);
       }
     }
     setIsLoading(false);

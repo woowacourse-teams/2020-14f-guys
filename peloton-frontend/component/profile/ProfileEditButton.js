@@ -14,13 +14,13 @@ const ProfileEditButton = ({ text, onPress }) => {
 
 const styles = StyleSheet.create({
   buttonContainer: {
-    flex: 2.5,
-    marginBottom: 30,
+    marginTop: 10,
+    height: 45,
   },
   button: {
     borderWidth: 1,
     padding: 10,
-    borderColor: COLOR.WHITE3,
+    borderColor: COLOR.GRAY5,
     borderRadius: 100,
     alignItems: "center",
     justifyContent: "center",
