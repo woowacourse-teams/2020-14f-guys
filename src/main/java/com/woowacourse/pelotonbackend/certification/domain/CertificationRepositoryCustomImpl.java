@@ -17,6 +17,9 @@ import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcOperations;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 public class CertificationRepositoryCustomImpl implements CertificationRepositoryCustom {
     private final NamedParameterJdbcOperations jdbcOperations;
     private final EntityRowMapper<Certification> rowMapper;
@@ -35,7 +38,7 @@ public class CertificationRepositoryCustomImpl implements CertificationRepositor
     }
 
     @Override
-    public Page<Certification> findByRiderId(final Long id, final Pageable pageable) {
+    public Page<Certification> findByRiderId(final long id, final Pageable pageable) {
         final SqlParameterSource parameterSource = new MapSqlParameterSource()
             .addValue("riderId", id)
             .addValue("offset", pageable.getOffset())
@@ -51,8 +54,13 @@ public class CertificationRepositoryCustomImpl implements CertificationRepositor
     @Override
     public Page<Certification> findByMissionIdsAndStatus(final List<Long> missionIds, final CertificationStatus status,
         final Pageable pageable) {
+
+        if (missionIds.isEmpty()) {
+            log.info("Mission Id 리스트가 빈 배열인 채로 DB 조회를 합니다.");
+        }
+
         final SqlParameterSource parameterSource = new MapSqlParameterSource()
-            .addValue("missionIds", missionIds)
+            .addValue("missionIds", missionIds.isEmpty() ? null : missionIds)
             .addValue("status", status.name())
             .addValue("offset", pageable.getOffset())
             .addValue("pageSize", pageable.getPageSize());
@@ -68,9 +76,13 @@ public class CertificationRepositoryCustomImpl implements CertificationRepositor
     public Page<Certification> findByMissionIdsAndRiderIds(final List<Long> missionIds, final List<Long> riderIds,
         final Pageable pageable) {
 
+        if (missionIds.isEmpty() || riderIds.isEmpty()) {
+            log.info("Mission Id, Rider Id 리스트 중 빈 배열인 채로 DB 조회를 합니다.");
+        }
+
         final SqlParameterSource parameterSource = new MapSqlParameterSource()
-            .addValue("missionIds", missionIds)
-            .addValue("riderIds", riderIds)
+            .addValue("missionIds", missionIds.isEmpty() ? null : missionIds)
+            .addValue("riderIds", riderIds.isEmpty() ? null : riderIds)
             .addValue("offset", pageable.getOffset())
             .addValue("pageSize", pageable.getPageSize());
 
@@ -82,7 +94,7 @@ public class CertificationRepositoryCustomImpl implements CertificationRepositor
     }
 
     @Override
-    public boolean existsByRiderIdAndMissionId(final Long riderId, final Long missionId) {
+    public boolean existsByRiderIdAndMissionId(final long riderId, final long missionId) {
         final SqlParameterSource parameterSource = new MapSqlParameterSource()
             .addValue("riderId", riderId)
             .addValue("missionId", missionId);

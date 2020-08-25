@@ -29,7 +29,7 @@ public class CalculationRepositoryCustomImpl implements CalculationRepositoryCus
     }
 
     @Override
-    public Optional<Calculations> findAllByRaceId(final Long raceId) {
+    public Optional<Calculations> findAllByRaceId(final long raceId) {
         final SqlParameterSource parameterSource = new MapSqlParameterSource()
             .addValue("raceId", raceId);
 

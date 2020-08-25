@@ -15,7 +15,7 @@ public class ReportRepositoryCustomImpl implements ReportRepositoryCustom {
     }
 
     @Override
-    public boolean existsByMemberIdAndCertificationId(final Long memberId, final Long certificationId) {
+    public boolean existsByMemberIdAndCertificationId(final long memberId, final long certificationId) {
         final SqlParameterSource parameterSource = new MapSqlParameterSource()
             .addValue("memberId", memberId)
             .addValue("certificationId", certificationId);

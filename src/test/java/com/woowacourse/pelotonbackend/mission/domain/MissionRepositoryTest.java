@@ -4,7 +4,9 @@ import static com.woowacourse.pelotonbackend.mission.domain.MissionFixture.*;
 import static org.assertj.core.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.*;
 
+import java.time.LocalDateTime;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -130,5 +132,14 @@ class MissionRepositoryTest {
             missionsWithIds.get(THIRD_MISSION));
 
         assertThat(results).containsExactlyInAnyOrderElementsOf(expectedMissionsWithOrder);
+    }
+
+    @DisplayName("mission id 리스트가 빈 리스트일 경우 빈 배열을 리턴한다.")
+    @Test
+    void noMissionResultsEmpty() {
+        final List<Mission> results = missionRepository.findAllByRaceIdsEndTimeAfterThanAndWithinOneDayOrderByStartTime(
+            Collections.emptyList(), LocalDateTime.now());
+
+        assertThat(results).isEmpty();
     }
 }

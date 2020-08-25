@@ -28,7 +28,7 @@ public class RiderRepositoryImpl implements RiderCustomRepository {
     }
 
     @Override
-    public List<Rider> findRidersByRaceId(final Long raceId) {
+    public List<Rider> findRidersByRaceId(final long raceId) {
         final MapSqlParameterSource parameterSource = new MapSqlParameterSource()
             .addValue("raceId", raceId);
 
@@ -36,7 +36,7 @@ public class RiderRepositoryImpl implements RiderCustomRepository {
     }
 
     @Override
-    public List<Rider> findRidersByMemberId(final Long memberId) {
+    public List<Rider> findRidersByMemberId(final long memberId) {
         final MapSqlParameterSource parameterSource = new MapSqlParameterSource()
             .addValue("memberId", memberId);
 
@@ -44,7 +44,7 @@ public class RiderRepositoryImpl implements RiderCustomRepository {
     }
 
     @Override
-    public boolean existsByMemberIdAndRaceID(final Long memberId, final Long raceId) {
+    public boolean existsByMemberIdAndRaceID(final long memberId, final long raceId) {
         final SqlParameterSource parameterSource = new MapSqlParameterSource()
             .addValue("memberId", memberId)
             .addValue("raceId", raceId);
