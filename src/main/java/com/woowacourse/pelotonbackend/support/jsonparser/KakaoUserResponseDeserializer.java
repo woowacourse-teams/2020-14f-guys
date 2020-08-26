@@ -40,7 +40,8 @@ public class KakaoUserResponseDeserializer extends StdDeserializer<KakaoUserResp
 
         // TODO: 2020/08/12 Test에서 Serialize를 쓰는데, 그 과정에서 Getter 이름과 필드명 충돌로 인해 임시로 추가해놓음.
 
-        return createKakaoUserResponse(jsonNode, properties, kakaoAccount, isEmailValid, isEmailVerified, profileImage, thumbnailImage);
+        return createKakaoUserResponse(jsonNode, properties, kakaoAccount, isEmailValid, isEmailVerified, profileImage,
+            thumbnailImage);
     }
 
     private KakaoUserResponse createKakaoUserResponse(final JsonNode jsonNode, final JsonNode properties,
@@ -51,22 +52,25 @@ public class KakaoUserResponseDeserializer extends StdDeserializer<KakaoUserResp
             .nickname(properties.get("nickname").textValue())
             .profileImage(profileImage)
             .thumbnailImage(thumbnailImage)
-            .hasEmail(!Objects.isNull(kakaoAccount.get("has_email")) && kakaoAccount.get("has_email").booleanValue())
+            .hasEmail(ifNullReturnFalse(kakaoAccount, "has_email"))
             .emailValid(!Objects.isNull(isEmailValid) && isEmailValid.booleanValue())
             .emailVerified(!Objects.isNull(isEmailVerified) && isEmailVerified.booleanValue())
             .email(Objects.isNull(kakaoAccount.get("email")) ? null : kakaoAccount.get("email").textValue())
-            .emailNeedsAgreement(
-                Objects.isNull(kakaoAccount.get("email_needs_agreement")) || kakaoAccount.get("email_needs_agreement")
-                    .booleanValue())
-            .hasBirthday(
-                !Objects.isNull(kakaoAccount.get("has_birthday")) && kakaoAccount.get("has_birthday").booleanValue())
-            .birthdayNeedsAgreement(Objects.isNull(kakaoAccount.get("birthday_needs_agreement")) || kakaoAccount.get(
-                "birthday_needs_agreement").booleanValue())
+            .emailNeedsAgreement(ifNullReturnTrue(kakaoAccount, "email_needs_agreement"))
+            .hasBirthday(ifNullReturnFalse(kakaoAccount, "has_birthday"))
+            .birthdayNeedsAgreement(ifNullReturnTrue(kakaoAccount, "birthday_needs_agreement"))
             .birthday(Objects.isNull(kakaoAccount.get("birthday")) ? null : kakaoAccount.get("birthday").textValue())
-            .hasGender(!Objects.isNull(kakaoAccount.get("has_gender")) && kakaoAccount.get("has_gender").booleanValue())
+            .hasGender(ifNullReturnFalse(kakaoAccount, "has_gender"))
             .genderNeedsAgreement(
-                Objects.isNull(kakaoAccount.get("gender_needs_agreement")) || kakaoAccount.get("gender_needs_agreement")
-                    .booleanValue())
-            .build();
+                ifNullReturnTrue(kakaoAccount, "gender_needs_agreement")).build();
+    }
+
+    private boolean ifNullReturnFalse(final JsonNode kakaoAccount, final String has_birthday) {
+        return !Objects.isNull(kakaoAccount.get(has_birthday)) && kakaoAccount.get(has_birthday).booleanValue();
+    }
+
+    private boolean ifNullReturnTrue(final JsonNode kakaoAccount, final String email_needs_agreement) {
+        return Objects.isNull(kakaoAccount.get(email_needs_agreement)) || kakaoAccount.get(email_needs_agreement)
+            .booleanValue();
     }
 }
