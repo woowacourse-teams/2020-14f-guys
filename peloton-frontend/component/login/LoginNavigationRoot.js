@@ -4,6 +4,8 @@ import ChangeProfile from "./ChangeProfile";
 import Login from "./Login";
 import ApplicationNavigationRoot from "../ApplicationNavigationRoot";
 import ErrorPage from "../ErrorPage";
+import Agreement from "./Agreement";
+import GoBackButton from "../home/race/GoBackButton";
 
 const LoginStack = createStackNavigator();
 
@@ -24,6 +26,15 @@ const LoginNavigationRoot = () => {
         name="ApplicationNavigationRoot"
         component={ApplicationNavigationRoot}
         options={{ headerShown: false }}
+      />
+      <LoginStack.Screen
+        name="Agreement"
+        component={Agreement}
+        options={{
+          headerLeft: () => <GoBackButton background={false} />,
+          headerTransparent: true,
+          headerTitle: null,
+        }}
       />
       <LoginStack.Screen
         name="ErrorPage"

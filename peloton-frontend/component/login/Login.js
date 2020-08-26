@@ -19,7 +19,10 @@ import { useNavigation } from "@react-navigation/core";
 import LoadingIndicator from "../../utils/LoadingIndicator";
 import { loadingState } from "../../state/loading/LoadingState";
 import { navigateWithoutHistory } from "../../utils/util";
-import { memberInfoState, memberTokenState, } from "../../state/member/MemberState";
+import {
+  memberInfoState,
+  memberTokenState,
+} from "../../state/member/MemberState";
 import { MemberApi } from "../../utils/api/MemberApi";
 import { logNav } from "../../utils/Analytics";
 
@@ -39,24 +42,8 @@ const Login = () => {
     setModalVisible(!modalVisible);
   };
 
-  const onLogin = async () => {
-    setIsLoading(true);
-    logNav("Login", "LoginHome");
-    const token = await AsyncStorage.getItem(TOKEN_STORAGE);
-    if (token) {
-      setToken(token);
-      try {
-        const memberResponse = await MemberApi.get(token);
-        setMemberInfo(memberResponse);
-        navigateWithoutHistory(navigation, "ApplicationNavigationRoot");
-      } catch (error) {
-        console.log(error.response.data.message);
-        toggleModal();
-      }
-    } else {
-      toggleModal();
-    }
-    setIsLoading(false);
+  const navigationToAgreement = () => {
+    navigation.navigate("Agreement");
   };
 
   const buttonOpacity = useSpring({
@@ -73,14 +60,11 @@ const Login = () => {
   return (
     <LoadingIndicator>
       <SafeAreaView style={styles.background}>
-        <Modal animationType={"slide"} visible={modalVisible} transparent>
-          <KakaoLoginWebView toggleModal={toggleModal} />
-        </Modal>
         <View style={styles.titleContainer}>
           <LoginTitle />
         </View>
         <View style={styles.loginButtonContainer}>
-          <TouchableOpacity onPress={onLogin}>
+          <TouchableOpacity onPress={navigationToAgreement}>
             <AnimatedImage
               style={{
                 ...styles.loginButton,
