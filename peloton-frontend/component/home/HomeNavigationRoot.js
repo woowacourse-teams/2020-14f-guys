@@ -41,7 +41,7 @@ const HomeNavigationRoot = () => {
           headerRightContainerStyle: {
             marginHorizontal: 5,
           },
-          headerLeft: () => <GoBackButton />,
+          headerLeft: () => <GoBackButton background={true} />,
           headerRight: () => <RaceShareButton />,
         }}
       />
@@ -97,7 +97,7 @@ const HomeNavigationRoot = () => {
           headerLeftContainerStyle: {
             marginHorizontal: 5,
           },
-          headerLeft: () => <GoBackButton />,
+          headerLeft: () => <GoBackButton background={true} />,
         }}
       />
       <HomeStack.Screen

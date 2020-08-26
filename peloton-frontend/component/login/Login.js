@@ -14,14 +14,18 @@ import * as AppleAuthentication from "expo-apple-authentication";
 import { animated, useSpring } from "react-spring";
 import { AnimatedImage, COLOR, TOKEN_STORAGE } from "../../utils/constants";
 import AsyncStorage from "@react-native-community/async-storage";
-import { useSetRecoilState } from "recoil";
+import { useRecoilState, useSetRecoilState } from "recoil";
 import { useNavigation } from "@react-navigation/core";
 import LoadingIndicator from "../../utils/LoadingIndicator";
 import { loadingState } from "../../state/loading/LoadingState";
 import { navigateWithoutHistory } from "../../utils/util";
-import { memberInfoState, memberTokenState, } from "../../state/member/MemberState";
+import {
+  memberInfoState,
+  memberTokenState,
+} from "../../state/member/MemberState";
 import { MemberApi } from "../../utils/api/MemberApi";
 import { logNav } from "../../utils/Analytics";
+import { useRecoilValue } from "recoil/dist";
 
 const AnimatedAppleButton =
   Platform.OS === "ios"
@@ -29,32 +33,33 @@ const AnimatedAppleButton =
     : null;
 
 const Login = () => {
-  const [modalVisible, setModalVisible] = useState(false);
-  const setToken = useSetRecoilState(memberTokenState);
+  const [tokenInfo, setTokenInfo] = useRecoilState(memberTokenState);
   const setMemberInfo = useSetRecoilState(memberInfoState);
   const setIsLoading = useSetRecoilState(loadingState);
   const navigation = useNavigation();
 
-  const toggleModal = () => {
-    setModalVisible(!modalVisible);
-  };
-
-  const onLogin = async () => {
+  const navigationToAgreement = async () => {
     setIsLoading(true);
-    logNav("Login", "LoginHome");
-    const token = await AsyncStorage.getItem(TOKEN_STORAGE);
+    logNav("Login", "Agreement");
+    let token;
+    if (tokenInfo) {
+      token = tokenInfo;
+    }
+    if (!token) {
+      token = await AsyncStorage.getItem(TOKEN_STORAGE);
+    }
     if (token) {
-      setToken(token);
+      setTokenInfo(token);
       try {
         const memberResponse = await MemberApi.get(token);
         setMemberInfo(memberResponse);
         navigateWithoutHistory(navigation, "ApplicationNavigationRoot");
       } catch (error) {
         console.log(error.response.data.message);
-        toggleModal();
+        navigation.navigate("Agreement");
       }
     } else {
-      toggleModal();
+      navigation.navigate("Agreement");
     }
     setIsLoading(false);
   };
@@ -73,14 +78,11 @@ const Login = () => {
   return (
     <LoadingIndicator>
       <SafeAreaView style={styles.background}>
-        <Modal animationType={"slide"} visible={modalVisible} transparent>
-          <KakaoLoginWebView toggleModal={toggleModal} />
-        </Modal>
         <View style={styles.titleContainer}>
           <LoginTitle />
         </View>
         <View style={styles.loginButtonContainer}>
-          <TouchableOpacity onPress={onLogin}>
+          <TouchableOpacity onPress={navigationToAgreement}>
             <AnimatedImage
               style={{
                 ...styles.loginButton,

@@ -12,7 +12,7 @@ const AchievementItem = ({ achievement, raceTitle }) => {
             styles.bar,
             {
               opacity: achievement * 0.01 > 0.5 ? achievement * 0.01 : 0.5,
-              height: `${achievement}%`,
+              height: achievement ? `${achievement}%` : 0,
               backgroundColor: COLOR.PURPLE,
             },
           ]}
