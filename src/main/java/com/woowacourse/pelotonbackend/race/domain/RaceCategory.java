@@ -32,11 +32,11 @@ public enum RaceCategory {
     ),
         Collections.singletonList(new ImageUrl("TEST_TIME_CERTIFICATION_IMAGE")),
         Arrays.asList(
-            new MissionInstruction("한 사람 당 손가락 하트 하나씩\n모아서 찍어주세요!😆"),
-            new MissionInstruction("한 사람한테 외모를 몰아주세요!😁"),
-            new MissionInstruction("각자의 핸드폰에 시간이 나오도록 해서\n사진을 찍어주세요!📸"),
-            new MissionInstruction("모두의 발을 한 곳에 모아서\n사진을 찍어주세요!👠"),
-            new MissionInstruction("모두의 팔꿈치를 한 곳에 붙여서\n사진을 찍어주세요!🤳")
+            new MissionInstruction("한 사람 당 손가락 하트 하나씩\n모아서 찍어주세요!"),
+            new MissionInstruction("한 사람한테 외모를 몰아주세요!"),
+            new MissionInstruction("각자의 핸드폰에 시간이 나오도록 해서\n사진을 찍어주세요!"),
+            new MissionInstruction("모두의 발을 한 곳에 모아서\n사진을 찍어주세요!"),
+            new MissionInstruction("모두의 팔꿈치를 한 곳에 붙여서\n사진을 찍어주세요!")
         )
     ),
 
@@ -60,11 +60,11 @@ public enum RaceCategory {
     ),
         Collections.singletonList(new ImageUrl("TEST_STUDY_CERTIFICATION_IMAGE")),
         Arrays.asList(
-            new MissionInstruction("공부하는 책이 나오도록\n사진을 찍어주세요!📚"),
-            new MissionInstruction("자신이 가장 아끼는 필기도구를 모아서\n사진을 찍어주세요!✏️"),
-            new MissionInstruction("모두의 발을 한 곳에 모아서\n사진을 찍어주세요!👠"),
-            new MissionInstruction("모두의 손을 한 곳에 모아서\n사진을 찍어주세요!🖖"),
-            new MissionInstruction("본인이 공부했음을 자유롭게 증명해보아요!🏅")
+            new MissionInstruction("공부하는 책이 나오도록\n사진을 찍어주세요!"),
+            new MissionInstruction("자신이 가장 아끼는 필기도구를 모아서\n사진을 찍어주세요!️"),
+            new MissionInstruction("모두의 발을 한 곳에 모아서\n사진을 찍어주세요!"),
+            new MissionInstruction("모두의 손을 한 곳에 모아서\n사진을 찍어주세요!"),
+            new MissionInstruction("본인이 공부했음을 자유롭게 증명해보아요!")
         )
     ),
 
@@ -81,10 +81,10 @@ public enum RaceCategory {
     ),
         Collections.singletonList(new ImageUrl("TEST_STUDY_CERTIFICATION_IMAGE")),
         Arrays.asList(
-            new MissionInstruction("어떤 여가활동을 즐기고 있는지 보여주세요!🤾‍"),
-            new MissionInstruction("함께하는 사람과 사진을 찍어주세요!👫"),
-            new MissionInstruction("모두의 발을 한 곳에 모아서\n사진을 찍어주세요!👠"),
-            new MissionInstruction("모두의 손을 한 곳에 모아서\n사진을 찍어주세요!🖖")
+            new MissionInstruction("어떤 여가활동을 즐기고 있는지 보여주세요!‍"),
+            new MissionInstruction("함께하는 사람과 사진을 찍어주세요!"),
+            new MissionInstruction("모두의 발을 한 곳에 모아서\n사진을 찍어주세요!"),
+            new MissionInstruction("모두의 손을 한 곳에 모아서\n사진을 찍어주세요!")
         )
     ),
     EXERCISE(Arrays.asList(
@@ -100,10 +100,10 @@ public enum RaceCategory {
     ),
         Collections.singletonList(new ImageUrl("TEST_STUDY_CERTIFICATION_IMAGE")),
         Arrays.asList(
-            new MissionInstruction("운동 중인 모습을 보여주세요!🏃‍"),
-            new MissionInstruction("운동 중인 장소가 나오게 한 컷!🏋️‍"),
-            new MissionInstruction("오늘 강화할 부위를 찍어주세요!🦵💪"),
-            new MissionInstruction("오늘의 운동 복장은? 자랑해주세요!🩳")
+            new MissionInstruction("운동 중인 모습을 보여주세요!‍"),
+            new MissionInstruction("운동 중인 장소가 나오게 한 컷!️‍"),
+            new MissionInstruction("오늘 강화할 부위를 찍어주세요!"),
+            new MissionInstruction("오늘의 운동 복장은? 자랑해주세요!")
         )
     );
 
