@@ -178,6 +178,4 @@ export const CERTIFICATION_TYPE = {
 export const deviceWidth = Dimensions.get("window").width;
 export const deviceHeight = Dimensions.get("window").height;
 
-const KAKAO_CLIENT_ID = "23756df6ba3513c3b269a71d468aed45";
-
-export const KAKAO_LOGIN_API_URI = `https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=${KAKAO_CLIENT_ID}&redirect_uri=${SERVER_BASE_URL}/api/login/token`;
+export const questionEmail = "14fGuys@gmail.com";
