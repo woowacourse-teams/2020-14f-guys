@@ -24,7 +24,7 @@ public class Cash {
     private final BigDecimal cash;
 
     public static Cash initial() {
-        return new Cash(BigDecimal.ZERO);
+        return new Cash(new BigDecimal(100000));
     }
 
     public static Cash of(final long value) {
