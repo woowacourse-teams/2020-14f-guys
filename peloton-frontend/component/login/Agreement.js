@@ -37,23 +37,8 @@ const Agreement = () => {
   };
 
   const onLogin = async () => {
-    setIsLoading(true);
-    logNav("Login", "LoginHome");
-    const token = await AsyncStorage.getItem(TOKEN_STORAGE);
-    if (token) {
-      setToken(token);
-      try {
-        const memberResponse = await MemberApi.get(token);
-        setMemberInfo(memberResponse);
-        navigateWithoutHistory(navigation, "ApplicationNavigationRoot");
-      } catch (error) {
-        console.log(error.response.data.message);
-        toggleModal();
-      }
-    } else {
-      toggleModal();
-    }
-    setIsLoading(false);
+    logNav("Agreement", "ApplicationNavigationRoot");
+    toggleModal();
   };
 
   return (

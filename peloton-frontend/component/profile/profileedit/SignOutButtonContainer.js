@@ -26,7 +26,6 @@ const SignOutButtonContainer = () => {
 
   const onSignOut = async () => {
     setIsLoading(true);
-    await AsyncStorage.removeItem(TOKEN_STORAGE);
     navigateWithoutHistory(navigation, "Login");
     setIsLoading(false);
     resetMemberTokenState();
