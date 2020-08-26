@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { ImageBackground, StyleSheet, View } from "react-native";
+import { ImageBackground, ScrollView, StyleSheet, View } from "react-native";
 import MemberInfo from "./MemberInfo";
 import { useRecoilValue } from "recoil";
 import { memberInfoState } from "../../../state/member/MemberState";
@@ -12,10 +12,14 @@ const ProfileDetail = () => {
   useEffect(() => logNav("Profile", "ProfileHome"), []);
 
   return (
-    <View style={styles.container}>
+    <ScrollView style={styles.container}>
       <View style={styles.memberContainer}>
         <ImageBackground
-          source={{ uri: memberInfo.profile }}
+          source={
+            memberInfo
+              ? { uri: memberInfo.profile }
+              : require("../../../assets/default-profile.jpg")
+          }
           defaultSource={require("../../../assets/default-image-background.png")}
           style={styles.background}
           blurRadius={6}
@@ -26,7 +30,7 @@ const ProfileDetail = () => {
       <View style={styles.achievementContainer}>
         <AchievementItems />
       </View>
-    </View>
+    </ScrollView>
   );
 };
 
