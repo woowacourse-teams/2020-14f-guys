@@ -1,25 +1,29 @@
 import React from "react";
-import { StyleSheet, Text, View } from "react-native";
+import { Dimensions, StyleSheet, Text, View } from "react-native";
 import { COLOR } from "../../../utils/constants";
 
 const CalculationResult = ({ achievementRate }) => {
   const { member_name, prize, achievement: rate } = achievementRate;
 
   return (
-    <View style={styles.container}>
-      <View style={styles.top}>
-        <Text style={styles.riderName}>{member_name}</Text>
-        <Text style={styles.prize}>{`${prize}원`}</Text>
-      </View>
-      <View style={styles.bottom}>
-        <View style={styles.barContainer}>
-          <View style={[styles.successRatioBar, { width: `${rate}%` }]} />
+    achievementRate && (
+      <View style={styles.container}>
+        <View style={styles.top}>
+          <Text style={styles.riderName}>{member_name}</Text>
+          <Text style={styles.prize}>{`${prize}원`}</Text>
         </View>
-        <View style={styles.ratioTextContainer}>
-          <Text style={styles.successRatioText}>{`${rate}%`}</Text>
+        <View style={styles.bottom}>
+          <View style={styles.barContainer}>
+            <View
+              style={[styles.successRatioBar, { width: rate ? `${rate}%` : 0 }]}
+            />
+          </View>
+          <View style={styles.ratioTextContainer}>
+            <Text style={styles.successRatioText}>{`${rate}%`}</Text>
+          </View>
         </View>
       </View>
-    </View>
+    )
   );
 };
 

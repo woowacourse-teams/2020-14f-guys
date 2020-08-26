@@ -45,7 +45,6 @@ const RaceCalculation = ({ route }) => {
         const {
           race_achievement_rates: rates,
         } = await QueryApi.getRaceAchievement(token, raceId);
-
         const filteredRates = rates.filter((rate) => rate.member_id !== 0);
         const result = filteredRates.map((rate) => {
           const prize = findPrizeByMember(rate.member_id);
@@ -65,18 +64,20 @@ const RaceCalculation = ({ route }) => {
   }, []);
 
   return (
-    <LoadingIndicator>
-      <ScrollView style={styles.container}>
-        <View style={styles.top}>
-          <Text style={styles.title}>{memberInfo.name}님,</Text>
-          <Text style={styles.subtitle}>수고하셨습니다!</Text>
-          <View style={styles.bannerSeparator} />
-        </View>
-        <View style={styles.bottom}>
-          <CalculationResults achievementRates={raceAchievement} />
-        </View>
-      </ScrollView>
-    </LoadingIndicator>
+    raceAchievement && (
+      <LoadingIndicator>
+        <ScrollView style={styles.container}>
+          <View style={styles.top}>
+            <Text style={styles.title}>{memberInfo.name}님,</Text>
+            <Text style={styles.subtitle}>수고하셨습니다!</Text>
+            <View style={styles.bannerSeparator} />
+          </View>
+          <View style={styles.bottom}>
+            <CalculationResults achievementRates={raceAchievement} />
+          </View>
+        </ScrollView>
+      </LoadingIndicator>
+    )
   );
 };
 
