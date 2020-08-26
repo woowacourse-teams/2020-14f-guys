@@ -1,20 +1,22 @@
 import React from "react";
 import { Alert, StyleSheet, Text, TouchableOpacity, View } from "react-native";
-import { useNavigation } from "@react-navigation/core";
-import { COLOR } from "../../utils/constants";
+import { COLOR, questionEmail } from "../../utils/constants";
+import * as Linking from "expo-linking";
 
 const AnnouncementItem = ({ children, target }) => {
-  const navigation = useNavigation();
+  const onPress = async () => {
+    try {
+      await Linking.openURL(`mailto:${questionEmail}`);
+    } catch (e) {
+      Alert.alert(
+        "",
+        `Mail 앱이 열리지 않습니다. ${questionEmail}로 문의 주세요.`
+      );
+    }
+  };
 
   return (
-    <TouchableOpacity
-      style={styles.container}
-      onPress={() =>
-        target !== "Null"
-          ? navigation.navigate(target)
-          : Alert.alert("", "아직 지원하지 않습니다 조금만 기다려주세요 😅")
-      }
-    >
+    <TouchableOpacity style={styles.container} onPress={onPress}>
       <View style={styles.item}>
         <Text style={styles.title}>{children}</Text>
       </View>

@@ -1,12 +1,13 @@
 import React from "react";
 import { StyleSheet, View } from "react-native";
 import WebView from "react-native-webview";
-import { COLOR, KAKAO_LOGIN_API_URI } from "../../utils/constants";
+import { COLOR } from "../../utils/constants";
 import { useSetRecoilState } from "recoil";
 import { useNavigation } from "@react-navigation/core";
 import { navigateWithoutHistory } from "../../utils/util";
 import WebViewCloseButton from "./WebViewCloseButton";
 import { memberTokenState } from "../../state/member/MemberState";
+import { KAKAO_LOGIN_API_URI } from "../../config/config";
 
 const KakaoLoginWebView = ({ toggleModal }) => {
   const navigation = useNavigation();
