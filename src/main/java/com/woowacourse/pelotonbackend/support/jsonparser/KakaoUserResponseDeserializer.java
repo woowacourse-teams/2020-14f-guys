@@ -51,16 +51,22 @@ public class KakaoUserResponseDeserializer extends StdDeserializer<KakaoUserResp
             .nickname(properties.get("nickname").textValue())
             .profileImage(profileImage)
             .thumbnailImage(thumbnailImage)
-            .hasEmail(kakaoAccount.get("has_email").booleanValue())
-            .emailValid(isEmailValid.booleanValue())
-            .emailVerified(isEmailVerified.booleanValue())
-            .email(kakaoAccount.get("email").textValue())
-            .emailNeedsAgreement(kakaoAccount.get("email_needs_agreement").booleanValue())
-            .hasBirthday(kakaoAccount.get("has_birthday").booleanValue())
-            .birthdayNeedsAgreement(kakaoAccount.get("birthday_needs_agreement").booleanValue())
-            .birthday(kakaoAccount.get("birthday").textValue())
-            .hasGender(kakaoAccount.get("has_gender").booleanValue())
-            .genderNeedsAgreement(kakaoAccount.get("gender_needs_agreement").booleanValue())
+            .hasEmail(!Objects.isNull(kakaoAccount.get("has_email")) && kakaoAccount.get("has_email").booleanValue())
+            .emailValid(!Objects.isNull(isEmailValid) && isEmailValid.booleanValue())
+            .emailVerified(!Objects.isNull(isEmailVerified) && isEmailVerified.booleanValue())
+            .email(Objects.isNull(kakaoAccount.get("email")) ? null : kakaoAccount.get("email").textValue())
+            .emailNeedsAgreement(
+                Objects.isNull(kakaoAccount.get("email_needs_agreement")) || kakaoAccount.get("email_needs_agreement")
+                    .booleanValue())
+            .hasBirthday(
+                !Objects.isNull(kakaoAccount.get("has_birthday")) && kakaoAccount.get("has_birthday").booleanValue())
+            .birthdayNeedsAgreement(Objects.isNull(kakaoAccount.get("birthday_needs_agreement")) || kakaoAccount.get(
+                "birthday_needs_agreement").booleanValue())
+            .birthday(Objects.isNull(kakaoAccount.get("birthday")) ? null : kakaoAccount.get("birthday").textValue())
+            .hasGender(!Objects.isNull(kakaoAccount.get("has_gender")) && kakaoAccount.get("has_gender").booleanValue())
+            .genderNeedsAgreement(
+                Objects.isNull(kakaoAccount.get("gender_needs_agreement")) || kakaoAccount.get("gender_needs_agreement")
+                    .booleanValue())
             .build();
     }
 }

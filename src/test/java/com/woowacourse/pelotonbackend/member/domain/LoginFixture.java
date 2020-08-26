@@ -2,8 +2,6 @@ package com.woowacourse.pelotonbackend.member.domain;
 
 import static com.woowacourse.pelotonbackend.member.domain.MemberFixture.*;
 
-import org.springframework.web.util.DefaultUriBuilderFactory;
-
 import com.woowacourse.pelotonbackend.infra.login.dto.KakaoTokenResponse;
 import com.woowacourse.pelotonbackend.infra.login.dto.KakaoUserResponse;
 import com.woowacourse.pelotonbackend.member.presentation.dto.MemberResponse;
@@ -66,6 +64,25 @@ public class LoginFixture {
             .birthdayNeedsAgreement(ADMIT)
             .birthday(BIRTHDAY)
             .hasGender(ADMIT)
+            .genderNeedsAgreement(ADMIT)
+            .build();
+    }
+
+    public static KakaoUserResponse createMockFalseResponse() {
+        return KakaoUserResponse.builder()
+            .id(KAKAO_ID)
+            .nickname(NICKNAME)
+            .profileImage(URL)
+            .thumbnailImage(URL)
+            .hasEmail(!ADMIT)
+            .emailValid(!ADMIT)
+            .emailVerified(!ADMIT)
+            .email(EMAIL)
+            .emailNeedsAgreement(ADMIT)
+            .hasBirthday(!ADMIT)
+            .birthdayNeedsAgreement(ADMIT)
+            .birthday(BIRTHDAY)
+            .hasGender(!ADMIT)
             .genderNeedsAgreement(ADMIT)
             .build();
     }
