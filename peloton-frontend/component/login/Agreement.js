@@ -5,13 +5,6 @@ import CheckBox from "react-native-check-box";
 import SubmitButton from "./SubmitButton";
 import KakaoLoginWebView from "./KakaoLoginWebView";
 import { logNav } from "../../utils/Analytics";
-import { useSetRecoilState } from "recoil";
-import {
-  memberInfoState,
-  memberTokenState,
-} from "../../state/member/MemberState";
-import { loadingState } from "../../state/loading/LoadingState";
-import { useNavigation } from "@react-navigation/core";
 import { agreementContent } from "../../utils/AgreementContent";
 
 const Agreement = () => {
