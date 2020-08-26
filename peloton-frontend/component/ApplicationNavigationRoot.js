@@ -1,15 +1,13 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { MaterialIcons } from "@expo/vector-icons";
 import { View } from "react-native";
 
 import { COLOR } from "../utils/constants";
-import Certification from "./certification/Certification";
-import ProfileNavigationRoot from "./ProfileStackRoot";
-import CertificationNavigationRoot from "./certification/CertificationNavigationRoot";
 import HomeNavigationRoot from "./home/HomeNavigationRoot";
-import SettingNavigationRoot from "./SettingNavigationRoot";
-import * as Amplitude from "expo-analytics-amplitude";
+import CertificationNavigationRoot from "./certification/CertificationNavigationRoot";
+import SettingNavigationRoot from "./setting/SettingNavigationRoot";
+import ProfileStackRoot from "./profile/ProfileStackRoot";
 
 const Tab = createBottomTabNavigator();
 
@@ -57,7 +55,7 @@ const ApplicationNavigationRoot = () => {
         name="Certification"
         component={CertificationNavigationRoot}
       />
-      <Tab.Screen name="Profile" component={ProfileNavigationRoot} />
+      <Tab.Screen name="Profile" component={ProfileStackRoot} />
       <Tab.Screen name="Setting" component={SettingNavigationRoot} />
     </Tab.Navigator>
   );
