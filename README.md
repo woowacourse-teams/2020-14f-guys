@@ -1,5 +1,9 @@
 # PELOTON 프로젝트
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![License: MIT](https://img.shields.io/badge/license-MIT-brightgreen.svg)](https://opensource.org/licenses/MIT)
+![Language: Java](https://img.shields.io/github/languages/top/woowacourse-teams/2020-14f-guys)
+![issue:close](https://img.shields.io/github/issues-closed/woowacourse-teams/2020-14f-guys?color=red)
+![pr:close](https://img.shields.io/github/issues-pr-closed/woowacourse-teams/2020-14f-guys?color=blueviolet)
+
 
 ![https://user-images.githubusercontent.com/49060374/91448157-8026b880-e8b4-11ea-9273-1c77fe0a09b2.png](https://user-images.githubusercontent.com/49060374/91448157-8026b880-e8b4-11ea-9273-1c77fe0a09b2.png)
 
