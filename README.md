@@ -1,6 +1,9 @@
 # PELOTON 프로젝트
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 ![https://user-images.githubusercontent.com/49060374/91448157-8026b880-e8b4-11ea-9273-1c77fe0a09b2.png](https://user-images.githubusercontent.com/49060374/91448157-8026b880-e8b4-11ea-9273-1c77fe0a09b2.png)
+
+![peloton](./image/peloton.gif)
 
 ## 소개
 
@@ -33,17 +36,22 @@
 
 ### Front-end
 
-- Javascript ec6
+- Javascript es6
 - React Native with Expo
+- Recoil
 
 ### Infra
 
 - AWS EC2, S3
 - Docker
 - Log4j2
+- Jenkins
+- Nginx
 
 ### Tools
 
 - Intellij
 - Mac os
 - Git
+- Linux Ubuntu
+
