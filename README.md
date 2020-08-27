@@ -3,8 +3,6 @@
 
 ![https://user-images.githubusercontent.com/49060374/91448157-8026b880-e8b4-11ea-9273-1c77fe0a09b2.png](https://user-images.githubusercontent.com/49060374/91448157-8026b880-e8b4-11ea-9273-1c77fe0a09b2.png)
 
-![peloton](./image/peloton.gif)
-
 ## 소개
 
 - 목표 달성을 위한 동기부여 서비스
@@ -54,4 +52,8 @@
 - Mac os
 - Git
 - Linux Ubuntu
+
+## 사용 예시
+
+![peloton](./image/peloton.gif)
 
