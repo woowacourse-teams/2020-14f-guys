@@ -2,6 +2,7 @@ import React from "react";
 import { Alert, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { COLOR, questionEmail } from "../../utils/constants";
 import * as Linking from "expo-linking";
+import { MaterialIcons } from "@expo/vector-icons";
 
 const AnnouncementItem = ({ children, target }) => {
   const onPress = async () => {
@@ -19,6 +20,12 @@ const AnnouncementItem = ({ children, target }) => {
     <TouchableOpacity style={styles.container} onPress={onPress}>
       <View style={styles.item}>
         <Text style={styles.title}>{children}</Text>
+        <MaterialIcons
+          style={styles.arrow}
+          name="navigate-next"
+          size={30}
+          color={COLOR.GRAY4}
+        />
       </View>
     </TouchableOpacity>
   );
@@ -40,10 +47,16 @@ const styles = StyleSheet.create({
     elevation: 3,
     paddingLeft: 25,
     width: "100%",
+    flexDirection: "row",
+    justifyContent: "space-between",
   },
   title: {
     fontSize: 18,
     paddingVertical: 18,
+  },
+  arrow: {
+    marginRight: 18,
+    paddingTop: 13,
   },
 });
 
