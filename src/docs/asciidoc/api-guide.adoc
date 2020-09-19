@@ -599,3 +599,9 @@ operation::calculation/get-fail-not-found[snippets='http-request,http-response,p
 ==== Success
 operation::queries/get-race-achievement[snippets='http-request,http-response,path-parameters,request-headers,response-fields']
 
+[[resources-redirect-app]]
+=== Redirect App Page
+
+[[resource-redirect-app-page]]
+==== Success
+operation::app/redirect[snippets='http-request,http-response,path-parameters,response-headers']

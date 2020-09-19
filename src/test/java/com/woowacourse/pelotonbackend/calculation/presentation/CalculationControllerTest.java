@@ -87,6 +87,7 @@ class CalculationControllerTest {
             .andDo(CalculationDocumentation.create());
     }
 
+
     @DisplayName("정산 요청을 여러번 보낸 경우 예외를 반환한다.")
     @Test
     void createDuplicatedRequest() throws Exception {

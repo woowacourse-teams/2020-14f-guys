@@ -2,11 +2,7 @@ import React, { useEffect } from "react";
 import { Alert, StyleSheet, View } from "react-native";
 import { useRecoilState, useSetRecoilState } from "recoil";
 import { loadingState } from "../../../state/loading/LoadingState";
-import {
-  COLOR,
-  DEEP_LINK_BASE_URL,
-  TOKEN_STORAGE,
-} from "../../../utils/constants";
+import { COLOR, SERVER_BASE_URL, TOKEN_STORAGE } from "../../../utils/constants";
 import AsyncStorage from "@react-native-community/async-storage";
 import { useNavigation } from "@react-navigation/core";
 import {
@@ -16,10 +12,7 @@ import {
   navigateWithoutHistory,
 } from "../../../utils/util";
 import { MemberApi } from "../../../utils/api/MemberApi";
-import {
-  memberInfoState,
-  memberTokenState,
-} from "../../../state/member/MemberState";
+import { memberInfoState, memberTokenState } from "../../../state/member/MemberState";
 import { raceInfoState } from "../../../state/race/RaceState";
 import { QueryApi } from "../../../utils/api/QueryApi";
 import { RiderApi } from "../../../utils/api/RiderApi";
@@ -28,7 +21,9 @@ import RaceJoinTitle from "./RaceJoinTitle";
 import RaceJoinBody from "./RaceJoinBody";
 
 const RaceDeepLinkPage = ({ route }) => {
-  const raceId = route.params.id;
+  let raceId = route.params.id.includes(":")
+    ? route.params.id.substr(0, route.params.id.length - 1)
+    : route.params.id;
   const setLoadingState = useSetRecoilState(loadingState);
   const [token, setToken] = useRecoilState(memberTokenState);
   const [memberInfo, setMemberInfo] = useRecoilState(memberInfoState);
@@ -150,7 +145,7 @@ const styles = StyleSheet.create({
 });
 
 export const raceShareLink = (id) => {
-  return `${DEEP_LINK_BASE_URL}home/races/${id}`;
+  return `${SERVER_BASE_URL}/app/races/${id}`;
 };
 
 export default RaceDeepLinkPage;
