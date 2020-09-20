@@ -5,6 +5,8 @@ import java.util.Objects;
 
 import javax.validation.Valid;
 
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -40,6 +42,7 @@ public class MemberService {
     }
 
     @Transactional(readOnly = true)
+    @Cacheable(value = "member", key = "#id")
     public MemberResponse findMember(final Long id) {
         final Member member = findMemberById(id);
 
@@ -74,6 +77,7 @@ public class MemberService {
         return memberRepository.existsByKakaoId(kakaoId);
     }
 
+    @CacheEvict(value = "member", key = "#id")
     public MemberResponse updateName(final Long id, final MemberNameUpdateRequest request) {
         final Member member = findMemberById(id);
         final Member updatedMember = member.changeName(request.getName());
@@ -82,17 +86,20 @@ public class MemberService {
         return MemberResponse.from(persist);
     }
 
+    @CacheEvict(value = "member", key = "#id")
     public void chargeCash(final Long id, final MemberCashUpdateRequest request) {
         final Member member = findMemberById(id);
         pendingCashService.create(member.getId(), request.getCash());
     }
 
+    @CacheEvict(value = "member", key = "#id")
     public void minusCash(final Long id, final Cash cash) {
         final Member member = findMemberById(id);
         final Member updatedMember = member.minusCash(cash);
         memberRepository.save(updatedMember);
     }
 
+    @CacheEvict(value = "member", key = "#memberId")
     public MemberProfileResponse updateProfileImage(final Long memberId, final MultipartFile file) {
         final Member member = findMemberById(memberId);
 
@@ -113,6 +120,7 @@ public class MemberService {
             .orElseThrow(() -> new MemberNotFoundException(id));
     }
 
+    @CacheEvict(value = "member", key = "#id")
     public void deleteById(final Long id) {
         memberRepository.deleteById(id);
     }
