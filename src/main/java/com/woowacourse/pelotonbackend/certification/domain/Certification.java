@@ -20,10 +20,12 @@ import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.With;
+import org.springframework.data.relational.core.mapping.Table;
 
 @Builder(toBuilder = true)
 @EqualsAndHashCode(of = "id")
 @Getter
+@Table
 public class Certification {
     @Id @With(value = AccessLevel.PACKAGE)
     private final Long id;
