@@ -44,7 +44,7 @@ const LoginTitle = ({ resetAnimation }) => {
     >
       <AnimatedImage
         style={{ ...styles.titleIcon, opacity: titleOpacity.opacity }}
-        source={require("../../assets/peloton-icon.png")}
+        source={require("../../assets/icon.png")}
       />
       <AnimatedText style={{ ...styles.title, opacity: titleOpacity.opacity }}>
         Peloton
