@@ -19,7 +19,7 @@ import { useNavigation } from "@react-navigation/core";
 import LinkCopyButton from "./LinkCopyButton";
 import { CalculationApi } from "../../../utils/api/CalculationApi";
 import HalfWidthButton from "./HalfWidthButton";
-import moment from "moment/src/moment";
+import moment from "moment";
 
 const RaceDetail = ({ route }) => {
   const raceId = route.params.id;

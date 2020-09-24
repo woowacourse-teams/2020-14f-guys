@@ -1,6 +1,6 @@
 import React from "react";
 import { StyleSheet, View } from "react-native";
-import moment from "moment/src/moment";
+import moment from "moment";
 
 import RaceSpecItem from "./RaceSpecItem";
 import { COLOR, DAYS_IN_KOREAN } from "../../../utils/constants";

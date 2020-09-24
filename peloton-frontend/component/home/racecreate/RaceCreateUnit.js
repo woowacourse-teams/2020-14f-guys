@@ -8,7 +8,7 @@ import InputBox from "./InputBox";
 import { DateFormatter } from "../../../utils/DateFormatter";
 import { COLOR, RaceCreateUnitType } from "../../../utils/constants";
 import MissionDaysSelector from "./MissionDaysSelector";
-import moment from "moment/src/moment";
+import moment from "moment";
 
 const RaceCreateUnit = ({
   type = RaceCreateUnitType.TEXT,
