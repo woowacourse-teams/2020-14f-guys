@@ -1,0 +1,30 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+
+    <changeSet author="sika" id="20200818">
+        <sql dbms="mariadb">ALTER TABLE MEMBER MODIFY COLUMN CREATED_AT DATETIME NOT NULL</sql>
+        <sql dbms="mariadb">ALTER TABLE MEMBER MODIFY COLUMN UPDATED_AT DATETIME NOT NULL</sql>
+
+        <sql dbms="mariadb">ALTER TABLE RACE MODIFY COLUMN CREATED_AT DATETIME NOT NULL</sql>
+        <sql dbms="mariadb">ALTER TABLE RACE MODIFY COLUMN UPDATED_AT DATETIME NOT NULL</sql>
+        <sql dbms="mariadb">ALTER TABLE RACE MODIFY COLUMN START_DATE DATETIME NOT NULL</sql>
+        <sql dbms="mariadb">ALTER TABLE RACE MODIFY COLUMN END_DATE DATETIME NOT NULL</sql>
+
+        <sql dbms="mariadb">ALTER TABLE RIDER MODIFY COLUMN CREATED_AT DATETIME NOT NULL</sql>
+        <sql dbms="mariadb">ALTER TABLE RIDER MODIFY COLUMN UPDATED_AT DATETIME NOT NULL</sql>
+
+        <sql dbms="mariadb">ALTER TABLE MISSION MODIFY COLUMN CREATED_AT DATETIME NOT NULL</sql>
+        <sql dbms="mariadb">ALTER TABLE MISSION MODIFY COLUMN UPDATED_AT DATETIME NOT NULL</sql>
+        <sql dbms="mariadb">ALTER TABLE MISSION MODIFY COLUMN START_TIME DATETIME NOT NULL</sql>
+        <sql dbms="mariadb">ALTER TABLE MISSION MODIFY COLUMN END_TIME DATETIME NOT NULL</sql>
+
+        <sql dbms="mariadb">ALTER TABLE CERTIFICATION MODIFY COLUMN CREATED_AT DATETIME NOT NULL</sql>
+        <sql dbms="mariadb">ALTER TABLE CERTIFICATION MODIFY COLUMN UPDATED_AT DATETIME NOT NULL</sql>
+
+        <sql dbms="mariadb">ALTER TABLE REPORT MODIFY COLUMN CREATED_AT DATETIME NOT NULL</sql>
+        <sql dbms="mariadb">ALTER TABLE REPORT MODIFY COLUMN UPDATED_AT DATETIME NOT NULL</sql>
+    </changeSet>
+
+</databaseChangeLog>

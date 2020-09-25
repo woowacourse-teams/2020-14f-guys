@@ -14,14 +14,12 @@ import org.springframework.data.relational.core.mapping.Embedded;
 
 import com.woowacourse.pelotonbackend.race.domain.Race;
 import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.With;
 
-@AllArgsConstructor(access = AccessLevel.PACKAGE)
-@Builder
+@Builder(toBuilder = true)
 @EqualsAndHashCode(of = "id")
 @Getter
 public class Mission {
@@ -29,20 +27,18 @@ public class Mission {
     private final Long id;
 
     @Embedded.Empty
-    @Valid
-    private final TimeDuration missionDuration;
+    private final DateTimeDuration missionDuration;
 
-    @Embedded.Empty
-    @Valid
+    @Embedded.Empty @Valid
     private final MissionInstruction missionInstruction;
 
     private final AggregateReference<Race, @NotNull Long> raceId;
 
-    @CreatedDate
-    @PastOrPresent
-    private LocalDateTime createdAt;
+    @CreatedDate @PastOrPresent
+    @With(AccessLevel.PACKAGE)
+    private final LocalDateTime createdAt;
 
-    @LastModifiedDate
-    @PastOrPresent
-    private LocalDateTime updatedAt;
+    @LastModifiedDate @PastOrPresent
+    @With(AccessLevel.PACKAGE)
+    private final LocalDateTime updatedAt;
 }

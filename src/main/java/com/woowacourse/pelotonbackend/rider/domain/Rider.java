@@ -13,14 +13,12 @@ import org.springframework.data.jdbc.core.mapping.AggregateReference;
 import com.woowacourse.pelotonbackend.member.domain.Member;
 import com.woowacourse.pelotonbackend.race.domain.Race;
 import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.With;
 
-@AllArgsConstructor(access = AccessLevel.PACKAGE)
-@Builder
+@Builder(toBuilder = true)
 @EqualsAndHashCode(of = "id")
 @Getter
 public class Rider {
@@ -31,11 +29,9 @@ public class Rider {
 
     private final AggregateReference<Race, @NotNull Long> raceId;
 
-    @CreatedDate
-    @PastOrPresent
+    @CreatedDate @PastOrPresent
     private LocalDateTime createdAt;
 
-    @LastModifiedDate
-    @PastOrPresent
+    @LastModifiedDate @PastOrPresent
     private LocalDateTime updatedAt;
 }

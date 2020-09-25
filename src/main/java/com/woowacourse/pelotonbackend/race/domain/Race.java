@@ -15,14 +15,12 @@ import org.springframework.data.relational.core.mapping.Embedded;
 import com.woowacourse.pelotonbackend.vo.Cash;
 import com.woowacourse.pelotonbackend.vo.ImageUrl;
 import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.With;
 
-@AllArgsConstructor(access = AccessLevel.PACKAGE)
-@Builder
+@Builder(toBuilder = true)
 @EqualsAndHashCode(of = "id")
 @Getter
 public class Race {
@@ -43,22 +41,20 @@ public class Race {
     @Valid
     private final ImageUrl certificationExample;
 
-    @Embedded.Empty
-    @Valid
+    @Embedded.Empty @Valid
     private final DateDuration raceDuration;
 
     @NotNull
     private final RaceCategory category;
 
-    @Embedded.Empty
-    @Valid
+    @Embedded.Empty @Valid
     private final Cash entranceFee;
 
-    @CreatedDate
-    @PastOrPresent
-    private LocalDateTime createdAt;
+    @CreatedDate @PastOrPresent
+    @With(AccessLevel.PACKAGE)
+    private final LocalDateTime createdAt;
 
-    @LastModifiedDate
-    @PastOrPresent
-    private LocalDateTime updatedAt;
+    @LastModifiedDate @PastOrPresent
+    @With(AccessLevel.PACKAGE)
+    private final LocalDateTime updatedAt;
 }

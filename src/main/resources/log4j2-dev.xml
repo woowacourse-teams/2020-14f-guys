@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="INFO">
+    <Properties>
+        <Property name="logNm">peloton-dev-log</Property>
+        <Property name="layoutPattern">%style{%d{yyyy/MM/dd HH:mm:ss,SSS}}{red} %highlight{[%level]}{FATAL=bg_red,
+            ERROR=red,INFO=green, DEBUG=blue} [%c] %style{[%t]}{yellow}- %m%n -
+        </Property>
+    </Properties>
+    <Appenders>
+        <Console name="ConsoleAppender" target="SYSTEM_OUT">
+            <PatternLayout pattern="${layoutPattern}"/>
+        </Console>
+
+        <RollingFile name="ErrorAppender" fileName="logs/error/${logNm}.log"
+                     filePattern="logs/error/${logNm}_%d{yyyy-MM-dd}_%i.log">
+            <PatternLayout pattern="${layoutPattern}"/>
+            <LevelRangeFilter minLevel="ERROR"/>
+            <Policies>
+                <SizeBasedTriggeringPolicy size="10MB"/>
+                <TimeBasedTriggeringPolicy interval="1"/>
+            </Policies>
+            <DefaultRolloverStrategy max="30" fileIndex="max"/>
+        </RollingFile>
+
+    </Appenders>
+    <Loggers>
+        <Root level="ERROR" includeLocation="false" additivity="false">
+            <AppenderRef ref="ErrorAppender"/>
+        </Root>
+
+        <Logger name="org" level="INFO" additivity="false">
+            <AppenderRef ref="ConsoleAppender"/>
+        </Logger>
+
+        <Logger name="com" level="INFO" additivity="false">
+            <AppenderRef ref="ConsoleAppender"/>
+        </Logger>
+
+        <Logger name="liquibase" level="INFO" additivity="false">
+            <AppenderRef ref="ConsoleAppender"/>
+        </Logger>
+    </Loggers>
+</Configuration>

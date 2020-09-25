@@ -1,0 +1,166 @@
+import React from "react";
+import { ActivityIndicator, Alert, StyleSheet, View } from "react-native";
+import { useRecoilState, useRecoilValue, useResetRecoilState } from "recoil";
+import { useNavigation } from "@react-navigation/native";
+
+import RaceCreateUnit from "./RaceCreateUnit";
+import { raceCreateInfoState } from "../../../state/race/RaceState";
+import { COLOR, DAYS } from "../../../utils/constants";
+import { loadingState } from "../../../state/loading/LoadingState";
+import LoadingIndicator from "../../../utils/LoadingIndicator";
+import RaceCreateView from "./RaceCreateView";
+import {
+  alertNotEnoughCash,
+  navigateTabScreen,
+  navigateWithHistory,
+} from "../../../utils/util";
+import {
+  memberInfoState,
+  memberTokenState,
+} from "../../../state/member/MemberState";
+import { RaceApi } from "../../../utils/api/RaceApi";
+import { MemberApi } from "../../../utils/api/MemberApi";
+import { RiderApi } from "../../../utils/api/RiderApi";
+
+const InputRaceFee = () => {
+  // eslint-disable-next-line prettier/prettier
+  const { title, description, start_date, end_date, category, entrance_fee, mission_start_time, mission_end_time } = useRecoilValue(
+    raceCreateInfoState);
+  const resetRaceCreateInfo = useResetRecoilState(raceCreateInfoState);
+  const [loading, setGlobalLoading] = useRecoilState(loadingState);
+  const token = useRecoilValue(memberTokenState);
+  const [memberInfo, setMemberInfo] = useRecoilState(memberInfoState);
+  const [{ days }, setDaysInRaceCreateInfo] = useRecoilState(
+    raceCreateInfoState,
+  );
+
+  const navigation = useNavigation();
+
+  const formatPostRaceBody = (calculatedDays) => {
+    return {
+      title,
+      description,
+      category,
+      entrance_fee,
+      race_duration: {
+        start_date,
+        end_date,
+      },
+      days: calculatedDays,
+      certification_available_duration: {
+        start_time: mission_start_time,
+        end_time: mission_end_time,
+      },
+    };
+  };
+
+  const calculateDaysOffset = (time) => {
+    const timezoneOffsetHours = parseInt(new Date().getTimezoneOffset() / 60);
+    const timezoneOffsetMinutes = new Date().getTimezoneOffset() % 60;
+    let hours = time.split(":")[0] - timezoneOffsetHours;
+    let minutes = time.split(":")[1] - timezoneOffsetMinutes;
+    if (minutes >= 60) {
+      hours++;
+    }
+    if (minutes < 0) {
+      hours--;
+    }
+
+    let daysOffset = 0;
+    if (hours < 0) {
+      daysOffset++;
+    }
+    if (hours >= 24) {
+      daysOffset--;
+    }
+    return daysOffset;
+  };
+
+  const calculateDays = (daysOffset) => {
+    const mod = (n, m) => ((n % m) + m) % m;
+    const dayIndex = (day) => mod(DAYS.indexOf(day) + daysOffset, 7);
+    return days.map((day) => DAYS[dayIndex(day)]);
+  };
+
+  const convertUTCDays = () => {
+    const startTimeDaysOffset = calculateDaysOffset(mission_start_time);
+
+    return calculateDays(startTimeDaysOffset);
+  };
+
+  const createRaceRequest = async (calculatedDays) => {
+    setGlobalLoading(true);
+    try {
+      const { location } = await RaceApi.post(
+        token,
+        formatPostRaceBody(calculatedDays),
+      );
+      const race_id = location.split("/")[3];
+      await RiderApi.post(token, race_id);
+      resetRaceCreateInfo();
+      navigateWithHistory(navigation, [
+        { name: "Home" },
+        {
+          name: "RaceDetail",
+          params: { id: race_id },
+        },
+      ]);
+    } catch (e) {
+      Alert.alert("", e.response.data.code);
+    }
+    setGlobalLoading(false);
+  };
+
+  const submitRaceRequest = async () => {
+    const userCash = Number(memberInfo.cash);
+
+    if (!entrance_fee) {
+      Alert.alert("", "입장료를 입력해주세요");
+      return;
+    }
+    if (entrance_fee < 0) {
+      Alert.alert("", "입장료는 음수가 될 수 없습니다");
+      return;
+    }
+    if (userCash < entrance_fee) {
+      alertNotEnoughCash({
+        onOk: () => navigateTabScreen(navigation, "Profile"),
+      });
+      setGlobalLoading(false);
+      return;
+    }
+
+    const newDays = convertUTCDays();
+
+    try {
+      const newMemberInfo = await MemberApi.get(token);
+      setMemberInfo(newMemberInfo);
+      await createRaceRequest(newDays);
+    } catch (e) {
+      console.log(e.response.data.message);
+    }
+  };
+
+  return (
+    <LoadingIndicator>
+      <RaceCreateView onPress={submitRaceRequest}>
+        <RaceCreateUnit postfix="원" fieldName="entrance_fee" number>
+          Race의 입장료를 결정해주세요
+        </RaceCreateUnit>
+      </RaceCreateView>
+      {loading && (
+        <View style={styles.loadingIndicator}>
+          <ActivityIndicator size="large" color={COLOR.GRAY5} />
+        </View>
+      )}
+    </LoadingIndicator>
+  );
+};
+
+const styles = StyleSheet.create({
+  subjectContainer: {
+    marginBottom: 120,
+  },
+});
+
+export default InputRaceFee;
