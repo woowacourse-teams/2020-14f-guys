@@ -14,7 +14,7 @@
     - 성취도에 따라서 모인 금액을 차등 지급합니다.
     - 그룹별, 주제별 랭킹 시스템을 도입하여 동기와 소속감을 부여합니다.
 
-- API 문서 : [https://peloton.ga](https://peloton.ga/)
+- API 문서 : [Links](https://dev.peloton.ga/docs/api-guide.html)
 - Android : 구글 플레이 스토어에 `펠로톤` 이라고 검색하시면 찾을 수 있습니다.
 
 ## 사용자 스토리
