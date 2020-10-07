@@ -21,9 +21,9 @@ import org.springframework.data.relational.core.mapping.Table;
 
 @Builder(toBuilder = true)
 @EqualsAndHashCode(of = "id")
-@ToString
 @Getter
 @Table
+@ToString
 public class Calculation {
     @Id @With(value = AccessLevel.PACKAGE)
     private final Long id;
