@@ -22,10 +22,12 @@ import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.With;
+import org.springframework.data.relational.core.mapping.Table;
 
 @Builder(toBuilder = true)
 @EqualsAndHashCode(of = "id")
 @Getter
+@Table
 public class Member {
     public static final Member UNREGISTERED = Member.builder().id(0L).name("탈퇴 회원").build();
 

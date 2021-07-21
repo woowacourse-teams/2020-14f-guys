@@ -3,6 +3,10 @@ package com.woowacourse.pelotonbackend.calculation.application;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.cache.CacheManager;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.cache.annotation.Caching;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -36,6 +40,7 @@ public class CalculationService {
     private final RaceService raceService;
 
     @Transactional
+    @CacheEvict(value = "calculation", key = "#raceId")
     public void calculate(final MemberResponse memberResponse, final Long raceId) {
         final List<RiderResponse> riders = riderService.retrieveByRaceId(raceId).getRiderResponses();
         final RiderResponse rider = findRiderByMemberId(memberResponse, riders);
@@ -79,6 +84,7 @@ public class CalculationService {
     }
 
     @Transactional(readOnly = true)
+    @Cacheable(value = "calculation", key = "#raceId")
     public CalculationResponses retrieve(final MemberResponse memberResponse, final Long raceId) {
         final List<RiderResponse> riders = riderService.retrieveByRaceId(raceId).getRiderResponses();
         final RaceResponse race = raceService.retrieve(raceId);

@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.function.Executable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.web.server.LocalServerPort;
@@ -44,7 +45,7 @@ public class AcceptanceTest {
     }
 
     @BeforeEach
-    void setUp() {
+    protected void setUp() {
         RestAssured.port = port;
     }
 
@@ -181,5 +182,17 @@ public class AcceptanceTest {
             .then()
             .log().all()
             .statusCode(HttpStatus.CREATED.value());
+    }
+
+    protected long getElapsedTime(final Executable executable) {
+        final long startTime = System.nanoTime();
+        try {
+            executable.execute();
+        } catch (Throwable throwable) {
+            throwable.printStackTrace();
+        }
+        final long endTime = System.nanoTime();
+
+        return endTime - startTime;
     }
 }
